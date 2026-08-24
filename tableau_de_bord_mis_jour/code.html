@@ -1,477 +1,379 @@
 <!DOCTYPE html>
-
-<html lang="fr">
-
+<html lang="fr" class="light">
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Tableau de bord - Fintech</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link rel="stylesheet" href="../assets/switch.css">
-    <script src="../assets/switch.config.js"></script>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Tableau de bord - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
 
-    <style>
-        .silk-gradient {
-            background:
-                radial-gradient(circle at 10% 20%, rgba(202, 190, 255, 0.4) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
-                var(--tw-gradient-stops);
-        }
-
-        .soft-shadow {
-            box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.04);
-        }
-    </style>
-    <style>
-        body {
-            min-height: max(884px, 100dvh);
-        }
-    </style>
-</head>
-
-<body class="bg-background text-on-background font-body-lg min-h-screen pb-32">
-    <!-- TopAppBar -->
-    <header
-        class="flex justify-between items-center px-container-margin py-stack-md w-full bg-transparent docked full-width top-0 flat no shadows">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container">
-                <img alt="User profile picture" class="w-full h-full object-cover"
-                    data-alt="A close-up portrait of a professional African woman with a warm smile, wearing modern corporate attire, set against a bright, softly lit minimalist background. High key lighting, modern light-mode aesthetic, corporate yet approachable."
-                    src="../assets/images/img_046.jpg" />
-            </div>
-            <h1 class="font-headline-md text-headline-md text-on-surface font-bold" data-i18n="greeting">Bonjour, Adele
-            </h1>
-        </div>
-        <div class="flex items-center gap-2 text-primary">
-            <div class="relative group">
-                <button aria-expanded="false" aria-haspopup="true"
-                    class="p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant active:scale-95 transition-transform flex items-center gap-1 font-label-caps">
-                    <span class="material-symbols-outlined text-[18px]">language</span>
-                    <span class="text-xs font-bold uppercase">FR</span>
-                </button>
-                <div
-                    class="absolute right-0 top-full mt-1 w-32 bg-surface-container-lowest rounded-lg shadow-lg border border-surface-variant overflow-hidden hidden group-hover:block z-50">
-                    <button
-                        class="w-full text-left px-4 py-2 text-sm hover:bg-surface-container-low transition-colors font-semibold text-primary"
-                        data-lang="fr">Français (FR)</button>
-                    <button class="w-full text-left px-4 py-2 text-sm hover:bg-surface-container-low transition-colors"
-                        data-lang="en">English (EN)</button>
-                    <button class="w-full text-left px-4 py-2 text-sm hover:bg-surface-container-low transition-colors"
-                        data-lang="es">Español (ES)</button>
-                    <button class="w-full text-left px-4 py-2 text-sm hover:bg-surface-container-low transition-colors"
-                        data-lang="de">Deutsch (DE)</button>
-                </div>
-            </div>
-            <button
-                class="p-2 rounded-full hover:bg-surface-container-high transition-colors text-primary font-bold active:scale-95 transition-transform">
-                <span class="material-symbols-outlined" data-icon="search">search</span>
-            </button>
-            <a href="../confirmation_paiement_qr/code.html" id="btn-qr-header" aria-label="Scanner QR"
-                class="p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant active:scale-95 transition-transform flex items-center justify-center"
-                style="text-decoration:none;">
-                <span class="material-symbols-outlined" style="font-size:22px;">qr_code_scanner</span>
-            </a>
-            <button
-                class="p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant active:scale-95 transition-transform">
-                <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-            </button>
-        </div>
-    </header>
-    <main class="px-container-margin flex flex-col gap-stack-lg mt-stack-sm">
-        <!-- Balance Card -->
-        <section
-            class="relative bg-primary text-on-primary rounded-[24px] p-card-padding overflow-hidden soft-shadow aspect-[1.58/1] flex flex-col justify-between">
-            <div class="absolute inset-0 silk-gradient from-primary to-primary-container opacity-90"></div>
-            <div class="relative z-10 flex justify-between items-start">
-                <div>
-                    <p class="font-body-sm text-primary-fixed-dim opacity-90" data-i18n="mainBalance">Solde principal
-                    </p>
-                    <div class="flex items-center gap-2 mt-1">
-                        <span
-                            class="bg-surface/20 text-on-primary font-label-caps text-label-caps px-2 py-1 rounded-full backdrop-blur-sm border border-surface/10"
-                            data-i18n="active">Actif</span>
-                        <div
-                            class="flex items-center gap-1 ml-2 px-2 py-1 bg-surface/10 rounded-full backdrop-blur-sm border border-surface/10">
-                            <span class="material-symbols-outlined text-[14px] text-on-primary">cell_tower</span><span
-                                class="material-symbols-outlined text-[14px] text-on-primary">signal_cellular_alt</span><span
-                                class="material-symbols-outlined text-[14px] text-on-primary">hub</span></div>
-                    </div>
-                </div>
-                <button id="toggle-balance-btn" onclick="toggleBalance()" class="w-8 h-8 rounded-full bg-on-primary/20 backdrop-blur-sm flex items-center justify-center hover:bg-on-primary/30 transition-colors cursor-pointer" aria-label="Masquer le solde">
-                    <span id="eye-icon" class="material-symbols-outlined text-on-primary text-sm">visibility</span>
-                </button>
-            </div>
-            <div class="relative z-10">
-                <h2 id="main-balance-text" data-hidden="false"
-                    class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg tracking-tight">
-                    23,980 FCFA</h2>
-            </div>
-        </section>
-        <!-- Quick Actions -->
-        <section class="grid grid-cols-3 gap-2">
-            <a href="../d_p_t_de_fonds/code.html" class="flex flex-col items-center gap-2 text-center no-underline">
-                <button class="w-14 h-14 bg-primary text-on-primary rounded-full flex items-center justify-center hover:opacity-90 active:scale-95 transition-all shadow-md">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
-                </button>
-                <span class="font-label-caps text-label-caps text-on-surface-variant break-words w-full" data-i18n="deposit">Dépôt</span>
-            </a>
-            <a href="../transfert_switch_switch/code.html" class="flex flex-col items-center gap-2 text-center no-underline">
-                <button class="w-14 h-14 bg-surface-container-lowest border border-outline-variant text-primary rounded-full flex items-center justify-center hover:bg-surface-container-low active:scale-95 transition-all">
-                    <span class="material-symbols-outlined">send</span>
-                </button>
-                <span class="font-label-caps text-label-caps text-on-surface-variant break-words w-full" data-i18n="send">Envoyer</span>
-            </a>
-            <a href="../retrait_de_fonds/code.html" class="flex flex-col items-center gap-2 text-center no-underline">
-                <button class="w-14 h-14 bg-surface-container-lowest border border-outline-variant text-primary rounded-full flex items-center justify-center hover:bg-surface-container-low active:scale-95 transition-all">
-                    <span class="material-symbols-outlined">account_balance_wallet</span>
-                </button>
-                <span class="font-label-caps text-label-caps text-on-surface-variant break-words w-full" data-i18n="withdraw">Retrait</span>
-            </a>
-            <a href="../conversion_de_devises/code.html" class="flex flex-col items-center gap-2 text-center no-underline">
-                <button class="w-14 h-14 bg-surface-container-lowest border border-outline-variant text-primary rounded-full flex items-center justify-center hover:bg-surface-container-low active:scale-95 transition-all">
-                    <span class="material-symbols-outlined">sync_alt</span>
-                </button>
-                <span class="font-label-caps text-label-caps text-on-surface-variant break-words w-full" data-i18n="convert">Convertir</span>
-            </a>
-            <a href="../mes_tontines/code.html" class="flex flex-col items-center gap-2 text-center no-underline">
-                <button class="w-14 h-14 bg-primary text-on-primary rounded-full flex items-center justify-center hover:opacity-90 active:scale-95 transition-all shadow-md">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
-                </button>
-                <span class="font-label-caps text-label-caps text-on-surface-variant break-words w-full" data-i18n="groups">Tontines</span>
-            </a>
-            <a href="../mes_cagnottes/code.html" class="flex flex-col items-center gap-2 text-center no-underline">
-                <button class="w-14 h-14 bg-primary text-on-primary rounded-full flex items-center justify-center hover:opacity-90 active:scale-95 transition-all shadow-md">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">savings</span>
-                </button>
-                <span class="font-label-caps text-label-caps text-on-surface-variant break-words w-full" data-i18n="savings">Cagnottes</span>
-            </a>
-        </section>
-
-        <!-- Services & Factures Bénin Super-App Grid -->
-        <section class="flex flex-col gap-3">
-            <div class="flex justify-between items-center px-1">
-                <h3 class="text-sm font-bold text-on-surface uppercase tracking-wider">Services & Factures Bénin</h3>
-                <span class="text-xs font-semibold text-primary">Nouveau</span>
-            </div>
-            <div class="grid grid-cols-3 gap-2.5">
-                <a href="../paiement_sbee_electricite/code.html" class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant soft-shadow flex flex-col items-center gap-1.5 text-center hover:border-primary transition-all no-underline">
-                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
-                    </div>
-                    <span class="text-xs font-bold text-on-surface">SBEE Élec</span>
-                    <span class="text-[10px] text-on-surface-variant">Recharge</span>
-                </a>
-
-                <a href="../paiement_soneb_eau/code.html" class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant soft-shadow flex flex-col items-center gap-1.5 text-center hover:border-primary transition-all no-underline">
-                    <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-600 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">water_drop</span>
-                    </div>
-                    <span class="text-xs font-bold text-on-surface">SONEB Eau</span>
-                    <span class="text-[10px] text-on-surface-variant">Factures</span>
-                </a>
-
-                <a href="../recharge_credit_data/code.html" class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant soft-shadow flex flex-col items-center gap-1.5 text-center hover:border-primary transition-all no-underline">
-                    <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">cell_tower</span>
-                    </div>
-                    <span class="text-xs font-bold text-on-surface">Forfaits</span>
-                    <span class="text-[10px] text-on-surface-variant">MTN • Moov</span>
-                </a>
-
-                <a href="../coffre_epargne_vault/code.html" class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant soft-shadow flex flex-col items-center gap-1.5 text-center hover:border-primary transition-all no-underline">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">savings</span>
-                    </div>
-                    <span class="text-xs font-bold text-on-surface">Vault 6%</span>
-                    <span class="text-[10px] text-emerald-600 font-semibold">Épargne</span>
-                </a>
-
-                <a href="../micro_credit_express/code.html" class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant soft-shadow flex flex-col items-center gap-1.5 text-center hover:border-primary transition-all no-underline">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">speed</span>
-                    </div>
-                    <span class="text-xs font-bold text-on-surface">Avance</span>
-                    <span class="text-[10px] text-on-surface-variant">Nano-crédit</span>
-                </a>
-
-                <a href="../parrainage_recompenses/code.html" class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant soft-shadow flex flex-col items-center gap-1.5 text-center hover:border-primary transition-all no-underline">
-                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">card_giftcard</span>
-                    </div>
-                    <span class="text-xs font-bold text-on-surface">Rewards</span>
-                    <span class="text-[10px] text-purple-700 font-semibold">500 F / ami</span>
-                </a>
-
-                <a href="../carte_agents_guichets/code.html" class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant soft-shadow flex flex-col items-center gap-1.5 text-center hover:border-primary transition-all no-underline">
-                    <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-600 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">map</span>
-                    </div>
-                    <span class="text-xs font-bold text-on-surface">Agences</span>
-                    <span class="text-[10px] text-on-surface-variant">Carte GPS</span>
-                </a>
-
-                <a href="../budget_analyse_depenses/code.html" class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant soft-shadow flex flex-col items-center gap-1.5 text-center hover:border-primary transition-all no-underline">
-                    <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">analytics</span>
-                    </div>
-                    <span class="text-xs font-bold text-on-surface">Budget</span>
-                    <span class="text-[10px] text-teal-700 font-semibold">Insights</span>
-                </a>
-
-                <a href="../partage_addition_split/code.html" class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant soft-shadow flex flex-col items-center gap-1.5 text-center hover:border-primary transition-all no-underline">
-                    <div class="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-600 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">pie_chart</span>
-                    </div>
-                    <span class="text-xs font-bold text-on-surface">Diviser</span>
-                    <span class="text-[10px] text-on-surface-variant">Split note</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- Stats Cards -->
-        <section class="grid grid-cols-2 gap-gutter">
-            <div
-                class="bg-surface-container-lowest rounded-xl p-4 soft-shadow border border-surface-variant flex flex-col gap-3">
-                <div class="flex items-center gap-2 text-tertiary">
-                    <span class="material-symbols-outlined text-sm">trending_up</span>
-                    <span class="font-label-caps text-label-caps" data-i18n="mostActive">Plus actif</span>
-                </div>
-                <p class="font-headline-md text-headline-md text-on-surface">MTN MoMo</p>
-            </div>
-            <div
-                class="bg-surface-container-lowest rounded-xl p-4 soft-shadow border border-surface-variant flex flex-col gap-3">
-                <div class="flex items-center gap-2 text-tertiary">
-                    <span class="material-symbols-outlined text-sm">shopping_bag</span>
-                    <span class="font-label-caps text-label-caps" data-i18n="majorExpense">Dépense majeure</span>
-                </div>
-                <p class="font-headline-md text-headline-md text-on-surface">Super U</p>
-            </div>
-        </section>
-        <!-- Recent Transactions -->
-        <section class="flex flex-col gap-stack-sm">
-            <div class="flex justify-between items-end mb-2">
-                <h3 class="font-headline-md text-headline-md text-on-surface" data-i18n="recentTransactions">
-                    Transactions récentes</h3>
-                <a href="../historique_des_transactions/code.html" class="text-primary font-body-sm hover:underline" data-i18n="seeAll" style="text-decoration:none;">Voir tout</a>
-            </div>
-            <div class="bg-surface-container-lowest rounded-xl p-2 soft-shadow border border-surface-variant">
-                <a href="../d_tail_de_transaction/code.html"
-                    class="flex items-center justify-between p-3 hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer"
-                    style="text-decoration:none; color:inherit;">
-                    <div class="flex items-center gap-3">
-                        <div
-                            class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-primary">
-                            <span class="material-symbols-outlined">storefront</span>
-                        </div>
-                        <div>
-                            <p class="font-body-lg text-on-surface font-semibold" data-i18n="supermarket">Supermarché
-                                Erevan</p>
-                            <p class="font-body-sm text-on-surface-variant" data-i18n="todayTime">Aujourd'hui, 14:30</p>
-                        </div>
-                    </div>
-                    <p class="font-body-lg font-bold text-on-surface">- 4,500 F</p>
-                </a>
-                <a href="../d_tail_de_transaction/code.html"
-                    class="flex items-center justify-between p-3 hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer"
-                    style="text-decoration:none; color:inherit;">
-                    <div class="flex items-center gap-3">
-                        <div
-                            class="w-10 h-10 rounded-full bg-primary-container text-primary flex items-center justify-center">
-                            <span class="material-symbols-outlined">arrow_downward</span>
-                        </div>
-                        <div>
-                            <p class="font-body-lg text-on-surface font-semibold" data-i18n="receivedFrom">Reçu de Jean
-                            </p>
-                            <p class="font-body-sm text-on-surface-variant" data-i18n="yesterdayTime">Hier, 09:15</p>
-                        </div>
-                    </div>
-                    <p class="font-body-lg font-bold text-green-600">+ 15,000 F</p>
-                </a>
-            </div>
-        </section>
-    </main>
-    <!-- BottomNavBar -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
     
-    <script>
-        const translations = {
-            fr: {
-                greeting: "Bonjour, Adele",
-                mainBalance: "Solde principal",
-                active: "Actif",
-                deposit: "Dépôt",
-                send: "Envoyer",
-                withdraw: "Retrait",
-                convert: "Convertir",
-                groups: "Tontines",
-                savings: "Cagnottes",
-                mostActive: "Plus actif",
-                majorExpense: "Dépense majeure",
-                recentTransactions: "Transactions récentes",
-                seeAll: "Voir tout",
-                supermarket: "Supermarché Erevan",
-                todayTime: "Aujourd'hui, 14:30",
-                receivedFrom: "Reçu de Jean",
-                yesterdayTime: "Hier, 09:15"
-            },
-            en: {
-                greeting: "Hello, Adele",
-                mainBalance: "Main Balance",
-                active: "Active",
-                deposit: "Deposit",
-                send: "Send",
-                withdraw: "Withdraw",
-                convert: "Convert",
-                groups: "Groups",
-                savings: "Savings",
-                mostActive: "Most Active",
-                majorExpense: "Major Expense",
-                recentTransactions: "Recent Transactions",
-                seeAll: "See All",
-                supermarket: "Erevan Supermarket",
-                todayTime: "Today, 14:30",
-                receivedFrom: "Received from Jean",
-                yesterdayTime: "Yesterday, 09:15"
-            },
-            es: {
-                greeting: "Hola, Adele",
-                mainBalance: "Saldo Principal",
-                active: "Activo",
-                deposit: "Depósito",
-                send: "Enviar",
-                withdraw: "Retirar",
-                convert: "Convertir",
-                groups: "Grupos",
-                savings: "Ahorros",
-                mostActive: "Más Activo",
-                majorExpense: "Gasto Mayor",
-                recentTransactions: "Transacciones Recientes",
-                seeAll: "Ver todo",
-                supermarket: "Supermercado Erevan",
-                todayTime: "Hoy, 14:30",
-                receivedFrom: "Recibido de Jean",
-                yesterdayTime: "Ayer, 09:15"
-            },
-            de: {
-                greeting: "Hallo, Adele",
-                mainBalance: "Hauptguthaben",
-                active: "Aktiv",
-                deposit: "Einzahlen",
-                send: "Senden",
-                withdraw: "Abheben",
-                convert: "Umwandeln",
-                groups: "Gruppen",
-                savings: "Ersparnisse",
-                mostActive: "Am aktivsten",
-                majorExpense: "Größte Ausgabe",
-                recentTransactions: "Letzte Transaktionen",
-                seeAll: "Alle ansehen",
-                supermarket: "Erevan Supermarkt",
-                todayTime: "Heute, 14:30",
-                receivedFrom: "Erhalten von Jean",
-                yesterdayTime: "Gestern, 09:15"
-            }
-        };
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        const langButtons = document.querySelectorAll('[data-lang]');
-        const currentLangLabel = document.querySelector('button[aria-haspopup="true"] span:nth-child(2)');
+    .hero-gradient {
+      background: linear-gradient(135deg, #5E3BDC 0%, #4323B0 50%, #2A1175 100%);
+      box-shadow: 0 16px 36px -10px rgba(94, 59, 220, 0.35);
+    }
 
-        langButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const lang = e.target.getAttribute('data-lang');
+    .silk-orb-1 {
+      background: radial-gradient(circle, rgba(202, 190, 255, 0.35) 0%, rgba(94, 59, 220, 0) 70%);
+    }
 
-                // Update UI styling for active language
-                langButtons.forEach(b => {
-                    b.classList.remove('text-primary', 'font-semibold');
-                });
-                e.target.classList.add('text-primary', 'font-semibold');
+    .silk-orb-2 {
+      background: radial-gradient(circle, rgba(255, 204, 0, 0.25) 0%, rgba(94, 59, 220, 0) 70%);
+    }
 
-                // Update button text
-                currentLangLabel.textContent = lang.toUpperCase();
+    .service-card {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.03);
+    }
 
-                // Translate elements
-                document.querySelectorAll('[data-i18n]').forEach(el => {
-                    const key = el.getAttribute('data-i18n');
-                    if (translations[lang] && translations[lang][key]) {
-                        el.textContent = translations[lang][key];
-                    }
-                });
+    .service-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -4px rgba(94, 59, 220, 0.1);
+      border-color: rgba(94, 59, 220, 0.4);
+    }
 
-                // Update HTML lang attribute
-                document.documentElement.lang = lang;
-            });
-        });
+    .action-bubble {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-        function updateGreeting() {
-            const greetingEl = document.querySelector("[data-i18n='greeting']");
-            if (!greetingEl) return;
-            const hour = new Date().getHours();
-            let text = "Bonjour, Adele ☀️";
-            if (hour >= 12 && hour < 18) {
-                text = "Bon après-midi, Adele 🌴";
-            } else if (hour >= 18 || hour < 5) {
-                text = "Bonsoir, Adele 🌙";
-            }
-            greetingEl.textContent = text;
-        }
-        updateGreeting();
+    .action-bubble:active {
+      transform: scale(0.92);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
 
-        function toggleBalance() {
-            const balanceEl = document.getElementById('main-balance-text');
-            const eyeIcon = document.getElementById('eye-icon');
-            if (!balanceEl || !eyeIcon) return;
-            if (balanceEl.getAttribute('data-hidden') === 'true') {
-                balanceEl.textContent = '23,980 FCFA';
-                balanceEl.setAttribute('data-hidden', 'false');
-                eyeIcon.textContent = 'visibility';
-            } else {
-                balanceEl.textContent = '•••••••• FCFA';
-                balanceEl.setAttribute('data-hidden', 'true');
-                eyeIcon.textContent = 'visibility_off';
-            }
-        }
+  <!-- Top App Bar -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30">
+    <!-- User Avatar & Dynamic Greeting -->
+    <a href="../profil_utilisateur/code.html" class="flex items-center gap-3 no-underline group cursor-pointer">
+      <div class="relative">
+        <div class="w-11 h-11 rounded-full overflow-hidden border-2 border-primary/30 group-hover:border-primary transition-colors shadow-sm">
+          <img alt="Adele Doe" class="w-full h-full object-cover" src="../assets/images/img_046.jpg"/>
+        </div>
+        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-green-500 border-2 border-white"></span>
+      </div>
+      <div>
+        <span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider block" id="time-greeting">Bonjour 👋</span>
+        <h1 class="text-base sm:text-lg font-extrabold text-on-surface leading-tight group-hover:text-primary transition-colors">Adele Doe</h1>
+      </div>
+    </a>
 
-        // Shake to hide balance detection
-        if (window.DeviceMotionEvent) {
-            let lastX, lastY, lastZ;
-            let lastUpdate = 0;
-            window.addEventListener('devicemotion', function (e) {
-                const curTime = Date.now();
-                if ((curTime - lastUpdate) > 200) {
-                    const diffTime = (curTime - lastUpdate);
-                    lastUpdate = curTime;
-                    const acc = e.accelerationIncludingGravity;
-                    if (!acc) return;
-                    const speed = Math.abs(acc.x + acc.y + acc.z - (lastX || 0) - (lastY || 0) - (lastZ || 0)) / diffTime * 10000;
-                    if (speed > 800) {
-                        toggleBalance();
-                    }
-                    lastX = acc.x;
-                    lastY = acc.y;
-                    lastZ = acc.z;
-                }
-            }, false);
-        }
-    </script>
-    <script src="../assets/switch.router.js"></script>
+    <!-- Top Right Actions -->
+    <div class="flex items-center gap-2">
+      <!-- Map Agent GPS Button -->
+      <a href="../carte_agents_guichets/code.html" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer no-underline" title="Localiser un agent">
+        <span class="material-symbols-outlined text-xl">map</span>
+      </a>
 
-<nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
-  <a href="../tableau_de_bord_mis_jour/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">home</span>
-    <span class="nav-label" style="font-size:10px;font-weight:700;">Accueil</span>
-  </a>
-  <a href="../historique_des_transactions/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">receipt_long</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Historique</span>
-  </a>
-  <a href="../achats_en_ligne_cartes_virtuelles/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">account_balance_wallet</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Portefeuille</span>
-  </a>
-  <a href="../param_tres_g_n_raux/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">settings</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Paramètres</span>
-  </a>
-</nav>
+      <!-- Notifications with Badge -->
+      <a href="../centre_de_notifications/code.html" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer no-underline relative">
+        <span class="material-symbols-outlined text-xl">notifications</span>
+        <span class="absolute top-2 right-2 w-2.5 h-2.5 bg-rose-500 rounded-full border border-white"></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-1">
+
+    <!-- 1. Hero Balance Card (High-End Fintech) -->
+    <section class="hero-gradient text-white rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[190px]">
+      <!-- Background Ambient Orbs -->
+      <div class="absolute -top-12 -right-12 w-48 h-48 silk-orb-1 rounded-full pointer-events-none"></div>
+      <div class="absolute -bottom-16 -left-12 w-48 h-48 silk-orb-2 rounded-full pointer-events-none"></div>
+
+      <!-- Card Top Bar -->
+      <div class="relative z-10 flex items-center justify-between w-full">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-purple-200 uppercase tracking-wider">Solde Principal</span>
+          <span class="text-[10px] font-black uppercase bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full text-white border border-white/20">
+            Niveau 2 Vérifié
+          </span>
+        </div>
+
+        <!-- Eye toggle button -->
+        <button id="toggle-balance-btn" onclick="toggleBalance()" class="w-8 h-8 rounded-full bg-white/15 backdrop-blur-md hover:bg-white/25 transition-colors flex items-center justify-center cursor-pointer" aria-label="Afficher ou masquer le solde">
+          <span id="eye-icon" class="material-symbols-outlined text-white text-base">visibility</span>
+        </button>
+      </div>
+
+      <!-- Balance Amount -->
+      <div class="relative z-10 my-3">
+        <h2 id="main-balance-text" data-hidden="false" class="text-3xl sm:text-4xl font-black tracking-tight font-mono">
+          234 980 <span class="text-lg sm:text-xl font-bold font-sans text-purple-200">FCFA</span>
+        </h2>
+      </div>
+
+      <!-- Card Bottom Row : Account Number & QR Shortcut -->
+      <div class="relative z-10 flex items-center justify-between pt-2 border-t border-white/15 text-xs text-purple-200">
+        <div class="flex items-center gap-1.5 font-mono">
+          <span class="material-symbols-outlined text-sm">phone_iphone</span>
+          <span>+229 97 12 34 56</span>
+        </div>
+        <a href="../scanner_qr_code/code.html" class="flex items-center gap-1 text-white hover:text-amber-300 transition-colors no-underline font-bold text-xs">
+          <span class="material-symbols-outlined text-sm">qr_code_scanner</span>
+          <span>Scanner QR</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 2. Primary Actions Bar (4 Clean Circular Buttons) -->
+    <section class="grid grid-cols-4 gap-3 bg-white p-4 rounded-3xl border border-outline-variant/30 shadow-sm text-center">
+      <!-- Dépôt -->
+      <a href="../d_p_t_de_fonds/code.html" class="action-bubble flex flex-col items-center gap-1.5 no-underline group cursor-pointer">
+        <div class="w-13 h-13 rounded-2xl bg-primary text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-2xl font-bold">add</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface">Dépôt</span>
+      </a>
+
+      <!-- Envoyer -->
+      <a href="../transfert_switch_switch/code.html" class="action-bubble flex flex-col items-center gap-1.5 no-underline group cursor-pointer">
+        <div class="w-13 h-13 rounded-2xl bg-indigo-50 text-indigo-700 border border-indigo-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-2xl">send</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface">Envoyer</span>
+      </a>
+
+      <!-- Retrait -->
+      <a href="../retrait_de_fonds/code.html" class="action-bubble flex flex-col items-center gap-1.5 no-underline group cursor-pointer">
+        <div class="w-13 h-13 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface">Retrait</span>
+      </a>
+
+      <!-- Scanner / Payer -->
+      <a href="../scanner_qr_code/code.html" class="action-bubble flex flex-col items-center gap-1.5 no-underline group cursor-pointer">
+        <div class="w-13 h-13 rounded-2xl bg-amber-50 text-amber-700 border border-amber-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-2xl">qr_code_2</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface">Payer QR</span>
+      </a>
+    </section>
+
+    <!-- 3. Super-App Services & Factures Bénin Grid -->
+    <section class="flex flex-col gap-3">
+      <div class="flex items-center justify-between px-1">
+        <h3 class="text-xs font-black text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-base">apps</span>
+          <span>Services & Factures Bénin</span>
+        </h3>
+        <span class="text-[11px] font-extrabold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full">
+          Super-App
+        </span>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2.5">
+        <!-- SBEE Électricité -->
+        <a href="../paiement_sbee_electricite/code.html" class="service-card bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">SBEE Élec</span>
+          <span class="text-[10px] text-amber-700 font-semibold bg-amber-50 px-2 py-0.5 rounded-full">Recharge</span>
+        </a>
+
+        <!-- SONEB Eau -->
+        <a href="../paiement_soneb_eau/code.html" class="service-card bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-sky-500/10 text-sky-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">SONEB Eau</span>
+          <span class="text-[10px] text-sky-700 font-semibold bg-sky-50 px-2 py-0.5 rounded-full">Factures</span>
+        </a>
+
+        <!-- Forfaits Data & Crédit -->
+        <a href="../recharge_credit_data/code.html" class="service-card bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">cell_tower</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Forfaits</span>
+          <span class="text-[10px] text-primary font-semibold bg-primary/5 px-2 py-0.5 rounded-full">MTN • Moov</span>
+        </a>
+
+        <!-- Coffre Vault Épargne -->
+        <a href="../coffre_epargne_vault/code.html" class="service-card bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">savings</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Vault 6%</span>
+          <span class="text-[10px] text-indigo-700 font-semibold bg-indigo-50 px-2 py-0.5 rounded-full">Épargne</span>
+        </a>
+
+        <!-- Micro-Crédit Express -->
+        <a href="../micro_credit_express/code.html" class="service-card bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">speed</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Avance</span>
+          <span class="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full">Nano-crédit</span>
+        </a>
+
+        <!-- Carte Agents GPS -->
+        <a href="../carte_agents_guichets/code.html" class="service-card bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-rose-500/10 text-rose-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">map</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Agences</span>
+          <span class="text-[10px] text-rose-700 font-semibold bg-rose-50 px-2 py-0.5 rounded-full">Carte GPS</span>
+        </a>
+
+        <!-- Budget Insights -->
+        <a href="../budget_analyse_depenses/code.html" class="service-card bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-teal-500/10 text-teal-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">insights</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Budget</span>
+          <span class="text-[10px] text-teal-700 font-semibold bg-teal-50 px-2 py-0.5 rounded-full">Dépenses</span>
+        </a>
+
+        <!-- Split Note Addition -->
+        <a href="../partage_addition_split/code.html" class="service-card bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-orange-500/10 text-orange-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">pie_chart</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Diviser</span>
+          <span class="text-[10px] text-orange-700 font-semibold bg-orange-50 px-2 py-0.5 rounded-full">Split note</span>
+        </a>
+
+        <!-- Tontines Digitales -->
+        <a href="../mes_tontines/code.html" class="service-card bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">groups</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Tontines</span>
+          <span class="text-[10px] text-purple-700 font-semibold bg-purple-50 px-2 py-0.5 rounded-full">Épargne groupe</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 4. Quick Insights Banner (Referral & Cashback) -->
+    <a href="../parrainage_recompenses/code.html" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-4 text-white shadow-md flex items-center justify-between no-underline hover:opacity-95 transition-opacity cursor-pointer">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl">
+          🎁
+        </div>
+        <div>
+          <h4 class="font-black text-sm">Gagnez 500 FCFA par ami</h4>
+          <p class="text-[11px] text-purple-200">Partagez votre code parrain ADELE500</p>
+        </div>
+      </div>
+      <span class="material-symbols-outlined text-white text-xl">arrow_forward</span>
+    </a>
+
+    <!-- 5. Recent Transactions Feed -->
+    <section class="flex flex-col gap-3">
+      <div class="flex items-center justify-between px-1">
+        <h3 class="text-xs font-black text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-base">history</span>
+          <span>Transactions Récentes</span>
+        </h3>
+        <a href="../historique_des_transactions/code.html" class="text-xs font-bold text-primary hover:underline no-underline">Voir tout</a>
+      </div>
+
+      <div class="bg-white rounded-3xl p-2 border border-outline-variant/40 shadow-sm flex flex-col divide-y divide-outline-variant/30">
+        
+        <!-- Tx 1: Koffi Mensah -->
+        <a href="../recu_transaction_partage/code.html" class="p-3 flex items-center justify-between hover:bg-surface-container/50 rounded-2xl transition-colors no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-sm">
+              KM
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold text-on-surface">Koffi Mensah</h4>
+              <p class="text-[10px] text-on-surface-variant">Transfert Switch • Aujourd'hui 14:32</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs sm:text-sm font-black font-mono text-emerald-600 block">+15 000 F</span>
+            <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full">Reçu</span>
+          </div>
+        </a>
+
+        <!-- Tx 2: SBEE Recharge -->
+        <a href="../recu_transaction_partage/code.html" class="p-3 flex items-center justify-between hover:bg-surface-container/50 rounded-2xl transition-colors no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-lg">bolt</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold text-on-surface">Recharge SBEE</h4>
+              <p class="text-[10px] text-on-surface-variant">Compteur 1428 • Hier 19:15</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs sm:text-sm font-black font-mono text-on-surface block">-5 000 F</span>
+            <span class="text-[9px] text-on-surface-variant font-bold bg-surface-container px-1.5 py-0.5 rounded-full">Électricité</span>
+          </div>
+        </a>
+
+        <!-- Tx 3: Supermarché Erevan -->
+        <a href="../recu_transaction_partage/code.html" class="p-3 flex items-center justify-between hover:bg-surface-container/50 rounded-2xl transition-colors no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-rose-50 text-rose-700 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-lg">shopping_cart</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold text-on-surface">Super U / Erevan Cotonou</h4>
+              <p class="text-[10px] text-on-surface-variant">Paiement QR • 22 Août</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs sm:text-sm font-black font-mono text-on-surface block">-18 450 F</span>
+            <span class="text-[9px] text-purple-700 font-bold bg-purple-50 px-1.5 py-0.5 rounded-full">Marchand</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Real balance & dynamic greetings
+    const ACTUAL_BALANCE = "234 980 FCFA";
+    let isBalanceHidden = false;
+
+    function toggleBalance() {
+      isBalanceHidden = !isBalanceHidden;
+      const el = document.getElementById("main-balance-text");
+      const icon = document.getElementById("eye-icon");
+      if (isBalanceHidden) {
+        el.innerHTML = "•••••• <span class=\"text-lg sm:text-xl font-bold font-sans text-purple-200\">FCFA</span>";
+        icon.textContent = "visibility_off";
+      } else {
+        el.innerHTML = "234 980 <span class=\"text-lg sm:text-xl font-bold font-sans text-purple-200\">FCFA</span>";
+        icon.textContent = "visibility";
+      }
+    }
+
+    // Dynamic greeting based on current local hour in Benin
+    (function setTimeGreeting() {
+      const hour = new Date().getHours();
+      const el = document.getElementById('time-greeting');
+      if (!el) return;
+      if (hour >= 5 && hour < 12) {
+        el.textContent = "Bonjour ☀️";
+      } else if (hour >= 12 && hour < 18) {
+        el.textContent = "Bon après-midi 🌴";
+      } else {
+        el.textContent = "Bonsoir 🌙";
+      }
+    })();
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
 </body>
-
 </html>
