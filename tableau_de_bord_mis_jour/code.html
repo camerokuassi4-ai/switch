@@ -377,9 +377,24 @@
             });
         });
 
+        function updateGreeting() {
+            const greetingEl = document.querySelector("[data-i18n='greeting']");
+            if (!greetingEl) return;
+            const hour = new Date().getHours();
+            let text = "Bonjour, Adele ☀️";
+            if (hour >= 12 && hour < 18) {
+                text = "Bon après-midi, Adele 🌴";
+            } else if (hour >= 18 || hour < 5) {
+                text = "Bonsoir, Adele 🌙";
+            }
+            greetingEl.textContent = text;
+        }
+        updateGreeting();
+
         function toggleBalance() {
             const balanceEl = document.getElementById('main-balance-text');
             const eyeIcon = document.getElementById('eye-icon');
+            if (!balanceEl || !eyeIcon) return;
             if (balanceEl.getAttribute('data-hidden') === 'true') {
                 balanceEl.textContent = '23,980 FCFA';
                 balanceEl.setAttribute('data-hidden', 'false');
@@ -389,6 +404,28 @@
                 balanceEl.setAttribute('data-hidden', 'true');
                 eyeIcon.textContent = 'visibility_off';
             }
+        }
+
+        // Shake to hide balance detection
+        if (window.DeviceMotionEvent) {
+            let lastX, lastY, lastZ;
+            let lastUpdate = 0;
+            window.addEventListener('devicemotion', function (e) {
+                const curTime = Date.now();
+                if ((curTime - lastUpdate) > 200) {
+                    const diffTime = (curTime - lastUpdate);
+                    lastUpdate = curTime;
+                    const acc = e.accelerationIncludingGravity;
+                    if (!acc) return;
+                    const speed = Math.abs(acc.x + acc.y + acc.z - (lastX || 0) - (lastY || 0) - (lastZ || 0)) / diffTime * 10000;
+                    if (speed > 800) {
+                        toggleBalance();
+                    }
+                    lastX = acc.x;
+                    lastY = acc.y;
+                    lastZ = acc.z;
+                }
+            }, false);
         }
     </script>
     <script src="../assets/switch.router.js"></script>

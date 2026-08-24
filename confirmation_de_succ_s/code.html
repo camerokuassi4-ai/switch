@@ -117,14 +117,75 @@
 <!-- Bottom Spacer -->
 <div class="flex-1"></div>
 <!-- Action Area -->
-<div class="w-full w-full pb-stack-lg pt-stack-md animate-in delay-200">
-<button class="w-full h-14 bg-primary text-on-primary rounded-full font-label-caps text-label-caps flex items-center justify-center gap-2 hover:bg-primary-container transition-all active:scale-[0.98] shadow-lg shadow-primary/25">
-<span class="material-symbols-outlined text-[20px]">
-                    home
-                </span>
-                RETOUR À L'ACCUEIL
-            </button>
+<div class="w-full pb-stack-lg pt-stack-md flex flex-col gap-3 z-20">
+  <button onclick="window.switchNavigate ? window.switchNavigate('../recu_transaction_partage/code.html') : window.location.href='../recu_transaction_partage/code.html'" class="w-full h-13 py-3.5 bg-[#25D366] text-white rounded-full font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-[0.98] shadow-md cursor-pointer">
+    <span class="material-symbols-outlined text-lg">chat</span>
+    <span>Envoyer le reçu sur WhatsApp</span>
+  </button>
+
+  <button onclick="window.switchNavigate ? window.switchNavigate('../tableau_de_bord_mis_jour/code.html') : window.location.href='../tableau_de_bord_mis_jour/code.html'" class="w-full h-13 py-3.5 bg-surface-container border border-outline-variant text-on-surface rounded-full font-bold text-sm flex items-center justify-center gap-2 hover:bg-surface-container-high transition-all active:scale-[0.98] cursor-pointer">
+    <span class="material-symbols-outlined text-lg">home</span>
+    <span>Retour à l'accueil</span>
+  </button>
 </div>
 </main>
+
+<canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+<script>
+  (function burstConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const colors = ['#7B5CFA', '#5E3BDC', '#22C55E', '#F59E0B', '#3B82F6', '#EC4899'];
+    const particles = [];
+
+    for (let i = 0; i < 70; i++) {
+      particles.push({
+        x: canvas.width / 2,
+        y: canvas.height * 0.35,
+        w: Math.random() * 8 + 4,
+        h: Math.random() * 6 + 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 12,
+        vy: (Math.random() - 0.7) * 12,
+        rotation: Math.random() * 360,
+        rSpeed: (Math.random() - 0.5) * 8,
+        opacity: 1
+      });
+    }
+
+    let frame = 0;
+    function animate() {
+      if (frame > 90) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        return;
+      }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.25; // gravity
+        p.rotation += p.rSpeed;
+        p.opacity = Math.max(0, 1 - (frame / 90));
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      });
+      frame++;
+      requestAnimationFrame(animate);
+    }
+    animate();
+  })();
+</script>
+
 <script src="../assets/switch.router.js"></script>
 </body></html>

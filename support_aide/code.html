@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="fr"><head>
 <meta charset="utf-8"/>
@@ -58,63 +58,95 @@
 </section>
 <!-- Quick Access Buttons -->
 <section class="grid grid-cols-3 gap-gutter">
-<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-surface-container shadow-sm hover:shadow-md transition-all active:scale-95 border border-outline-variant/30">
-<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary">
-<span class="material-symbols-outlined" data-icon="chat" style="font-variation-settings: 'FILL' 1;">chat</span>
+<button onclick="window.open('https://wa.me/22997123456?text=Bonjour%20Support%20Switch%2C%20j%27ai%20besoin%20d%27aide', '_blank')" class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-surface-container shadow-sm hover:shadow-md transition-all active:scale-95 border border-outline-variant/30 cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat</span>
 </div>
-<span class="font-label-caps text-label-caps text-on-surface text-center">Parler à un agent</span>
+<span class="text-xs font-bold text-on-surface text-center">WhatsApp 24/7</span>
 </button>
-<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-surface-container shadow-sm hover:shadow-md transition-all active:scale-95 border border-outline-variant/30">
+<a href="tel:+22921300000" class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-surface-container shadow-sm hover:shadow-md transition-all active:scale-95 border border-outline-variant/30 cursor-pointer no-underline">
 <div class="w-12 h-12 rounded-full bg-surface border border-outline-variant flex items-center justify-center text-primary">
-<span class="material-symbols-outlined" data-icon="call" style="font-variation-settings: 'FILL' 0;">call</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">call</span>
 </div>
-<span class="font-label-caps text-label-caps text-on-surface text-center">Appeler le support</span>
-</button>
-<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-surface-container shadow-sm hover:shadow-md transition-all active:scale-95 border border-outline-variant/30">
+<span class="text-xs font-bold text-on-surface text-center">Appeler</span>
+</a>
+<a href="mailto:support@switch.bj" class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-surface-container shadow-sm hover:shadow-md transition-all active:scale-95 border border-outline-variant/30 cursor-pointer no-underline">
 <div class="w-12 h-12 rounded-full bg-surface border border-outline-variant flex items-center justify-center text-primary">
-<span class="material-symbols-outlined" data-icon="mail" style="font-variation-settings: 'FILL' 0;">mail</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">mail</span>
 </div>
-<span class="font-label-caps text-label-caps text-on-surface text-center">Email</span>
-</button>
+<span class="text-xs font-bold text-on-surface text-center">Email</span>
+</a>
 </section>
-<!-- Popular Questions -->
+
+<!-- Popular Questions Accordion -->
 <section class="space-y-stack-md">
 <h3 class="font-headline-md text-headline-md text-on-surface">Questions populaires</h3>
 <div class="space-y-3">
 <!-- FAQ Item 1 -->
-<div class="glass-card rounded-xl p-4 flex items-center justify-between cursor-pointer hover:bg-surface-container-high transition-colors">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
-<span class="material-symbols-outlined text-sm" data-icon="help" style="font-variation-settings: 'FILL' 0;">help</span>
+<div class="glass-card rounded-2xl p-4 cursor-pointer hover:bg-surface-container-high transition-colors" onclick="toggleFaq(1)">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
+        <span class="material-symbols-outlined text-sm">help</span>
+      </div>
+      <span class="text-sm font-bold text-on-surface">Comment réinitialiser mon code PIN ?</span>
+    </div>
+    <span class="material-symbols-outlined text-on-surface-variant transition-transform" id="faq-icon-1">expand_more</span>
+  </div>
+  <div class="hidden pt-3 mt-3 border-t border-outline-variant/40 text-xs text-on-surface-variant leading-relaxed" id="faq-ans-1">
+    Allez dans <b>Paramètres > Sécurité > Changer mon code PIN</b>. Un code OTP de vérification par SMS vous sera envoyé sur votre numéro de téléphone pour valider le changement.
+  </div>
 </div>
-<span class="font-body-lg text-body-lg text-on-surface">Comment réinitialiser mon mot de passe ?</span>
-</div>
-<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
-</div>
+
 <!-- FAQ Item 2 -->
-<div class="glass-card rounded-xl p-4 flex items-center justify-between cursor-pointer hover:bg-surface-container-high transition-colors">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
-<span class="material-symbols-outlined text-sm" data-icon="help" style="font-variation-settings: 'FILL' 0;">help</span>
+<div class="glass-card rounded-2xl p-4 cursor-pointer hover:bg-surface-container-high transition-colors" onclick="toggleFaq(2)">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
+        <span class="material-symbols-outlined text-sm">help</span>
+      </div>
+      <span class="text-sm font-bold text-on-surface">Quels sont les frais de transfert ?</span>
+    </div>
+    <span class="material-symbols-outlined text-on-surface-variant transition-transform" id="faq-icon-2">expand_more</span>
+  </div>
+  <div class="hidden pt-3 mt-3 border-t border-outline-variant/40 text-xs text-on-surface-variant leading-relaxed" id="faq-ans-2">
+    Tous les transferts <b>Switch à Switch sont 100% gratuits</b> (0 FCFA). Pour les retraits chez un agent ou les passerelles Mobile Money, un simulateur transparent est disponible sur l'accueil.
+  </div>
 </div>
-<span class="font-body-lg text-body-lg text-on-surface">Quels sont les frais de transfert ?</span>
-</div>
-<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
-</div>
+
 <!-- FAQ Item 3 -->
-<div class="glass-card rounded-xl p-4 flex items-center justify-between cursor-pointer hover:bg-surface-container-high transition-colors">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
-<span class="material-symbols-outlined text-sm" data-icon="help" style="font-variation-settings: 'FILL' 0;">help</span>
-</div>
-<span class="font-body-lg text-body-lg text-on-surface">Comment lier mon compte MTN MoMo ?</span>
-</div>
-<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+<div class="glass-card rounded-2xl p-4 cursor-pointer hover:bg-surface-container-high transition-colors" onclick="toggleFaq(3)">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
+        <span class="material-symbols-outlined text-sm">help</span>
+      </div>
+      <span class="text-sm font-bold text-on-surface">Comment lier mon compte MTN MoMo / Moov ?</span>
+    </div>
+    <span class="material-symbols-outlined text-on-surface-variant transition-transform" id="faq-icon-3">expand_more</span>
+  </div>
+  <div class="hidden pt-3 mt-3 border-t border-outline-variant/40 text-xs text-on-surface-variant leading-relaxed" id="faq-ans-3">
+    Accédez à votre <b>Profil > Moyens de Paiement > Ajouter un compte</b>, sélectionnez votre opérateur (MTN, Moov, Celtiis) et confirmez le code de validation reçu.
+  </div>
 </div>
 </div>
 </section>
 </main>
-<!-- BottomNavBar -->
+
+<script>
+  function toggleFaq(id) {
+    const ans = document.getElementById('faq-ans-' + id);
+    const icon = document.getElementById('faq-icon-' + id);
+    if (!ans || !icon) return;
+    if (ans.classList.contains('hidden')) {
+      ans.classList.remove('hidden');
+      icon.textContent = 'expand_less';
+    } else {
+      ans.classList.add('hidden');
+      icon.textContent = 'expand_more';
+    }
+  }
+</script>
 
 <script src="../assets/switch.router.js"></script>
 </body></html>

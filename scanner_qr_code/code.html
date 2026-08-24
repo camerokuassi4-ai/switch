@@ -57,15 +57,15 @@
 </div>
 <!-- Top Action Bar -->
 <header class="absolute top-0 left-0 w-full z-20 flex justify-between items-center px-container-margin py-stack-lg pt-12">
-<button class="w-12 h-12 rounded-full bg-surface/20 backdrop-blur-md flex items-center justify-center text-white active:scale-95 transition-transform border border-white/10">
-<span class="material-symbols-outlined" data-icon="close">close</span>
+<button onclick="window.history.back()" aria-label="Fermer" class="w-12 h-12 rounded-full bg-surface/30 backdrop-blur-md flex items-center justify-center text-white active:scale-95 transition-transform border border-white/20 cursor-pointer">
+<span class="material-symbols-outlined">close</span>
 </button>
 <div class="flex gap-gutter">
-<button class="w-12 h-12 rounded-full bg-surface/20 backdrop-blur-md flex items-center justify-center text-white active:scale-95 transition-transform border border-white/10 hover:bg-surface/30">
-<span class="material-symbols-outlined" data-icon="flashlight_on">flashlight_on</span>
+<button id="torch-btn" onclick="toggleTorch()" class="w-12 h-12 rounded-full bg-surface/30 backdrop-blur-md flex items-center justify-center text-white active:scale-95 transition-transform border border-white/20 hover:bg-surface/50 cursor-pointer">
+<span class="material-symbols-outlined" id="torch-icon">flashlight_on</span>
 </button>
-<button class="w-12 h-12 rounded-full bg-surface/20 backdrop-blur-md flex items-center justify-center text-white active:scale-95 transition-transform border border-white/10 hover:bg-surface/30">
-<span class="material-symbols-outlined" data-icon="image">image</span>
+<button onclick="simulateGalleryImport()" class="w-12 h-12 rounded-full bg-surface/30 backdrop-blur-md flex items-center justify-center text-white active:scale-95 transition-transform border border-white/20 hover:bg-surface/50 cursor-pointer">
+<span class="material-symbols-outlined">image</span>
 </button>
 </div>
 </header>
@@ -73,12 +73,13 @@
 <main class="absolute inset-0 z-10 flex flex-col items-center justify-center pt-20">
 <!-- Text Instruction -->
 <div class="mb-stack-lg text-center px-container-margin">
-<h1 class="font-headline-md text-headline-md text-white drop-shadow-md">
-                Scannez un code QR Switch pour payer
-            </h1>
+<h1 class="text-xl font-bold text-white drop-shadow-md">
+  Scannez un code QR Switch pour payer
+</h1>
+<p class="text-xs text-white/80 mt-1">Placez le code QR au centre du cadre</p>
 </div>
-<!-- Scanner Frame -->
-<div class="relative w-64 h-64 md:w-80 md:h-80 scanner-frame rounded-2xl bg-transparent overflow-hidden">
+<!-- Scanner Frame (clickable for instant simulated scan) -->
+<div onclick="simulateScanSuccess()" class="relative w-64 h-64 md:w-80 md:h-80 scanner-frame rounded-2xl bg-transparent overflow-hidden cursor-pointer group">
 <!-- Corners -->
 <div class="corner corner-tl"></div>
 <div class="corner corner-tr"></div>
@@ -86,30 +87,48 @@
 <div class="corner corner-br"></div>
 <!-- Animated Scan Line -->
 <div class="scan-line"></div>
+
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 text-white font-bold text-xs">
+  Appuyez pour scanner
+</div>
 </div>
 <!-- Fallback Action -->
-<div class="mt-stack-lg">
-<button class="px-6 py-3 rounded-full bg-surface/20 backdrop-blur-md text-white font-label-caps text-label-caps border border-white/10 active:scale-95 transition-transform hover:bg-surface/30">
-                SAISIR LE CODE
-            </button>
+<div class="mt-stack-lg flex flex-col items-center gap-3">
+<button onclick="simulateScanSuccess()" class="px-8 py-3.5 rounded-full bg-primary text-white font-bold text-sm shadow-lg active:scale-95 transition-transform hover:opacity-90 cursor-pointer flex items-center gap-2">
+  <span class="material-symbols-outlined text-lg">qr_code_scanner</span>
+  <span>Détecter le QR</span>
+</button>
 </div>
 </main>
-<!-- Bottom Navigation Bar (Shared Component Injection - Modified for QR focus) -->
 
 <script>
-        // Simple JS for visual interaction
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('touchstart', () => {
-                if(btn.querySelector('.material-symbols-outlined')) {
-                    btn.querySelector('.material-symbols-outlined').style.fontVariationSettings = "'FILL' 1";
-                }
-            });
-            btn.addEventListener('touchend', () => {
-                 if(btn.querySelector('.material-symbols-outlined')) {
-                    btn.querySelector('.material-symbols-outlined').style.fontVariationSettings = "'FILL' 0";
-                }
-            });
-        });
-    </script>
+  let torchOn = false;
+  function toggleTorch() {
+    torchOn = !torchOn;
+    const btn = document.getElementById('torch-btn');
+    const icon = document.getElementById('torch-icon');
+    if (torchOn) {
+      btn.className = 'w-12 h-12 rounded-full bg-amber-400 text-black backdrop-blur-md flex items-center justify-center active:scale-95 transition-transform border border-white/20 cursor-pointer';
+      icon.textContent = 'flashlight_off';
+    } else {
+      btn.className = 'w-12 h-12 rounded-full bg-surface/30 backdrop-blur-md flex items-center justify-center text-white active:scale-95 transition-transform border border-white/20 hover:bg-surface/50 cursor-pointer';
+      icon.textContent = 'flashlight_on';
+    }
+  }
+
+  function simulateGalleryImport() {
+    alert("Photo de QR Code sélectionnée avec succès ! Analyse en cours...");
+    simulateScanSuccess();
+  }
+
+  function simulateScanSuccess() {
+    if (navigator.vibrate) navigator.vibrate(100);
+    if (window.switchNavigate) {
+      window.switchNavigate('../confirmation_paiement_qr/code.html');
+    } else {
+      window.location.href = '../confirmation_paiement_qr/code.html';
+    }
+  }
+</script>
 <script src="../assets/switch.router.js"></script>
 </body></html>
