@@ -105,9 +105,13 @@
                     }
                 });
                 
-                // Navigate instantly when 4 digits entered
+                // Navigate to KYC verification when 4 digits entered
                 if(pinCount === 4) {
-                    window.location.href = '../tableau_de_bord_mis_jour/code.html';
+                    if (window.switchNavigate) {
+                        window.switchNavigate('../kyc_verification_identite/code.html');
+                    } else {
+                        window.location.href = '../kyc_verification_identite/code.html';
+                    }
                 }
             }
         });

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Agrément & Cautionnement Agent - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
+    body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); }
+    .soft-shadow { box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.05); }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32 flex flex-col antialiased">
+  <!-- TopAppBar -->
+  <header class="flex items-center justify-between px-container-margin py-stack-md w-full max-w-xl mx-auto pt-6">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-xl font-bold text-on-surface">Agrément Agent Relais</h1>
+        <p class="text-xs text-on-surface-variant">Cautionnement & Activation de Guichet</p>
+      </div>
+    </div>
+    <span class="text-xs font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-full">Étape Finale</span>
+  </header>
+
+  <!-- Main Content -->
+  <main class="px-container-margin max-w-xl mx-auto w-full pt-2 flex flex-col gap-6">
+    <!-- Commission Rates Info Card -->
+    <div class="bg-surface-container-lowest rounded-3xl p-5 soft-shadow border border-outline-variant flex items-center justify-between">
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold text-xl">
+          %
+        </div>
+        <div>
+          <span class="text-xs text-on-surface-variant font-bold uppercase">Rémunération Agent Agréé</span>
+          <h3 class="text-sm font-bold text-on-surface">Jusqu'à 70% de commissions partagées</h3>
+          <p class="text-xs text-green-700 font-semibold mt-0.5">Paiement des commissions chaque soir</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 1: Choix de la Caution Initiale (Fonds de Roulement) -->
+    <div class="bg-surface-container-lowest rounded-3xl p-6 soft-shadow border border-outline-variant flex flex-col gap-4">
+      <label class="text-xs font-bold text-on-surface-variant uppercase">1. Montant de votre fonds de départ (Caution)</label>
+      
+      <div class="grid grid-cols-3 gap-2">
+        <button type="button" onclick="selectCaution(100000)" id="c-100k" class="p-3.5 rounded-2xl border border-outline-variant bg-surface-container text-center flex flex-col items-center gap-1 transition-all cursor-pointer opacity-70">
+          <span class="text-xs font-bold text-on-surface">Standard</span>
+          <span class="text-sm font-black font-mono text-primary">100 000 F</span>
+        </button>
+
+        <button type="button" onclick="selectCaution(500000)" id="c-500k" class="p-3.5 rounded-2xl border-2 border-primary bg-primary/5 text-center flex flex-col items-center gap-1 transition-all cursor-pointer">
+          <span class="text-xs font-bold text-primary">Recommandé</span>
+          <span class="text-sm font-black font-mono text-primary">500 000 F</span>
+        </button>
+
+        <button type="button" onclick="selectCaution(1000000)" id="c-1m" class="p-3.5 rounded-2xl border border-outline-variant bg-surface-container text-center flex flex-col items-center gap-1 transition-all cursor-pointer opacity-70">
+          <span class="text-xs font-bold text-on-surface">Super Agent</span>
+          <span class="text-sm font-black font-mono text-primary">1 000 000 F</span>
+        </button>
+      </div>
+
+      <div class="bg-surface-container rounded-2xl p-3.5 text-xs text-on-surface-variant flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-base">lock</span>
+        <span>Cette caution reste votre propriété et alimente votre caisse pour les opérations de retrait.</span>
+      </div>
+    </div>
+
+    <!-- Step 2: Signature Électronique du Contrat -->
+    <div class="bg-surface-container-lowest rounded-3xl p-6 soft-shadow border border-outline-variant flex flex-col gap-4">
+      <label class="text-xs font-bold text-on-surface-variant uppercase">2. Contrat d'Agent Agréé Switch Bénin</label>
+      
+      <div class="h-28 overflow-y-scroll bg-surface-container p-3 rounded-2xl text-[11px] text-on-surface-variant leading-relaxed border border-outline-variant">
+        <b>ARTICLE 1 - OBJET DU MANDAT :</b> Le présent mandat confère à l'Agent Agréé le droit de réaliser pour le compte de Switch Bénin les opérations de dépôt (Cash-In), de retrait (Cash-Out), et de validation de recharges de services publics (SBEE, SONEB).
+        <br/><br/>
+        <b>ARTICLE 2 - COMMISSIONS :</b> Les commissions sont créditées en temps réel sur le solde commission de l'Agent et payables sans frais chaque jour à 23h59.
+      </div>
+
+      <label class="flex items-center gap-3 cursor-pointer text-xs font-bold text-on-surface">
+        <input type="checkbox" id="terms-agree" checked class="rounded text-primary focus:ring-primary w-5 h-5"/>
+        <span>J'accepte les termes du contrat d'Agent Agréé Switch</span>
+      </label>
+    </div>
+
+    <!-- Submit Button -->
+    <button onclick="activateAgentAccount()" class="w-full bg-primary text-on-primary font-bold py-4 rounded-full shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base cursor-pointer">
+      <span class="material-symbols-outlined text-xl">verified</span>
+      <span>Activer mon Guichet Agent</span>
+    </button>
+  </main>
+
+  <script>
+    function selectCaution(amt) {
+      document.getElementById('c-100k').className = 'p-3.5 rounded-2xl border border-outline-variant bg-surface-container text-center flex flex-col items-center gap-1 transition-all cursor-pointer opacity-70';
+      document.getElementById('c-500k').className = 'p-3.5 rounded-2xl border border-outline-variant bg-surface-container text-center flex flex-col items-center gap-1 transition-all cursor-pointer opacity-70';
+      document.getElementById('c-1m').className = 'p-3.5 rounded-2xl border border-outline-variant bg-surface-container text-center flex flex-col items-center gap-1 transition-all cursor-pointer opacity-70';
+
+      if (amt === 100000) {
+        document.getElementById('c-100k').className = 'p-3.5 rounded-2xl border-2 border-primary bg-primary/5 text-center flex flex-col items-center gap-1 transition-all cursor-pointer';
+      } else if (amt === 500000) {
+        document.getElementById('c-500k').className = 'p-3.5 rounded-2xl border-2 border-primary bg-primary/5 text-center flex flex-col items-center gap-1 transition-all cursor-pointer';
+      } else {
+        document.getElementById('c-1m').className = 'p-3.5 rounded-2xl border-2 border-primary bg-primary/5 text-center flex flex-col items-center gap-1 transition-all cursor-pointer';
+      }
+    }
+
+    function activateAgentAccount() {
+      if (!document.getElementById('terms-agree').checked) {
+        alert("Veuillez accepter les termes du contrat.");
+        return;
+      }
+      alert("Félicitations ! Votre guichet Agent Switch est officiellement agréé et activé !");
+      if (window.switchNavigate) {
+        window.switchNavigate('../tableau_de_bord_agent/code.html');
+      } else {
+        window.location.href = '../tableau_de_bord_agent/code.html';
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

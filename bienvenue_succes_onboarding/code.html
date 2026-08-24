@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Bienvenue sur Switch - Compte Activé !</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
+    body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); }
+    .gold-glow { background: linear-gradient(135deg, #7B5CFA 0%, #5E3BDC 100%); }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 flex flex-col antialiased relative overflow-hidden">
+  <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col items-center justify-center p-container-margin max-w-md mx-auto w-full pt-10 text-center gap-6 z-10">
+    <!-- Success Celebration Icon -->
+    <div class="relative w-24 h-24 flex items-center justify-center">
+      <div class="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse"></div>
+      <div class="w-20 h-20 rounded-full gold-glow text-white shadow-xl flex items-center justify-center">
+        <span class="material-symbols-outlined text-4xl">celebration</span>
+      </div>
+    </div>
+
+    <!-- Title & Subtitle -->
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-on-surface">Félicitations, Adele !</h1>
+      <p class="text-sm text-on-surface-variant mt-1">Votre compte <b>Switch Bénin</b> est vérifié et 100% opérationnel.</p>
+    </div>
+
+    <!-- Welcome Gift Card (500 FCFA Bonus) -->
+    <div class="w-full bg-gradient-to-r from-purple-500 to-indigo-600 rounded-3xl p-5 text-white shadow-lg flex items-center justify-between text-left">
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center font-bold text-2xl">
+          🎁
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-purple-200">Cadeau de Bienvenue</span>
+          <h3 class="text-xl font-black font-mono mt-0.5">+500 FCFA Offerts</h3>
+        </div>
+      </div>
+      <span class="bg-white text-primary text-xs font-black px-3 py-1 rounded-full shadow-sm">
+        Crédité
+      </span>
+    </div>
+
+    <!-- Generated RIB & Account Details -->
+    <div class="w-full bg-surface-container-lowest rounded-3xl p-5 soft-shadow border border-outline-variant text-left flex flex-col gap-3 text-xs">
+      <div class="flex justify-between items-center pb-2 border-b border-outline-variant/50">
+        <span class="font-bold text-on-surface uppercase tracking-wider text-[11px]">Identifiant Bancaire UEMOA</span>
+        <span class="text-green-600 font-bold flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Niveau 2 Vérifié
+        </span>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <span class="text-on-surface-variant">Titulaire :</span>
+        <b class="text-on-surface">Adele Doe</b>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <span class="text-on-surface-variant">Numéro Switch :</span>
+        <b class="font-mono text-on-surface">+229 97 12 34 56</b>
+      </div>
+
+      <div class="flex flex-col gap-1 pt-1">
+        <span class="text-on-surface-variant">RIB Officiel Switch Bénin :</span>
+        <div class="p-2.5 bg-surface-container rounded-xl font-mono font-bold text-[11px] text-primary flex items-center justify-between select-all">
+          <span>BJ061 01001 09876543210 44</span>
+          <button onclick="copyRib()" class="text-primary font-bold hover:underline">Copier</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions Area -->
+    <div class="w-full flex flex-col gap-3 mt-2">
+      <button onclick="window.switchNavigate ? window.switchNavigate('../d_p_t_de_fonds/code.html') : window.location.href='../d_p_t_de_fonds/code.html'" class="w-full bg-primary text-on-primary font-bold py-4 rounded-full shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base cursor-pointer">
+        <span class="material-symbols-outlined text-xl">add_card</span>
+        <span>Faire mon premier dépôt (Sans frais)</span>
+      </button>
+
+      <button onclick="window.switchNavigate ? window.switchNavigate('../tableau_de_bord_mis_jour/code.html') : window.location.href='../tableau_de_bord_mis_jour/code.html'" class="w-full py-3.5 bg-surface-container border border-outline-variant text-on-surface rounded-full font-bold text-sm hover:bg-surface-container-high active:scale-[0.98] transition-all cursor-pointer">
+        Accéder à mon tableau de bord
+      </button>
+    </div>
+  </main>
+
+  <script>
+    function copyRib() {
+      navigator.clipboard.writeText("BJ061 01001 09876543210 44");
+      alert("RIB UEMOA copié : BJ061 01001 09876543210 44");
+    }
+
+    // Confetti celebration animation
+    (function burstConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const colors = ['#7B5CFA', '#5E3BDC', '#22C55E', '#F59E0B', '#3B82F6', '#EC4899'];
+      const particles = [];
+
+      for (let i = 0; i < 80; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height * 0.3,
+          w: Math.random() * 8 + 4,
+          h: Math.random() * 6 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 0.7) * 14,
+          rotation: Math.random() * 360,
+          rSpeed: (Math.random() - 0.5) * 8,
+          opacity: 1
+        });
+      }
+
+      let frame = 0;
+      function animate() {
+        if (frame > 100) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          return;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.25;
+          p.rotation += p.rSpeed;
+          p.opacity = Math.max(0, 1 - (frame / 100));
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.globalAlpha = p.opacity;
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+        frame++;
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

@@ -270,6 +270,11 @@
     "mode_hors_ligne_ussd": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "appareils_connectes_securite": { space: "user", back: ROOT + "s_curit/code.html", nav: null, actions: {} },
 
+    "kyc_verification_identite": { space: "user", back: ROOT + "cr_ation_code_pin/code.html", nav: null, actions: {} },
+    "bienvenue_succes_onboarding": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
+    "setup_point_de_vente_marchand": { space: "merchant", back: ROOT + "v_rification_marchand/code.html", nav: null, actions: {} },
+    "agent_verification_caution": { space: "agent", back: ROOT + "inscription_agent_switch/code.html", nav: null, actions: {} },
+
     "accueil_marchand": {
       space: "merchant", back: ROOT + "profil_utilisateur/code.html", nav: null,
       actions: { "Créer un compte": ROOT + "inscription_marchand/code.html", "Commencer": ROOT + "inscription_marchand/code.html", "Se connecter": ROOT + "tableau_de_bord_marchand/code.html" }

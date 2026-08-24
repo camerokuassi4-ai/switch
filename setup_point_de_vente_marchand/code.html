@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Configuration du Point de Vente - Switch Marchand</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
+    body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); }
+    .soft-shadow { box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.05); }
+    .qr-stand-gradient { background: linear-gradient(135deg, #7B5CFA 0%, #4323B0 100%); }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32 flex flex-col antialiased">
+  <!-- TopAppBar -->
+  <header class="flex items-center justify-between px-container-margin py-stack-md w-full max-w-xl mx-auto pt-6">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-xl font-bold text-on-surface">Configuration Boutique</h1>
+        <p class="text-xs text-on-surface-variant">Kit QR Code & Point de Vente</p>
+      </div>
+    </div>
+    <span class="text-xs font-bold text-green-700 bg-green-100 px-3 py-1 rounded-full">Prêt à encaisser</span>
+  </header>
+
+  <!-- Main Content -->
+  <main class="px-container-margin max-w-xl mx-auto w-full pt-2 flex flex-col gap-6">
+    <!-- Standee Printable Preview Card -->
+    <div class="qr-stand-gradient rounded-3xl p-6 text-white shadow-2xl flex flex-col items-center text-center relative overflow-hidden">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="w-8 h-8 rounded-xl bg-white text-primary flex items-center justify-center font-black">S</div>
+        <span class="font-black text-sm tracking-wider uppercase">SWITCH PAY BÉNIN</span>
+      </div>
+
+      <!-- Center White QR Card -->
+      <div class="bg-white p-4 rounded-2xl shadow-xl text-black flex flex-col items-center gap-2 w-56">
+        <span class="text-xs font-bold uppercase text-gray-500">Scannez pour payer</span>
+        <div class="w-36 h-36 bg-gray-100 p-2 rounded-xl flex items-center justify-center border border-gray-200">
+          <span class="material-symbols-outlined text-8xl text-black">qr_code_2</span>
+        </div>
+        <span class="text-sm font-black font-mono tracking-wider text-primary">BOUTIQUE ADELE</span>
+        <span class="text-[10px] text-gray-400 font-mono">ID: SW-MCH-99201</span>
+      </div>
+
+      <p class="text-xs text-purple-200 mt-4">Accepte instantanément MTN MoMo, Moov Money, Celtiis et Cartes Visa/Mastercard.</p>
+    </div>
+
+    <!-- Quick Action Buttons -->
+    <div class="grid grid-cols-2 gap-3">
+      <button onclick="downloadQrKit()" class="py-3.5 px-4 rounded-2xl bg-surface-container-lowest border border-outline-variant text-on-surface font-bold text-xs soft-shadow hover:bg-surface-container flex items-center justify-center gap-2 cursor-pointer">
+        <span class="material-symbols-outlined text-lg text-primary">download</span>
+        <span>Télécharger PDF (A4/A5)</span>
+      </button>
+      <button onclick="shareQrKitWhatsApp()" class="py-3.5 px-4 rounded-2xl bg-[#25D366] text-white font-bold text-xs shadow-md hover:opacity-90 flex items-center justify-center gap-2 cursor-pointer">
+        <span class="material-symbols-outlined text-lg">share</span>
+        <span>Partager QR WhatsApp</span>
+      </button>
+    </div>
+
+    <!-- Store Settings Form -->
+    <div class="bg-surface-container-lowest rounded-3xl p-6 soft-shadow border border-outline-variant flex flex-col gap-4">
+      <h3 class="text-xs font-bold text-on-surface-variant uppercase">Paramètres d'encaissement</h3>
+
+      <div class="flex items-center justify-between p-3 bg-surface-container rounded-2xl text-xs">
+        <div>
+          <h4 class="font-bold text-sm text-on-surface">Notifications vocales d'encaissement</h4>
+          <p class="text-on-surface-variant">Annonce audio lors de la réception d'un paiement</p>
+        </div>
+        <input type="checkbox" checked class="rounded-full text-primary w-6 h-6 focus:ring-primary"/>
+      </div>
+
+      <div class="flex items-center justify-between p-3 bg-surface-container rounded-2xl text-xs">
+        <div>
+          <h4 class="font-bold text-sm text-on-surface">Pourboires clients autorisés</h4>
+          <p class="text-on-surface-variant">Permettre aux clients d'ajouter un extra libre</p>
+        </div>
+        <input type="checkbox" checked class="rounded-full text-primary w-6 h-6 focus:ring-primary"/>
+      </div>
+    </div>
+
+    <!-- Go to Dashboard -->
+    <button onclick="window.switchNavigate ? window.switchNavigate('../tableau_de_bord_marchand/code.html') : window.location.href='../tableau_de_bord_marchand/code.html'" class="w-full bg-primary text-on-primary font-bold py-4 rounded-full shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base cursor-pointer">
+      <span>Ouvrir mon Tableau de Bord Marchand</span>
+      <span class="material-symbols-outlined text-xl">arrow_forward</span>
+    </button>
+  </main>
+
+  <script>
+    function downloadQrKit() {
+      alert("Kit de comptoir PDF haute définition prêt pour impression (Switch_Kit_Marchand_Adele.pdf) !");
+    }
+
+    function shareQrKitWhatsApp() {
+      const msg = encodeURIComponent("🏪 Scannez ce code QR Switch pour régler directement vos achats chez Boutique Adele !");
+      window.open("https://wa.me/?text=" + msg, "_blank");
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="fr"><head>
 <meta charset="utf-8"/>
@@ -206,8 +206,11 @@
                 currentStep++;
                 updateUI();
             } else {
-                // Submit form logic here
-                alert("Inscription soumise avec succès !");
+                if (window.switchNavigate) {
+                    window.switchNavigate('../agent_verification_caution/code.html');
+                } else {
+                    window.location.href = '../agent_verification_caution/code.html';
+                }
             }
         }
 
