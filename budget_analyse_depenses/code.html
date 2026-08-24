@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Budget & Analyse des Dépenses - Switch Insights</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
+    body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); }
+    .soft-shadow { box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.05); }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32 flex flex-col antialiased">
+  <!-- TopAppBar -->
+  <header class="flex items-center justify-between px-container-margin py-stack-md w-full max-w-xl mx-auto pt-6">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-xl font-bold text-on-surface">Budget & Insights</h1>
+        <p class="text-xs text-on-surface-variant">Analyse de vos dépenses • Août 2026</p>
+      </div>
+    </div>
+    <button onclick="openSetBudgetModal()" class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold hover:bg-primary/20 transition-colors cursor-pointer">
+      <span class="material-symbols-outlined text-xl">tune</span>
+    </button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="px-container-margin max-w-xl mx-auto w-full pt-2 flex flex-col gap-6">
+    <!-- Master Budget Overview Card -->
+    <div class="bg-surface-container-lowest rounded-3xl p-6 soft-shadow border border-outline-variant flex flex-col gap-4">
+      <div class="flex justify-between items-start">
+        <div>
+          <span class="text-xs text-on-surface-variant font-bold uppercase">Dépenses de ce mois</span>
+          <h2 class="text-3xl font-black font-mono text-on-surface mt-1" id="total-spent">124 500 FCFA</h2>
+          <p class="text-xs text-on-surface-variant mt-0.5">Plafond fixé : <b class="text-on-surface" id="budget-limit">200 000 FCFA</b></p>
+        </div>
+        <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">check</span>
+          Dans le budget (62%)
+        </span>
+      </div>
+
+      <!-- Segmented Category Visual Bar -->
+      <div class="flex flex-col gap-1.5 mt-2">
+        <div class="w-full h-3.5 bg-surface-container rounded-full overflow-hidden flex">
+          <div style="width: 40%;" class="bg-amber-500 h-full" title="Factures & Logement"></div>
+          <div style="width: 25%;" class="bg-primary h-full" title="Alimentation & Courses"></div>
+          <div style="width: 20%;" class="bg-sky-500 h-full" title="Transferts Famille"></div>
+          <div style="width: 15%;" class="bg-purple-500 h-full" title="Loisirs & Shopping"></div>
+        </div>
+        <div class="flex justify-between text-[11px] text-on-surface-variant font-semibold">
+          <span>0 F</span>
+          <span class="text-green-700 font-bold">Reste : 75 500 FCFA</span>
+          <span>200 000 F</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Breakdown Grid -->
+    <section class="flex flex-col gap-3">
+      <h3 class="text-sm font-bold text-on-surface uppercase tracking-wider pl-1">Dépenses par catégorie</h3>
+
+      <div class="bg-surface-container-lowest rounded-3xl p-5 soft-shadow border border-outline-variant flex flex-col gap-4 divide-y divide-outline-variant/40">
+        <!-- Cat 1: Factures (SBEE / SONEB / Internet) -->
+        <div class="flex items-center justify-between pt-1">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">bolt</span>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-on-surface">Factures & Énergie</h4>
+              <p class="text-xs text-on-surface-variant">SBEE, SONEB, Forfaits (3 ops)</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="font-black font-mono text-sm text-on-surface">49 800 FCFA</p>
+            <p class="text-[11px] text-on-surface-variant font-medium">40% du total</p>
+          </div>
+        </div>
+
+        <!-- Cat 2: Alimentation & Supermarchés -->
+        <div class="flex items-center justify-between pt-3">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">shopping_cart</span>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-on-surface">Alimentation & Courses</h4>
+              <p class="text-xs text-on-surface-variant">Super U, Erevan, Cafés (7 ops)</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="font-black font-mono text-sm text-on-surface">31 125 FCFA</p>
+            <p class="text-[11px] text-on-surface-variant font-medium">25% du total</p>
+          </div>
+        </div>
+
+        <!-- Cat 3: Transferts & Soutien -->
+        <div class="flex items-center justify-between pt-3">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-sky-500/10 text-sky-600 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">send</span>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-on-surface">Transferts Proches</h4>
+              <p class="text-xs text-on-surface-variant">Maman, Koffi (4 ops)</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="font-black font-mono text-sm text-on-surface">24 900 FCFA</p>
+            <p class="text-[11px] text-on-surface-variant font-medium">20% du total</p>
+          </div>
+        </div>
+
+        <!-- Cat 4: Loisirs & Divers -->
+        <div class="flex items-center justify-between pt-3">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">local_activity</span>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-on-surface">Loisirs & Shopping</h4>
+              <p class="text-xs text-on-surface-variant">Sorties, Cartes Virtuelles</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="font-black font-mono text-sm text-on-surface">18 675 FCFA</p>
+            <p class="text-[11px] text-on-surface-variant font-medium">15% du total</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Smart Suggestion Card -->
+    <div class="bg-indigo-50 border border-indigo-200 rounded-3xl p-5 flex items-center gap-4 text-xs text-indigo-900">
+      <div class="w-10 h-10 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shrink-0 font-bold">
+        <span class="material-symbols-outlined text-xl">tips_and_updates</span>
+      </div>
+      <div>
+        <h4 class="font-bold text-sm text-indigo-950">Conseil Switch Épargne</h4>
+        <p class="mt-0.5">En transférant vos 75 500 FCFA restants vers un <b>Coffre Vault à 6%</b>, vous générerez des intérêts quotidiens automatiques.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Définir le Plafond Mensuel -->
+  <div id="budget-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-surface-container-lowest w-full max-w-md rounded-3xl p-6 flex flex-col gap-4 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-bold text-on-surface">Définir mon Budget Mensuel</h3>
+        <button onclick="closeBudgetModal()" class="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant cursor-pointer">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="handleSetBudget(event)" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-bold text-on-surface-variant uppercase">Plafond maximum par mois</label>
+          <div class="relative flex items-center">
+            <input type="number" id="input-limit" required min="10000" step="5000" value="200000" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 pr-16 py-3 text-lg font-bold font-mono focus:outline-none focus:border-primary"/>
+            <span class="absolute right-4 text-xs font-bold text-on-surface-variant">FCFA</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between p-3 bg-surface-container rounded-xl text-xs">
+          <span>Recevoir une alerte à 80% du plafond</span>
+          <input type="checkbox" checked class="rounded text-primary focus:ring-primary w-5 h-5"/>
+        </div>
+
+        <div class="flex gap-3 mt-2">
+          <button type="button" onclick="closeBudgetModal()" class="flex-1 py-3 rounded-full border border-outline-variant font-semibold text-sm hover:bg-surface-container cursor-pointer">Annuler</button>
+          <button type="submit" class="flex-1 py-3 rounded-full bg-primary text-on-primary font-semibold text-sm hover:opacity-90 active:scale-95 transition-all shadow-md cursor-pointer">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openSetBudgetModal() {
+      document.getElementById('budget-modal').classList.remove('hidden');
+    }
+    function closeBudgetModal() {
+      document.getElementById('budget-modal').classList.add('hidden');
+    }
+    function handleSetBudget(e) {
+      e.preventDefault();
+      const val = parseInt(document.getElementById('input-limit').value || 200000);
+      document.getElementById('budget-limit').textContent = val.toLocaleString('fr-FR') + ' FCFA';
+      closeBudgetModal();
+      alert('Budget mensuel mis à jour : ' + val.toLocaleString('fr-FR') + ' FCFA !');
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

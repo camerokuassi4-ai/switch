@@ -264,6 +264,12 @@
     "liens_de_paiement_marchand": { space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: null, actions: {} },
     "caisse_marchand_pos": { space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: null, actions: {} },
 
+    "carte_agents_guichets": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
+    "budget_analyse_depenses": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
+    "partage_addition_split": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
+    "mode_hors_ligne_ussd": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
+    "appareils_connectes_securite": { space: "user", back: ROOT + "s_curit/code.html", nav: null, actions: {} },
+
     "accueil_marchand": {
       space: "merchant", back: ROOT + "profil_utilisateur/code.html", nav: null,
       actions: { "Créer un compte": ROOT + "inscription_marchand/code.html", "Commencer": ROOT + "inscription_marchand/code.html", "Se connecter": ROOT + "tableau_de_bord_marchand/code.html" }
