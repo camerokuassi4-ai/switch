@@ -269,6 +269,7 @@
     "partage_addition_split": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "mode_hors_ligne_ussd": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "appareils_connectes_securite": { space: "user", back: ROOT + "s_curit/code.html", nav: null, actions: {} },
+    "code_retrait_especes_agent": { space: "user", back: ROOT + "retrait_de_fonds/code.html", nav: null, actions: {} },
 
     "kyc_verification_identite": {
       space: "user", back: ROOT + "cr_ation_code_pin/code.html", nav: null,
