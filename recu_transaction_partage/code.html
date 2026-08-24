@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Reçu Officiel de Transaction - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
+    body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); }
+    .receipt-border {
+      background-image: radial-gradient(#F8F9FA 50%, transparent 50%);
+      background-size: 16px 16px;
+      background-position: -8px -8px;
+    }
+  </style>
+</head>
+<body class="bg-surface-container text-on-background min-h-screen pb-24 flex flex-col antialiased">
+  <!-- TopAppBar -->
+  <header class="flex items-center justify-between px-container-margin py-stack-md w-full max-w-md mx-auto pt-6">
+    <button aria-label="Retour" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </button>
+    <h1 class="text-lg font-bold text-on-surface">Reçu de Transaction</h1>
+    <button onclick="downloadReceipt()" class="p-2 rounded-full hover:bg-surface-container-high text-on-surface cursor-pointer">
+      <span class="material-symbols-outlined">download</span>
+    </button>
+  </header>
+
+  <!-- Receipt Main Card -->
+  <main class="px-container-margin max-w-md mx-auto w-full pt-2 flex flex-col gap-5">
+    <div id="receipt-card" class="bg-surface-container-lowest rounded-3xl p-6 shadow-xl border border-outline-variant flex flex-col gap-5 relative overflow-hidden">
+      <!-- Switch Header Logo & Badge -->
+      <div class="flex justify-between items-start">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-xl bg-primary text-on-primary flex items-center justify-center font-black text-lg">
+            S
+          </div>
+          <div>
+            <h2 class="text-base font-extrabold text-on-surface tracking-tight">SWITCH BÉNIN</h2>
+            <p class="text-[10px] text-on-surface-variant font-mono uppercase">Établissement Agréé UEMOA</p>
+          </div>
+        </div>
+        <span class="bg-green-100 text-green-800 text-[11px] font-bold px-3 py-1 rounded-full flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">check_circle</span>
+          Succès
+        </span>
+      </div>
+
+      <!-- Amount Header -->
+      <div class="text-center py-4 border-y border-dashed border-outline-variant">
+        <span class="text-xs text-on-surface-variant font-bold uppercase tracking-wider">Montant Transféré</span>
+        <h3 class="text-3xl sm:text-4xl font-black font-mono text-primary mt-1">25 000 FCFA</h3>
+        <p class="text-xs text-green-700 font-semibold mt-1">Frais de transfert : 0 FCFA (Gratuit)</p>
+      </div>
+
+      <!-- Details List -->
+      <div class="flex flex-col gap-3 text-xs">
+        <div class="flex justify-between">
+          <span class="text-on-surface-variant">Expéditeur :</span>
+          <b class="text-on-surface">Adele Doe (+229 97 12 34 56)</b>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-on-surface-variant">Bénéficiaire :</span>
+          <b class="text-on-surface">Koffi Mensah (+229 96 88 44 22)</b>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-on-surface-variant">Type d'opération :</span>
+          <b class="text-on-surface">Transfert Switch à Switch</b>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-on-surface-variant">Date & Heure :</span>
+          <b class="text-on-surface">24 Août 2026, 22:52:10</b>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-on-surface-variant">Référence Unique :</span>
+          <b class="font-mono text-primary select-all">SW-TX-20260824-994821</b>
+        </div>
+      </div>
+
+      <!-- QR Code de Vérification & Cachet -->
+      <div class="bg-surface-container rounded-2xl p-4 flex items-center justify-between border border-outline-variant">
+        <div class="flex items-center gap-3">
+          <!-- Stylized QR placeholder -->
+          <div class="w-14 h-14 bg-white p-1 rounded-xl border border-outline-variant flex items-center justify-center">
+            <span class="material-symbols-outlined text-3xl text-on-surface">qr_code_2</span>
+          </div>
+          <div>
+            <p class="text-xs font-bold text-on-surface">Authentifié numériquement</p>
+            <p class="text-[10px] text-on-surface-variant">Scannez pour vérifier la validité</p>
+          </div>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-2xl">verified</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col gap-3">
+      <!-- Partager sur WhatsApp -->
+      <button onclick="shareWhatsAppReceipt()" class="w-full bg-[#25D366] text-white font-bold py-4 rounded-full shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base cursor-pointer">
+        <span class="material-symbols-outlined text-xl">chat</span>
+        <span>Envoyer le reçu sur WhatsApp</span>
+      </button>
+
+      <!-- Partage Général / Télécharger -->
+      <div class="grid grid-cols-2 gap-3">
+        <button onclick="downloadReceipt()" class="py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant text-on-surface font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-surface-container cursor-pointer shadow-sm">
+          <span class="material-symbols-outlined text-base">download</span>
+          <span>Télécharger PDF</span>
+        </button>
+        <button onclick="copyReceiptRef()" class="py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant text-on-surface font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-surface-container cursor-pointer shadow-sm">
+          <span class="material-symbols-outlined text-base">content_copy</span>
+          <span>Copier Réf</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function shareWhatsAppReceipt() {
+      const msg = encodeURIComponent(
+        "✅ *REÇU OFFICIEL SWITCH BÉNIN*\n" +
+        "━━━━━━━━━━━━━━━━━━━━\n" +
+        "💰 *Montant :* 25 000 FCFA (Frais: 0 FCFA)\n" +
+        "👤 *Expéditeur :* Adele Doe\n" +
+        "📥 *Bénéficiaire :* Koffi Mensah\n" +
+        "📅 *Date :* 24 Août 2026 à 22:52\n" +
+        "🔢 *Réf :* SW-TX-20260824-994821\n" +
+        "━━━━━━━━━━━━━━━━━━━━\n" +
+        "🔒 *Vérification :* https://verify.switch.bj/tx/SW-TX-20260824-994821"
+      );
+      window.open("https://wa.me/?text=" + msg, "_blank");
+    }
+
+    function downloadReceipt() {
+      alert("Reçu officiel téléchargé au format PDF (SW-TX-20260824-994821.pdf) !");
+    }
+
+    function copyReceiptRef() {
+      navigator.clipboard.writeText("SW-TX-20260824-994821");
+      alert("Référence copiée : SW-TX-20260824-994821");
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>
