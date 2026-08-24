@@ -50,71 +50,70 @@
 <div class="w-full max-w-md px-container-margin pb-stack-lg mt-auto">
 <div class="grid grid-cols-3 gap-y-stack-sm gap-x-gutter">
 <!-- Row 1 -->
-<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">1</button>
-<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">2</button>
-<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">3</button>
+<button onclick="enterPin('1')" class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent cursor-pointer">1</button>
+<button onclick="enterPin('2')" class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent cursor-pointer">2</button>
+<button onclick="enterPin('3')" class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent cursor-pointer">3</button>
 <!-- Row 2 -->
-<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">4</button>
-<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">5</button>
-<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">6</button>
+<button onclick="enterPin('4')" class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent cursor-pointer">4</button>
+<button onclick="enterPin('5')" class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent cursor-pointer">5</button>
+<button onclick="enterPin('6')" class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent cursor-pointer">6</button>
 <!-- Row 3 -->
-<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">7</button>
-<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">8</button>
-<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">9</button>
+<button onclick="enterPin('7')" class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent cursor-pointer">7</button>
+<button onclick="enterPin('8')" class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent cursor-pointer">8</button>
+<button onclick="enterPin('9')" class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent cursor-pointer">9</button>
 <!-- Row 4 -->
 <div class="flex justify-center items-center h-16"></div> <!-- Empty space -->
-<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">0</button>
-<button class="keypad-btn flex justify-center items-center h-16 rounded-xl text-on-surface-variant bg-transparent">
+<button onclick="enterPin('0')" class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent cursor-pointer">0</button>
+<button onclick="deletePin()" class="keypad-btn flex justify-center items-center h-16 rounded-xl text-on-surface-variant bg-transparent cursor-pointer">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">backspace</span>
 </button>
 </div>
 </div>
-<!-- No Shared Component (Nav Shell) rendered as this is a linear transactional/onboarding flow -->
+
 <script>
-        // Minimal interactive logic for demonstration
-        document.addEventListener('DOMContentLoaded', () => {
-            const dots = document.querySelectorAll('.pin-dot');
-            const btns = document.querySelectorAll('.keypad-btn');
-            let pinCount = 0; // Starting state: all 4 empty
+    let currentPin = '';
+    const maxPinLength = 4;
 
-            btns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const isBackspace = btn.querySelector('.material-symbols-outlined');
-                    
-                    if (isBackspace) {
-                        if (pinCount > 0) {
-                            pinCount--;
-                            updateDots();
-                        }
-                    } else if (btn.textContent.trim() !== "") {
-                        if (pinCount < 4) {
-                            pinCount++;
-                            updateDots();
-                        }
-                    }
-                });
-            });
-
-            function updateDots() {
-                dots.forEach((dot, index) => {
-                    if (index < pinCount) {
-                        dot.className = 'pin-dot w-4 h-4 rounded-full bg-primary shadow-ambient';
-                    } else {
-                        dot.className = 'pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent';
-                    }
-                });
-                
-                // Navigate to KYC verification when 4 digits entered
-                if(pinCount === 4) {
-                    if (window.switchNavigate) {
-                        window.switchNavigate('../kyc_verification_identite/code.html');
-                    } else {
-                        window.location.href = '../kyc_verification_identite/code.html';
-                    }
-                }
+    function updatePinDots() {
+        const dots = document.querySelectorAll('.pin-dot');
+        dots.forEach((dot, index) => {
+            if (index < currentPin.length) {
+                dot.className = 'pin-dot w-4 h-4 rounded-full bg-primary shadow-ambient';
+            } else {
+                dot.className = 'pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent';
             }
         });
-    </script>
+
+        if (currentPin.length === maxPinLength) {
+            setTimeout(() => {
+                if (window.switchNavigate) {
+                    window.switchNavigate('../kyc_verification_identite/code.html');
+                } else {
+                    window.location.href = '../kyc_verification_identite/code.html';
+                }
+            }, 150);
+        }
+    }
+
+    window.enterPin = function(num) {
+        if (currentPin.length < maxPinLength) {
+            currentPin += num;
+            updatePinDots();
+            if (navigator.vibrate) navigator.vibrate(10);
+        }
+    };
+
+    window.deletePin = function() {
+        if (currentPin.length > 0) {
+            currentPin = currentPin.slice(0, -1);
+            updatePinDots();
+            if (navigator.vibrate) navigator.vibrate(10);
+        }
+    };
+
+    // Auto init
+    updatePinDots();
+</script>
 
 <script src="../assets/switch.forms.js"></script>
 <script src="../assets/switch.router.js"></script>

@@ -149,6 +149,7 @@
     });
 
     keypadBtns.forEach(function (btn) {
+      if (btn.hasAttribute("onclick")) return;
       btn.addEventListener(
         "click",
         function () {
@@ -174,7 +175,7 @@
           });
         },
         { capture: true }
-      ); // capture:true pour s'exécuter avant le handler Stitch
+      );
     });
   }
 
