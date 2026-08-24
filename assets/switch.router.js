@@ -260,7 +260,7 @@
     "paiement_sbee_electricite": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "paiement_soneb_eau": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "recharge_credit_data": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
-    "coffre_epargne_vault": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
+    "coffre_epargne_vault": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: "vault", actions: {} },
     "micro_credit_express": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "parrainage_recompenses": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "recu_transaction_partage": { space: "user", back: "javascript:history.back()", nav: null, actions: {} },
@@ -410,14 +410,25 @@
   </a>`;
   }
 
+  function navCenterItemHTML(href, icon, label, active) {
+    return `
+  <a href="${href}" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;text-decoration:none;position:relative;top:-12px;margin:0 2px;flex:1;">
+    <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(94,59,220,0.35);transition:transform 0.15s ease;">
+      <span class="material-symbols-outlined" style="font-size:24px;font-variation-settings:'FILL' 1;">${icon}</span>
+    </div>
+    <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:2px;">${label}</span>
+  </a>`;
+  }
+
   function navHTML(space, activeTab) {
     if (space === "user") {
       return `
 <nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="${NAV_BAR_STYLE}">
   ${navItemHTML(ROOT + "tableau_de_bord_mis_jour/code.html", "home", "Accueil", activeTab === "home")}
-  ${navItemHTML(ROOT + "historique_des_transactions/code.html", "receipt_long", "Historique", activeTab === "history")}
-  ${navItemHTML(ROOT + "achats_en_ligne_cartes_virtuelles/code.html", "account_balance_wallet", "Portefeuille", activeTab === "wallet")}
-  ${navItemHTML(ROOT + "param_tres_g_n_raux/code.html", "settings", "Paramètres", activeTab === "settings")}
+  ${navItemHTML(ROOT + "achats_en_ligne_cartes_virtuelles/code.html", "credit_card", "Cartes", activeTab === "cards" || activeTab === "wallet")}
+  ${navCenterItemHTML(ROOT + "scanner_qr_code/code.html", "qr_code_scanner", "Payer QR", activeTab === "qr")}
+  ${navItemHTML(ROOT + "coffre_epargne_vault/code.html", "savings", "Vault", activeTab === "vault")}
+  ${navItemHTML(ROOT + "param_tres_g_n_raux/code.html", "settings", "Paramètres", activeTab === "settings" || activeTab === "profile")}
 </nav>`;
     }
     if (space === "merchant") {
