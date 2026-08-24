@@ -34,18 +34,23 @@
 </header>
 <!-- Main Content Area -->
 <main class="flex-grow flex flex-col items-center w-full max-w-md px-container-margin pt-stack-lg">
-<div class="text-center mb-stack-lg w-full">
-<h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface mb-stack-sm font-bold">Sécurisez votre compte</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant">Créez votre code PIN à 4 chiffres</p>
+<div class="text-center mb-stack-lg w-full flex flex-col items-center gap-2">
+  <span id="step-badge" class="text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full uppercase tracking-wider">Étape 1 sur 2</span>
+  <h1 id="pin-title" class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface font-bold transition-all">Créez votre code PIN</h1>
+  <p id="pin-subtitle" class="font-body-lg text-body-lg text-on-surface-variant transition-all">Choisissez 4 chiffres secrets pour sécuriser vos paiements</p>
 </div>
+
 <!-- PIN Dots Display -->
-<div class="flex justify-center items-center gap-gutter mb-stack-lg h-24">
+<div id="dots-box" class="flex justify-center items-center gap-gutter mb-stack-lg h-24 transition-all">
 <div class="pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent"></div>
 <div class="pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent"></div>
 <div class="pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent"></div>
 <div class="pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent"></div>
 </div>
+
+<p id="error-msg" class="text-xs font-bold text-red-500 min-h-[20px] text-center"></p>
 </main>
+
 <!-- Custom Keypad -->
 <div class="w-full max-w-md px-container-margin pb-stack-lg mt-auto">
 <div class="grid grid-cols-3 gap-y-stack-sm gap-x-gutter">
@@ -71,47 +76,99 @@
 </div>
 
 <script>
-    let currentPin = '';
+    let firstPin = '';
+    let confirmPin = '';
+    let currentStep = 1; // 1: Enter, 2: Confirm
     const maxPinLength = 4;
 
     function updatePinDots() {
+        const currentVal = (currentStep === 1) ? firstPin : confirmPin;
         const dots = document.querySelectorAll('.pin-dot');
+        
         dots.forEach((dot, index) => {
-            if (index < currentPin.length) {
+            if (index < currentVal.length) {
                 dot.className = 'pin-dot w-4 h-4 rounded-full bg-primary shadow-ambient';
             } else {
                 dot.className = 'pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent';
             }
         });
 
-        if (currentPin.length === maxPinLength) {
-            setTimeout(() => {
-                if (window.switchNavigate) {
-                    window.switchNavigate('../kyc_verification_identite/code.html');
+        if (currentVal.length === maxPinLength) {
+            if (currentStep === 1) {
+                // Pass to step 2: Confirmation
+                setTimeout(() => {
+                    currentStep = 2;
+                    confirmPin = '';
+                    document.getElementById('step-badge').textContent = 'Étape 2 sur 2';
+                    document.getElementById('pin-title').textContent = 'Confirmez votre code PIN';
+                    document.getElementById('pin-subtitle').textContent = 'Ressaisissez le même code à 4 chiffres';
+                    document.getElementById('error-msg').textContent = '';
+                    updatePinDots();
+                }, 200);
+            } else if (currentStep === 2) {
+                // Verify match
+                if (firstPin === confirmPin) {
+                    document.getElementById('error-msg').innerHTML = '<span class="text-green-600">✅ Code PIN validé avec succès !</span>';
+                    dots.forEach(d => d.className = 'pin-dot w-4 h-4 rounded-full bg-green-500 shadow-ambient');
+                    
+                    setTimeout(() => {
+                        if (window.switchNavigate) {
+                            window.switchNavigate('../kyc_verification_identite/code.html');
+                        } else {
+                            window.location.href = '../kyc_verification_identite/code.html';
+                        }
+                    }, 400);
                 } else {
-                    window.location.href = '../kyc_verification_identite/code.html';
+                    // Mismatch
+                    document.getElementById('error-msg').textContent = '⚠️ Les codes ne correspondent pas. Recommençons.';
+                    if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+                    
+                    setTimeout(() => {
+                        currentStep = 1;
+                        firstPin = '';
+                        confirmPin = '';
+                        document.getElementById('step-badge').textContent = 'Étape 1 sur 2';
+                        document.getElementById('pin-title').textContent = 'Créez votre code PIN';
+                        document.getElementById('pin-subtitle').textContent = 'Choisissez 4 chiffres secrets pour sécuriser vos paiements';
+                        updatePinDots();
+                    }, 1200);
                 }
-            }, 150);
+            }
         }
     }
 
     window.enterPin = function(num) {
-        if (currentPin.length < maxPinLength) {
-            currentPin += num;
-            updatePinDots();
-            if (navigator.vibrate) navigator.vibrate(10);
+        if (currentStep === 1) {
+            if (firstPin.length < maxPinLength) {
+                firstPin += num;
+                updatePinDots();
+                if (navigator.vibrate) navigator.vibrate(10);
+            }
+        } else {
+            if (confirmPin.length < maxPinLength) {
+                confirmPin += num;
+                updatePinDots();
+                if (navigator.vibrate) navigator.vibrate(10);
+            }
         }
     };
 
     window.deletePin = function() {
-        if (currentPin.length > 0) {
-            currentPin = currentPin.slice(0, -1);
-            updatePinDots();
-            if (navigator.vibrate) navigator.vibrate(10);
+        if (currentStep === 1) {
+            if (firstPin.length > 0) {
+                firstPin = firstPin.slice(0, -1);
+                updatePinDots();
+                if (navigator.vibrate) navigator.vibrate(10);
+            }
+        } else {
+            if (confirmPin.length > 0) {
+                confirmPin = confirmPin.slice(0, -1);
+                updatePinDots();
+                if (navigator.vibrate) navigator.vibrate(10);
+            }
         }
     };
 
-    // Auto init
     updatePinDots();
 </script>
 
