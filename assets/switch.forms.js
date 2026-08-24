@@ -21,19 +21,23 @@
   // Mapping écran → destination après soumission réussie
   // Clé = dernier segment du pathname (nom du dossier)
   const SUBMIT_TARGETS = {
-    // Auth
+    // Auth Particulier
     "inscription":              "../v_rification_otp/code.html",
-    "connexion":                "../tableau_de_bord_mis_jour/code.html",
+    "connexion":                "../verrouillage_pin/code.html",
     "v_rification_otp":         "../cr_ation_code_pin/code.html",
-    "cr_ation_code_pin":        "../tableau_de_bord_mis_jour/code.html",
+    "cr_ation_code_pin":        "../kyc_verification_identite/code.html",
+    "kyc_verification_identite":"../bienvenue_succes_onboarding/code.html",
+    "bienvenue_succes_onboarding":"../tableau_de_bord_mis_jour/code.html",
     "verrouillage_pin":         "../tableau_de_bord_mis_jour/code.html",
 
     // Marchand
     "inscription_marchand":     "../v_rification_marchand/code.html",
-    "v_rification_marchand":    "../tableau_de_bord_marchand/code.html",
+    "v_rification_marchand":    "../setup_point_de_vente_marchand/code.html",
+    "setup_point_de_vente_marchand":"../tableau_de_bord_marchand/code.html",
 
     // Agent
-    "inscription_agent_switch": "../tableau_de_bord_agent/code.html",
+    "inscription_agent_switch": "../agent_verification_caution/code.html",
+    "agent_verification_caution":"../tableau_de_bord_agent/code.html",
 
     // Formulaires de paramètres / profil
     "modifier_le_profil":       "../profil_utilisateur/code.html",

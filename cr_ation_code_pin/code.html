@@ -40,9 +40,8 @@
 </div>
 <!-- PIN Dots Display -->
 <div class="flex justify-center items-center gap-gutter mb-stack-lg h-24">
-<!-- Simulated State: 2 entered, 2 empty -->
-<div class="pin-dot w-4 h-4 rounded-full bg-primary shadow-ambient"></div>
-<div class="pin-dot w-4 h-4 rounded-full bg-primary shadow-ambient"></div>
+<div class="pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent"></div>
+<div class="pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent"></div>
 <div class="pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent"></div>
 <div class="pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent"></div>
 </div>
@@ -76,7 +75,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const dots = document.querySelectorAll('.pin-dot');
             const btns = document.querySelectorAll('.keypad-btn');
-            let pinCount = 2; // Starting state to match HTML
+            let pinCount = 0; // Starting state: all 4 empty
 
             btns.forEach(btn => {
                 btn.addEventListener('click', () => {
