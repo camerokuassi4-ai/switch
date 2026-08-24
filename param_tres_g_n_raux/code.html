@@ -1,222 +1,240 @@
 <!DOCTYPE html>
 <html class="light" lang="fr">
-
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Paramètres - Switch</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect" />
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-
-  <!-- Tailwind CSS -->
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Paramètres & Profil - Switch Bénin</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
 
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
     body {
-      background-color: #F8F9FA;
+      font-family: 'Hanken Grotesk', sans-serif;
       min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+    .profile-hero {
+      background: linear-gradient(135deg, #5E3BDC 0%, #4323B0 50%, #2A1175 100%);
+      box-shadow: 0 16px 36px -10px rgba(94, 59, 220, 0.3);
+    }
+    .setting-item {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .setting-item:hover {
+      background-color: #FBF9FF;
+      border-color: rgba(94, 59, 220, 0.3);
+    }
+    .setting-item:active {
+      transform: scale(0.99);
     }
   </style>
 </head>
+<body class="min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
 
-<body class="text-gray-900 font-sans pb-32">
   <!-- Top Header -->
-  <header class="w-full flex justify-between items-center px-4 py-4 bg-[#F8F9FA] sticky top-0 z-40">
-    <button onclick="history.back()" aria-label="Retour"
-      class="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 text-gray-700 hover:bg-gray-50 transition-colors">
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30">
+    <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
       <span class="material-symbols-outlined text-xl">arrow_back</span>
     </button>
-    <h1 class="text-xl font-bold text-gray-900 tracking-tight">Paramètres</h1>
-    <button
-      class="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 text-gray-700 hover:bg-gray-50 transition-colors">
-      <span class="material-symbols-outlined text-xl">search</span>
-    </button>
+    <h1 class="text-lg font-extrabold text-on-surface">Paramètres & Profil</h1>
+    <a href="../support_aide/code.html" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-primary hover:bg-primary/5 transition-colors cursor-pointer no-underline" title="Aide & Support">
+      <span class="material-symbols-outlined text-xl">support_agent</span>
+    </a>
   </header>
 
   <!-- Main Content -->
-  <main class="w-full max-w-md mx-auto px-4 mt-2 flex flex-col pb-10">
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-6 pt-1">
 
-    <!-- SECTION : PROFIL -->
-    <div onclick="window.location.href='../modifier_le_profil/code.html'"
-      class="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer shadow-sm border border-gray-100 hover:border-[#5e3bdc]/30 active:scale-[0.98] transition-all group mb-6 mt-2">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-purple-100 shrink-0">
-          <img src="../assets/images/img_046.jpg" alt="Adele Doe" class="w-full h-full object-cover"/>
-        </div>
-        <div>
-          <h3 class="font-bold text-gray-900 text-base">Adele Doe</h3>
-          <p class="text-xs text-gray-500">adele.doe@example.com • +229 97 00 11 22</p>
-        </div>
-      </div>
-      <span class="material-symbols-outlined text-gray-400 group-hover:text-[#5e3bdc]">edit</span>
-    </div>
-
-    <!-- SECTION : PRÉFÉRENCES -->
-    <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Préférences</h2>
-    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-6">
-      <!-- Theme Toggle -->
-      <div class="flex items-center justify-between mb-4">
+    <!-- 1. Hero Profile Card (Adele Doe + RIB Copy) -->
+    <section class="profile-hero rounded-[32px] p-6 text-white relative overflow-hidden flex flex-col gap-4">
+      <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <div class="w-10 h-10 rounded-full bg-[#f7f1ff] flex items-center justify-center text-[#5e3bdc]">
-            <span class="material-symbols-outlined">palette</span>
+          <div class="relative">
+            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white/40 shadow-md">
+              <img alt="Adele Doe" class="w-full h-full object-cover" src="../assets/images/img_046.jpg"/>
+            </div>
+            <span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-green-400 border-2 border-white"></span>
           </div>
           <div>
-            <h3 class="font-semibold text-gray-900">Thème de l'application</h3>
-            <p class="text-sm text-gray-500">Thème clair forcé par défaut</p>
+            <div class="flex items-center gap-2">
+              <h2 class="text-lg sm:text-xl font-extrabold">Adele Doe</h2>
+              <span class="text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full">
+                Vérifié
+              </span>
+            </div>
+            <p class="text-xs text-purple-200 mt-0.5 font-mono">+229 97 12 34 56</p>
+            <p class="text-[11px] text-purple-300 mt-0.5">adele.doe@gmail.com</p>
           </div>
         </div>
-        <span class="material-symbols-outlined text-gray-400">lock</span>
+
+        <a href="../modifier_le_profil/code.html" class="w-9 h-9 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors no-underline cursor-pointer" title="Modifier le profil">
+          <span class="material-symbols-outlined text-base">edit</span>
+        </a>
       </div>
 
-      <div class="flex gap-2">
-        <button
-          class="flex-1 py-2 flex items-center justify-center gap-2 rounded-lg border-2 border-[#5e3bdc] bg-[#f7f1ff] text-[#5e3bdc] font-medium transition-colors">
-          <span class="material-symbols-outlined text-sm">light_mode</span> Clair
-        </button>
-        <button disabled
-          class="flex-1 py-2 flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-400 font-medium cursor-not-allowed">
-          <span class="material-symbols-outlined text-sm">dark_mode</span> Sombre
+      <!-- RIB Box -->
+      <div class="bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/20 flex items-center justify-between text-xs font-mono">
+        <div class="flex flex-col gap-0.5">
+          <span class="text-[10px] font-bold uppercase text-purple-200 font-sans">RIB Switch UEMOA</span>
+          <span class="text-white font-bold select-all">BJ061 01001 09876543210 44</span>
+        </div>
+        <button onclick="copyUserRib()" class="px-2.5 py-1 rounded-xl bg-white text-primary text-[11px] font-black uppercase shadow-sm hover:bg-purple-50 transition-colors cursor-pointer">
+          Copier
         </button>
       </div>
+    </section>
+
+    <!-- 2. Espaces Professionnels (Marchand & Agent) -->
+    <section class="flex flex-col gap-3">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Espaces Professionnels</h3>
+
+      <div class="grid grid-cols-2 gap-3">
+        <!-- Espace Marchand -->
+        <a href="../accueil_marchand/code.html" class="setting-item bg-white p-4 rounded-3xl border border-outline-variant/40 shadow-sm flex flex-col gap-2 no-underline text-on-surface cursor-pointer">
+          <div class="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-xl">store</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-xs sm:text-sm">Espace Marchand</h4>
+            <p class="text-[10px] text-on-surface-variant mt-0.5">Encaisser vos clients via QR</p>
+          </div>
+        </a>
+
+        <!-- Espace Agent -->
+        <a href="../accueil_espace_agent/code.html" class="setting-item bg-white p-4 rounded-3xl border border-outline-variant/40 shadow-sm flex flex-col gap-2 no-underline text-on-surface cursor-pointer">
+          <div class="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-xl">support_agent</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-xs sm:text-sm">Espace Agent</h4>
+            <p class="text-[10px] text-on-surface-variant mt-0.5">Gagner des commissions</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 3. Sécurité & Accès -->
+    <section class="flex flex-col gap-3">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Sécurité & Confidentialité</h3>
+
+      <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-sm divide-y divide-outline-variant/30 overflow-hidden">
+        
+        <!-- Sécurité PIN & Biométrie -->
+        <a href="../s_curit/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">lock</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Sécurité & Code PIN</h4>
+              <p class="text-[11px] text-on-surface-variant">Changer PIN, FaceID et empreinte</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+
+        <!-- Appareils Connectés -->
+        <a href="../appareils_connectes_securite/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">devices</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Appareils Connectés</h4>
+              <p class="text-[11px] text-on-surface-variant">2 sessions actives • Déconnexion à distance</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+
+        <!-- Limites & Plafonds -->
+        <a href="../limites_de_transaction/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">speed</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Plafonds de Transaction</h4>
+              <p class="text-[11px] text-on-surface-variant">Niveau 2 • Jusqu'à 2 000 000 F / jour</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+
+        <!-- Moyens de paiement liés -->
+        <a href="../moyens_de_paiement_li_s/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">account_balance</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Comptes & Moyens Liés</h4>
+              <p class="text-[11px] text-on-surface-variant">MTN MoMo, Moov Money, Comptes bancaires</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 4. Outils & Préférences -->
+    <section class="flex flex-col gap-3">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Outils & Connectivité</h3>
+
+      <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-sm divide-y divide-outline-variant/30 overflow-hidden">
+        
+        <!-- Mode Hors-Ligne USSD -->
+        <a href="../mode_hors_ligne_ussd/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">signal_cellular_nodata</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Mode Hors-Ligne (*880# / *155#)</h4>
+              <p class="text-[11px] text-on-surface-variant">Opérations sans connexion internet</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+
+        <!-- Simulateur de Frais -->
+        <a href="../simulateur_de_frais/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-sky-50 text-sky-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">calculate</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Simulateur de Frais Transparent</h4>
+              <p class="text-[11px] text-on-surface-variant">Calculer les tarifs avant d'envoyer</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 5. Déconnexion -->
+    <div class="pt-2">
+      <a href="../accueil_splash_mis_jour/code.html" class="w-full bg-rose-50 border border-rose-200 text-rose-600 font-bold py-4 rounded-3xl hover:bg-rose-100 transition-colors flex items-center justify-center gap-2 text-sm no-underline cursor-pointer">
+        <span class="material-symbols-outlined text-xl">logout</span>
+        <span>Se déconnecter de Switch</span>
+      </a>
+      <p class="text-center text-[10px] text-on-surface-variant mt-3">Switch Bénin v2.4 • Conforme Réglementation BCEAO / ANIP</p>
     </div>
-
-    <!-- SECTION : COMPTE & SÉCURITÉ -->
-    <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Compte & Sécurité</h2>
-    <div class="flex flex-col gap-3 mb-6">
-      <!-- Sécurité -->
-      <div onclick="window.location.href='../s_curit/code.html'"
-        class="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer shadow-sm border border-gray-100 hover:border-[#5e3bdc]/30 active:scale-[0.98] transition-all group">
-        <div class="flex items-center gap-4">
-          <div
-            class="w-10 h-10 rounded-full bg-[#f7f1ff] flex items-center justify-center text-[#5e3bdc] group-hover:bg-[#5e3bdc] group-hover:text-white transition-colors">
-            <span class="material-symbols-outlined">lock</span>
-          </div>
-          <div>
-            <h3 class="font-semibold text-gray-900">Sécurité</h3>
-            <p class="text-sm text-gray-500">Code PIN, biométrie</p>
-          </div>
-        </div>
-        <span class="material-symbols-outlined text-gray-400 group-hover:text-[#5e3bdc]">chevron_right</span>
-      </div>
-
-      <!-- Moyens de paiement -->
-      <div onclick="window.location.href='../moyens_de_paiement_li_s/code.html'"
-        class="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer shadow-sm border border-gray-100 hover:border-[#5e3bdc]/30 active:scale-[0.98] transition-all group">
-        <div class="flex items-center gap-4">
-          <div
-            class="w-10 h-10 rounded-full bg-[#f7f1ff] flex items-center justify-center text-[#5e3bdc] group-hover:bg-[#5e3bdc] group-hover:text-white transition-colors">
-            <span class="material-symbols-outlined">credit_card</span>
-          </div>
-          <div>
-            <h3 class="font-semibold text-gray-900">Moyens de paiement</h3>
-            <p class="text-sm text-gray-500">Cartes et comptes Mobile Money</p>
-          </div>
-        </div>
-        <span class="material-symbols-outlined text-gray-400 group-hover:text-[#5e3bdc]">chevron_right</span>
-      </div>
-
-      <!-- Limites de transaction -->
-      <div onclick="window.location.href='../limites_de_transaction/code.html'"
-        class="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer shadow-sm border border-gray-100 hover:border-[#5e3bdc]/30 active:scale-[0.98] transition-all group">
-        <div class="flex items-center gap-4">
-          <div
-            class="w-10 h-10 rounded-full bg-[#f7f1ff] flex items-center justify-center text-[#5e3bdc] group-hover:bg-[#5e3bdc] group-hover:text-white transition-colors">
-            <span class="material-symbols-outlined">speed</span>
-          </div>
-          <div>
-            <h3 class="font-semibold text-gray-900">Limites de transaction</h3>
-            <p class="text-sm text-gray-500">Plafonds d'envoi et de retrait</p>
-          </div>
-        </div>
-        <span class="material-symbols-outlined text-gray-400 group-hover:text-[#5e3bdc]">chevron_right</span>
-      </div>
-    </div>
-
-    <!-- SECTION : ASSISTANCE & COMMUNICATION -->
-    <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Assistance</h2>
-    <div class="flex flex-col gap-3 mb-6">
-      <!-- Notifications -->
-      <div onclick="window.location.href='../centre_de_notifications/code.html'"
-        class="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer shadow-sm border border-gray-100 hover:border-[#5e3bdc]/30 active:scale-[0.98] transition-all group">
-        <div class="flex items-center gap-4">
-          <div
-            class="w-10 h-10 rounded-full bg-[#f7f1ff] flex items-center justify-center text-[#5e3bdc] group-hover:bg-[#5e3bdc] group-hover:text-white transition-colors">
-            <span class="material-symbols-outlined">notifications_active</span>
-          </div>
-          <div>
-            <h3 class="font-semibold text-gray-900">Notifications</h3>
-            <p class="text-sm text-gray-500">Gérer les alertes et emails</p>
-          </div>
-        </div>
-        <span class="material-symbols-outlined text-gray-400 group-hover:text-[#5e3bdc]">chevron_right</span>
-      </div>
-
-      <!-- Support -->
-      <div onclick="window.location.href='../support_aide/code.html'"
-        class="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer shadow-sm border border-gray-100 hover:border-[#5e3bdc]/30 active:scale-[0.98] transition-all group">
-        <div class="flex items-center gap-4">
-          <div
-            class="w-10 h-10 rounded-full bg-[#f7f1ff] flex items-center justify-center text-[#5e3bdc] group-hover:bg-[#5e3bdc] group-hover:text-white transition-colors">
-            <span class="material-symbols-outlined">help_center</span>
-          </div>
-          <div>
-            <h3 class="font-semibold text-gray-900">Aide & Support</h3>
-            <p class="text-sm text-gray-500">FAQ, contacter le service client</p>
-          </div>
-        </div>
-        <span class="material-symbols-outlined text-gray-400 group-hover:text-[#5e3bdc]">chevron_right</span>
-      </div>
-    </div>
-
-    <!-- SECTION : À PROPOS -->
-    <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">À Propos</h2>
-    <div class="bg-white rounded-2xl p-4 flex items-center justify-between shadow-sm border border-gray-100 mb-6">
-      <div class="flex items-center gap-4">
-        <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500">
-          <span class="material-symbols-outlined">info</span>
-        </div>
-        <div>
-          <h3 class="font-semibold text-gray-900">Version de l'application</h3>
-          <p class="text-sm text-gray-500">v2.4.1 (Build 4092)</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- SE DÉCONNECTER -->
-    <button onclick="window.location.href='../connexion/code.html'"
-      class="w-full bg-red-50 text-red-600 font-bold py-4 rounded-2xl border border-red-100 hover:bg-red-100 active:scale-[0.98] transition-all flex justify-center items-center gap-2 shadow-sm">
-      <span class="material-symbols-outlined">logout</span>
-      Se déconnecter
-    </button>
 
   </main>
 
-  <!-- BottomNavBar (Mobile Only) - Actif sur Paramètres -->
-  
+  <script>
+    function copyUserRib() {
+      navigator.clipboard.writeText("BJ061 01001 09876543210 44");
+      alert("RIB Switch UEMOA copié : BJ061 01001 09876543210 44");
+    }
+  </script>
 
   <script src="../assets/switch.router.js"></script>
-<nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
-  <a href="../tableau_de_bord_mis_jour/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">home</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
-  </a>
-  <a href="../historique_des_transactions/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">receipt_long</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Historique</span>
-  </a>
-  <a href="../achats_en_ligne_cartes_virtuelles/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">account_balance_wallet</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Portefeuille</span>
-  </a>
-  <a href="../param_tres_g_n_raux/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">settings</span>
-    <span class="nav-label" style="font-size:10px;font-weight:700;">Paramètres</span>
-  </a>
-</nav>
 </body>
-
 </html>
