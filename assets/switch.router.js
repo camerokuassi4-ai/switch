@@ -56,7 +56,7 @@
     },
     "cr_ation_code_pin": {
       space: "auth", back: ROOT + "v_rification_otp/code.html", nav: null,
-      actions: { "Créer mon PIN": ROOT + "tableau_de_bord_mis_jour/code.html", "Confirmer": ROOT + "tableau_de_bord_mis_jour/code.html", "Continuer": ROOT + "tableau_de_bord_mis_jour/code.html" }
+      actions: { "Créer mon PIN": ROOT + "kyc_verification_identite/code.html", "Confirmer": ROOT + "kyc_verification_identite/code.html", "Continuer": ROOT + "kyc_verification_identite/code.html" }
     },
     "verrouillage_pin": {
       space: "auth", back: ROOT + "connexion/code.html", nav: null,
@@ -270,10 +270,22 @@
     "mode_hors_ligne_ussd": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "appareils_connectes_securite": { space: "user", back: ROOT + "s_curit/code.html", nav: null, actions: {} },
 
-    "kyc_verification_identite": { space: "user", back: ROOT + "cr_ation_code_pin/code.html", nav: null, actions: {} },
-    "bienvenue_succes_onboarding": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
-    "setup_point_de_vente_marchand": { space: "merchant", back: ROOT + "v_rification_marchand/code.html", nav: null, actions: {} },
-    "agent_verification_caution": { space: "agent", back: ROOT + "inscription_agent_switch/code.html", nav: null, actions: {} },
+    "kyc_verification_identite": {
+      space: "user", back: ROOT + "cr_ation_code_pin/code.html", nav: null,
+      actions: { "Valider": ROOT + "bienvenue_succes_onboarding/code.html", "Activer": ROOT + "bienvenue_succes_onboarding/code.html", "Continuer": ROOT + "bienvenue_succes_onboarding/code.html" }
+    },
+    "bienvenue_succes_onboarding": {
+      space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null,
+      actions: { "Accéder": ROOT + "tableau_de_bord_mis_jour/code.html", "Tableau de bord": ROOT + "tableau_de_bord_mis_jour/code.html", "Dépôt": ROOT + "d_p_t_de_fonds/code.html" }
+    },
+    "setup_point_de_vente_marchand": {
+      space: "merchant", back: ROOT + "v_rification_marchand/code.html", nav: null,
+      actions: { "Ouvrir": ROOT + "tableau_de_bord_marchand/code.html", "Tableau de bord": ROOT + "tableau_de_bord_marchand/code.html" }
+    },
+    "agent_verification_caution": {
+      space: "agent", back: ROOT + "inscription_agent_switch/code.html", nav: null,
+      actions: { "Activer": ROOT + "tableau_de_bord_agent/code.html", "Valider": ROOT + "tableau_de_bord_agent/code.html" }
+    },
 
     "accueil_marchand": {
       space: "merchant", back: ROOT + "profil_utilisateur/code.html", nav: null,
@@ -285,7 +297,7 @@
     },
     "v_rification_marchand": {
       space: "merchant", back: ROOT + "inscription_marchand/code.html", nav: null,
-      actions: { "Vérifier": ROOT + "tableau_de_bord_marchand/code.html", "Soumettre": ROOT + "tableau_de_bord_marchand/code.html", "Continuer": ROOT + "tableau_de_bord_marchand/code.html" }
+      actions: { "Vérifier": ROOT + "setup_point_de_vente_marchand/code.html", "Confirmer": ROOT + "setup_point_de_vente_marchand/code.html", "Continuer": ROOT + "setup_point_de_vente_marchand/code.html", "Soumettre": ROOT + "setup_point_de_vente_marchand/code.html" }
     },
     "tableau_de_bord_marchand": {
       space: "merchant", back: null, nav: "m-home",
@@ -338,7 +350,7 @@
     },
     "inscription_agent_switch": {
       space: "agent", back: ROOT + "accueil_espace_agent/code.html", nav: null,
-      actions: { "Soumettre": ROOT + "tableau_de_bord_agent/code.html", "Continuer": ROOT + "tableau_de_bord_agent/code.html", "S'inscrire": ROOT + "tableau_de_bord_agent/code.html" }
+      actions: { "Soumettre": ROOT + "agent_verification_caution/code.html", "Continuer": ROOT + "agent_verification_caution/code.html", "S'inscrire": ROOT + "agent_verification_caution/code.html", "Terminer": ROOT + "agent_verification_caution/code.html" }
     },
     "tableau_de_bord_agent": {
       space: "agent", back: null, nav: "a-home",
