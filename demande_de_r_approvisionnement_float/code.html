@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Réapprovisionnement - Espace Agent</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background-color: #fdf8ff; /* surface */
+        }
+        /* Custom Input Styling */
+        .agent-input {
+            width: 100%;
+            background-color: #f1ebf9; /* surface-container */
+            border: 1px solid #c9c4d7; /* outline-variant */
+            color: #1c1a24; /* on-surface */
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 1rem 1rem 1rem 3rem; /* Leave room for icon */
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .agent-input:focus {
+            outline: none;
+            border-color: #5e3bdc; /* primary */
+            box-shadow: 0 0 0 2px rgba(94, 59, 220, 0.2);
+            background-color: #ffffff; /* surface-container-lowest */
+        }
+        .agent-input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #797586; /* outline */
+            pointer-events: none;
+        }
+        .agent-input:focus + .agent-input-icon,
+        .agent-input:focus ~ .agent-input-icon {
+            color: #5e3bdc; /* primary */
+        }
+        
+        /* Custom Select Styling */
+        .agent-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23797586'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.5em;
+            padding-right: 2.5rem;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim w-full top-0 sticky z-40 transition-colors duration-200">
+<div class="flex items-center justify-between px-gutter py-4 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<button aria-label="Retour" class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center p-2 rounded-full hover:bg-surface-container active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Réapprovisionnement</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden border-2 border-surface shadow-sm">
+<img alt="Agent Profile Picture" class="w-full h-full object-cover" data-alt="A professional headshot of a confident Beninese mobile money agent in bright, clear daylight. The lighting is crisp and natural, highlighting a friendly yet serious expression suitable for a trusted financial representative. The background is slightly blurred, showing a clean, modern street setting in Cotonou. The overall tone is reliable, modern, and high-quality." src="../assets/images/img_011.jpg"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-3xl mx-auto px-gutter py-stack-lg pb-32">
+<!-- Liquidity Status Indicator -->
+<div class="mb-stack-lg flex items-center justify-between bg-surface-container-low rounded-xl p-card-padding border border-outline-variant shadow-sm">
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">Liquidité Actuelle (Float)</p>
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">15,000 FCFA</h2>
+</div>
+<div class="flex items-center gap-2 bg-error-container text-on-error-container px-3 py-1.5 rounded-full border border-liquidity-low/30 shadow-[inset_0_1px_4px_rgba(239,68,68,0.1)]">
+<span class="material-symbols-outlined text-sm" data-icon="warning">warning</span>
+<span class="font-label-caps text-label-caps">Niveau Bas</span>
+</div>
+</div>
+<!-- Refill Form Card -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] border border-surface-container p-card-padding relative overflow-hidden">
+<!-- Decorative subtle gradient top border -->
+<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-primary-container"></div>
+<form action="#" class="space-y-stack-md" method="POST">
+<!-- Amount Input -->
+<div class="space-y-stack-sm">
+<label class="block font-headline-sm text-headline-sm text-on-surface" for="amount">Montant à recharger</label>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Saisissez le montant nécessaire pour vos opérations.</p>
+<div class="relative">
+<input class="agent-input pl-12 text-right pr-16 font-display-lg-mobile h-16" id="amount" name="amount" placeholder="0" required="" type="number"/>
+<span class="agent-input-icon left-4 material-symbols-outlined" data-icon="payments">payments</span>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 font-headline-md text-headline-md text-on-surface-variant pointer-events-none">FCFA</span>
+</div>
+<!-- Quick Amount Chips -->
+<div class="flex flex-wrap gap-2 mt-3">
+<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant hover:bg-primary-container/10 hover:text-primary hover:border-primary transition-colors font-label-caps text-label-caps" type="button">50,000</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant hover:bg-primary-container/10 hover:text-primary hover:border-primary transition-colors font-label-caps text-label-caps" type="button">100,000</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant hover:bg-primary-container/10 hover:text-primary hover:border-primary transition-colors font-label-caps text-label-caps" type="button">250,000</button>
+</div>
+</div>
+<div class="w-full h-px bg-surface-container-high my-stack-md"></div>
+<!-- Payment Method Select -->
+<div class="space-y-stack-sm">
+<label class="block font-headline-sm text-headline-sm text-on-surface" for="payment_method">Méthode de financement</label>
+<div class="relative">
+<select class="agent-input agent-select pl-12" id="payment_method" name="payment_method" required="">
+<option disabled="" selected="" value="">Sélectionnez une méthode</option>
+<option value="bank">Virement Bancaire (Instantané)</option>
+<option value="distributor">Auprès d'un Distributeur Agréé</option>
+<option value="cash">Dépôt en Agence Principale</option>
+</select>
+<span class="agent-input-icon material-symbols-outlined" data-icon="account_balance">account_balance</span>
+</div>
+</div>
+<!-- Proof of deposit (Conditional, shown here for completeness) -->
+<div class="space-y-stack-sm mt-stack-md">
+<label class="block font-headline-sm text-headline-sm text-on-surface">Preuve de dépôt (Optionnel)</label>
+<div class="border-2 border-dashed border-outline-variant rounded-lg p-6 flex flex-col items-center justify-center text-center hover:bg-surface-container-low hover:border-primary transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-3 group-hover:bg-primary-container/20 group-hover:text-primary transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="add_photo_alternate">add_photo_alternate</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Appuyez pour scanner ou télécharger un reçu</p>
+</div>
+</div>
+<!-- Actions -->
+<div class="pt-stack-md mt-stack-md">
+<button onclick="event.preventDefault(); window.location.href='../confirmation_de_succ_s/code.html'"
+        class="w-full bg-primary text-on-primary font-headline-md text-headline-md py-4 rounded-xl shadow-[0_4px_12px_rgba(94,59,220,0.3)] hover:opacity-90 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2" type="submit">
+    <span class="material-symbols-outlined" data-icon="send">send</span>
+    Envoyer la demande
+</button>
+<p class="text-center font-body-sm text-body-sm text-on-surface-variant mt-4 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="lock">lock</span>
+                        Transaction sécurisée et chiffrée
+                    </p>
+</div>
+</form>
+</div>
+</main>
+<script src="../assets/switch.forms.js"></script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Accueil Agent</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- Header (Transactional Intent - Minimal) -->
+<header class="w-full flex items-center justify-between px-gutter py-4 max-w-7xl mx-auto top-0 sticky bg-surface dark:bg-surface-dim z-40 shadow-sm shadow-black/5">
+<div class="flex items-center gap-4">
+<button aria-label="Retour" class="p-2 -ml-2 rounded-full hover:bg-surface-container transition-colors text-primary">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight">Accueil Agent</h1>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-3xl mx-auto px-gutter py-stack-lg flex flex-col gap-stack-lg">
+<!-- Toggle Section (Glassmorphism inspired) -->
+<section class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-card-padding shadow-[0_4px_24px_rgba(0,0,0,0.02)] relative overflow-hidden backdrop-blur-md">
+<!-- Decorative gradient orb -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between relative z-10">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-1">Mode Actuel</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Vous êtes en mode Personnel</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Perso</span>
+<button aria-pressed="false" class="w-12 h-6 bg-surface-variant rounded-full relative transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" id="mode-toggle">
+<div class="w-5 h-5 bg-on-surface-variant rounded-full absolute top-0.5 left-0.5 transition-transform duration-300 transform shadow-sm" id="mode-toggle-thumb"></div>
+</button>
+<span class="font-label-caps text-label-caps text-primary uppercase font-bold">Agent</span>
+</div>
+</div>
+</section>
+<!-- Bento Grid Layout for Agent Actions -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<!-- Switch to Agent Mode Card -->
+<button class="group text-left h-full bg-primary-container text-on-primary-container rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-[0.98]">
+<div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+<div class="h-40 w-full relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A stylized illustration of a modern storefront with subtle digital transaction overlays in brand violet. The scene is bright and professional, set in a clean urban environment. The lighting is crisp and clear, emphasizing operational clarity and high contrast. The aesthetic is modern corporate." style="background-image: url('../assets/images/img_001.jpg')"></div>
+<!-- Overlay gradient for text readability -->
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container to-transparent"></div>
+</div>
+<div class="p-card-padding relative z-10 -mt-10">
+<div class="w-12 h-12 bg-surface-bright rounded-full flex items-center justify-center mb-4 shadow-sm text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">storefront</span>
+</div>
+<h3 class="font-headline-md text-headline-md font-bold mb-2">Passer en mode Agent</h3>
+<p class="font-body-sm text-body-sm opacity-90 mb-4">Gérez vos transactions, votre liquidité et vérifiez vos clients rapidement.</p>
+<div class="flex items-center text-sm font-semibold opacity-100 group-hover:translate-x-1 transition-transform">
+<span>Activer</span>
+<span class="material-symbols-outlined ml-1 text-[18px]">arrow_forward</span>
+</div>
+</div>
+</button>
+<!-- Become an Agent Card -->
+<button class="group text-left h-full bg-surface-container-high border border-outline-variant/40 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 relative focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-[0.98]">
+<div class="p-card-padding h-full flex flex-col">
+<div class="w-12 h-12 bg-secondary-container text-on-secondary-container rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined">add_business</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2 font-bold">Devenir Agent</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex-grow mb-6">Rejoignez notre réseau. Augmentez vos revenus en facilitant les transactions pour votre communauté.</p>
+<div class="flex items-center justify-between w-full">
+<span class="font-body-sm text-body-sm text-primary font-semibold">Commencer l'inscription</span>
+<div class="w-8 h-8 rounded-full bg-surface flex items-center justify-center border border-outline-variant/50 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+</div>
+</button>
+</div>
+</main>
+<!-- Footer Action -->
+<footer class="w-full max-w-3xl mx-auto px-gutter py-8 flex justify-center mt-auto">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2 py-2 px-4 rounded-full hover:bg-surface-container" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            Retour au mode personnel
+        </a>
+</footer>
+<script>
+        // Simple toggle interaction logic
+        const toggleBtn = document.getElementById('mode-toggle');
+        const toggleThumb = document.getElementById('mode-toggle-thumb');
+        let isAgentMode = false;
+
+        toggleBtn.addEventListener('click', () => {
+            isAgentMode = !isAgentMode;
+            toggleBtn.setAttribute('aria-pressed', isAgentMode);
+            
+            if (isAgentMode) {
+                toggleBtn.classList.remove('bg-surface-variant');
+                toggleBtn.classList.add('bg-primary');
+                toggleThumb.classList.remove('translate-x-0', 'bg-on-surface-variant');
+                toggleThumb.classList.add('translate-x-6', 'bg-on-primary');
+            } else {
+                toggleBtn.classList.add('bg-surface-variant');
+                toggleBtn.classList.remove('bg-primary');
+                toggleThumb.classList.add('translate-x-0', 'bg-on-surface-variant');
+                toggleThumb.classList.remove('translate-x-6', 'bg-on-primary');
+            }
+        });
+    </script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

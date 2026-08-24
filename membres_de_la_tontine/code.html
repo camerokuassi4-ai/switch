@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Membres du groupe - Tontine</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body {
+            background-color: #F8F9FA;
+        }
+        .mesh-bg {
+            background: radial-gradient(at 0% 0%, hsla(253,82%,85%,1) 0px, transparent 50%),
+                        radial-gradient(at 100% 0%, hsla(258,82%,85%,1) 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, hsla(245,82%,85%,1) 0px, transparent 50%),
+                        radial-gradient(at 0% 100%, hsla(250,82%,85%,1) 0px, transparent 50%);
+            background-color: #fdf8ff;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-lg text-body-lg text-on-background mesh-bg min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-transparent text-primary flex justify-between items-center px-container-margin py-stack-md w-full sticky top-0 z-40 backdrop-blur-md bg-opacity-70">
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Membres du groupe</h1>
+</div>
+<button class="w-10 h-10 rounded-full overflow-hidden hover:bg-surface-container-high transition-colors active:scale-95 transition-transform shadow-sm">
+<img alt="User profile picture" class="w-full h-full object-cover" data-alt="A professional headshot of a smiling West African woman in her late 20s, looking directly at the camera. She is wearing a simple, elegant blouse. The lighting is soft and natural, creating a bright and approachable mood, fitting for a modern fintech app profile picture." src="../assets/images/img_027.jpg"/>
+</button>
+</header>
+<!-- Main Content -->
+<main class="px-container-margin max-w-2xl mx-auto flex flex-col gap-stack-lg mt-stack-md">
+<!-- Action Button -->
+<div class="flex justify-between items-center bg-surface p-4 rounded-2xl shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] border border-surface-container-high">
+<div>
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">Inviter un participant</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Lien ou numéro de téléphone</p>
+</div>
+<button class="w-12 h-12 rounded-full bg-[#7B5CFA] text-on-primary flex items-center justify-center shadow-lg hover:bg-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined" data-icon="person_add" data-weight="fill" style="font-variation-settings: 'FILL' 1;">person_add</span>
+</button>
+</div>
+<!-- Members List -->
+<section class="flex flex-col gap-3">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-2">Participants (4)</h2>
+<!-- Admin -->
+<div class="bg-surface p-4 rounded-xl flex items-center gap-4 shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] border border-surface-container-lowest">
+<div class="relative w-12 h-12">
+<img alt="Avatar" class="w-full h-full rounded-full object-cover" data-alt="A portrait of a young West African man with short hair and a neat beard, wearing a casual light-colored shirt. The background is a soft, out-of-focus modern office setting. The lighting is bright and even, conveying a sense of trust and professionalism." src="../assets/images/img_028.jpg"/>
+<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-[#7B5CFA] rounded-full border-2 border-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-white" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<div class="flex-1">
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">Oumar Diallo</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">+229 97 00 11 22</p>
+</div>
+<div class="px-2 py-1 bg-primary-container text-on-primary-container rounded-md font-label-caps text-label-caps">
+                    Admin
+                </div>
+</div>
+<!-- Member 1 -->
+<div class="bg-surface p-4 rounded-xl flex items-center gap-4 shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] border border-surface-container-lowest">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary font-headline-md">
+                    A
+                </div>
+<div class="flex-1">
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">Aïcha Ndiaye</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">+229 66 12 34 56</p>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+<!-- Member 2 -->
+<div class="bg-surface p-4 rounded-xl flex items-center gap-4 shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] border border-surface-container-lowest">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary font-headline-md">
+                    K
+                </div>
+<div class="flex-1">
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">Koffi Mensah</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">+229 61 98 76 54</p>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+<!-- Member 3 -->
+<div class="bg-surface p-4 rounded-xl flex items-center gap-4 shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] border border-surface-container-lowest opacity-75">
+<div class="w-12 h-12 rounded-full border-2 border-dashed border-outline-variant flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="hourglass_empty">hourglass_empty</span>
+</div>
+<div class="flex-1">
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">En attente...</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">+229 95 55 44 33</p>
+</div>
+<div class="text-on-surface-variant font-label-caps text-label-caps">
+                    Invité
+                </div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+
+<script src="../assets/switch.router.js"></script>
+</body></html>

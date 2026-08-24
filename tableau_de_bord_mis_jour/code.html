@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Tableau de bord - Fintech</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="../assets/switch.css">
+    <script src="../assets/switch.config.js"></script>
+
+    <style>
+        .silk-gradient {
+            background:
+                radial-gradient(circle at 10% 20%, rgba(202, 190, 255, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
+                var(--tw-gradient-stops);
+        }
+
+        .soft-shadow {
+            box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background font-body-lg min-h-screen pb-32">
+    <!-- TopAppBar -->
+    <header
+        class="flex justify-between items-center px-container-margin py-stack-md w-full bg-transparent docked full-width top-0 flat no shadows">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container">
+                <img alt="User profile picture" class="w-full h-full object-cover"
+                    data-alt="A close-up portrait of a professional African woman with a warm smile, wearing modern corporate attire, set against a bright, softly lit minimalist background. High key lighting, modern light-mode aesthetic, corporate yet approachable."
+                    src="../assets/images/img_046.jpg" />
+            </div>
+            <h1 class="font-headline-md text-headline-md text-on-surface font-bold" data-i18n="greeting">Bonjour, Adele
+            </h1>
+        </div>
+        <div class="flex items-center gap-2 text-primary">
+            <div class="relative group">
+                <button aria-expanded="false" aria-haspopup="true"
+                    class="p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant active:scale-95 transition-transform flex items-center gap-1 font-label-caps">
+                    <span class="material-symbols-outlined text-[18px]">language</span>
+                    <span class="text-xs font-bold uppercase">FR</span>
+                </button>
+                <div
+                    class="absolute right-0 top-full mt-1 w-32 bg-surface-container-lowest rounded-lg shadow-lg border border-surface-variant overflow-hidden hidden group-hover:block z-50">
+                    <button
+                        class="w-full text-left px-4 py-2 text-sm hover:bg-surface-container-low transition-colors font-semibold text-primary"
+                        data-lang="fr">Français (FR)</button>
+                    <button class="w-full text-left px-4 py-2 text-sm hover:bg-surface-container-low transition-colors"
+                        data-lang="en">English (EN)</button>
+                    <button class="w-full text-left px-4 py-2 text-sm hover:bg-surface-container-low transition-colors"
+                        data-lang="es">Español (ES)</button>
+                    <button class="w-full text-left px-4 py-2 text-sm hover:bg-surface-container-low transition-colors"
+                        data-lang="de">Deutsch (DE)</button>
+                </div>
+            </div>
+            <button
+                class="p-2 rounded-full hover:bg-surface-container-high transition-colors text-primary font-bold active:scale-95 transition-transform">
+                <span class="material-symbols-outlined" data-icon="search">search</span>
+            </button>
+            <a href="../confirmation_paiement_qr/code.html" id="btn-qr-header" aria-label="Scanner QR"
+                class="p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant active:scale-95 transition-transform flex items-center justify-center"
+                style="text-decoration:none;">
+                <span class="material-symbols-outlined" style="font-size:22px;">qr_code_scanner</span>
+            </a>
+            <button
+                class="p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant active:scale-95 transition-transform">
+                <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+            </button>
+        </div>
+    </header>
+    <main class="px-container-margin flex flex-col gap-stack-lg mt-stack-sm">
+        <!-- Balance Card -->
+        <section
+            class="relative bg-primary text-on-primary rounded-[24px] p-card-padding overflow-hidden soft-shadow aspect-[1.58/1] flex flex-col justify-between">
+            <div class="absolute inset-0 silk-gradient from-primary to-primary-container opacity-90"></div>
+            <div class="relative z-10 flex justify-between items-start">
+                <div>
+                    <p class="font-body-sm text-primary-fixed-dim opacity-90" data-i18n="mainBalance">Solde principal
+                    </p>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span
+                            class="bg-surface/20 text-on-primary font-label-caps text-label-caps px-2 py-1 rounded-full backdrop-blur-sm border border-surface/10"
+                            data-i18n="active">Actif</span>
+                        <div
+                            class="flex items-center gap-1 ml-2 px-2 py-1 bg-surface/10 rounded-full backdrop-blur-sm border border-surface/10">
+                            <span class="material-symbols-outlined text-[14px] text-on-primary">cell_tower</span><span
+                                class="material-symbols-outlined text-[14px] text-on-primary">signal_cellular_alt</span><span
+                                class="material-symbols-outlined text-[14px] text-on-primary">hub</span></div>
+                    </div>
+                </div>
+                <button id="toggle-balance-btn" onclick="toggleBalance()" class="w-8 h-8 rounded-full bg-on-primary/20 backdrop-blur-sm flex items-center justify-center hover:bg-on-primary/30 transition-colors cursor-pointer" aria-label="Masquer le solde">
+                    <span id="eye-icon" class="material-symbols-outlined text-on-primary text-sm">visibility</span>
+                </button>
+            </div>
+            <div class="relative z-10">
+                <h2 id="main-balance-text" data-hidden="false"
+                    class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg tracking-tight">
+                    23,980 FCFA</h2>
+            </div>
+        </section>
+        <!-- Quick Actions -->
+        <section class="grid grid-cols-3 gap-2">
+            <a href="../d_p_t_de_fonds/code.html" class="flex flex-col items-center gap-2 text-center no-underline">
+                <button class="w-14 h-14 bg-primary text-on-primary rounded-full flex items-center justify-center hover:opacity-90 active:scale-95 transition-all shadow-md">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+                </button>
+                <span class="font-label-caps text-label-caps text-on-surface-variant break-words w-full" data-i18n="deposit">Dépôt</span>
+            </a>
+            <a href="../transfert_switch_switch/code.html" class="flex flex-col items-center gap-2 text-center no-underline">
+                <button class="w-14 h-14 bg-surface-container-lowest border border-outline-variant text-primary rounded-full flex items-center justify-center hover:bg-surface-container-low active:scale-95 transition-all">
+                    <span class="material-symbols-outlined">send</span>
+                </button>
+                <span class="font-label-caps text-label-caps text-on-surface-variant break-words w-full" data-i18n="send">Envoyer</span>
+            </a>
+            <a href="../retrait_de_fonds/code.html" class="flex flex-col items-center gap-2 text-center no-underline">
+                <button class="w-14 h-14 bg-surface-container-lowest border border-outline-variant text-primary rounded-full flex items-center justify-center hover:bg-surface-container-low active:scale-95 transition-all">
+                    <span class="material-symbols-outlined">account_balance_wallet</span>
+                </button>
+                <span class="font-label-caps text-label-caps text-on-surface-variant break-words w-full" data-i18n="withdraw">Retrait</span>
+            </a>
+            <a href="../conversion_de_devises/code.html" class="flex flex-col items-center gap-2 text-center no-underline">
+                <button class="w-14 h-14 bg-surface-container-lowest border border-outline-variant text-primary rounded-full flex items-center justify-center hover:bg-surface-container-low active:scale-95 transition-all">
+                    <span class="material-symbols-outlined">sync_alt</span>
+                </button>
+                <span class="font-label-caps text-label-caps text-on-surface-variant break-words w-full" data-i18n="convert">Convertir</span>
+            </a>
+            <a href="../mes_tontines/code.html" class="flex flex-col items-center gap-2 text-center no-underline">
+                <button class="w-14 h-14 bg-primary text-on-primary rounded-full flex items-center justify-center hover:opacity-90 active:scale-95 transition-all shadow-md">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
+                </button>
+                <span class="font-label-caps text-label-caps text-on-surface-variant break-words w-full" data-i18n="groups">Tontines</span>
+            </a>
+            <a href="../mes_cagnottes/code.html" class="flex flex-col items-center gap-2 text-center no-underline">
+                <button class="w-14 h-14 bg-primary text-on-primary rounded-full flex items-center justify-center hover:opacity-90 active:scale-95 transition-all shadow-md">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">savings</span>
+                </button>
+                <span class="font-label-caps text-label-caps text-on-surface-variant break-words w-full" data-i18n="savings">Cagnottes</span>
+            </a>
+        </section>
+        <!-- Stats Cards -->
+        <section class="grid grid-cols-2 gap-gutter">
+            <div
+                class="bg-surface-container-lowest rounded-xl p-4 soft-shadow border border-surface-variant flex flex-col gap-3">
+                <div class="flex items-center gap-2 text-tertiary">
+                    <span class="material-symbols-outlined text-sm">trending_up</span>
+                    <span class="font-label-caps text-label-caps" data-i18n="mostActive">Plus actif</span>
+                </div>
+                <p class="font-headline-md text-headline-md text-on-surface">MTN MoMo</p>
+            </div>
+            <div
+                class="bg-surface-container-lowest rounded-xl p-4 soft-shadow border border-surface-variant flex flex-col gap-3">
+                <div class="flex items-center gap-2 text-tertiary">
+                    <span class="material-symbols-outlined text-sm">shopping_bag</span>
+                    <span class="font-label-caps text-label-caps" data-i18n="majorExpense">Dépense majeure</span>
+                </div>
+                <p class="font-headline-md text-headline-md text-on-surface">Super U</p>
+            </div>
+        </section>
+        <!-- Recent Transactions -->
+        <section class="flex flex-col gap-stack-sm">
+            <div class="flex justify-between items-end mb-2">
+                <h3 class="font-headline-md text-headline-md text-on-surface" data-i18n="recentTransactions">
+                    Transactions récentes</h3>
+                <a href="../historique_des_transactions/code.html" class="text-primary font-body-sm hover:underline" data-i18n="seeAll" style="text-decoration:none;">Voir tout</a>
+            </div>
+            <div class="bg-surface-container-lowest rounded-xl p-2 soft-shadow border border-surface-variant">
+                <a href="../d_tail_de_transaction/code.html"
+                    class="flex items-center justify-between p-3 hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer"
+                    style="text-decoration:none; color:inherit;">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined">storefront</span>
+                        </div>
+                        <div>
+                            <p class="font-body-lg text-on-surface font-semibold" data-i18n="supermarket">Supermarché
+                                Erevan</p>
+                            <p class="font-body-sm text-on-surface-variant" data-i18n="todayTime">Aujourd'hui, 14:30</p>
+                        </div>
+                    </div>
+                    <p class="font-body-lg font-bold text-on-surface">- 4,500 F</p>
+                </a>
+                <a href="../d_tail_de_transaction/code.html"
+                    class="flex items-center justify-between p-3 hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer"
+                    style="text-decoration:none; color:inherit;">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-primary-container text-primary flex items-center justify-center">
+                            <span class="material-symbols-outlined">arrow_downward</span>
+                        </div>
+                        <div>
+                            <p class="font-body-lg text-on-surface font-semibold" data-i18n="receivedFrom">Reçu de Jean
+                            </p>
+                            <p class="font-body-sm text-on-surface-variant" data-i18n="yesterdayTime">Hier, 09:15</p>
+                        </div>
+                    </div>
+                    <p class="font-body-lg font-bold text-green-600">+ 15,000 F</p>
+                </a>
+            </div>
+        </section>
+    </main>
+    <!-- BottomNavBar -->
+    
+    <script>
+        const translations = {
+            fr: {
+                greeting: "Bonjour, Adele",
+                mainBalance: "Solde principal",
+                active: "Actif",
+                deposit: "Dépôt",
+                send: "Envoyer",
+                withdraw: "Retrait",
+                convert: "Convertir",
+                groups: "Tontines",
+                savings: "Cagnottes",
+                mostActive: "Plus actif",
+                majorExpense: "Dépense majeure",
+                recentTransactions: "Transactions récentes",
+                seeAll: "Voir tout",
+                supermarket: "Supermarché Erevan",
+                todayTime: "Aujourd'hui, 14:30",
+                receivedFrom: "Reçu de Jean",
+                yesterdayTime: "Hier, 09:15"
+            },
+            en: {
+                greeting: "Hello, Adele",
+                mainBalance: "Main Balance",
+                active: "Active",
+                deposit: "Deposit",
+                send: "Send",
+                withdraw: "Withdraw",
+                convert: "Convert",
+                groups: "Groups",
+                savings: "Savings",
+                mostActive: "Most Active",
+                majorExpense: "Major Expense",
+                recentTransactions: "Recent Transactions",
+                seeAll: "See All",
+                supermarket: "Erevan Supermarket",
+                todayTime: "Today, 14:30",
+                receivedFrom: "Received from Jean",
+                yesterdayTime: "Yesterday, 09:15"
+            },
+            es: {
+                greeting: "Hola, Adele",
+                mainBalance: "Saldo Principal",
+                active: "Activo",
+                deposit: "Depósito",
+                send: "Enviar",
+                withdraw: "Retirar",
+                convert: "Convertir",
+                groups: "Grupos",
+                savings: "Ahorros",
+                mostActive: "Más Activo",
+                majorExpense: "Gasto Mayor",
+                recentTransactions: "Transacciones Recientes",
+                seeAll: "Ver todo",
+                supermarket: "Supermercado Erevan",
+                todayTime: "Hoy, 14:30",
+                receivedFrom: "Recibido de Jean",
+                yesterdayTime: "Ayer, 09:15"
+            },
+            de: {
+                greeting: "Hallo, Adele",
+                mainBalance: "Hauptguthaben",
+                active: "Aktiv",
+                deposit: "Einzahlen",
+                send: "Senden",
+                withdraw: "Abheben",
+                convert: "Umwandeln",
+                groups: "Gruppen",
+                savings: "Ersparnisse",
+                mostActive: "Am aktivsten",
+                majorExpense: "Größte Ausgabe",
+                recentTransactions: "Letzte Transaktionen",
+                seeAll: "Alle ansehen",
+                supermarket: "Erevan Supermarkt",
+                todayTime: "Heute, 14:30",
+                receivedFrom: "Erhalten von Jean",
+                yesterdayTime: "Gestern, 09:15"
+            }
+        };
+
+        const langButtons = document.querySelectorAll('[data-lang]');
+        const currentLangLabel = document.querySelector('button[aria-haspopup="true"] span:nth-child(2)');
+
+        langButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const lang = e.target.getAttribute('data-lang');
+
+                // Update UI styling for active language
+                langButtons.forEach(b => {
+                    b.classList.remove('text-primary', 'font-semibold');
+                });
+                e.target.classList.add('text-primary', 'font-semibold');
+
+                // Update button text
+                currentLangLabel.textContent = lang.toUpperCase();
+
+                // Translate elements
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (translations[lang] && translations[lang][key]) {
+                        el.textContent = translations[lang][key];
+                    }
+                });
+
+                // Update HTML lang attribute
+                document.documentElement.lang = lang;
+            });
+        });
+
+        function toggleBalance() {
+            const balanceEl = document.getElementById('main-balance-text');
+            const eyeIcon = document.getElementById('eye-icon');
+            if (balanceEl.getAttribute('data-hidden') === 'true') {
+                balanceEl.textContent = '23,980 FCFA';
+                balanceEl.setAttribute('data-hidden', 'false');
+                eyeIcon.textContent = 'visibility';
+            } else {
+                balanceEl.textContent = '•••••••• FCFA';
+                balanceEl.setAttribute('data-hidden', 'true');
+                eyeIcon.textContent = 'visibility_off';
+            }
+        }
+    </script>
+    <script src="../assets/switch.router.js"></script>
+
+<nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+  <a href="../tableau_de_bord_mis_jour/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">home</span>
+    <span class="nav-label" style="font-size:10px;font-weight:700;">Accueil</span>
+  </a>
+  <a href="../historique_des_transactions/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">receipt_long</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Historique</span>
+  </a>
+  <a href="../achats_en_ligne_cartes_virtuelles/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">account_balance_wallet</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Portefeuille</span>
+  </a>
+  <a href="../param_tres_g_n_raux/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">settings</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Paramètres</span>
+  </a>
+</nav>
+</body>
+
+</html>

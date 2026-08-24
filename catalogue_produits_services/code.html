@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Catalogue produits/services</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body { background-color: #F8F9FA; }
+        .card-shadow { box-shadow: 0 10px 20px rgba(0,0,0,0.04); }
+        .nav-shadow { box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-lg text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-on-surface docked full-width top-0 bg-background dark:bg-on-surface flex justify-between items-center px-gutter py-4 w-full sticky z-40">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
+                MP
+            </div>
+<h1 class="font-headline-md text-headline-md-mobile font-bold text-on-surface dark:text-surface-bright">Business Dashboard</h1>
+</div>
+<button class="text-primary dark:text-primary-fixed hover:bg-surface-container-low transition-colors p-2 rounded-full Active: scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="px-container-margin pt-stack-md max-w-4xl mx-auto">
+<div class="flex justify-between items-center mb-stack-lg">
+<div>
+<h2 class="font-display-lg-mobile md:font-display-lg text-on-surface mb-1">Catalogue</h2>
+<p class="font-body-sm text-secondary">Gérez vos produits et services</p>
+</div>
+<button onclick="window.location.href='../g_n_rer_qr_code_de_r_ception/code.html'"
+        class="bg-primary text-on-primary rounded-full px-6 py-3 flex items-center gap-2 hover:opacity-90 transition-opacity card-shadow active:scale-95">
+    <span class="material-symbols-outlined text-xl" data-icon="add">add</span>
+    <span class="font-label-caps text-label-caps hidden sm:inline">Ajouter un produit</span>
+</button>
+</div>
+<!-- Filters/Search -->
+<div class="mb-stack-md relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface rounded-full py-3 pl-12 pr-4 border border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow font-body-sm" placeholder="Rechercher un produit..." type="text"/>
+</div>
+<!-- Bento Grid Catalogue -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-md">
+<!-- Item 1 -->
+<div class="bg-surface rounded-xl p-card-padding card-shadow flex flex-col relative group">
+<div class="w-full h-32 rounded-lg bg-surface-container-low mb-4 overflow-hidden relative" data-alt="A modern, abstract digital rendering of a sleek coffee cup on a minimalist white table, bathed in soft, diffused light. The aesthetic is extremely clean and premium, evoking a high-end Beninese cafe. The color palette focuses on creamy whites, subtle beiges, and a tiny pop of vibrant primary purple in the background to tie into the fintech brand identity." style="background-image: url('../assets/images/img_005.jpg')">
+</div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface line-clamp-1">Café Espresso Premium</h3>
+<span class="font-headline-md text-headline-md-mobile text-primary font-bold">1500F</span>
+</div>
+<p class="font-body-sm text-secondary mb-4 line-clamp-2 flex-grow">Café noir intense, torréfaction locale. Parfait pour commencer la journée.</p>
+<div class="flex gap-2 mt-auto">
+<button class="flex-1 bg-surface-container text-on-surface py-2 rounded-lg font-label-caps text-label-caps hover:bg-surface-variant transition-colors flex items-center justify-center gap-1 border border-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-label-caps text-label-caps hover:opacity-90 transition-colors flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-sm" data-icon="qr_code_2">qr_code_2</span>
+                        Code QR
+                    </button>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface rounded-xl p-card-padding card-shadow flex flex-col relative group">
+<div class="w-full h-32 rounded-lg bg-surface-container-low mb-4 overflow-hidden relative" data-alt="A beautifully designed, minimalist digital illustration of a fresh pastry on a pristine white plate. The lighting is soft and airy, creating a sense of morning freshness. The image uses a clean, light mode palette with subtle hints of warm gold and the brand's primary purple acting as a soft, atmospheric glow in the corners, ensuring it feels modern and premium." style="background-image: url('../assets/images/img_006.jpg')">
+</div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface line-clamp-1">Croissant Beurre</h3>
+<span class="font-headline-md text-headline-md-mobile text-primary font-bold">800F</span>
+</div>
+<p class="font-body-sm text-secondary mb-4 line-clamp-2 flex-grow">Croissant pur beurre, croustillant à l'extérieur et moelleux à l'intérieur.</p>
+<div class="flex gap-2 mt-auto">
+<button class="flex-1 bg-surface-container text-on-surface py-2 rounded-lg font-label-caps text-label-caps hover:bg-surface-variant transition-colors flex items-center justify-center gap-1 border border-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-label-caps text-label-caps hover:opacity-90 transition-colors flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-sm" data-icon="qr_code_2">qr_code_2</span>
+                        Code QR
+                    </button>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="bg-surface rounded-xl p-card-padding card-shadow flex flex-col relative group">
+<div class="w-full h-32 rounded-lg bg-surface-container-low mb-4 overflow-hidden relative" data-alt="A highly stylized, modern digital rendering representing a consulting service. It features clean, geometric floating elements like stylized documents and abstract chat bubbles in a bright, white studio environment. The aesthetic is progressive and trustworthy, utilizing deep blacks, pristine whites, and smooth gradients of the primary purple hue to convey high-end business efficiency." style="background-image: url('../assets/images/img_007.jpg')">
+</div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface line-clamp-1">Consultation (1h)</h3>
+<span class="font-headline-md text-headline-md-mobile text-primary font-bold">15000F</span>
+</div>
+<p class="font-body-sm text-secondary mb-4 line-clamp-2 flex-grow">Session de conseil personnalisé. Réservation requise.</p>
+<div class="flex gap-2 mt-auto">
+<button class="flex-1 bg-surface-container text-on-surface py-2 rounded-lg font-label-caps text-label-caps hover:bg-surface-variant transition-colors flex items-center justify-center gap-1 border border-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-label-caps text-label-caps hover:opacity-90 transition-colors flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-sm" data-icon="qr_code_2">qr_code_2</span>
+                        Code QR
+                    </button>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="bg-surface rounded-xl p-card-padding card-shadow flex flex-col relative group border border-dashed border-outline-variant hover:border-primary transition-colors cursor-pointer justify-center items-center h-full min-h-[280px]">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-4 text-primary">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</div>
+<span class="font-headline-md text-headline-md-mobile text-on-surface">Nouveau produit</span>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+
+<!-- Floating Action Button (FAB) Mobile only -->
+<button class="md:hidden fixed bottom-28 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-xl flex items-center justify-center hover:opacity-90 transition-opacity z-40">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<script src="../assets/switch.router.js"></script>
+</body></html>

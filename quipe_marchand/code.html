@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Équipe Marchand - Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
+    body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); }
+    .soft-shadow { box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04); }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32 flex flex-col antialiased">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-container-margin py-stack-md w-full max-w-5xl mx-auto pt-6">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-xl font-bold text-on-surface">Équipe Marchand</h1>
+        <p class="text-xs text-on-surface-variant">Café de Cotonou</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="openInviteModal()" class="bg-primary text-on-primary text-sm font-semibold px-4 py-2 rounded-full flex items-center gap-1.5 shadow-sm hover:opacity-90 active:scale-95 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-[18px]">person_add</span>
+        <span>Inviter</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="px-container-margin max-w-5xl mx-auto w-full pt-4 flex flex-col gap-6">
+    <!-- Summary Header -->
+    <section class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant soft-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h2 class="text-lg font-bold text-on-surface">Collaborateurs (3/5)</h2>
+        <p class="text-sm text-on-surface-variant mt-0.5">Gérez les accès et les rôles de votre personnel.</p>
+      </div>
+      <div class="flex items-center gap-2 bg-surface-container px-3 py-1.5 rounded-full">
+        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+        <span class="text-xs font-semibold text-on-surface">2 actifs en service</span>
+      </div>
+    </section>
+
+    <!-- Team Bento Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="team-list">
+      <!-- Manager Card -->
+      <div class="bg-surface-container-lowest rounded-2xl p-5 soft-shadow flex flex-col justify-between border border-outline-variant relative overflow-hidden group hover:border-primary transition-all">
+        <div>
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-3">
+              <img class="w-12 h-12 rounded-full object-cover border-2 border-primary/20" alt="Amina Diallo" src="../assets/images/img_041.jpg"/>
+              <div>
+                <h3 class="text-base font-bold text-on-surface">Amina Diallo</h3>
+                <span class="inline-flex items-center gap-1 bg-primary/10 text-primary text-[11px] font-bold px-2 py-0.5 rounded-full mt-1">
+                  <span class="material-symbols-outlined text-[13px]" style="font-variation-settings:'FILL' 1;">admin_panel_settings</span>
+                  Manager
+                </span>
+              </div>
+            </div>
+            <button class="text-on-surface-variant hover:text-on-surface p-1.5 rounded-full hover:bg-surface-container transition-colors">
+              <span class="material-symbols-outlined text-[20px]">more_vert</span>
+            </button>
+          </div>
+          <div class="flex flex-col gap-2 mt-4 pt-3 border-t border-outline-variant/60 text-xs text-on-surface-variant">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[15px]">mail</span>
+              <span>amina.d@entreprise.bj</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[15px]">phone</span>
+              <span>+229 97 12 34 56</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 pt-3 border-t border-outline-variant/40 flex justify-between items-center text-xs">
+          <span class="text-on-surface-variant">Boutique Principale</span>
+          <span class="text-green-600 font-semibold flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Actif
+          </span>
+        </div>
+      </div>
+
+      <!-- Cashier Card 1 -->
+      <div class="bg-surface-container-lowest rounded-2xl p-5 soft-shadow flex flex-col justify-between border border-outline-variant relative overflow-hidden group hover:border-primary transition-all">
+        <div>
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-3">
+              <img class="w-12 h-12 rounded-full object-cover border-2 border-secondary/20" alt="Koffi Mensah" src="../assets/images/img_042.jpg"/>
+              <div>
+                <h3 class="text-base font-bold text-on-surface">Koffi Mensah</h3>
+                <span class="inline-flex items-center gap-1 bg-surface-container text-on-surface-variant text-[11px] font-bold px-2 py-0.5 rounded-full mt-1">
+                  <span class="material-symbols-outlined text-[13px]">point_of_sale</span>
+                  Caissier
+                </span>
+              </div>
+            </div>
+            <button class="text-on-surface-variant hover:text-on-surface p-1.5 rounded-full hover:bg-surface-container transition-colors">
+              <span class="material-symbols-outlined text-[20px]">more_vert</span>
+            </button>
+          </div>
+          <div class="flex flex-col gap-2 mt-4 pt-3 border-t border-outline-variant/60 text-xs text-on-surface-variant">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[15px]">store</span>
+              <span>Caisse #1 - Haie Vive</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[15px]">phone</span>
+              <span>+229 96 88 44 22</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 pt-3 border-t border-outline-variant/40 flex justify-between items-center text-xs">
+          <span class="text-on-surface-variant">Aujourd'hui : 14 ventes</span>
+          <span class="text-green-600 font-semibold flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> En service
+          </span>
+        </div>
+      </div>
+
+      <!-- Cashier Card 2 -->
+      <div class="bg-surface-container-lowest rounded-2xl p-5 soft-shadow flex flex-col justify-between border border-outline-variant relative overflow-hidden group hover:border-primary transition-all">
+        <div>
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-base border-2 border-primary/20">
+                FA
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-on-surface">Fatou Aw</h3>
+                <span class="inline-flex items-center gap-1 bg-surface-container text-on-surface-variant text-[11px] font-bold px-2 py-0.5 rounded-full mt-1">
+                  <span class="material-symbols-outlined text-[13px]">point_of_sale</span>
+                  Caissière
+                </span>
+              </div>
+            </div>
+            <button class="text-on-surface-variant hover:text-on-surface p-1.5 rounded-full hover:bg-surface-container transition-colors">
+              <span class="material-symbols-outlined text-[20px]">more_vert</span>
+            </button>
+          </div>
+          <div class="flex flex-col gap-2 mt-4 pt-3 border-t border-outline-variant/60 text-xs text-on-surface-variant">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[15px]">store</span>
+              <span>Kiosque - Akpakpa</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[15px]">phone</span>
+              <span>+229 61 77 99 11</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 pt-3 border-t border-outline-variant/40 flex justify-between items-center text-xs">
+          <span class="text-on-surface-variant">Dernière activité : hier</span>
+          <span class="text-on-surface-variant font-medium flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Hors ligne
+          </span>
+        </div>
+      </div>
+
+      <!-- Add New Member Card Button -->
+      <button onclick="openInviteModal()" class="bg-surface-container/40 border-2 border-dashed border-outline-variant rounded-2xl p-6 flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-surface-container hover:border-primary transition-all min-h-[190px] text-center group">
+        <div class="w-12 h-12 rounded-full bg-surface-container-lowest shadow-sm flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-2xl">add</span>
+        </div>
+        <div>
+          <p class="font-bold text-on-surface text-sm">Ajouter un collaborateur</p>
+          <p class="text-xs text-on-surface-variant mt-0.5">Attribuer un rôle et des permissions</p>
+        </div>
+      </button>
+    </section>
+  </main>
+
+  <!-- Invite Member Modal -->
+  <div id="invite-modal" class="fixed inset-0 bg-black/50 z-50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-surface-container-lowest w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 flex flex-col gap-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-bold text-on-surface">Ajouter un collaborateur</h3>
+        <button onclick="closeInviteModal()" class="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant cursor-pointer">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="handleInvite(event)" class="flex flex-col gap-4 mt-2">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-bold text-on-surface-variant uppercase">Nom complet</label>
+          <input type="text" id="member-name" required placeholder="Ex: Marc Agossou" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary"/>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-bold text-on-surface-variant uppercase">Téléphone ou Email</label>
+          <input type="text" id="member-contact" required placeholder="+229 97 00 00 00" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary"/>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-bold text-on-surface-variant uppercase">Rôle</label>
+          <select id="member-role" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary">
+            <option value="Caissier">Caissier (Encaissements uniquement)</option>
+            <option value="Manager">Manager (Gestion & Rapports)</option>
+            <option value="Comptable">Comptable (Exports & Ventes)</option>
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-bold text-on-surface-variant uppercase">Point de vente</label>
+          <select id="member-store" class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary">
+            <option value="Boutique Principale - Cotonou">Boutique Principale - Cotonou</option>
+            <option value="Kiosque - Akpakpa">Kiosque - Akpakpa</option>
+            <option value="Point Calavi">Point Calavi</option>
+          </select>
+        </div>
+
+        <div class="flex gap-3 mt-3">
+          <button type="button" onclick="closeInviteModal()" class="flex-1 py-3 rounded-full border border-outline-variant font-semibold text-sm hover:bg-surface-container cursor-pointer">
+            Annuler
+          </button>
+          <button type="submit" class="flex-1 py-3 rounded-full bg-primary text-on-primary font-semibold text-sm hover:opacity-90 active:scale-95 transition-all shadow-md cursor-pointer">
+            Envoyer l'invitation
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 bg-on-surface text-surface px-5 py-3 rounded-full text-sm font-semibold shadow-xl z-50 hidden flex items-center gap-2">
+    <span class="material-symbols-outlined text-green-400 text-lg">check_circle</span>
+    <span id="toast-msg">Invitation envoyée avec succès !</span>
+  </div>
+
+  <script>
+    function openInviteModal() {
+      document.getElementById('invite-modal').classList.remove('hidden');
+    }
+    function closeInviteModal() {
+      document.getElementById('invite-modal').classList.add('hidden');
+    }
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+    function handleInvite(e) {
+      e.preventDefault();
+      const name = document.getElementById('member-name').value;
+      const role = document.getElementById('member-role').value;
+      const contact = document.getElementById('member-contact').value;
+      const store = document.getElementById('member-store').value;
+      
+      closeInviteModal();
+      showToast('Invitation envoyée à ' + name + ' (' + role + ') !');
+      
+      document.getElementById('member-name').value = '';
+      document.getElementById('member-contact').value = '';
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

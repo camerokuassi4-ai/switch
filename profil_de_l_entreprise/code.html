@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profil de l'entreprise</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body {
+            background-color: #F8F9FA;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .fluid-silk {
+            background: linear-gradient(135deg, #7B5CFA 0%, #a18bfa 50%, #c4b5fd 100%);
+            background-size: 200% 200%;
+            animation: gradientMove 8s ease infinite;
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .soft-shadow {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
+        }
+        /* Mobile specific adjustments to ensure content doesn't get hidden behind floating nav */
+        .pb-safe { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-sm text-on-surface antialiased pb-safe min-h-screen relative">
+<!-- TopAppBar (Hidden on Mobile per layout rules, typically used on desktop, but keeping structural intent for consistency if needed, though instructions say to hide nav shell on transactional, this is a destination profile) -->
+<header class="hidden md:flex justify-between items-center px-gutter py-4 w-full bg-background dark:bg-on-surface">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="A professional headshot of an African entrepreneur smiling warmly. The lighting is bright and modern, conveying trust and approachability. Shot against a clean, light-mode background with soft shadows, fitting a modern fintech aesthetic." class="w-full h-full object-cover" src="../assets/images/img_038.jpg"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface dark:text-surface-bright">Business Dashboard</h1>
+</div>
+<button class="text-primary dark:text-primary-fixed hover:bg-surface-container-low transition-colors p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-md mx-auto px-container-margin pt-stack-md flex flex-col gap-stack-lg">
+<!-- Header / Back Action (Mobile) -->
+<div class="flex items-center justify-between md:hidden">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface shadow-sm border border-surface-variant text-on-surface">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md-mobile text-on-surface">Profil</h1>
+<div class="w-10 h-10"></div> <!-- Spacer for centering -->
+</div>
+<!-- Profile Header Card (Fluid Silk) -->
+<section class="rounded-3xl fluid-silk p-card-padding flex flex-col items-center justify-center text-center text-white relative overflow-hidden soft-shadow">
+<div class="w-24 h-24 rounded-full bg-white mb-stack-md border-4 border-white/20 overflow-hidden shadow-lg relative z-10">
+<img alt="A modern, abstract logo of a business, featuring clean geometric lines in primary purple against a stark white background. The image is crisp, professional, and suited for a premium fintech application interface." class="w-full h-full object-cover" src="../assets/images/img_039.jpg"/>
+</div>
+<h2 class="font-display-lg-mobile text-display-lg-mobile font-bold relative z-10">Boutique Cotonou</h2>
+<p class="font-body-lg text-body-lg opacity-90 relative z-10">Marchand Vérifié</p>
+<!-- Edit Button Floating on Card -->
+<button class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors z-10">
+<span class="material-symbols-outlined text-white text-[20px]" data-icon="edit">edit</span>
+</button>
+</section>
+<!-- Details Section -->
+<section class="flex flex-col gap-stack-sm">
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface-variant px-2">Informations de contact</h3>
+<div class="bg-surface rounded-2xl soft-shadow p-2 flex flex-col gap-2">
+<!-- Email Item -->
+<div class="flex items-center p-3 rounded-xl hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center mr-4 group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary-container" data-icon="mail">mail</span>
+</div>
+<div class="flex-1">
+<p class="font-label-caps text-label-caps text-on-surface-variant">Email</p>
+<p class="font-body-lg text-body-lg text-on-surface">contact@boutique-cotonou.bj</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="h-px w-full bg-surface-variant ml-14"></div>
+<!-- Phone Item -->
+<div class="flex items-center p-3 rounded-xl hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center mr-4 group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary-container" data-icon="call">call</span>
+</div>
+<div class="flex-1">
+<p class="font-label-caps text-label-caps text-on-surface-variant">Téléphone</p>
+<p class="font-body-lg text-body-lg text-on-surface">+229 97 XX XX XX</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="h-px w-full bg-surface-variant ml-14"></div>
+<!-- Address Item -->
+<div class="flex items-center p-3 rounded-xl hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center mr-4 group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary-container" data-icon="location_on">location_on</span>
+</div>
+<div class="flex-1">
+<p class="font-label-caps text-label-caps text-on-surface-variant">Adresse</p>
+<p class="font-body-lg text-body-lg text-on-surface">Quartier Haie Vive, Cotonou</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Settings / Danger Zone -->
+<section class="flex flex-col gap-stack-sm mt-stack-sm">
+<div class="bg-surface rounded-2xl soft-shadow p-2">
+<!-- Log out -->
+<div onclick="window.switchNavigate ? window.switchNavigate('../accueil_splash_mis_jour/code.html') : window.location.href='../accueil_splash_mis_jour/code.html'" class="flex items-center p-3 rounded-xl hover:bg-error-container transition-colors group cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center mr-4 group-hover:bg-error group-hover:text-on-error transition-colors">
+<span class="material-symbols-outlined text-error group-hover:text-on-error" data-icon="logout">logout</span>
+</div>
+<div class="flex-1">
+<p class="font-body-lg text-body-lg text-error font-semibold">Déconnexion</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+
+<script src="../assets/switch.router.js"></script>
+
+<nav id="switch-nav" role="navigation" aria-label="Navigation Marchand" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+  <a href="../tableau_de_bord_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">store</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+  </a>
+  <a href="../historique_des_ventes/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">receipt_long</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Ventes</span>
+  </a>
+  <a href="../g_n_rer_qr_code_de_r_ception/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">qr_code_2</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">QR</span>
+  </a>
+  <a href="../profil_de_l_entreprise/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">business</span>
+    <span class="nav-label" style="font-size:10px;font-weight:700;">Entreprise</span>
+  </a>
+  <a href="../support_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">help</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Support</span>
+  </a>
+</nav>
+</body></html>

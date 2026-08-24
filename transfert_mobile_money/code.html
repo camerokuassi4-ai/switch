@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Transfert Mobile Money</title>
+<!-- Google Fonts: Hanken Grotesk -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+
+<!-- Material Symbols -->
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+<!-- Tailwind Config -->
+
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+        /* Custom subtle shadow for cards Level 1 */
+        .shadow-level-1 {
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04);
+        }
+        /* Custom shadow for floating nav Level 2 */
+        .shadow-30px-y-15px-opacity-15 {
+            box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        /* Hide scrollbar for a cleaner look if needed */
+        ::-webkit-scrollbar { display: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-lowest text-on-surface antialiased min-h-screen relative pb-[100px]">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-container-margin py-stack-md w-full top-0 bg-transparent">
+<div class="flex items-center gap-stack-md">
+<!-- Leading Avatar -->
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-variant flex-shrink-0 border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a young Beninese woman smiling warmly, soft lighting, modern corporate style." src="../assets/images/img_047.jpg"/>
+</div>
+<!-- Headline -->
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Bonjour, Adele</h1>
+</div>
+<!-- Trailing Icon -->
+<button aria-label="Search" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">search</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="px-container-margin mt-stack-md flex flex-col gap-stack-lg">
+<!-- Page Title -->
+<div>
+<h2 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface">Transfert Mobile Money</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">Sélectionnez le réseau et entrez les détails.</p>
+</div>
+<!-- Operator Selection (Bento-style grid) -->
+<section class="flex flex-col gap-stack-sm">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Opérateur</h3>
+<div class="grid grid-cols-3 gap-gutter">
+<!-- MTN Option (Selected state) -->
+<button class="relative flex flex-col items-center justify-center p-stack-md rounded-xl bg-surface border-2 border-primary shadow-level-1 transition-all group">
+<div class="absolute top-2 right-2 w-3 h-3 bg-primary rounded-full"></div>
+<div class="w-12 h-12 rounded-full overflow-hidden mb-2 bg-white flex items-center justify-center">
+<img alt="MTN" class="w-full h-full object-contain p-1" data-alt="The bright yellow and blue logo of MTN telecommunications network, clean minimalist rendering on white background." src="../assets/images/img_048.jpg"/>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface">MTN</span>
+</button>
+<!-- Moov Option -->
+<button class="flex flex-col items-center justify-center p-stack-md rounded-xl bg-surface border border-outline-variant hover:border-primary transition-all group">
+<div class="w-12 h-12 rounded-full overflow-hidden mb-2 bg-white flex items-center justify-center border border-surface-container-high">
+<img alt="Moov" class="w-full h-full object-contain p-1" data-alt="The blue and orange logo of Moov Africa network, clean minimalist rendering on white background." src="../assets/images/img_049.jpg"/>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant group-hover:text-primary transition-colors">Moov</span>
+</button>
+<!-- Celtiis Option -->
+<button class="flex flex-col items-center justify-center p-stack-md rounded-xl bg-surface border border-outline-variant hover:border-primary transition-all group">
+<div class="w-12 h-12 rounded-full overflow-hidden mb-2 bg-white flex items-center justify-center border border-surface-container-high">
+<img alt="Celtiis" class="w-full h-full object-contain p-1" data-alt="The green and white logo of Celtiis network, clean minimalist rendering on white background." src="../assets/images/img_050.jpg"/>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant group-hover:text-primary transition-colors">Celtiis</span>
+</button>
+</div>
+</section>
+<!-- Input Form -->
+<section class="flex flex-col gap-stack-md bg-surface p-card-padding rounded-xl shadow-level-1 border border-surface-container-high">
+<!-- Phone Number Input -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider" for="phone">Numéro de téléphone</label>
+<div class="flex items-center rounded-lg border border-outline-variant bg-surface-container-lowest focus-within:border-primary focus-within:ring-2 focus-within:ring-primary-fixed-dim transition-all overflow-hidden">
+<div class="pl-4 pr-2 py-3 bg-surface-container-low text-on-surface-variant font-body-lg text-body-lg flex items-center gap-2 border-r border-outline-variant">
+<img alt="Benin" class="w-5 h-5 rounded-full object-cover" data-alt="A small circular icon of the Benin national flag (green, yellow, red), flat design." src="../assets/images/img_051.jpg"/>
+                        +229
+                    </div>
+<input class="flex-1 bg-transparent border-none py-3 px-4 font-body-lg text-body-lg text-on-surface focus:ring-0 placeholder:text-outline" id="phone" placeholder="00 00 00 00" type="tel"/>
+</div>
+</div>
+<!-- Amount Input -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider" for="amount">Montant</label>
+<div class="flex items-center rounded-lg border border-outline-variant bg-surface-container-lowest focus-within:border-primary focus-within:ring-2 focus-within:ring-primary-fixed-dim transition-all overflow-hidden relative">
+<input class="flex-1 bg-transparent border-none py-4 px-4 font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface focus:ring-0 placeholder:text-outline-variant text-right pr-16" id="amount" placeholder="0" type="number"/>
+<span class="absolute right-4 font-headline-md text-headline-md text-on-surface-variant pointer-events-none">FCFA</span>
+</div>
+</div>
+</section>
+<!-- Action Button -->
+<div class="mt-stack-sm">
+<button class="w-full bg-primary text-on-primary py-4 px-6 rounded-full font-headline-md text-headline-md font-bold flex items-center justify-center gap-2 hover:bg-surface-tint transition-colors shadow-level-1">
+                Suivant
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">arrow_forward</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<!-- Mapped 'wallet' as active since it relates to money transfer intent -->
+
+<script src="../assets/switch.forms.js"></script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

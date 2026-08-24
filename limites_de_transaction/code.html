@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Limites - Beninese Fintech</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+          body {
+              background-color: #F8F9FA;
+          }
+          .shadow-ambient-card {
+              box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04);
+          }
+          .shadow-30px-y-15px-opacity-15 {
+              box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.15);
+          }
+          .mesh-gradient-subtle {
+              background-color: #ffffff;
+              background-image: radial-gradient(at 8% 85%, hsla(253, 71%, 63%, 0.15) 0px, transparent 50%),
+                                radial-gradient(at 93% 15%, hsla(253, 71%, 63%, 0.1) 0px, transparent 50%);
+          }
+      </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-background font-body-sm min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-transparent docked full-width top-0 flex justify-between items-center px-container-margin py-stack-md w-full sticky z-10 transition-colors">
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Limites</h1>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+</header>
+<main class="px-container-margin mt-stack-md flex flex-col gap-stack-lg max-w-2xl mx-auto">
+<!-- Explanation Text -->
+<section class="text-center px-4">
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                Gérez vos limites de transaction pour assurer la sécurité de votre compte tout en gardant la flexibilité dont vous avez besoin.
+            </p>
+</section>
+<!-- Daily Limit Gauge Card -->
+<section class="bg-surface-container-lowest rounded-3xl p-card-padding shadow-ambient-card mesh-gradient-subtle relative overflow-hidden flex flex-col gap-6">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Limite Journalière</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Transferts &amp; Paiements</p>
+</div>
+<div class="bg-surface-container px-3 py-1 rounded-full border border-outline-variant">
+<span class="font-label-caps text-label-caps text-primary">Standard</span>
+</div>
+</div>
+<!-- Gauge UI -->
+<div class="flex flex-col gap-3 mt-4">
+<div class="flex justify-between items-end">
+<div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block mb-1">Utilisé aujourd'hui</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-on-surface md:font-display-lg md:text-display-lg">500,000</span>
+<span class="font-body-lg text-body-lg text-on-surface-variant ml-1">FCFA</span>
+</div>
+<div class="text-right">
+<span class="font-body-sm text-body-sm text-on-surface-variant block mb-1">Maximum</span>
+<span class="font-headline-md text-headline-md text-on-surface-variant">1,000,000</span>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="h-4 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-1000 ease-out" style="width: 50%;"></div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-center mt-2">
+                    Il vous reste <span class="font-bold text-on-surface">500,000 FCFA</span> pour la journée.
+                </p>
+</div>
+</section>
+<!-- Monthly Limit Info (Secondary) -->
+<section class="bg-surface-container-lowest rounded-3xl p-card-padding shadow-ambient-card flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+</div>
+<div>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface">Limite Mensuelle</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Réinitialisée le 1er du mois</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-lg text-body-lg font-bold text-on-surface">2.5M / 5M</span>
+</div>
+</div>
+<!-- Small Progress -->
+<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 50%;"></div>
+</div>
+</section>
+<!-- Action Button -->
+<section class="mt-4 flex justify-center">
+<button class="bg-primary text-on-primary py-4 px-8 rounded-full font-body-lg text-body-lg font-semibold shadow-ambient-card hover:bg-primary-container hover:text-on-primary-container transition-all flex items-center gap-2 active:scale-95">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+                Demander une augmentation
+            </button>
+</section>
+</main>
+<!-- BottomNavBar (Hidden on desktop as per rules, though usually suppressed on purely transactional/settings pages, we render it if considered a main destination, but 'Limites' is a setting. However, prompt explicitly requests "Navigation ovale flottante", so we must include it despite standard suppression rules to follow prompt.) -->
+
+<script src="../assets/switch.router.js"></script>
+</body></html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Retrait Marchand</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen font-body-lg text-body-lg">
+<!-- Header (Transactional - No Navigation Shell as per rules for focused journey) -->
+<header class="flex items-center justify-between px-gutter py-4 bg-background sticky top-0 z-10">
+<button aria-label="Retour" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface">Retrait</h1>
+<div class="w-10 h-10"></div> <!-- Spacer for center alignment -->
+</header>
+<main class="px-container-margin pb-32">
+<!-- Balance Display -->
+<section class="mt-stack-md flex flex-col items-center justify-center py-stack-lg">
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-sm">Solde disponible</p>
+<h2 class="font-display-lg-mobile text-display-lg-mobile text-primary">1 250 000 CFA</h2>
+</section>
+<!-- Amount Input -->
+<section class="mt-stack-lg">
+<label class="font-body-sm text-body-sm text-on-surface-variant block mb-stack-sm ml-1" for="amount">Montant à retirer</label>
+<div class="relative flex items-center">
+<input class="w-full bg-surface-container-lowest border border-surface-variant rounded-xl px-4 py-4 font-headline-md text-headline-md text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-fixed-dim transition-all shadow-[0_10px_20px_rgba(0,0,0,0.04)]" id="amount" inputmode="numeric" placeholder="0" type="number"/>
+<span class="absolute right-4 font-headline-md text-headline-md text-on-surface-variant">CFA</span>
+</div>
+<div class="flex gap-2 mt-stack-md">
+<button class="flex-1 py-2 bg-surface-container-low text-primary rounded-lg font-label-caps text-label-caps hover:bg-surface-variant transition-colors border border-transparent">25%</button>
+<button class="flex-1 py-2 bg-surface-container-low text-primary rounded-lg font-label-caps text-label-caps hover:bg-surface-variant transition-colors border border-transparent">50%</button>
+<button class="flex-1 py-2 bg-surface-container-low text-primary rounded-lg font-label-caps text-label-caps hover:bg-surface-variant transition-colors border border-transparent">Max</button>
+</div>
+</section>
+<!-- Withdrawal Method Selection -->
+<section class="mt-stack-lg">
+<h3 class="font-body-sm text-body-sm text-on-surface-variant block mb-stack-md ml-1">Méthode de retrait</h3>
+<div class="grid grid-cols-1 gap-stack-md">
+<!-- Mobile Money Option 1 -->
+<label class="relative flex items-center p-card-padding bg-surface-container-lowest rounded-xl cursor-pointer border-2 border-transparent hover:border-surface-variant transition-all shadow-[0_10px_20px_rgba(0,0,0,0.04)]">
+<input checked="" class="peer sr-only" name="withdraw_method" type="radio"/>
+<div class="absolute inset-0 rounded-xl border-2 border-transparent peer-checked:border-primary pointer-events-none transition-colors"></div>
+<div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+<!-- Abstract MTN MoMo representation -->
+<span class="font-bold text-black text-xs">MTN</span>
+</div>
+<div class="flex-1">
+<p class="font-headline-md text-body-lg font-semibold text-on-surface">MTN Mobile Money</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">+229 97 ** ** 45</p>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant peer-checked:border-primary peer-checked:bg-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-white text-[16px] opacity-0 peer-checked:opacity-100">check</span>
+</div>
+</label>
+<!-- Mobile Money Option 2 -->
+<label class="relative flex items-center p-card-padding bg-surface-container-lowest rounded-xl cursor-pointer border-2 border-transparent hover:border-surface-variant transition-all shadow-[0_10px_20px_rgba(0,0,0,0.04)]">
+<input class="peer sr-only" name="withdraw_method" type="radio"/>
+<div class="absolute inset-0 rounded-xl border-2 border-transparent peer-checked:border-primary pointer-events-none transition-colors"></div>
+<div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+<!-- Abstract Moov representation -->
+<span class="font-bold text-white text-xs">Moov</span>
+</div>
+<div class="flex-1">
+<p class="font-headline-md text-body-lg font-semibold text-on-surface">Moov Money</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">+229 95 ** ** 12</p>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant peer-checked:border-primary peer-checked:bg-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-white text-[16px] opacity-0 peer-checked:opacity-100">check</span>
+</div>
+</label>
+<!-- Bank Option -->
+<label class="relative flex items-center p-card-padding bg-surface-container-lowest rounded-xl cursor-pointer border-2 border-transparent hover:border-surface-variant transition-all shadow-[0_10px_20px_rgba(0,0,0,0.04)]">
+<input class="peer sr-only" name="withdraw_method" type="radio"/>
+<div class="absolute inset-0 rounded-xl border-2 border-transparent peer-checked:border-primary pointer-events-none transition-colors"></div>
+<div class="w-12 h-12 bg-surface-variant rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+<span class="material-symbols-outlined text-on-surface">account_balance</span>
+</div>
+<div class="flex-1">
+<p class="font-headline-md text-body-lg font-semibold text-on-surface">Compte Bancaire</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Ecobank **** 8932</p>
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant peer-checked:border-primary peer-checked:bg-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-white text-[16px] opacity-0 peer-checked:opacity-100">check</span>
+</div>
+</label>
+<!-- Add New Method -->
+<button class="flex items-center p-card-padding bg-transparent rounded-xl border border-dashed border-outline-variant hover:bg-surface-container-low transition-colors text-left">
+<div class="w-12 h-12 bg-surface-container rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+<span class="material-symbols-outlined text-primary">add</span>
+</div>
+<div class="flex-1">
+<p class="font-headline-md text-body-lg font-semibold text-primary">Ajouter un moyen</p>
+</div>
+</button>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Action Button -->
+<div class="fixed bottom-0 left-0 right-0 p-gutter bg-gradient-to-t from-background via-background to-transparent pb-8">
+<button onclick="window.location.href='../confirmation_de_l_op_ration_code/code.html'"
+        class="w-full bg-primary text-on-primary py-4 rounded-xl font-headline-md text-headline-md font-bold shadow-[0_15px_30px_rgba(123,92,250,0.3)] hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+    Confirmer le retrait
+    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<script src="../assets/switch.forms.js"></script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

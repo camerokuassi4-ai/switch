@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Convertir</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body {
+            background-color: #F8F9FA; /* Level 0 ambient background as per style guide */
+        }
+        /* Custom Shadow for Level 1 Cards */
+        .shadow-level-1 {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
+        }
+        /* Gradient mapping for standard primary purple #7B5CFA -> using primary-container or explicit styles if needed */
+        .btn-primary {
+            background-color: #7B5CFA;
+            color: white;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-lg text-on-surface antialiased flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="docked full-width top-0 bg-transparent flex justify-between items-center px-container-margin py-stack-md w-full flat no shadows z-40 relative">
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Convertir</h1>
+</div>
+<div class="w-10 h-10">
+<!-- Empty placeholder for balance if needed, or trailing action -->
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-container-margin pb-stack-lg flex flex-col gap-stack-lg max-w-md mx-auto w-full mt-4">
+<!-- Conversion Form Area -->
+<div class="bg-surface-container-lowest rounded-[24px] p-6 shadow-level-1 relative">
+<!-- Source Currency Input -->
+<div class="mb-6 relative">
+<label class="font-body-sm text-on-surface-variant block mb-2">Vous envoyez</label>
+<div class="flex items-center justify-between border border-outline-variant rounded-xl p-4 bg-background focus-within:border-[#7B5CFA] focus-within:ring-2 focus-within:ring-[#7B5CFA]/20 transition-all">
+<div class="flex flex-col flex-1 mr-4">
+<input class="w-full bg-transparent border-none p-0 font-display-lg-mobile text-on-surface focus:ring-0" placeholder="0.00" type="number" value="150000"/>
+</div>
+<button class="flex items-center gap-2 bg-surface-container-high rounded-lg px-3 py-2 shrink-0 hover:bg-surface-dim transition-colors">
+<div class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<span class="font-label-caps text-on-primary-container text-[10px]">XOF</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">FCFA</span>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</button>
+</div>
+<div class="mt-2 font-body-sm text-on-surface-variant">Solde disponible: 350,000 FCFA</div>
+</div>
+<!-- Swap Button - Absolute center between the two inputs -->
+<div class="absolute left-1/2 top-[135px] -translate-x-1/2 z-10">
+<button class="w-12 h-12 rounded-full bg-surface-container-lowest border border-outline-variant flex items-center justify-center shadow-sm hover:bg-surface-container-high transition-colors text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">swap_vert</span>
+</button>
+</div>
+<!-- Destination Currency Input -->
+<div class="mt-8 mb-6 relative">
+<label class="font-body-sm text-on-surface-variant block mb-2">Le destinataire reçoit</label>
+<div class="flex items-center justify-between border border-outline-variant rounded-xl p-4 bg-background focus-within:border-[#7B5CFA] focus-within:ring-2 focus-within:ring-[#7B5CFA]/20 transition-all">
+<div class="flex flex-col flex-1 mr-4">
+<input class="w-full bg-transparent border-none p-0 font-display-lg-mobile text-on-surface focus:ring-0 opacity-80" placeholder="0.00" readonly="" type="text" value="228.67"/>
+</div>
+<button class="flex items-center gap-2 bg-surface-container-high rounded-lg px-3 py-2 shrink-0 hover:bg-surface-dim transition-colors">
+<div class="w-6 h-6 rounded-full bg-secondary-fixed flex items-center justify-center overflow-hidden border border-outline-variant">
+<!-- Simple EU flag representation -->
+<div class="w-full h-full bg-[#003399] flex items-center justify-center text-[8px] text-[#FFCC00]">★</div>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">EUR</span>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Exchange Rate Info -->
+<div class="flex items-center justify-between bg-surface-container rounded-lg p-3 font-body-sm text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">info</span>
+<span>Taux de change (Temps réel)</span>
+</div>
+<div class="font-semibold text-on-surface">1 EUR = 655.95 FCFA</div>
+</div>
+</div>
+<!-- Fees & Summary Panel -->
+<div class="bg-surface-container-lowest rounded-[24px] p-6 shadow-level-1 flex flex-col gap-3">
+<div class="flex justify-between items-center font-body-sm text-on-surface-variant">
+<span>Frais de conversion</span>
+<span class="text-on-surface">0.00 FCFA</span>
+</div>
+<div class="flex justify-between items-center font-body-sm text-on-surface-variant">
+<span>Délai estimé</span>
+<span class="text-on-surface">Instantané</span>
+</div>
+<div class="h-[1px] w-full bg-outline-variant my-1"></div>
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-on-surface">Total à payer</span>
+<span class="font-headline-md text-headline-md text-on-surface">150 000 FCFA</span>
+</div>
+</div>
+</main>
+<!-- Bottom Action Area -->
+<div class="mt-auto px-container-margin pb-8 pt-4 w-full max-w-md mx-auto">
+<button class="w-full btn-primary font-headline-md text-headline-md py-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-lg">
+            Confirmer la conversion
+            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<script src="../assets/switch.forms.js"></script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

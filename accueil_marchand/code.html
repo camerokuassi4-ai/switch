@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Accueil Marchand</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        .fluid-bg {
+            background: linear-gradient(135deg, #e6deff 0%, #fdf8ff 50%, #f1ebf9 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .soft-shadow {
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen font-body-sm antialiased overflow-x-hidden fluid-bg">
+<!-- Top Navigation Placeholder (Hidden for this entry screen to focus on action, but could be present if needed. As per rules, suppressing for transactional/entry screen) -->
+<header class="flex justify-between items-center px-gutter py-4 w-full bg-transparent absolute top-0 z-10">
+<div class="font-headline-md text-headline-md-mobile font-bold text-on-surface">
+            MyFintech
+         </div>
+</header>
+<main class="flex flex-col items-center justify-center min-h-screen px-container-margin py-stack-lg relative z-0">
+<!-- Hero Section -->
+<div class="text-center mb-stack-lg flex flex-col items-center">
+<div class="w-24 h-24 rounded-full bg-primary-container flex items-center justify-center mb-stack-md soft-shadow">
+<span class="material-symbols-outlined text-4xl text-on-primary-container" style="font-variation-settings: 'FILL' 1;">storefront</span>
+</div>
+<h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface mb-stack-sm">
+                Espace Marchand
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-sm mx-auto">
+                Gérez vos encaissements et développez votre activité en toute simplicité.
+            </p>
+</div>
+<!-- Main Action Card -->
+<div class="w-full max-w-md bg-surface-container-lowest rounded-xl p-card-padding soft-shadow flex flex-col gap-stack-md relative overflow-hidden border border-surface-variant">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-container opacity-10 rounded-full blur-2xl -mr-16 -mt-16 pointer-events-none"></div>
+<!-- Mode Switcher -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-surface-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 0;">sync_alt</span>
+<div>
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface mb-1">Passer en mode marchand</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Utilisez votre compte actuel pour encaisser.</p>
+</div>
+</div>
+<!-- Toggle Switch -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center gap-4 py-2">
+<div class="flex-1 h-px bg-surface-variant"></div>
+<span class="font-label-caps text-label-caps text-tertiary uppercase">ou</span>
+<div class="flex-1 h-px bg-surface-variant"></div>
+</div>
+<!-- Registration Option -->
+<button class="w-full flex items-center justify-between p-4 bg-transparent hover:bg-surface-container-lowest border border-outline-variant rounded-lg transition-colors group">
+<div class="flex items-center gap-3 text-left">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined text-secondary group-hover:text-on-primary-container" style="font-variation-settings: 'FILL' 0;">add_business</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface mb-1 group-hover:text-primary transition-colors">Créer un compte dédié</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Pour les entreprises enregistrées.</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">chevron_right</span>
+</button>
+</div>
+<div class="mt-stack-lg text-center">
+<a class="font-label-caps text-label-caps text-primary hover:text-primary-fixed-dim transition-colors uppercase underline-offset-4 hover:underline" href="#">
+                Retour à l'accueil personnel
+            </a>
+</div>
+</main>
+<script src="../assets/switch.router.js"></script>
+</body></html>

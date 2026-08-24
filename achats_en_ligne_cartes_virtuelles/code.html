@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mes Cartes Virtuelles</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+        .mesh-gradient-1 { background: radial-gradient(circle at 0% 0%, #7B5CFA 0%, transparent 60%), radial-gradient(circle at 100% 100%, #cabeff 0%, transparent 60%), #5e3bdc; }
+        .mesh-gradient-2 { background: radial-gradient(circle at 100% 0%, #1c0062 0%, transparent 70%), radial-gradient(circle at 0% 100%, #7B5CFA 0%, transparent 70%), #1c1a24; }
+        .glass-card { background: rgba(255, 255, 255, 0.1); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="docked full-width top-0 bg-transparent flex justify-between items-center px-container-margin py-stack-md w-full flat no shadows">
+<div class="flex items-center gap-stack-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+<img alt="User profile picture" class="w-full h-full object-cover" data-alt="Adele Doe profile picture" src="../assets/images/img_046.jpg"/>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Mes Cartes</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors text-primary font-bold">
+<span class="material-symbols-outlined">search</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="px-container-margin pt-stack-md flex flex-col gap-stack-lg max-w-3xl mx-auto w-full">
+<!-- Cards List -->
+<section class="flex flex-col gap-stack-md">
+<!-- Virtual Card 1 -->
+<div class="w-full rounded-2xl mesh-gradient-1 relative overflow-hidden text-white shadow-[0_10px_20px_rgba(0,0,0,0.04)] p-6 flex flex-col justify-between min-h-[200px]">
+<!-- Abstract Pattern Overlay -->
+<div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent pointer-events-none"></div>
+<div class="flex justify-between items-start relative z-10">
+  <div class="flex flex-col gap-1">
+    <span class="font-label-caps text-label-caps text-white/80">Carte Achats en Ligne</span>
+    <div class="flex items-center gap-2">
+      <div class="w-2 h-2 rounded-full bg-green-400"></div>
+      <span class="font-body-sm text-body-sm">Active</span>
+    </div>
+  </div>
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-3xl">contactless</span>
+    <!-- Toggle visibility button -->
+    <button id="toggle-card-1" onclick="toggleCard1()"
+        class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors active:scale-90 cursor-pointer">
+      <span class="material-symbols-outlined text-[18px]" id="eye-icon-1" style="font-variation-settings:'FILL' 0">visibility</span>
+    </button>
+  </div>
+</div>
+<div class="relative z-10 flex flex-col gap-2 my-4">
+  <div class="text-xl sm:text-2xl tracking-widest font-mono font-bold opacity-95 transition-all duration-300" id="card-number-1">**** **** **** 4289</div>
+  <div class="flex justify-between items-end mt-2">
+    <div class="flex gap-6">
+      <div class="flex flex-col">
+        <span class="font-label-caps text-label-caps text-white/60">VALIDE JUSQU'AU</span>
+        <span class="font-body-lg text-body-lg font-semibold" id="card-exp-1">12/26</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-label-caps text-label-caps text-white/60">CVV</span>
+        <span class="font-body-lg text-body-lg font-semibold" id="card-cvv-1">***</span>
+      </div>
+    </div>
+    <div class="font-bold text-xl italic tracking-wider">VISA</div>
+  </div>
+</div>
+</div>
+<!-- Virtual Card 2 (Inactive/Dark) -->
+<div class="w-full rounded-2xl mesh-gradient-2 relative overflow-hidden text-white shadow-[0_10px_20px_rgba(0,0,0,0.04)] p-6 flex flex-col justify-between opacity-85 min-h-[200px]">
+<div class="flex justify-between items-start relative z-10">
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-white/80">Abonnements</span>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-yellow-400"></div>
+<span class="font-body-sm text-body-sm">En pause</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+  <span class="material-symbols-outlined text-3xl opacity-70">contactless</span>
+</div>
+</div>
+<div class="relative z-10 flex flex-col gap-2 my-4">
+<div class="text-xl sm:text-2xl tracking-widest font-mono font-bold opacity-80">**** **** **** 9012</div>
+<div class="flex justify-between items-end mt-2">
+<div class="flex gap-6 opacity-80">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-white/60">VALIDE JUSQU'AU</span>
+<span class="font-body-lg text-body-lg font-semibold">08/25</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-white/60">CVV</span>
+<span class="font-body-lg text-body-lg font-semibold">***</span>
+</div>
+</div>
+<div class="font-bold text-xl italic tracking-wider opacity-90">Mastercard</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Actions -->
+<section class="grid grid-cols-2 gap-stack-md mt-stack-sm">
+<a href="../confirmation_de_l_op_ration_code/code.html" class="bg-surface-container-lowest p-card-padding rounded-xl shadow-[0_10px_20px_rgba(0,0,0,0.04)] flex flex-col items-center justify-center gap-stack-sm hover:bg-surface-container-low transition-colors no-underline">
+<div class="w-12 h-12 rounded-full border border-surface-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">add_card</span>
+</div>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">Créer une carte</span>
+</a>
+<a href="../limites_de_transaction/code.html" class="bg-surface-container-lowest p-card-padding rounded-xl shadow-[0_10px_20px_rgba(0,0,0,0.04)] flex flex-col items-center justify-center gap-stack-sm hover:bg-surface-container-low transition-colors no-underline">
+<div class="w-12 h-12 rounded-full border border-surface-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">settings_overscan</span>
+</div>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">Gérer plafonds</span>
+</a>
+</section>
+</main>
+<script>
+  var card1Visible = false;
+  function toggleCard1() {
+    card1Visible = !card1Visible;
+    var num = document.getElementById('card-number-1');
+    var cvv = document.getElementById('card-cvv-1');
+    var eye = document.getElementById('eye-icon-1');
+    if (!num || !cvv || !eye) return;
+    if (card1Visible) {
+      num.textContent = '4289 3301 8847 4289';
+      cvv.textContent = '742';
+      eye.textContent = 'visibility_off';
+      eye.style.fontVariationSettings = "'FILL' 1";
+    } else {
+      num.textContent = '**** **** **** 4289';
+      cvv.textContent = '***';
+      eye.textContent = 'visibility';
+      eye.style.fontVariationSettings = "'FILL' 0";
+    }
+  }
+</script>
+<!-- BottomNavBar -->
+
+<script src="../assets/switch.router.js"></script>
+
+<nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+  <a href="../tableau_de_bord_mis_jour/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">home</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+  </a>
+  <a href="../historique_des_transactions/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">receipt_long</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Historique</span>
+  </a>
+  <a href="../achats_en_ligne_cartes_virtuelles/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">account_balance_wallet</span>
+    <span class="nav-label" style="font-size:10px;font-weight:700;">Portefeuille</span>
+  </a>
+  <a href="../param_tres_g_n_raux/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">settings</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Paramètres</span>
+  </a>
+</nav>
+</body></html>

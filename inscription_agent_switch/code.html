@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inscription Agent - Espace Agent</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .form-step {
+            display: none;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        .form-step.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-lg min-h-screen flex flex-col antialiased">
+<!-- Top Navigation (Contextual: Form Flow, so just a back button and title, no global nav shell) -->
+<header class="w-full top-0 sticky bg-surface flat no shadows z-40">
+<div class="flex items-center justify-between px-gutter py-4 w-full max-w-2xl mx-auto">
+<button aria-label="Retour" class="p-2 rounded-full hover:bg-surface-variant transition-colors text-on-surface-variant" onclick="previousStep()">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Inscription Agent</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow w-full max-w-2xl mx-auto px-gutter py-8 flex flex-col">
+<!-- Progress Indicator -->
+<div class="mb-stack-lg">
+<div class="flex justify-between items-center relative">
+<!-- Line -->
+<div class="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-surface-variant rounded-full z-0"></div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary rounded-full z-0 step-transition" id="progress-bar" style="width: 0%;"></div>
+<!-- Steps -->
+<div class="relative z-10 flex flex-col items-center step-indicator active" data-step="1">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline-sm text-headline-sm mb-1 step-transition">1</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Identité</span>
+</div>
+<div class="relative z-10 flex flex-col items-center step-indicator" data-step="2">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-headline-sm text-headline-sm mb-1 step-transition">2</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Lieu</span>
+</div>
+<div class="relative z-10 flex flex-col items-center step-indicator" data-step="3">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-headline-sm text-headline-sm mb-1 step-transition">3</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Contact</span>
+</div>
+</div>
+</div>
+<!-- Form Container -->
+<div class="bg-surface-container-lowest rounded-xl shadow-lg shadow-black/5 p-card-padding flex-grow relative overflow-hidden">
+<!-- Step 1: Identity -->
+<div class="form-step active step-transition" id="step1">
+<h2 class="font-headline-md text-headline-md mb-stack-md text-on-surface">Informations de base</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-lg">Veuillez renseigner les détails de votre point de service.</p>
+<div class="space-y-stack-md">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="businessName">NOM COMMERCIAL</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">storefront</span>
+<input class="w-full bg-surface border border-outline-variant rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-lg text-body-lg placeholder:text-outline" id="businessName" placeholder="Ex: Boutique La Grâce" type="text"/>
+</div>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="managerName">NOM DU GÉRANT</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">person</span>
+<input class="w-full bg-surface border border-outline-variant rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-lg text-body-lg placeholder:text-outline" id="managerName" placeholder="Prénom et Nom" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 2: Location -->
+<div class="form-step step-transition" id="step2">
+<h2 class="font-headline-md text-headline-md mb-stack-md text-on-surface">Localisation précise</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-lg">Où se trouve votre point de service ?</p>
+<div class="space-y-stack-md">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="city">VILLE</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">location_city</span>
+<select class="w-full bg-surface border border-outline-variant rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-lg text-body-lg appearance-none" id="city">
+<option disabled="" selected="" value="">Sélectionnez une ville</option>
+<option value="cotonou">Cotonou</option>
+<option value="porto_novo">Porto-Novo</option>
+<option value="parakou">Parakou</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="neighborhood">QUARTIER</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">map</span>
+<input class="w-full bg-surface border border-outline-variant rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-lg text-body-lg placeholder:text-outline" id="neighborhood" placeholder="Ex: Haie Vive" type="text"/>
+</div>
+</div>
+<div class="pt-2">
+<button class="w-full flex items-center justify-center gap-2 bg-surface-container py-3 rounded-full text-primary font-headline-sm text-headline-sm hover:bg-surface-variant transition-colors border border-primary-fixed-dim">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">my_location</span>
+                            Capturer les coordonnées GPS
+                        </button>
+</div>
+</div>
+</div>
+<!-- Step 3: Contact -->
+<div class="form-step step-transition" id="step3">
+<h2 class="font-headline-md text-headline-md mb-stack-md text-on-surface">Informations de contact</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-lg">Comment pouvons-nous vous joindre ?</p>
+<div class="space-y-stack-md">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="phone">NUMÉRO DE TÉLÉPHONE</label>
+<div class="relative flex">
+<div class="flex-shrink-0 flex items-center justify-center bg-surface-variant border border-r-0 border-outline-variant rounded-l-full px-4 text-on-surface-variant font-body-lg text-body-lg">
+                                +229
+                            </div>
+<input class="w-full bg-surface border border-outline-variant rounded-r-full py-3 px-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-lg text-body-lg placeholder:text-outline" id="phone" placeholder="00 00 00 00" type="tel"/>
+</div>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="email">EMAIL (OPTIONNEL)</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">mail</span>
+<input class="w-full bg-surface border border-outline-variant rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-lg text-body-lg placeholder:text-outline" id="email" placeholder="agent@exemple.com" type="email"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Button Bottom Fixed Area -->
+<div class="mt-stack-lg pt-4 pb-8 flex justify-end">
+<button class="bg-primary text-on-primary font-headline-sm text-headline-sm py-3 px-8 rounded-full hover:opacity-90 active:scale-95 transition-all w-full md:w-auto shadow-md" id="nextBtn" onclick="nextStep()">
+                Continuer
+            </button>
+</div>
+</main>
+<script>
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        function updateUI() {
+            // Update steps visibility
+            document.querySelectorAll('.form-step').forEach((el, index) => {
+                if (index + 1 === currentStep) {
+                    el.classList.add('active');
+                    // Small delay to trigger animation after display:block
+                    setTimeout(() => {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateX(0)';
+                    }, 50);
+                } else {
+                    el.classList.remove('active');
+                    el.style.opacity = '0';
+                    el.style.transform = index + 1 < currentStep ? 'translateX(-20px)' : 'translateX(20px)';
+                }
+            });
+
+            // Update Progress Bar
+            const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
+
+            // Update Indicators
+            document.querySelectorAll('.step-indicator').forEach((el, index) => {
+                const stepNum = index + 1;
+                const circle = el.querySelector('div');
+                
+                if (stepNum <= currentStep) {
+                    circle.classList.remove('bg-surface-variant', 'text-on-surface-variant');
+                    circle.classList.add('bg-primary', 'text-on-primary');
+                } else {
+                    circle.classList.remove('bg-primary', 'text-on-primary');
+                    circle.classList.add('bg-surface-variant', 'text-on-surface-variant');
+                }
+            });
+
+            // Update Button Text
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentStep === totalSteps) {
+                nextBtn.textContent = 'Terminer';
+            } else {
+                nextBtn.textContent = 'Continuer';
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateUI();
+            } else {
+                // Submit form logic here
+                alert("Inscription soumise avec succès !");
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateUI();
+            } else {
+                // Handle actual back navigation (e.g. to previous page)
+                console.log("Navigating away from form");
+            }
+        }
+
+        // Initialize UI
+        updateUI();
+    </script>
+<script src="../assets/switch.forms.js"></script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

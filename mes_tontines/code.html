@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mes Tontines</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background-color: #F8F9FA; /* Keeping the specified Level 0 background */
+        }
+        .mesh-gradient {
+            background-color: #7B5CFA;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen text-on-surface pb-32">
+<!-- TopAppBar -->
+<header class="bg-transparent flex justify-between items-center px-container-margin py-stack-md w-full sticky top-0 z-40 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden shadow-soft-ambient">
+<img alt="User avatar" class="w-full h-full object-cover" data-alt="A close up, professional yet friendly portrait of a young West African woman with a warm smile, set against a solid, soft purple studio background. The lighting is soft and flattering, highlighting her modern corporate attire." src="../assets/images/img_030.jpg"/>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">Mes Tontines</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">search</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="px-container-margin pt-stack-sm pb-stack-lg max-w-3xl mx-auto space-y-stack-md">
+<!-- Action Button -->
+<div class="flex justify-between items-center mb-stack-lg">
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Gérez vos épargnes communes</p>
+</div>
+<button class="bg-primary text-on-primary rounded-full px-6 py-3 flex items-center gap-2 shadow-soft-ambient hover:bg-primary-container transition-colors active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Créer une tontine</span>
+</button>
+</div>
+<!-- Tontine Cards Grid (Bento style approach for varied cards) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<!-- Card 1: Active, High value -->
+<div class="bg-surface rounded-xl p-card-padding shadow-soft-ambient border border-surface-variant/50 relative overflow-hidden group">
+<!-- Subtle decorative blob -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary-fixed-dim/20 rounded-full blur-2xl group-hover:bg-primary-fixed-dim/40 transition-all duration-500"></div>
+<div class="flex justify-between items-start mb-stack-lg relative z-10">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Projet Maison Cotonou</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Tour 4 / 12</p>
+</div>
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-primary-fixed text-on-primary-fixed-variant">
+                        Actif
+                    </span>
+</div>
+<div class="relative z-10">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Montant Total</p>
+<p class="font-display-lg text-display-lg text-on-surface">1,200,000 FCFA</p>
+</div>
+<div class="mt-stack-md pt-stack-sm border-t border-surface-variant flex justify-between items-center relative z-10">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Prochain paiement</p>
+<p class="font-body-sm text-body-sm font-semibold text-on-surface">15 Nov 2023</p>
+</div>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full bg-surface-container border-2 border-surface flex items-center justify-center text-xs">A</div>
+<div class="w-8 h-8 rounded-full bg-surface-container border-2 border-surface flex items-center justify-center text-xs">B</div>
+<div class="w-8 h-8 rounded-full bg-surface-container border-2 border-surface flex items-center justify-center text-xs">+3</div>
+</div>
+</div>
+</div>
+<!-- Card 2: Waiting -->
+<div class="bg-surface rounded-xl p-card-padding shadow-soft-ambient border border-surface-variant/50 relative overflow-hidden">
+<div class="flex justify-between items-start mb-stack-lg">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Voyage Abidjan</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Débute le 1 Déc</p>
+</div>
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-surface-variant text-on-surface-variant">
+                        En attente
+                    </span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Objectif Mensuel</p>
+<p class="font-display-lg text-display-lg text-on-surface opacity-80">50,000 FCFA</p>
+</div>
+<div class="mt-stack-md pt-stack-sm border-t border-surface-variant flex justify-between items-center">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Participants</p>
+<p class="font-body-sm text-body-sm font-semibold text-on-surface">4 / 6 Inscrits</p>
+</div>
+<button class="text-primary font-label-caps text-label-caps uppercase hover:underline">Inviter</button>
+</div>
+</div>
+<!-- Card 3: Completed (Visual variation) -->
+<div class="bg-surface-container-low rounded-xl p-card-padding shadow-sm border border-surface-variant/30 col-span-1 md:col-span-2">
+<div class="flex flex-col md:flex-row justify-between md:items-center gap-stack-md">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface opacity-60">Équipement Bureau</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Terminé le 10 Oct 2023</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-display-lg text-display-lg text-on-surface opacity-60">600,000 FCFA</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+
+<script src="../assets/switch.router.js"></script>
+</body></html>

@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Simulateur de Frais - Switch</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body {
+            background-color: #fdf8ff;
+            color: #1c1a24;
+        }
+        
+        .fluid-mesh {
+            background-color: #7B5CFA;
+            background-image: 
+                radial-gradient(at 40% 20%, hsla(280,100%,74%,1) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, hsla(189,100%,56%,1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(355,100%,93%,1) 0px, transparent 50%),
+                radial-gradient(at 80% 50%, hsla(340,100%,76%,1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(22,100%,77%,1) 0px, transparent 50%),
+                radial-gradient(at 80% 100%, hsla(242,100%,70%,1) 0px, transparent 50%),
+                radial-gradient(at 0% 0%, hsla(343,100%,76%,1) 0px, transparent 50%);
+            opacity: 0.1;
+        }
+
+        .ambient-shadow {
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04);
+        }
+        
+        .nav-shadow {
+            box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen pb-24 md:pb-0 font-body-lg">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-container-margin py-stack-md w-full bg-transparent docked full-width top-0 z-40 relative">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="person">person</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Bonjour, Adele</h1>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container-high transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</header>
+<main class="px-container-margin max-w-lg mx-auto w-full flex flex-col gap-stack-lg mt-4 relative z-10">
+<!-- Header Text -->
+<div>
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">Simulateur de Frais</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Découvrez combien vous économisez en utilisant Switch.</p>
+</div>
+<!-- Input Section -->
+<div class="bg-surface-container-lowest ambient-shadow rounded-3xl p-card-padding relative overflow-hidden">
+<div class="absolute inset-0 fluid-mesh pointer-events-none"></div>
+<div class="relative z-10 flex flex-col gap-4">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Montant à transférer (FCFA)</label>
+<div class="flex items-center border-b-2 border-outline-variant focus-within:border-primary transition-colors pb-2">
+<input class="w-full bg-transparent border-none outline-none font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface font-bold p-0 placeholder:text-secondary-fixed-dim" id="amount-input" placeholder="0" type="number" value="50000"/>
+</div>
+<div class="flex items-center justify-between mt-4">
+<span class="font-body-sm text-body-sm text-on-surface-variant">De : <span class="font-semibold text-on-surface">MTN MoMo</span></span>
+<span class="material-symbols-outlined text-primary" data-icon="arrow_forward">arrow_forward</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Vers : <span class="font-semibold text-on-surface">Moov Money</span></span>
+</div>
+</div>
+</div>
+<!-- Comparison Chart Area -->
+<div class="flex flex-col gap-stack-md">
+<h3 class="font-headline-md text-headline-md text-on-surface">Comparaison des frais</h3>
+<div class="bg-surface-container-lowest ambient-shadow rounded-3xl p-card-padding flex flex-col gap-6">
+<!-- Competitor Bar -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-on-error-container" data-icon="close">close</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Opérateurs classiques (MTN/Moov)</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface font-bold">1 000 F</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-4 overflow-hidden">
+<div class="bg-secondary-fixed-dim h-full w-[80%] rounded-full transition-all duration-500 ease-in-out" id="competitor-bar"></div>
+</div>
+</div>
+<!-- Switch Bar -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-on-primary-container" data-icon="check">check</span>
+</div>
+<span class="font-body-sm text-body-sm text-primary font-bold">Frais Switch</span>
+</div>
+<span class="font-headline-md text-headline-md text-primary font-bold">250 F</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-4 overflow-hidden">
+<div class="bg-primary h-full w-[20%] rounded-full transition-all duration-500 ease-in-out" id="switch-bar"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Savings Highlight -->
+<div class="bg-inverse-surface rounded-3xl p-card-padding flex items-center justify-between ambient-shadow mb-8">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-primary-container uppercase tracking-wider opacity-80">Économie réalisée</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-[#a8e063] font-bold">750 F</span>
+<span class="font-body-sm text-body-sm text-on-primary-container opacity-80">à chaque envoi</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-[#a8e063]/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#a8e063] text-[28px]" data-icon="trending_up" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+
+<script>
+        // Simple interaction for the input to animate bars (demo purpose)
+        const input = document.getElementById('amount-input');
+        const compBar = document.getElementById('competitor-bar');
+        const switchBar = document.getElementById('switch-bar');
+
+        input.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value) || 0;
+            if(val > 0) {
+                // Simulate some variation based on input size just to show it's "alive"
+                const compWidth = Math.min(100, Math.max(40, 80 + (val/100000 * 10)));
+                const switchWidth = Math.min(40, Math.max(10, 20 + (val/100000 * 2)));
+                
+                compBar.style.width = `${compWidth}%`;
+                switchBar.style.width = `${switchWidth}%`;
+            }
+        });
+    </script>
+<script src="../assets/switch.forms.js"></script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

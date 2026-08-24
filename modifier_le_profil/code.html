@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Modifier le profil</title>
+<!-- Material Symbols -->
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+<!-- Tailwind Config -->
+
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen relative flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- Header Section -->
+<header class="flex items-center justify-between px-container-margin py-stack-md w-full pt-8">
+<button class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold absolute left-1/2 -translate-x-1/2">
+            Modifier le profil
+        </h1>
+<div class="w-10"></div> <!-- Spacer for center alignment -->
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-container-margin py-stack-lg pb-40 flex flex-col items-center">
+<!-- Avatar Section -->
+<div class="relative mb-stack-lg flex flex-col items-center">
+<div class="relative">
+<img alt="Photo de profil d'Adele Doe" title="Photo de profil" class="w-28 h-28 rounded-full object-cover shadow-sm ring-4 ring-surface-container-lowest" data-alt="A highly detailed, professional headshot portrait of a confident young Beninese woman in a bright, modern corporate environment. The lighting is soft and diffused, creating a premium light-mode aesthetic. She is dressed in smart casual business attire, subtly complementing the sleek fintech brand vibe. The background is a slightly blurred, clean office space with natural daylight, emphasizing approachability and modern professionalism. High-resolution photograph." src="../assets/images/img_031.jpg"/>
+<button class="absolute bottom-0 right-0 bg-primary text-on-primary p-2 rounded-full shadow-md hover:bg-primary-container hover:text-on-primary-container transition-colors transform active:scale-95 flex items-center justify-center ring-4 ring-background">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit" style="font-variation-settings: 'FILL' 1;">edit</span>
+</button>
+</div>
+<p class="mt-4 font-label-caps text-label-caps text-primary cursor-pointer hover:underline">Modifier la photo</p>
+</div>
+<!-- Form Section -->
+<form class="w-full max-w-md flex flex-col gap-stack-md" onsubmit="event.preventDefault(); animateSave(this);">
+<!-- First Name Field -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant ml-1" for="prenom">Prénom</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-outline-variant select-none" data-icon="person">person</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl pl-12 pr-4 py-3 font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow bg-clip-padding shadow-sm" id="prenom" type="text" value="Adele"/>
+</div>
+</div>
+<!-- Last Name Field -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-caps text-label-caps text-on-surface-variant ml-1" for="nom">Nom</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-outline-variant select-none" data-icon="badge">badge</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl pl-12 pr-4 py-3 font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow bg-clip-padding shadow-sm" id="nom" type="text" value="Doe"/>
+</div>
+</div>
+<!-- Email Field -->
+<div class="flex flex-col gap-stack-sm mb-stack-lg">
+<label class="font-label-caps text-label-caps text-on-surface-variant ml-1" for="email">Email</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-outline-variant select-none" data-icon="mail">mail</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl pl-12 pr-4 py-3 font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow bg-clip-padding shadow-sm" id="email" type="email" value="adele.doe@example.com"/>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="w-full bg-primary text-on-primary font-headline-md text-headline-md py-4 rounded-full shadow-md hover:bg-on-primary-fixed-variant transition-all transform active:scale-95 flex items-center justify-center gap-2 group" id="saveBtn" type="submit">
+<span>Enregistrer les modifications</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="check_circle">check_circle</span>
+</button>
+</form>
+</main>
+<!-- Bottom Navigation Bar (Shared Component via JSON rendering) -->
+
+<!-- Simple interaction script -->
+<script>
+        function animateSave(form) {
+            window.location.href = '../profil_utilisateur/code.html';
+        }
+    </script>
+<script src="../assets/switch.forms.js"></script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

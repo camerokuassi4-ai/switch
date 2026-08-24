@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Support Marchand</title>
+<!-- Material Symbols Outlined -->
+
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Fluid Silk Gradient for accents */
+        .bg-fluid-silk {
+            background: radial-gradient(circle at 10% 20%, rgba(123, 92, 250, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(97, 62, 222, 0.08) 0%, transparent 40%);
+            background-color: #fdf8ff; /* surface-bright fallback */
+        }
+
+        /* Level 1 Shadow */
+        .shadow-level-1 {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+<!-- Tailwind Configuration -->
+
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar (from JSON) -->
+<header class="flex justify-between items-center px-gutter py-4 w-full bg-background dark:bg-on-surface docked full-width top-0 z-40 relative">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">store</span>
+</div>
+</div>
+<h1 class="font-headline-md text-headline-md-mobile font-bold text-on-surface dark:text-surface-bright">Business Dashboard</h1>
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container-low transition-colors text-primary dark:text-primary-fixed">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="px-container-margin pt-stack-md flex flex-col gap-stack-lg max-w-2xl mx-auto">
+<!-- Hero Section -->
+<section class="text-center py-stack-md bg-fluid-silk rounded-xl">
+<h2 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-2">Comment pouvons-nous vous aider ?</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6 px-4">Trouvez des réponses rapides ou contactez notre équipe dédiée aux marchands.</p>
+<div class="relative max-w-md mx-auto px-4">
+<span class="material-symbols-outlined absolute left-8 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-full py-3 pl-12 pr-4 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm" placeholder="Rechercher une solution..." type="text"/>
+</div>
+</section>
+<!-- Contact Bento Grid -->
+<section>
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface mb-stack-md">Contact Direct</h3>
+<div class="grid grid-cols-2 gap-stack-sm md:gap-stack-md">
+<!-- Chat Action (Primary) -->
+<button class="col-span-2 bg-primary-container text-on-primary-container rounded-xl p-card-padding shadow-level-1 flex items-center justify-between hover:opacity-90 transition-opacity">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary">chat</span>
+</div>
+<div class="text-left">
+<h4 class="font-body-lg text-body-lg font-bold">Chat en direct</h4>
+<p class="font-body-sm text-body-sm opacity-80">Réponse en moins de 2 min</p>
+</div>
+</div>
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+<!-- Phone Action -->
+<button class="bg-surface-container-lowest border border-surface-variant rounded-xl p-card-padding shadow-level-1 flex flex-col items-center justify-center gap-3 hover:bg-surface-container-low transition-colors">
+<div class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">call</span>
+</div>
+<span class="font-body-sm text-body-sm font-bold text-on-surface">Appeler</span>
+</button>
+<!-- Email Action -->
+<button class="bg-surface-container-lowest border border-surface-variant rounded-xl p-card-padding shadow-level-1 flex flex-col items-center justify-center gap-3 hover:bg-surface-container-low transition-colors">
+<div class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">mail</span>
+</div>
+<span class="font-body-sm text-body-sm font-bold text-on-surface">Email</span>
+</button>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="mb-stack-lg">
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface mb-stack-md">Questions Fréquentes (FAQ)</h3>
+<div class="flex flex-col gap-stack-sm">
+<!-- FAQ Item 1 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl shadow-level-1 overflow-hidden">
+<button class="w-full p-4 flex justify-between items-center text-left hover:bg-surface-container-low transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.icon').textContent = this.querySelector('.icon').textContent === 'expand_more' ? 'expand_less' : 'expand_more';">
+<span class="font-body-sm text-body-sm font-bold text-on-surface">Comment annuler une transaction MoMo ?</span>
+<span class="material-symbols-outlined text-outline icon">expand_more</span>
+</button>
+<div class="hidden p-4 pt-0 text-on-surface-variant font-body-sm text-body-sm bg-surface-container-lowest">
+                        Pour annuler une transaction, rendez-vous dans l'historique des transactions, sélectionnez la transaction concernée et appuyez sur "Demander une annulation". Notez que cela n'est possible que dans les 24 heures suivant la transaction.
+                    </div>
+</div>
+<!-- FAQ Item 2 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl shadow-level-1 overflow-hidden">
+<button class="w-full p-4 flex justify-between items-center text-left hover:bg-surface-container-low transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.icon').textContent = this.querySelector('.icon').textContent === 'expand_more' ? 'expand_less' : 'expand_more';">
+<span class="font-body-sm text-body-sm font-bold text-on-surface">Quels sont les frais de retrait marchand ?</span>
+<span class="material-symbols-outlined text-outline icon">expand_more</span>
+</button>
+<div class="hidden p-4 pt-0 text-on-surface-variant font-body-sm text-body-sm bg-surface-container-lowest">
+                        Les frais de retrait vers votre compte bancaire principal sont actuellement fixés à 1% du montant total pour les comptes marchands vérifiés.
+                    </div>
+</div>
+<!-- FAQ Item 3 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl shadow-level-1 overflow-hidden">
+<button class="w-full p-4 flex justify-between items-center text-left hover:bg-surface-container-low transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.icon').textContent = this.querySelector('.icon').textContent === 'expand_more' ? 'expand_less' : 'expand_more';">
+<span class="font-body-sm text-body-sm font-bold text-on-surface">Comment mettre à jour mes documents d'entreprise ?</span>
+<span class="material-symbols-outlined text-outline icon">expand_more</span>
+</button>
+<div class="hidden p-4 pt-0 text-on-surface-variant font-body-sm text-body-sm bg-surface-container-lowest">
+                        Allez dans Profil > Paramètres de l'entreprise > Documents légaux. Vous pourrez y télécharger vos nouveaux documents (RCCM, IFU).
+                    </div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (from JSON) - Floating style -->
+
+<script src="../assets/switch.router.js"></script>
+
+<nav id="switch-nav" role="navigation" aria-label="Navigation Marchand" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+  <a href="../tableau_de_bord_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">store</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+  </a>
+  <a href="../historique_des_ventes/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">receipt_long</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Ventes</span>
+  </a>
+  <a href="../g_n_rer_qr_code_de_r_ception/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">qr_code_2</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">QR</span>
+  </a>
+  <a href="../profil_de_l_entreprise/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">business</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Entreprise</span>
+  </a>
+  <a href="../support_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">help</span>
+    <span class="nav-label" style="font-size:10px;font-weight:700;">Support</span>
+  </a>
+</nav>
+</body></html>

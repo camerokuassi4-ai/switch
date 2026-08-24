@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html class="light" lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Historique des Ventes - Dashboard Business</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1;
+    }
+
+    .smooth-shadow {
+      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .nav-shadow {
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+
+<body
+  class="bg-background text-on-background font-body-sm text-body-sm min-h-screen pb-24 selection:bg-primary-container selection:text-on-primary-container">
+  <!-- Top App Bar -->
+  <header
+    class="hidden md:flex justify-between items-center px-gutter py-4 w-full bg-background dark:bg-on-surface full-width top-0 z-40 sticky">
+    <div class="flex items-center gap-4">
+      <div
+        class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border border-outline-variant">
+        <span class="material-symbols-outlined text-primary" data-icon="store">store</span>
+      </div>
+      <h1 class="font-headline-md text-headline-md font-bold text-on-surface dark:text-surface-bright tracking-tight">
+        Business Dashboard</h1>
+    </div>
+    
+    <button
+      class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors">
+      <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+    </button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-md mx-auto px-container-margin pt-stack-md flex flex-col gap-stack-lg">
+    <!-- Header Section for Mobile -->
+    <div
+      class="md:hidden flex justify-between items-center w-full sticky top-0 bg-background/80 backdrop-blur-md py-4 z-30">
+      <h1 class="font-headline-md text-headline-md-mobile font-bold text-on-surface tracking-tight">Historique</h1>
+      <button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+        <span class="material-symbols-outlined" data-icon="search">search</span>
+      </button>
+    </div>
+
+    <!-- Filters & Search (Bento Style Layout) -->
+    <!-- CORRECTION ICI : Passage en flex-col pour forcer l'empilement vertical -->
+    <section class="flex flex-col gap-4">
+
+      <!-- Main Search/Date -->
+      <div
+        class="bg-surface-container-lowest rounded-xl p-card-padding smooth-shadow border border-outline-variant/30 flex flex-col gap-4">
+        <h2 class="font-body-lg text-body-lg text-on-surface-variant font-semibold">Période &amp; Recherche</h2>
+        <div class="relative w-full group">
+          <span
+            class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors"
+            data-icon="search">search</span>
+          <input
+            class="w-full pl-12 pr-4 py-3 bg-surface rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-sm text-on-surface outline-none placeholder:text-outline/70"
+            placeholder="Rechercher un client, réf..." type="text" />
+        </div>
+        <div class="flex gap-2">
+          <button
+            class="flex-1 py-2 px-4 rounded-lg bg-surface-container-highest text-on-surface font-body-sm text-body-sm flex justify-between items-center border border-transparent hover:border-outline-variant transition-colors">
+            <span>Aujourd'hui</span>
+            <span class="material-symbols-outlined text-outline" data-icon="calendar_today"
+              style="font-size: 18px;">calendar_today</span>
+          </button>
+          <button
+            class="flex-1 py-2 px-4 rounded-lg bg-surface text-on-surface font-body-sm text-body-sm flex justify-between items-center border border-outline-variant hover:border-primary/50 transition-colors">
+            <span>Mois en cours</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Amount Filter -->
+      <div
+        class="bg-surface-container-lowest rounded-xl p-card-padding smooth-shadow border border-outline-variant/30 flex flex-col justify-between">
+        <div>
+          <h2 class="font-body-lg text-body-lg text-on-surface-variant font-semibold mb-2">Montant</h2>
+          <p class="font-label-caps text-label-caps text-outline mb-4">Filtrer par volume</p>
+        </div>
+        <div class="space-y-2">
+          <label class="flex items-center gap-3 cursor-pointer group">
+            <input class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox" />
+            <span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">&gt; 10
+              000 FCFA</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer group">
+            <input class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox" />
+            <span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">&lt; 10
+              000 FCFA</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Status Filter -->
+      <div
+        class="bg-surface-container-lowest rounded-xl p-card-padding smooth-shadow border border-outline-variant/30 flex flex-col justify-between">
+        <div>
+          <h2 class="font-body-lg text-body-lg text-on-surface-variant font-semibold mb-2">Statut</h2>
+          <p class="font-label-caps text-label-caps text-outline mb-4">État des paiements</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <span
+            class="px-3 py-1 rounded-full bg-surface-container text-on-surface font-label-caps text-label-caps cursor-pointer hover:bg-surface-container-high border border-transparent">Tous</span>
+          <span
+            class="px-3 py-1 rounded-full bg-primary/10 text-primary font-label-caps text-label-caps cursor-pointer border border-primary/30 font-bold">Réussi</span>
+          <span
+            class="px-3 py-1 rounded-full bg-surface text-outline font-label-caps text-label-caps cursor-pointer border border-outline-variant hover:bg-surface-container">Échoué</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Transactions List -->
+    <section class="flex flex-col gap-4">
+      <h2 class="font-body-lg text-body-lg font-semibold text-on-surface-variant mb-2">Aujourd'hui, 24 Octobre</h2>
+
+      <!-- Item 1 -->
+      <div
+        class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between smooth-shadow border border-outline-variant/20 hover:border-primary/20 transition-all cursor-pointer group">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+            <span class="material-symbols-outlined" data-icon="phone_iphone">phone_iphone</span>
+          </div>
+          <div>
+            <p class="font-body-lg text-body-lg font-semibold text-on-surface">Marie Koné</p>
+            <div class="flex items-center gap-2 text-outline">
+              <span class="font-label-caps text-label-caps">MTN MoMo</span>
+              <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+              <span class="font-body-sm text-body-sm">14:32</span>
+            </div>
+          </div>
+        </div>
+        <div class="text-right">
+          <p class="font-body-lg text-body-lg font-bold text-[#10B981]">+ 15 500 FCFA</p>
+          <p class="font-body-sm text-body-sm text-outline">Réf: #TRX-9821</p>
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div
+        class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between smooth-shadow border border-outline-variant/20 hover:border-primary/20 transition-all cursor-pointer group">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+            <span class="material-symbols-outlined" data-icon="qr_code">qr_code</span>
+          </div>
+          <div>
+            <p class="font-body-lg text-body-lg font-semibold text-on-surface">Client Anonyme</p>
+            <div class="flex items-center gap-2 text-outline">
+              <span class="font-label-caps text-label-caps">Scan Moov</span>
+              <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+              <span class="font-body-sm text-body-sm">11:15</span>
+            </div>
+          </div>
+        </div>
+        <div class="text-right">
+          <p class="font-body-lg text-body-lg font-bold text-[#10B981]">+ 4 200 FCFA</p>
+          <p class="font-body-sm text-body-sm text-outline">Réf: #QR-4412</p>
+        </div>
+      </div>
+
+      <!-- Item 3 (Failed) -->
+      <div
+        class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between smooth-shadow border border-error-container hover:border-error/50 transition-all cursor-pointer group opacity-70">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-12 h-12 rounded-full bg-error-container flex items-center justify-center text-error group-hover:scale-105 transition-transform">
+            <span class="material-symbols-outlined" data-icon="error">error</span>
+          </div>
+          <div>
+            <p class="font-body-lg text-body-lg font-semibold text-on-surface line-through decoration-outline">Jean-Paul
+              S.</p>
+            <div class="flex items-center gap-2 text-error">
+              <span class="font-label-caps text-label-caps">Échoué</span>
+              <span class="w-1 h-1 rounded-full bg-error"></span>
+              <span class="font-body-sm text-body-sm">09:41</span>
+            </div>
+          </div>
+        </div>
+        <div class="text-right">
+          <p class="font-body-lg text-body-lg font-bold text-on-surface-variant line-through decoration-outline">8 000
+            FCFA</p>
+          <p class="font-body-sm text-body-sm text-outline">Solde insuffisant</p>
+        </div>
+      </div>
+
+      <h2 class="font-body-lg text-body-lg font-semibold text-on-surface-variant mt-4 mb-2">Hier, 23 Octobre</h2>
+
+      <!-- Item 4 -->
+      <div
+        class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between smooth-shadow border border-outline-variant/20 hover:border-primary/20 transition-all cursor-pointer group">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+            <span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
+          </div>
+          <div>
+            <p class="font-body-lg text-body-lg font-semibold text-on-surface">Virement Celtiis</p>
+            <div class="flex items-center gap-2 text-outline">
+              <span class="font-label-caps text-label-caps">Celtiis Pay</span>
+              <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+              <span class="font-body-sm text-body-sm">18:05</span>
+            </div>
+          </div>
+        </div>
+        <div class="text-right">
+          <p class="font-body-lg text-body-lg font-bold text-[#10B981]">+ 25 000 FCFA</p>
+          <p class="font-body-sm text-body-sm text-outline">Réf: #TRX-9988</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="../assets/switch.router.js"></script>
+
+<nav id="switch-nav" role="navigation" aria-label="Navigation Marchand" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+  <a href="../tableau_de_bord_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">store</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+  </a>
+  <a href="../historique_des_ventes/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">receipt_long</span>
+    <span class="nav-label" style="font-size:10px;font-weight:700;">Ventes</span>
+  </a>
+  <a href="../g_n_rer_qr_code_de_r_ception/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">qr_code_2</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">QR</span>
+  </a>
+  <a href="../profil_de_l_entreprise/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">business</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Entreprise</span>
+  </a>
+  <a href="../support_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">help</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Support</span>
+  </a>
+</nav>
+</body>
+
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Vérification OTP</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="../assets/switch.css">
+    <script src="../assets/switch.config.js"></script>
+
+    <style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background-color: #fdf8ff;
+            -webkit-tap-highlight-color: transparent;
+            min-height: max(884px, 100dvh);
+        }
+
+        .otp-input {
+            transition: all 0.2s ease-in-out;
+            -webkit-appearance: none;
+        }
+
+        .otp-input:focus {
+            box-shadow: 0 0 0 4px #e6deff;
+            border-color: #5e3bdc;
+            outline: none;
+        }
+
+        .fluid-mesh {
+            background-image:
+                radial-gradient(at 40% 20%, hsla(253, 71%, 61%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, hsla(253, 71%, 61%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(253, 71%, 61%, 0.1) 0px, transparent 50%);
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen flex flex-col items-center justify-center bg-background text-on-background relative overflow-hidden">
+    <!-- Decorative Top Element -->
+    <div class="absolute top-0 left-0 right-0 h-64 fluid-mesh -z-10 rounded-b-[40px] opacity-70 pointer-events-none">
+    </div>
+
+    <!-- Main Container -->
+    <main
+        class="w-full max-w-[400px] px-container-margin py-stack-lg flex flex-col justify-center h-[100dvh] relative z-10">
+
+        <!-- Content Area : Centré avec l'icône dialpad au milieu -->
+        <div class="flex flex-col items-center text-center w-full pt-4">
+            <div class="mb-stack-lg animate-fade-in-up flex flex-col items-center">
+                <!-- Icône violette centrée -->
+                <div class="w-16 h-16 bg-primary-container rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                    <span class="material-symbols-outlined text-primary text-3xl"
+                        style="font-variation-settings: 'FILL' 1;">dialpad</span>
+                </div>
+                <h1 class="font-display-lg-mobile text-display-lg-mobile text-on-background mb-3 font-bold">
+                    Vérification
+                </h1>
+                <p class="font-body-lg text-body-lg text-on-surface-variant max-w-xs">
+                    Saisissez le code à 6 chiffres envoyé au <br>
+                    <span class="font-bold text-on-background mt-1 inline-block">+229 XX XX XX XX</span>
+                </p>
+            </div>
+
+            <!-- OTP Input Form -->
+            <form class="flex flex-col gap-stack-lg mt-4 w-full" id="otpForm">
+                <!-- 6 Input Fields -->
+                <div class="flex justify-between gap-2 w-full" id="otp-container">
+                    <input aria-label="Chiffre 1"
+                        class="otp-input w-12 h-14 md:w-14 md:h-16 text-center font-display-lg-mobile text-display-lg-mobile bg-surface-container-lowest border border-outline-variant rounded-xl text-on-background focus:border-primary shadow-sm"
+                        inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text">
+                    <input aria-label="Chiffre 2"
+                        class="otp-input w-12 h-14 md:w-14 md:h-16 text-center font-display-lg-mobile text-display-lg-mobile bg-surface-container-lowest border border-outline-variant rounded-xl text-on-background focus:border-primary shadow-sm"
+                        inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text">
+                    <input aria-label="Chiffre 3"
+                        class="otp-input w-12 h-14 md:w-14 md:h-16 text-center font-display-lg-mobile text-display-lg-mobile bg-surface-container-lowest border border-outline-variant rounded-xl text-on-background focus:border-primary shadow-sm"
+                        inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text">
+                    <input aria-label="Chiffre 4"
+                        class="otp-input w-12 h-14 md:w-14 md:h-16 text-center font-display-lg-mobile text-display-lg-mobile bg-surface-container-lowest border border-outline-variant rounded-xl text-on-background focus:border-primary shadow-sm"
+                        inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text">
+                    <input aria-label="Chiffre 5"
+                        class="otp-input w-12 h-14 md:w-14 md:h-16 text-center font-display-lg-mobile text-display-lg-mobile bg-surface-container-lowest border border-outline-variant rounded-xl text-on-background focus:border-primary shadow-sm"
+                        inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text">
+                    <input aria-label="Chiffre 6"
+                        class="otp-input w-12 h-14 md:w-14 md:h-16 text-center font-display-lg-mobile text-display-lg-mobile bg-surface-container-lowest border border-outline-variant rounded-xl text-on-background focus:border-primary shadow-sm"
+                        inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text">
+                </div>
+
+                <!-- Verify Button -->
+                <button onclick="window.location.href='../cr_ation_code_pin/code.html'"
+                    class="w-full bg-primary text-on-primary font-headline-md text-headline-md py-4 rounded-full shadow-md hover:bg-surface-tint active:scale-95 transition-all mt-4 flex items-center justify-center gap-2"
+                    type="button">
+                    <span>Vérifier</span>
+                    <span class="material-symbols-outlined"
+                        style="font-variation-settings: 'FILL' 0;">arrow_forward</span>
+                </button>
+            </form>
+
+            <!-- Resend Link -->
+            <div class="mt-8 text-center w-full pb-8">
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Vous n'avez pas reçu le code ?
+                </p>
+                <button
+                    class="mt-2 font-headline-md text-body-lg text-primary hover:text-surface-tint transition-colors underline-offset-4 hover:underline bg-transparent border-none p-2 rounded-lg hover:bg-surface-container-low active:bg-surface-container"
+                    type="button">
+                    Renvoyer le code
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('.otp-input');
+
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+
+                    if (e.target.value.length === 1) {
+                        if (index < inputs.length - 1) {
+                            inputs[index + 1].focus();
+                        } else {
+                            input.blur();
+                        }
+                    }
+                });
+
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && e.target.value.length === 0 && index > 0) {
+                        inputs[index - 1].focus();
+                        inputs[index - 1].value = '';
+                    }
+                });
+
+                input.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+                    if (pastedData) {
+                        for (let i = 0; i < pastedData.length; i++) {
+                            if (inputs[i]) {
+                                inputs[i].value = pastedData[i];
+                            }
+                        }
+                        if (pastedData.length < 6) {
+                            inputs[pastedData.length].focus();
+                        } else {
+                            inputs[5].blur();
+                        }
+                    }
+                });
+            });
+
+            setTimeout(() => {
+                inputs[0].focus();
+            }, 300);
+        });
+    </script>
+
+    <script src="../assets/switch.forms.js"></script>
+    <script src="../assets/switch.router.js"></script>
+</body>
+
+</html>

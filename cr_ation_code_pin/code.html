@@ -1,0 +1,118 @@
+<!DOCTYPE html><html class="light" lang="fr"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Création du code PIN</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background-color: #F8F9FA;
+        }
+        .pin-dot {
+            transition: all 0.3s ease;
+        }
+        .keypad-btn {
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        .keypad-btn:active {
+            transform: scale(0.95);
+            background-color: #ebe6f3; /* surface-container-high */
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest min-h-screen flex flex-col items-center justify-between font-body-lg text-on-surface">
+<!-- Top AppBar (Simulated, as per instructions for linear flows, we suppress the full shell, but keep a back button for context if needed, though this is a linear creation step. Let's keep it extremely clean.) -->
+<header class="w-full px-container-margin py-stack-md flex justify-between items-center bg-transparent">
+<button class="text-on-surface hover:bg-surface-container-high transition-colors p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<!-- Placeholder for symmetry if needed, or skip -->
+<div class="w-10"></div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow flex flex-col items-center w-full max-w-md px-container-margin pt-stack-lg">
+<div class="text-center mb-stack-lg w-full">
+<h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface mb-stack-sm font-bold">Sécurisez votre compte</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Créez votre code PIN à 4 chiffres</p>
+</div>
+<!-- PIN Dots Display -->
+<div class="flex justify-center items-center gap-gutter mb-stack-lg h-24">
+<!-- Simulated State: 2 entered, 2 empty -->
+<div class="pin-dot w-4 h-4 rounded-full bg-primary shadow-ambient"></div>
+<div class="pin-dot w-4 h-4 rounded-full bg-primary shadow-ambient"></div>
+<div class="pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent"></div>
+<div class="pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent"></div>
+</div>
+</main>
+<!-- Custom Keypad -->
+<div class="w-full max-w-md px-container-margin pb-stack-lg mt-auto">
+<div class="grid grid-cols-3 gap-y-stack-sm gap-x-gutter">
+<!-- Row 1 -->
+<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">1</button>
+<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">2</button>
+<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">3</button>
+<!-- Row 2 -->
+<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">4</button>
+<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">5</button>
+<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">6</button>
+<!-- Row 3 -->
+<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">7</button>
+<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">8</button>
+<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">9</button>
+<!-- Row 4 -->
+<div class="flex justify-center items-center h-16"></div> <!-- Empty space -->
+<button class="keypad-btn flex justify-center items-center h-16 rounded-xl font-headline-md text-headline-md text-on-surface bg-transparent">0</button>
+<button class="keypad-btn flex justify-center items-center h-16 rounded-xl text-on-surface-variant bg-transparent">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">backspace</span>
+</button>
+</div>
+</div>
+<!-- No Shared Component (Nav Shell) rendered as this is a linear transactional/onboarding flow -->
+<script>
+        // Minimal interactive logic for demonstration
+        document.addEventListener('DOMContentLoaded', () => {
+            const dots = document.querySelectorAll('.pin-dot');
+            const btns = document.querySelectorAll('.keypad-btn');
+            let pinCount = 2; // Starting state to match HTML
+
+            btns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const isBackspace = btn.querySelector('.material-symbols-outlined');
+                    
+                    if (isBackspace) {
+                        if (pinCount > 0) {
+                            pinCount--;
+                            updateDots();
+                        }
+                    } else if (btn.textContent.trim() !== "") {
+                        if (pinCount < 4) {
+                            pinCount++;
+                            updateDots();
+                        }
+                    }
+                });
+            });
+
+            function updateDots() {
+                dots.forEach((dot, index) => {
+                    if (index < pinCount) {
+                        dot.className = 'pin-dot w-4 h-4 rounded-full bg-primary shadow-ambient';
+                    } else {
+                        dot.className = 'pin-dot w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent';
+                    }
+                });
+                
+                // Navigate instantly when 4 digits entered
+                if(pinCount === 4) {
+                    window.location.href = '../tableau_de_bord_mis_jour/code.html';
+                }
+            }
+        });
+    </script>
+
+<script src="../assets/switch.forms.js"></script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

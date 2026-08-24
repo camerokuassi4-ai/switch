@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html class="light" lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Tableau de bord marchand</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+    }
+
+    .fluid-silk {
+      background: linear-gradient(135deg, rgba(94, 59, 220, 0.9) 0%, rgba(119, 88, 246, 0.8) 100%),
+        radial-gradient(circle at top right, rgba(202, 190, 255, 0.4) 0%, transparent 60%);
+      background-blend-mode: overlay;
+    }
+
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+
+<body class="bg-background text-on-background pb-32">
+  <!-- TopAppBar (Hidden on Mobile, Visible on md+) -->
+  <header
+    class="hidden md:flex justify-between items-center px-gutter py-4 w-full bg-background dark:bg-on-surface docked full-width top-0">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary">storefront</span>
+      </div>
+      <h1 class="font-headline-md text-headline-md font-bold text-on-surface dark:text-surface-bright">Business
+        Dashboard</h1>
+    </div>
+    <button
+      class="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-low transition-colors flex items-center justify-center text-primary dark:text-primary-fixed">
+      <span class="material-symbols-outlined" data-weight="fill"
+        style="font-variation-settings: 'FILL' 1;">notifications</span>
+    </button>
+  </header>
+
+  <!-- Mobile Header -->
+  <header class="md:hidden flex justify-between items-center px-container-margin py-4 w-full bg-background">
+    <div class="flex flex-col">
+      <span class="font-body-sm text-body-sm text-on-surface-variant">Bienvenue,</span>
+      <h1 class="font-headline-md text-headline-md-mobile font-bold text-on-surface">Boutique Chez Jeanne</h1>
+    </div>
+    <button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+  </header>
+
+  <main class="px-container-margin mt-4 flex flex-col gap-stack-lg max-w-4xl mx-auto">
+    <!-- Balance Card -->
+    <section
+      class="fluid-silk rounded-xl p-card-padding text-on-primary shadow-[0_10px_20px_rgba(0,0,0,0.04)] relative overflow-hidden aspect-[1.58/1] flex flex-col justify-between">
+      <div class="flex justify-between items-start z-10">
+        <div class="flex items-center gap-2 bg-on-primary/20 backdrop-blur-sm px-3 py-1 rounded-full">
+          <span class="w-2 h-2 rounded-full bg-green-400"></span>
+          <span class="font-label-caps text-label-caps text-on-primary">Actif</span>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+          <span class="material-symbols-outlined text-white text-sm">more_horiz</span>
+        </div>
+      </div>
+      <div class="z-10">
+        <p class="font-body-sm text-body-sm text-on-primary/80 mb-1">Solde Total</p>
+        <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg">2 450 000 FCFA
+        </h2>
+      </div>
+      <!-- Decorative overlay -->
+      <div class="absolute bottom-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mb-10"></div>
+    </section>
+
+    <!-- Quick Actions CORRIGÉES : Ajout des attributs onclick -->
+    <section class="grid grid-cols-4 gap-4">
+      <button onclick="window.location.href='../d_p_t_de_fonds/code.html'"
+        class="flex flex-col items-center gap-2 group">
+        <div
+          class="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-white">add</span>
+        </div>
+        <span class="font-body-sm text-body-sm text-on-surface-variant">Recharger</span>
+      </button>
+      <button onclick="window.location.href='../transfert_switch_switch/code.html'"
+        class="flex flex-col items-center gap-2 group">
+        <div
+          class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center border border-outline-variant shadow-sm group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-primary">send</span>
+        </div>
+        <span class="font-body-sm text-body-sm text-on-surface-variant">Envoyer</span>
+      </button>
+      <button onclick="window.location.href='../conversion_de_devises/code.html'"
+        class="flex flex-col items-center gap-2 group">
+        <div
+          class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center border border-outline-variant shadow-sm group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-primary">currency_exchange</span>
+        </div>
+        <span class="font-body-sm text-body-sm text-on-surface-variant">Convertir</span>
+      </button>
+      <button onclick="window.location.href='../retrait_marchand/code.html'"
+        class="flex flex-col items-center gap-2 group">
+        <div
+          class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center border border-outline-variant shadow-sm group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+        </div>
+        <span class="font-body-sm text-body-sm text-on-surface-variant">Retrait</span>
+      </button>
+    </section>
+
+    <!-- Sales Summary Bento -->
+    <section class="grid grid-cols-2 gap-4">
+      <div
+        class="bg-white rounded-xl p-4 shadow-[0_10px_20px_rgba(0,0,0,0.04)] border border-surface-variant flex flex-col gap-2">
+        <div class="flex items-center gap-2 text-on-surface-variant">
+          <span class="material-symbols-outlined text-sm">trending_up</span>
+          <span class="font-label-caps text-label-caps">Ventes du jour</span>
+        </div>
+        <p class="font-headline-md text-headline-md-mobile text-on-surface">145 000 F</p>
+        <p class="font-body-sm text-[10px] text-green-600">+12% vs hier</p>
+      </div>
+      <div
+        class="bg-white rounded-xl p-4 shadow-[0_10px_20px_rgba(0,0,0,0.04)] border border-surface-variant flex flex-col gap-2">
+        <div class="flex items-center gap-2 text-on-surface-variant">
+          <span class="material-symbols-outlined text-sm">receipt_long</span>
+          <span class="font-label-caps text-label-caps">Transactions</span>
+        </div>
+        <p class="font-headline-md text-headline-md-mobile text-on-surface">34</p>
+        <p class="font-body-sm text-[10px] text-on-surface-variant">En cours de journée</p>
+      </div>
+    </section>
+
+    <!-- Simple Graph Placeholder -->
+    <section
+      class="bg-white rounded-xl p-card-padding shadow-[0_10px_20px_rgba(0,0,0,0.04)] border border-surface-variant">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-headline-md text-headline-md-mobile text-on-surface">Revenus de la semaine</h3>
+        <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">more_vert</span>
+      </div>
+      <!-- Using SVG for simple line graph visualization -->
+      <div class="w-full h-32 flex items-end justify-between gap-1 relative mt-6">
+        <!-- SVG Line -->
+        <svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+          <path d="M0,80 L16,60 L33,70 L50,40 L66,50 L83,20 L100,30" fill="none" stroke="#7B5CFA" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="2"></path>
+          <path d="M0,80 L16,60 L33,70 L50,40 L66,50 L83,20 L100,30 L100,100 L0,100 Z" fill="url(#gradient)"
+            opacity="0.1"></path>
+          <defs>
+            <lineargradient id="gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+              <stop offset="0%" stop-color="#7B5CFA"></stop>
+              <stop offset="100%" stop-color="#fdf8ff" stop-opacity="0"></stop>
+            </lineargradient>
+          </defs>
+        </svg>
+        <!-- X Axis Labels -->
+        <div
+          class="absolute -bottom-6 w-full flex justify-between px-1 text-[10px] text-on-surface-variant font-body-sm">
+          <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+        </div>
+      </div>
+      <div class="mt-8 text-center">
+        <p class="font-body-lg text-body-lg text-primary font-bold">840 500 FCFA</p>
+        <p class="font-body-sm text-body-sm text-on-surface-variant">Total cette semaine</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- BottomNavBar (Mobile Only) -->
+  
+  <script src="../assets/switch.router.js"></script>
+
+<nav id="switch-nav" role="navigation" aria-label="Navigation Marchand" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+  <a href="../tableau_de_bord_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">store</span>
+    <span class="nav-label" style="font-size:10px;font-weight:700;">Accueil</span>
+  </a>
+  <a href="../historique_des_ventes/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">receipt_long</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Ventes</span>
+  </a>
+  <a href="../g_n_rer_qr_code_de_r_ception/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">qr_code_2</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">QR</span>
+  </a>
+  <a href="../profil_de_l_entreprise/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">business</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Entreprise</span>
+  </a>
+  <a href="../support_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">help</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Support</span>
+  </a>
+</nav>
+</body>
+
+</html>

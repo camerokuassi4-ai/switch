@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Switch — App Fintech Bénin</title>
+  <meta name="description" content="Switch : la façon la plus rapide et sécurisée de gérer votre argent au Bénin.">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="assets/switch.css">
+  <script src="assets/switch.config.js"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #1c1a24 0%, #312f39 50%, #481ac7 100%);
+      min-height: 100vh;
+      max-width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Hanken Grotesk', sans-serif;
+    }
+
+    .hub-card {
+      background: rgba(253,248,255,0.05);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(202,190,255,0.2);
+      border-radius: 24px;
+      padding: 32px;
+      width: 100%;
+      max-width: 420px;
+      margin: 20px;
+    }
+
+    .space-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(202,190,255,0.15);
+      border-radius: 16px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .space-card:hover {
+      background: rgba(94,59,220,0.25);
+      border-color: rgba(202,190,255,0.4);
+      transform: translateY(-2px);
+    }
+
+    .screen-link {
+      display: block;
+      color: rgba(202,190,255,0.7);
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .screen-link:hover {
+      background: rgba(94,59,220,0.2);
+      color: #cabeff;
+      border-color: rgba(202,190,255,0.2);
+    }
+
+    .screens-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      max-height: 180px;
+      overflow-y: auto;
+      padding: 8px 0;
+    }
+
+    .screens-grid::-webkit-scrollbar { width: 4px; }
+    .screens-grid::-webkit-scrollbar-track { background: transparent; }
+    .screens-grid::-webkit-scrollbar-thumb { background: rgba(202,190,255,0.3); border-radius: 2px; }
+
+    .badge {
+      display: inline-block;
+      background: rgba(94,59,220,0.4);
+      color: #cabeff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 2px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+
+    .launch-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+
+    .launch-btn-primary {
+      background: #5e3bdc;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(94,59,220,0.4);
+    }
+
+    .launch-btn-primary:hover {
+      background: #7758f6;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+
+<div class="hub-card animate-fade-in">
+
+  <!-- Logo + titre -->
+  <div style="text-align:center; margin-bottom:28px;">
+    <div style="width:64px;height:64px;background:rgba(94,59,220,0.3);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;border:1px solid rgba(202,190,255,0.3);">
+      <span class="material-symbols-outlined" style="font-size:32px;color:#cabeff">swap_horiz</span>
+    </div>
+    <h1 style="color:#ffffff;font-size:26px;font-weight:700;margin:0 0 4px;">Switch</h1>
+    <p style="color:rgba(202,190,255,0.7);font-size:14px;margin:0;">App Fintech Bénin · 65 écrans</p>
+  </div>
+
+  <!-- Bouton lancement principal -->
+  <a href="accueil_splash_mis_jour/code.html" class="launch-btn launch-btn-primary">
+    <span class="material-symbols-outlined" style="font-size:20px">rocket_launch</span>
+    Lancer l'application
+  </a>
+
+  <div style="margin:24px 0 16px;border-top:1px solid rgba(202,190,255,0.1);padding-top:20px;">
+    <p style="color:rgba(202,190,255,0.5);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;margin:0 0 16px;">Accès direct par espace</p>
+
+    <!-- Espace Utilisateur -->
+    <div class="space-card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span class="material-symbols-outlined" style="color:#cabeff;font-size:20px">person</span>
+        <span style="color:#fff;font-weight:700;font-size:15px;">Espace Utilisateur</span>
+        <span class="badge">33 écrans</span>
+      </div>
+      <div class="screens-grid">
+        <a class="screen-link" href="accueil_splash_mis_jour/code.html">Accueil Splash</a>
+        <a class="screen-link" href="connexion/code.html">Connexion</a>
+        <a class="screen-link" href="inscription/code.html">Inscription</a>
+        <a class="screen-link" href="v_rification_otp/code.html">Vérif. OTP</a>
+        <a class="screen-link" href="cr_ation_code_pin/code.html">Création PIN</a>
+        <a class="screen-link" href="verrouillage_pin/code.html">Verrou PIN</a>
+        <a class="screen-link" href="tableau_de_bord_mis_jour/code.html">Tableau de bord</a>
+        <a class="screen-link" href="historique_des_transactions/code.html">Historique</a>
+        <a class="screen-link" href="historique_vide/code.html">Historique vide</a>
+        <a class="screen-link" href="d_tail_de_transaction/code.html">Détail transaction</a>
+        <a class="screen-link" href="centre_de_notifications/code.html">Notifications</a>
+        <a class="screen-link" href="notifications_vides/code.html">Notifs vides</a>
+        <a class="screen-link" href="transfert_switch_switch/code.html">Transfert S→S</a>
+        <a class="screen-link" href="transfert_mobile_money/code.html">Mobile Money</a>
+        <a class="screen-link" href="d_p_t_de_fonds/code.html">Dépôt</a>
+        <a class="screen-link" href="retrait_de_fonds/code.html">Retrait</a>
+        <a class="screen-link" href="scanner_qr_code/code.html">Scanner QR</a>
+        <a class="screen-link" href="confirmation_paiement_qr/code.html">Confirm. QR</a>
+        <a class="screen-link" href="paiement_d_abonnements/code.html">Abonnements</a>
+        <a class="screen-link" href="d_tail_de_l_abonnement/code.html">Détail abonnement</a>
+        <a class="screen-link" href="mes_tontines/code.html">Tontines</a>
+        <a class="screen-link" href="cr_er_une_tontine/code.html">Créer tontine</a>
+        <a class="screen-link" href="d_tail_de_la_tontine/code.html">Détail tontine</a>
+        <a class="screen-link" href="membres_de_la_tontine/code.html">Membres</a>
+        <a class="screen-link" href="mes_cagnottes/code.html">Cagnottes</a>
+        <a class="screen-link" href="cr_er_une_cagnotte/code.html">Créer cagnotte</a>
+        <a class="screen-link" href="d_tail_de_la_cagnotte/code.html">Détail cagnotte</a>
+        <a class="screen-link" href="conversion_de_devises/code.html">Conversion</a>
+        <a class="screen-link" href="simulateur_de_frais/code.html">Simulateur</a>
+        <a class="screen-link" href="achats_en_ligne_cartes_virtuelles/code.html">Cartes virtuelles</a>
+        <a class="screen-link" href="localiser_un_agent_switch/code.html">Localiser agent</a>
+        <a class="screen-link" href="profil_utilisateur/code.html">Profil</a>
+        <a class="screen-link" href="modifier_le_profil/code.html">Modifier profil</a>
+        <a class="screen-link" href="param_tres_g_n_raux/code.html">Paramètres</a>
+        <a class="screen-link" href="s_curit/code.html">Sécurité</a>
+        <a class="screen-link" href="limites_de_transaction/code.html">Limites</a>
+        <a class="screen-link" href="moyens_de_paiement_li_s/code.html">Moyens paiement</a>
+        <a class="screen-link" href="param_tres_de_paiement/code.html">Param. paiement</a>
+        <a class="screen-link" href="support_aide/code.html">Support</a>
+        <a class="screen-link" href="confirmation_de_l_op_ration_code/code.html">Confirm. code</a>
+        <a class="screen-link" href="confirmation_de_succ_s/code.html">Succès</a>
+        <a class="screen-link" href="chec_de_transaction/code.html">Échec</a>
+        <a class="screen-link" href="pas_de_connexion/code.html">Pas de connexion</a>
+      </div>
+    </div>
+
+    <!-- Espace Marchand -->
+    <div class="space-card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span class="material-symbols-outlined" style="color:#34d399;font-size:20px">store</span>
+        <span style="color:#fff;font-weight:700;font-size:15px;">Espace Marchand</span>
+        <span class="badge" style="background:rgba(52,211,153,0.2);color:#34d399;">13 écrans</span>
+      </div>
+      <div class="screens-grid">
+        <a class="screen-link" href="accueil_marchand/code.html">Accueil</a>
+        <a class="screen-link" href="inscription_marchand/code.html">Inscription</a>
+        <a class="screen-link" href="v_rification_marchand/code.html">Vérification</a>
+        <a class="screen-link" href="tableau_de_bord_marchand/code.html">Dashboard</a>
+        <a class="screen-link" href="historique_des_ventes/code.html">Historique ventes</a>
+        <a class="screen-link" href="d_tail_d_une_vente/code.html">Détail vente</a>
+        <a class="screen-link" href="g_n_rer_qr_code_de_r_ception/code.html">Générer QR</a>
+        <a class="screen-link" href="catalogue_produits_services/code.html">Catalogue</a>
+        <a class="screen-link" href="retrait_marchand/code.html">Retrait</a>
+        <a class="screen-link" href="profil_de_l_entreprise/code.html">Profil entreprise</a>
+        <a class="screen-link" href="quipe_marchand/code.html">Équipe</a>
+        <a class="screen-link" href="support_marchand/code.html">Support</a>
+      </div>
+    </div>
+
+    <!-- Espace Agent -->
+    <div class="space-card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span class="material-symbols-outlined" style="color:#fb923c;font-size:20px">support_agent</span>
+        <span style="color:#fff;font-weight:700;font-size:15px;">Espace Agent</span>
+        <span class="badge" style="background:rgba(251,146,60,0.2);color:#fb923c;">12 écrans</span>
+      </div>
+      <div class="screens-grid">
+        <a class="screen-link" href="accueil_espace_agent/code.html">Accueil</a>
+        <a class="screen-link" href="inscription_agent_switch/code.html">Inscription</a>
+        <a class="screen-link" href="tableau_de_bord_agent/code.html">Dashboard</a>
+        <a class="screen-link" href="historique_des_op_rations_agent/code.html">Historique</a>
+        <a class="screen-link" href="d_p_t_de_fonds_mis_jour_agent/code.html">Dépôt</a>
+        <a class="screen-link" href="retrait_de_fonds_mis_jour_agent/code.html">Retrait</a>
+        <a class="screen-link" href="valider_une_op_ration_client/code.html">Valider opération</a>
+        <a class="screen-link" href="demande_de_r_approvisionnement_float/code.html">Float</a>
+        <a class="screen-link" href="d_tail_de_l_agent_switch/code.html">Détail agent</a>
+        <a class="screen-link" href="param_tres_et_profil_agent/code.html">Profil agent</a>
+      </div>
+    </div>
+  </div>
+
+  <p style="color:rgba(202,190,255,0.3);font-size:10px;text-align:center;margin:16px 0 0;">
+    Switch · Fintech · Bénin · Prototype UI
+  </p>
+</div>
+
+<script>
+  // Redirection automatique après 0.5s si déjà visiteur (via localStorage)
+  // Sinon, l'utilisateur choisit manuellement via ce hub
+  const hasVisited = localStorage.getItem('switch_visited');
+  if (!hasVisited) {
+    localStorage.setItem('switch_visited', '1');
+  }
+</script>
+
+</body>
+</html>

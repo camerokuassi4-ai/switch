@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sécurité</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background-color: #F8F9FA;
+        }
+        
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #7B5CFA;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #7B5CFA;
+        }
+        
+        /* Subtles interactions */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 20px -4px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col pb-32">
+<!-- TopAppBar -->
+<header class="docked full-width top-0 bg-transparent flex justify-between items-center px-container-margin py-stack-md w-full flat no shadows z-40 sticky">
+<div class="flex items-center gap-3">
+<button aria-label="Retour" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="arrow_back" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">Sécurité</h1>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-container-margin pt-stack-sm pb-stack-lg max-w-2xl mx-auto w-full space-y-stack-lg">
+<!-- Authentication Section -->
+<section class="space-y-stack-md">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider pl-2">Authentification</h2>
+<div class="glass-card rounded-xl overflow-hidden divide-y divide-surface-variant/50">
+<!-- Face ID Switch -->
+<div class="p-card-padding flex items-center justify-between hover:bg-surface-container-lowest/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[24px]" data-icon="face">face</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">Face ID</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Déverrouiller avec la reconnaissance faciale</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer checked:border-primary transition-transform duration-200 ease-in-out transform translate-x-0 checked:translate-x-6 z-10 top-0 left-0" id="faceid-toggle" name="toggle" type="checkbox" aria-label="Activer Face ID"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-surface-variant cursor-pointer transition-colors duration-200 ease-in-out" for="faceid-toggle"></label>
+</div>
+</div>
+<!-- Biometrics Switch -->
+<div class="p-card-padding flex items-center justify-between hover:bg-surface-container-lowest/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[24px]" data-icon="fingerprint">fingerprint</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">Biométrie</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Utiliser l'empreinte digitale</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out transform translate-x-0 z-10 top-0 left-0" id="biometrics-toggle" name="toggle" type="checkbox" aria-label="Activer la biométrie"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-surface-variant cursor-pointer transition-colors duration-200 ease-in-out" for="biometrics-toggle"></label>
+</div>
+</div>
+</div>
+</section>
+<!-- Access Management Section -->
+<section class="space-y-stack-md">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider pl-2">Gestion des accès</h2>
+<div class="glass-card rounded-xl overflow-hidden divide-y divide-surface-variant/50">
+<!-- Change PIN -->
+<button class="w-full text-left p-card-padding flex items-center justify-between hover:bg-surface-container-lowest/50 transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[24px]" data-icon="dialpad">dialpad</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">Changer le code PIN</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Modifier votre code à 4 chiffres</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- Connected Devices -->
+<button class="w-full text-left p-card-padding flex items-center justify-between hover:bg-surface-container-lowest/50 transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[24px]" data-icon="devices">devices</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">Appareils connectés</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Gérer les sessions actives</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center justify-center px-2 py-1 rounded-full bg-primary-container text-primary font-label-caps text-label-caps">2 Actifs</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</button>
+</div>
+</section>
+<!-- Danger Zone Section -->
+<section class="space-y-stack-md pt-4">
+<button onclick="window.switchNavigate ? window.switchNavigate('../accueil_splash_mis_jour/code.html') : window.location.href='../accueil_splash_mis_jour/code.html'" class="w-full p-4 rounded-xl border border-error/20 bg-error-container/20 flex items-center justify-center gap-3 text-error hover:bg-error-container/40 transition-colors">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-lg text-body-lg font-semibold">Déconnexion de tous les appareils</span>
+</button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<!-- Note: While a 'settings' intent might normally suppress the global nav in some strict architectures, 
+         the prompt explicitly requests "Navigation ovale flottante" for this screen. -->
+
+<script>
+        // Simple script to handle toggle visual states for custom checkboxes
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggles = document.querySelectorAll('.toggle-checkbox');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    // Visual state is handled by CSS, but you could add
+                    // specific logic here if needed for saving state.
+                });
+            });
+        });
+    </script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

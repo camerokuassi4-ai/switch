@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Transfert Contact</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen text-on-background pb-32">
+<!-- TopAppBar -->
+<header class="docked full-width top-0 bg-transparent flex justify-between items-center px-container-margin py-stack-md w-full">
+<div class="flex items-center gap-gutter">
+<button class="w-10 h-10 rounded-full overflow-hidden hover:bg-surface-container-high transition-colors flex items-center justify-center">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A close-up portrait of a young Beninese woman with a warm smile, wearing modern casual attire. Soft, even lighting creates a friendly and accessible mood. The image is framed as a circular avatar against a clean, light-mode background with subtle purple accents." src="../assets/images/img_052.jpg"/>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Bonjour, Adele</h1>
+</div>
+<button class="w-10 h-10 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-primary active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">search</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="px-container-margin py-stack-lg max-w-md mx-auto">
+<h2 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg mb-stack-md">Transfert</h2>
+<!-- Search Bar -->
+<div class="relative mb-stack-lg group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-surface-container-lowest border border-surface-variant rounded-xl py-3 pl-12 pr-4 font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-sm" placeholder="Rechercher un contact..." type="text"/>
+</div>
+<!-- Recent Contacts -->
+<div class="mb-stack-lg">
+<h3 class="font-headline-md text-headline-md mb-stack-sm">Récents</h3>
+<div class="space-y-stack-sm">
+<!-- Contact 1 -->
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl hover:bg-surface-container transition-colors shadow-[0_10px_20px_-5px_rgba(0,0,0,0.04)] border border-surface-variant/50">
+<div class="flex items-center gap-gutter">
+<div class="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+<img alt="Contact Avatar" class="w-full h-full object-cover" data-alt="A vibrant avatar portrait of a young Beninese man with dreadlocks, smiling softly. The lighting is bright and modern, set against a clean, light-mode aesthetic background. The overall mood is approachable and trustworthy." src="../assets/images/img_053.jpg"/>
+</div>
+<div class="text-left">
+<div class="font-body-lg text-body-lg font-bold text-on-surface">Koffi Kouamé</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">+229 97 00 00 01</div>
+</div>
+</div>
+</button>
+<!-- Contact 2 -->
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl hover:bg-surface-container transition-colors shadow-[0_10px_20px_-5px_rgba(0,0,0,0.04)] border border-surface-variant/50">
+<div class="flex items-center gap-gutter">
+<div class="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-primary-container text-primary flex items-center justify-center font-bold text-lg">
+                            M
+                        </div>
+<div class="text-left">
+<div class="font-body-lg text-body-lg font-bold text-on-surface">Marie Dansou</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">+229 61 00 00 02</div>
+</div>
+</div>
+</button>
+</div>
+</div>
+<!-- Selected Contact & Amount (Simulated State) -->
+<div class="bg-surface-container-lowest rounded-xl p-card-padding shadow-[0_10px_20px_-5px_rgba(0,0,0,0.04)] border border-surface-variant/50 mb-stack-lg relative overflow-hidden">
+<!-- Decorative gradient mesh -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
+<div class="flex flex-col items-center mb-stack-md text-center">
+<div class="w-16 h-16 rounded-full overflow-hidden mb-3 border-2 border-surface-container">
+<img alt="Selected Contact Avatar" class="w-full h-full object-cover" data-alt="A bright, clear avatar image of an older Beninese woman wearing a colorful headwrap. Soft, flattering lighting in a modern, light-mode setting. She projects warmth and reliability." src="../assets/images/img_054.jpg"/>
+</div>
+<div class="font-headline-md text-headline-md font-bold text-on-surface">Maman</div>
+<div class="font-body-sm text-body-sm text-outline">+229 95 00 00 00</div>
+</div>
+<div class="text-center mb-stack-md">
+<input class="w-full text-center bg-transparent border-none font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface focus:ring-0 p-0 mb-1" placeholder="0" type="text" value="5000"/>
+<div class="font-body-lg text-body-lg text-on-surface-variant">FCFA</div>
+</div>
+<div class="bg-surface-container rounded-lg p-3 flex items-center justify-center gap-2 mb-stack-md">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-body-sm text-body-sm text-primary font-medium">Transfert instantané et gratuit</span>
+</div>
+<button class="w-full bg-primary text-on-primary font-body-lg text-body-lg font-bold py-4 rounded-full shadow-md hover:bg-primary/90 active:scale-95 transition-all flex items-center justify-center gap-2">
+<span>Envoyer</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+
+<!-- Desktop SideNav (Hidden on Mobile, placeholder for completeness based on guidelines) -->
+
+<script src="../assets/switch.forms.js"></script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

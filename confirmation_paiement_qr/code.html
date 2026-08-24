@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Confirmation Paiement</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen text-on-surface font-body-lg antialiased flex justify-center">
+<div class="w-full max-w-md bg-surface min-h-screen relative overflow-hidden flex flex-col shadow-2xl pb-6">
+<div class="absolute top-0 left-0 w-full h-80 bg-gradient-to-br from-primary-container/30 via-primary-fixed/10 to-transparent -z-10 pointer-events-none rounded-b-[40px]"></div>
+<header class="flex items-center justify-between px-container-margin pt-6 pb-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-lowest shadow-sm hover:bg-surface-variant transition-colors active:scale-95">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">Paiement QR</h1>
+<div class="w-10 h-10 flex justify-center items-center">
+<span class="material-symbols-outlined text-on-surface-variant">help</span>
+</div>
+</header>
+<main class="flex-1 flex flex-col px-container-margin pt-stack-sm relative z-10">
+<div class="bg-surface-container-lowest rounded-2xl p-card-padding shadow-[0_10px_20px_rgba(0,0,0,0.04)] border border-surface-variant/30 flex flex-col items-center mb-stack-lg relative overflow-hidden">
+<div class="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiAvPgo8Y2lyY2xlIGN4PSIzIiBjeT0iMyIgcj0iMSIgZmlsbD0iIzAwMCIgLz4KPC9zdmc+')] pointer-events-none"></div>
+<div class="w-20 h-20 rounded-full overflow-hidden mb-stack-md ring-4 ring-surface-container z-10 shadow-inner">
+<img class="w-full h-full object-cover" data-alt="A macro shot of a sleek, modern supermarket storefront logo sign reading 'EREVAN'. Bright daylight, premium retail vibe, high-resolution lifestyle photography, shallow depth of field, set against a modern Beninese urban context with subtle purple brand accents." src="../assets/images/img_008.jpg"/>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface text-center z-10">Supermarché Erevan</h2>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-1 z-10">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                    Cotonou, Bénin
+                </div>
+<div class="w-full h-px bg-surface-variant/50 my-stack-md z-10"></div>
+<div class="flex flex-col items-center z-10 w-full">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-2">Montant à payer</span>
+<div class="font-display-lg-mobile text-display-lg-mobile text-primary tracking-tight flex items-baseline gap-1">
+                        15 500 <span class="font-headline-md text-headline-md text-on-surface">FCFA</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center flex-1 justify-end mt-auto">
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-md">Saisissez votre code PIN secret</p>
+<div class="flex gap-4 mb-stack-lg">
+<div class="w-4 h-4 rounded-full bg-primary shadow-[0_0_12px_rgba(94,59,220,0.5)] transition-all"></div>
+<div class="w-4 h-4 rounded-full bg-primary shadow-[0_0_12px_rgba(94,59,220,0.5)] transition-all"></div>
+<div class="w-4 h-4 rounded-full bg-surface-variant transition-all"></div>
+<div class="w-4 h-4 rounded-full bg-surface-variant transition-all"></div>
+</div>
+<div class="grid grid-cols-3 gap-y-3 gap-x-6 w-full max-w-[280px] mx-auto mb-stack-md">
+<button class="w-16 h-16 rounded-full flex items-center justify-center font-headline-md text-headline-md text-on-surface mx-auto bg-surface-container-lowest hover:bg-surface-container active:bg-surface-variant transition-colors shadow-sm">1</button>
+<button class="w-16 h-16 rounded-full flex items-center justify-center font-headline-md text-headline-md text-on-surface mx-auto bg-surface-container-lowest hover:bg-surface-container active:bg-surface-variant transition-colors shadow-sm">2</button>
+<button class="w-16 h-16 rounded-full flex items-center justify-center font-headline-md text-headline-md text-on-surface mx-auto bg-surface-container-lowest hover:bg-surface-container active:bg-surface-variant transition-colors shadow-sm">3</button>
+<button class="w-16 h-16 rounded-full flex items-center justify-center font-headline-md text-headline-md text-on-surface mx-auto bg-surface-container-lowest hover:bg-surface-container active:bg-surface-variant transition-colors shadow-sm">4</button>
+<button class="w-16 h-16 rounded-full flex items-center justify-center font-headline-md text-headline-md text-on-surface mx-auto bg-surface-container-lowest hover:bg-surface-container active:bg-surface-variant transition-colors shadow-sm">5</button>
+<button class="w-16 h-16 rounded-full flex items-center justify-center font-headline-md text-headline-md text-on-surface mx-auto bg-surface-container-lowest hover:bg-surface-container active:bg-surface-variant transition-colors shadow-sm">6</button>
+<button class="w-16 h-16 rounded-full flex items-center justify-center font-headline-md text-headline-md text-on-surface mx-auto bg-surface-container-lowest hover:bg-surface-container active:bg-surface-variant transition-colors shadow-sm">7</button>
+<button class="w-16 h-16 rounded-full flex items-center justify-center font-headline-md text-headline-md text-on-surface mx-auto bg-surface-container-lowest hover:bg-surface-container active:bg-surface-variant transition-colors shadow-sm">8</button>
+<button class="w-16 h-16 rounded-full flex items-center justify-center font-headline-md text-headline-md text-on-surface mx-auto bg-surface-container-lowest hover:bg-surface-container active:bg-surface-variant transition-colors shadow-sm">9</button>
+<div class="w-16 h-16 pointer-events-none"></div>
+<button class="w-16 h-16 rounded-full flex items-center justify-center font-headline-md text-headline-md text-on-surface mx-auto bg-surface-container-lowest hover:bg-surface-container active:bg-surface-variant transition-colors shadow-sm">0</button>
+<button class="w-16 h-16 rounded-full flex items-center justify-center text-on-surface-variant mx-auto hover:bg-surface-container active:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">backspace</span>
+</button>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary font-headline-md text-headline-md py-4 rounded-full mt-stack-md shadow-[0_8px_20px_rgba(94,59,220,0.3)] hover:bg-primary/90 active:scale-[0.98] transition-all flex justify-center items-center gap-2 group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">lock</span>
+                Confirmer le paiement
+            </button>
+</main>
+</div>
+<script src="../assets/switch.forms.js"></script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

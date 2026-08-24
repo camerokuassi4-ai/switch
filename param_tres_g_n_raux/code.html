@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Paramètres - Switch</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    body {
+      background-color: #F8F9FA;
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+
+<body class="text-gray-900 font-sans pb-32">
+  <!-- Top Header -->
+  <header class="w-full flex justify-between items-center px-4 py-4 bg-[#F8F9FA] sticky top-0 z-40">
+    <button onclick="history.back()" aria-label="Retour"
+      class="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 text-gray-700 hover:bg-gray-50 transition-colors">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    <h1 class="text-xl font-bold text-gray-900 tracking-tight">Paramètres</h1>
+    <button
+      class="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 text-gray-700 hover:bg-gray-50 transition-colors">
+      <span class="material-symbols-outlined text-xl">search</span>
+    </button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="w-full max-w-md mx-auto px-4 mt-2 flex flex-col pb-10">
+
+    <!-- SECTION : PROFIL -->
+    <div onclick="window.location.href='../modifier_le_profil/code.html'"
+      class="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer shadow-sm border border-gray-100 hover:border-[#5e3bdc]/30 active:scale-[0.98] transition-all group mb-6 mt-2">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-purple-100 shrink-0">
+          <img src="../assets/images/img_046.jpg" alt="Adele Doe" class="w-full h-full object-cover"/>
+        </div>
+        <div>
+          <h3 class="font-bold text-gray-900 text-base">Adele Doe</h3>
+          <p class="text-xs text-gray-500">adele.doe@example.com • +229 97 00 11 22</p>
+        </div>
+      </div>
+      <span class="material-symbols-outlined text-gray-400 group-hover:text-[#5e3bdc]">edit</span>
+    </div>
+
+    <!-- SECTION : PRÉFÉRENCES -->
+    <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Préférences</h2>
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-6">
+      <!-- Theme Toggle -->
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-[#f7f1ff] flex items-center justify-center text-[#5e3bdc]">
+            <span class="material-symbols-outlined">palette</span>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900">Thème de l'application</h3>
+            <p class="text-sm text-gray-500">Thème clair forcé par défaut</p>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-gray-400">lock</span>
+      </div>
+
+      <div class="flex gap-2">
+        <button
+          class="flex-1 py-2 flex items-center justify-center gap-2 rounded-lg border-2 border-[#5e3bdc] bg-[#f7f1ff] text-[#5e3bdc] font-medium transition-colors">
+          <span class="material-symbols-outlined text-sm">light_mode</span> Clair
+        </button>
+        <button disabled
+          class="flex-1 py-2 flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-400 font-medium cursor-not-allowed">
+          <span class="material-symbols-outlined text-sm">dark_mode</span> Sombre
+        </button>
+      </div>
+    </div>
+
+    <!-- SECTION : COMPTE & SÉCURITÉ -->
+    <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Compte & Sécurité</h2>
+    <div class="flex flex-col gap-3 mb-6">
+      <!-- Sécurité -->
+      <div onclick="window.location.href='../s_curit/code.html'"
+        class="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer shadow-sm border border-gray-100 hover:border-[#5e3bdc]/30 active:scale-[0.98] transition-all group">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-10 h-10 rounded-full bg-[#f7f1ff] flex items-center justify-center text-[#5e3bdc] group-hover:bg-[#5e3bdc] group-hover:text-white transition-colors">
+            <span class="material-symbols-outlined">lock</span>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900">Sécurité</h3>
+            <p class="text-sm text-gray-500">Code PIN, biométrie</p>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 group-hover:text-[#5e3bdc]">chevron_right</span>
+      </div>
+
+      <!-- Moyens de paiement -->
+      <div onclick="window.location.href='../moyens_de_paiement_li_s/code.html'"
+        class="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer shadow-sm border border-gray-100 hover:border-[#5e3bdc]/30 active:scale-[0.98] transition-all group">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-10 h-10 rounded-full bg-[#f7f1ff] flex items-center justify-center text-[#5e3bdc] group-hover:bg-[#5e3bdc] group-hover:text-white transition-colors">
+            <span class="material-symbols-outlined">credit_card</span>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900">Moyens de paiement</h3>
+            <p class="text-sm text-gray-500">Cartes et comptes Mobile Money</p>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 group-hover:text-[#5e3bdc]">chevron_right</span>
+      </div>
+
+      <!-- Limites de transaction -->
+      <div onclick="window.location.href='../limites_de_transaction/code.html'"
+        class="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer shadow-sm border border-gray-100 hover:border-[#5e3bdc]/30 active:scale-[0.98] transition-all group">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-10 h-10 rounded-full bg-[#f7f1ff] flex items-center justify-center text-[#5e3bdc] group-hover:bg-[#5e3bdc] group-hover:text-white transition-colors">
+            <span class="material-symbols-outlined">speed</span>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900">Limites de transaction</h3>
+            <p class="text-sm text-gray-500">Plafonds d'envoi et de retrait</p>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 group-hover:text-[#5e3bdc]">chevron_right</span>
+      </div>
+    </div>
+
+    <!-- SECTION : ASSISTANCE & COMMUNICATION -->
+    <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Assistance</h2>
+    <div class="flex flex-col gap-3 mb-6">
+      <!-- Notifications -->
+      <div onclick="window.location.href='../centre_de_notifications/code.html'"
+        class="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer shadow-sm border border-gray-100 hover:border-[#5e3bdc]/30 active:scale-[0.98] transition-all group">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-10 h-10 rounded-full bg-[#f7f1ff] flex items-center justify-center text-[#5e3bdc] group-hover:bg-[#5e3bdc] group-hover:text-white transition-colors">
+            <span class="material-symbols-outlined">notifications_active</span>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900">Notifications</h3>
+            <p class="text-sm text-gray-500">Gérer les alertes et emails</p>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 group-hover:text-[#5e3bdc]">chevron_right</span>
+      </div>
+
+      <!-- Support -->
+      <div onclick="window.location.href='../support_aide/code.html'"
+        class="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer shadow-sm border border-gray-100 hover:border-[#5e3bdc]/30 active:scale-[0.98] transition-all group">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-10 h-10 rounded-full bg-[#f7f1ff] flex items-center justify-center text-[#5e3bdc] group-hover:bg-[#5e3bdc] group-hover:text-white transition-colors">
+            <span class="material-symbols-outlined">help_center</span>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900">Aide & Support</h3>
+            <p class="text-sm text-gray-500">FAQ, contacter le service client</p>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 group-hover:text-[#5e3bdc]">chevron_right</span>
+      </div>
+    </div>
+
+    <!-- SECTION : À PROPOS -->
+    <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">À Propos</h2>
+    <div class="bg-white rounded-2xl p-4 flex items-center justify-between shadow-sm border border-gray-100 mb-6">
+      <div class="flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500">
+          <span class="material-symbols-outlined">info</span>
+        </div>
+        <div>
+          <h3 class="font-semibold text-gray-900">Version de l'application</h3>
+          <p class="text-sm text-gray-500">v2.4.1 (Build 4092)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SE DÉCONNECTER -->
+    <button onclick="window.location.href='../connexion/code.html'"
+      class="w-full bg-red-50 text-red-600 font-bold py-4 rounded-2xl border border-red-100 hover:bg-red-100 active:scale-[0.98] transition-all flex justify-center items-center gap-2 shadow-sm">
+      <span class="material-symbols-outlined">logout</span>
+      Se déconnecter
+    </button>
+
+  </main>
+
+  <!-- BottomNavBar (Mobile Only) - Actif sur Paramètres -->
+  
+
+  <script src="../assets/switch.router.js"></script>
+<nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+  <a href="../tableau_de_bord_mis_jour/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">home</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+  </a>
+  <a href="../historique_des_transactions/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">receipt_long</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Historique</span>
+  </a>
+  <a href="../achats_en_ligne_cartes_virtuelles/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">account_balance_wallet</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Portefeuille</span>
+  </a>
+  <a href="../param_tres_g_n_raux/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">settings</span>
+    <span class="nav-label" style="font-size:10px;font-weight:700;">Paramètres</span>
+  </a>
+</nav>
+</body>
+
+</html>

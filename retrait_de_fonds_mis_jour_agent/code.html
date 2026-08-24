@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Retrait de fonds</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Fluid Silk Gradient for accents if needed */
+        .bg-fluid-silk {
+            background: radial-gradient(120% 120% at 50% -20%, #ebe6f3 0%, #fdf8ff 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-lg min-h-screen flex flex-col items-center">
+<!-- Top App Bar -->
+<header class="docked full-width top-0 bg-transparent flex justify-between items-center px-container-margin py-stack-md w-full max-w-md mx-auto">
+<button aria-label="Retour" class="text-on-surface p-2 rounded-full hover:bg-surface-container-high transition-colors -ml-2" onclick="history.back()">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold text-center flex-1 pr-[40px]">Retrait de fonds</h1>
+</header>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-md px-container-margin flex-1 flex flex-col gap-stack-lg pb-40">
+<!-- Balance Context -->
+<section class="bg-surface-container-low rounded-xl p-card-padding flex justify-between items-center border border-surface-variant">
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">Solde disponible</p>
+<p class="font-headline-md text-headline-md text-on-surface">450 000 FCFA</p>
+</div>
+<div class="bg-surface-container w-12 h-12 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[24px]">account_balance_wallet</span>
+</div>
+</section>
+<!-- Destination Selection -->
+<section class="flex flex-col gap-stack-sm">
+<h2 class="font-headline-md text-headline-md text-on-surface">Destination</h2>
+<div class="grid grid-cols-2 gap-3">
+<!-- Agent Switch -->
+<button class="bg-surface rounded-xl p-4 flex flex-col items-center justify-center gap-2 border border-surface-variant hover:border-primary-fixed-dim transition-all shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] focus:outline-none">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center font-bold text-on-primary-container">
+<span class="material-symbols-outlined text-[20px]">storefront</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Agent Switch</span>
+</button>
+<!-- MTN MoMo -->
+<button class="relative bg-surface rounded-xl p-4 flex flex-col items-center justify-center gap-2 border-2 border-primary transition-all shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] focus:outline-none">
+<div class="absolute top-2 right-2 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[12px] font-bold">check</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-[#FFCC00] flex items-center justify-center font-bold text-[#000000] text-xs">MTN</div>
+<span class="font-body-sm text-body-sm text-on-surface font-semibold">MTN MoMo</span>
+</button>
+<!-- Moov Money -->
+<button class="bg-surface rounded-xl p-4 flex flex-col items-center justify-center gap-2 border border-surface-variant hover:border-primary-fixed-dim transition-all shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] focus:outline-none">
+<div class="w-10 h-10 rounded-full bg-[#005A9C] flex items-center justify-center font-bold text-white text-xs">Moov</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Moov</span>
+</button>
+<!-- Celtiis -->
+<button class="bg-surface rounded-xl p-4 flex flex-col items-center justify-center gap-2 border border-surface-variant hover:border-primary-fixed-dim transition-all shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] focus:outline-none">
+<div class="w-10 h-10 rounded-full bg-[#000000] flex items-center justify-center font-bold text-white text-xs">Celtiis</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Celtiis</span>
+</button>
+</div>
+<!-- Phone Number Input (Appears when mobile money is selected) -->
+<div class="mt-4 flex flex-col gap-1">
+<label class="font-body-sm text-body-sm text-on-surface-variant" for="phone">Numéro de téléphone</label>
+<div class="relative flex items-center">
+<span class="absolute left-4 font-body-lg text-body-lg text-on-surface-variant">+229</span>
+<input class="w-full bg-surface border border-outline-variant rounded-lg py-3 pl-16 pr-4 font-body-lg text-body-lg text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow placeholder-outline" id="phone" placeholder="Numéro" type="tel" value="97 00 00 00"/>
+<button class="absolute right-2 p-2 text-primary hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]">contacts</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Amount Input -->
+<section class="flex flex-col gap-stack-sm mt-4">
+<h2 class="font-headline-md text-headline-md text-on-surface">Montant à retirer</h2>
+<div class="bg-surface border border-outline-variant rounded-xl p-6 flex flex-col items-center justify-center focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)]">
+<div class="flex items-baseline justify-center gap-2">
+<input class="bg-transparent border-none text-center font-display-lg-mobile text-display-lg-mobile text-on-surface w-32 focus:ring-0 p-0 outline-none" placeholder="0" type="text" value="50 000"/>
+<span class="font-headline-md text-headline-md text-on-surface-variant">FCFA</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-2">Frais: 500 FCFA</p>
+</div>
+<!-- Quick Amounts -->
+<div class="flex gap-2 mt-2 overflow-x-auto pb-2 scrollbar-hide snap-x">
+<button class="shrink-0 snap-start bg-surface-container px-4 py-2 rounded-full font-label-caps text-label-caps text-on-surface hover:bg-primary-container hover:text-on-primary-container transition-colors">10 000</button>
+<button class="shrink-0 snap-start bg-surface-container px-4 py-2 rounded-full font-label-caps text-label-caps text-on-surface hover:bg-primary-container hover:text-on-primary-container transition-colors">20 000</button>
+<button class="shrink-0 snap-start bg-primary-container px-4 py-2 rounded-full font-label-caps text-label-caps text-on-primary-container font-bold">50 000</button>
+<button class="shrink-0 snap-start bg-surface-container px-4 py-2 rounded-full font-label-caps text-label-caps text-on-surface hover:bg-primary-container hover:text-on-primary-container transition-colors">100 000</button>
+</div>
+</section>
+<!-- Action Button -->
+<div class="mt-auto pt-8">
+<button onclick="window.location.href='../confirmation_de_l_op_ration_code/code.html'"
+        class="w-full bg-primary text-on-primary py-4 rounded-xl font-headline-md text-headline-md shadow-[0_4px_14px_0_rgba(94,59,220,0.39)] hover:shadow-[0_6px_20px_rgba(94,59,220,0.23)] hover:-translate-y-0.5 transition-all duration-200">
+    Confirmer le retrait
+</button>
+</div>
+</main>
+<!-- Bottom Nav Bar (Floating Oval) - Suppressed as per Task-Focused/Linear intent rules -->
+<!-- The prompt says "Navigation ovale flottante", but the global rules dictate: "Automatic Suppression: You MUST exclude the navigation shell if the page intent is: Linear/Transactional... Task-Focused: Any sub-page featuring a 'Close' or 'Back' action". I will obey the strict global rule to suppress it to prioritize the content canvas. -->
+<script>
+        // Simple input formatting for amount
+        const amountInput = document.querySelector('input[type="text"]');
+        amountInput.addEventListener('input', function(e) {
+            // Remove non-digits
+            let val = this.value.replace(/\D/g, '');
+            // Format with spaces
+            this.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        });
+    </script>
+<script src="../assets/switch.forms.js"></script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

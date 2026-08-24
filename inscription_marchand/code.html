@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Inscription Marchand</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    body {
+      background-color: #F8F9FA;
+    }
+
+    .mesh-gradient {
+      background-color: #7B5CFA;
+      background-image:
+        radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
+        radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
+        radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
+    }
+
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+
+<body class="bg-background min-h-screen text-on-surface antialiased flex flex-col font-body-lg">
+  <!-- Header (Simple for transactional flow) -->
+  <header class="w-full flex justify-between items-center px-gutter py-4 bg-background">
+    <!-- Bouton retour natif branché sur l'historique -->
+    <button onclick="history.back()" aria-label="Retour"
+      class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface hover:bg-surface-variant transition-colors">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </button>
+    <div class="font-headline-md text-headline-md-mobile font-bold text-on-surface">
+      Inscription
+    </div>
+    <div class="w-10 h-10"></div> <!-- Spacer for centering -->
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="flex-grow px-container-margin pb-[100px] flex flex-col items-center">
+    <div class="w-full max-w-md mt-stack-md flex flex-col gap-stack-lg">
+
+      <!-- Hero / Title -->
+      <div class="text-center">
+        <h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-stack-sm">Devenez Marchand</h1>
+        <p class="font-body-sm text-body-sm text-on-surface-variant">Rejoignez notre réseau et simplifiez vos paiements
+          à Cotonou et au-delà.</p>
+      </div>
+
+      <!-- Registration Form Card -->
+      <div class="bg-surface-container-lowest rounded-4xl p-card-padding shadow-ambient-soft w-full">
+        <form class="flex flex-col gap-stack-md"
+          onsubmit="event.preventDefault(); window.location.href='../v_rification_marchand/code.html';">
+          <!-- Business Name -->
+          <div class="flex flex-col gap-stack-sm">
+            <label class="font-label-caps text-label-caps text-on-surface-variant uppercase" for="business_name">Nom de
+              l'entreprise</label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">storefront</span>
+              <input
+                class="w-full pl-10 pr-4 py-3 rounded-xl border border-surface-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant"
+                id="business_name" name="business_name" placeholder="Ex: Boutique La Plage" type="text" required />
+            </div>
+          </div>
+
+          <!-- Activity Sector -->
+          <div class="flex flex-col gap-stack-sm">
+            <label class="font-label-caps text-label-caps text-on-surface-variant uppercase" for="sector">Secteur
+              d'activité</label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">category</span>
+              <select
+                class="w-full pl-10 pr-10 py-3 rounded-xl border border-surface-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-body-lg text-on-surface appearance-none"
+                id="sector" name="sector" required>
+                <option disabled="" selected="" value="">Sélectionnez un secteur</option>
+                <option value="retail">Commerce de détail</option>
+                <option value="food">Restauration</option>
+                <option value="services">Services</option>
+                <option value="transport">Transport</option>
+              </select>
+              <span
+                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
+            </div>
+          </div>
+
+          <!-- City -->
+          <div class="flex flex-col gap-stack-sm">
+            <label class="font-label-caps text-label-caps text-on-surface-variant uppercase" for="city">Ville</label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">location_city</span>
+              <input
+                class="w-full pl-10 pr-4 py-3 rounded-xl border border-surface-variant bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant"
+                id="city" name="city" placeholder="Ex: Cotonou" type="text" required />
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Submit Action CORRIGÉE -->
+      <div class="w-full flex justify-center mt-stack-md">
+        <!-- Ajout du onclick direct vers la bonne page -->
+        <button type="button" onclick="window.location.href='../v_rification_marchand/code.html'" aria-label="Continuer"
+          class="bg-[#7B5CFA] text-white rounded-full w-16 h-16 flex items-center justify-center shadow-[0_15px_30px_rgba(123,92,250,0.3)] hover:scale-105 active:scale-95 transition-all">
+          <span class="material-symbols-outlined text-[28px]"
+            style="font-variation-settings: 'FILL' 1;">arrow_forward</span>
+        </button>
+      </div>
+
+      <div class="text-center">
+        <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Étape 1 sur 3</span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Suppressed Nav Shell: This is a transactional flow (Signup), Nav is hidden -->
+  <script src="../assets/switch.forms.js"></script>
+  <script src="../assets/switch.router.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Accueil - Switch</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="../assets/switch.css">
+    <script src="../assets/switch.config.js"></script>
+
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background text-on-background font-body-lg min-h-screen flex flex-col justify-between overflow-hidden relative">
+
+    <!-- Background Image -->
+    <img src="../assets/images/img_002.jpg" alt="Background" class="absolute inset-0 w-full h-full object-cover z-0">
+
+    <!-- Main Container : 3 blocs répartis avec un espace vertical équidistant -->
+    <main
+        class="flex-grow flex flex-col justify-between items-center relative w-full h-full px-container-margin pt-10 pb-10 z-10">
+
+        <!-- 1. Bloc Logo (En haut) -->
+        <div class="flex flex-col items-center justify-start w-full max-w-md animate-fade-in-up">
+            <div
+                class="bg-white rounded-[28px] p-4 shadow-xl flex items-center justify-center w-24 h-24 border border-outline-variant/30">
+                <img alt="Logo Switch" class="w-full h-full object-contain" src="../assets/images/img_003.jpg">
+            </div>
+        </div>
+
+        <!-- 2. Bloc Textes (Centré à égale distance entre le logo et le bouton) -->
+        <div class="flex flex-col items-center text-center space-y-3 max-w-md w-full px-4 animate-fade-in-up">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-black leading-tight tracking-tight">
+                Vos transferts,<br><span class="text-[#5e3bdc]">simplifiés</span>
+            </h1>
+            <p class="text-black font-semibold text-sm md:text-base max-w-xs mx-auto leading-relaxed">
+                La façon la plus rapide et sécurisée de gérer votre argent au Bénin et au-delà.
+            </p>
+        </div>
+
+        <!-- 3. Bloc CTA (En bas) -->
+        <div class="w-full max-w-md animate-fade-in-up">
+            <button onclick="window.location.href='../choix_type_compte/code.html'"
+                class="w-full bg-[#5e3bdc] text-white py-4 px-6 rounded-full font-bold text-base shadow-[0_10px_20px_rgba(94,59,220,0.35)] hover:scale-[0.99] active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
+                Commencer
+                <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+            </button>
+            <div class="mt-4 text-center">
+                <p class="text-sm text-black font-semibold">
+                    Vous avez déjà un compte ?
+                    <button onclick="window.location.href='../connexion/code.html'"
+                        class="text-[#5e3bdc] font-bold hover:underline ml-1">
+                        Se connecter
+                    </button>
+                </p>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.animate-fade-in-up');
+            elements.forEach(el => {
+                el.style.opacity = '1';
+                el.style.transform = 'none';
+            });
+        });
+    </script>
+
+    <script src="../assets/switch.router.js"></script>
+</body>
+
+</html>

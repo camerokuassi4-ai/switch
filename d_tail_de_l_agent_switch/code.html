@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Détail de l'agent</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0">
+<!-- Top App Bar -->
+<header class="bg-surface dark:bg-surface-dim w-full top-0 sticky z-40 flat no shadows bg-surface dark:bg-surface-dim transition-all">
+<div class="flex items-center justify-between px-gutter py-4 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<button class="text-on-surface-variant hover:bg-surface-variant/50 p-2 rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Espace Agent</h1>
+</div>
+<button class="relative text-on-surface-variant hover:bg-surface-variant/50 p-2 rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-7xl mx-auto px-gutter py-stack-lg">
+<!-- Agent Profile Header Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden mb-stack-lg relative">
+<!-- Cover / Map Placeholder -->
+<div class="h-48 w-full bg-surface-variant relative overflow-hidden">
+<img class="w-full h-full object-cover opacity-80 mix-blend-multiply" data-alt="A stylized, modern map view showing a central location pin in Cotonou, Benin. The map should use a light, minimalist color palette with soft violet and gray tones. Roads and landmarks are subtly highlighted, conveying a clean, professional aesthetic suitable for a high-end corporate application." src="../assets/images/img_016.jpg"/>
+</div>
+<!-- Profile Info Section -->
+<div class="px-card-padding pb-card-padding pt-0 relative">
+<!-- Avatar & Status -->
+<div class="flex justify-between items-end -mt-12 mb-6">
+<div class="relative">
+<img class="w-24 h-24 rounded-full border-4 border-surface-container-lowest shadow-sm object-cover bg-surface-container-high" data-alt="A professional headshot of a confident Beninese financial agent in modern business casual attire. The agent is smiling slightly, positioned against a clean, bright, out-of-focus background. Lighting is natural and soft, emphasizing trustworthiness and reliability in a corporate context." src="../assets/images/img_017.jpg"/>
+<div class="absolute bottom-1 right-1 w-5 h-5 bg-liquidity-high rounded-full border-2 border-surface-container-lowest"></div>
+</div>
+<div class="bg-liquidity-high/10 text-liquidity-high font-label-caps text-label-caps px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-inner">
+<span class="material-symbols-outlined text-[16px]" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        Actif
+                    </div>
+</div>
+<!-- Identity -->
+<div class="mb-4">
+<h2 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface mb-1">Boutique Assiba</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant flex items-center gap-2">
+<span>Agent Indépendant</span>
+<span class="w-1 h-1 bg-outline rounded-full"></span>
+<span class="flex items-center text-commission-accent font-headline-sm text-headline-sm">
+<span class="material-symbols-outlined text-[18px] mr-1" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+                            4.8 <span class="text-on-surface-variant text-body-sm font-body-sm ml-1">(124 avis)</span>
+</span>
+</p>
+</div>
+<!-- Key Details Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md mb-stack-lg">
+<div class="flex items-start gap-3 p-3 rounded-lg bg-surface-container-low">
+<span class="material-symbols-outlined text-primary mt-0.5" data-icon="location_on">location_on</span>
+<div>
+<p class="font-headline-sm text-headline-sm text-on-surface mb-0.5">Adresse</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Carrefour Cica Toyota, Quartier Zongo, Cotonou</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-lg bg-surface-container-low">
+<span class="material-symbols-outlined text-primary mt-0.5" data-icon="schedule">schedule</span>
+<div>
+<p class="font-headline-sm text-headline-sm text-on-surface mb-0.5">Heures d'ouverture</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Aujourd'hui : 08:00 - 19:00</p>
+</div>
+</div>
+</div>
+<!-- Primary Actions -->
+<div class="flex flex-col sm:flex-row gap-stack-sm w-full">
+<button class="flex-1 border-2 border-outline-variant text-primary font-headline-sm text-headline-sm py-3 px-6 rounded-full flex justify-center items-center gap-2 hover:bg-surface-variant/30 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="directions_walk">directions_walk</span>
+                        Y aller
+                    </button>
+<button class="flex-1 bg-primary text-on-primary font-headline-sm text-headline-sm py-3 px-6 rounded-full flex justify-center items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-md shadow-primary/20">
+<span class="material-symbols-outlined" data-icon="point_of_sale">point_of_sale</span>
+                        Démarrer une opération
+                    </button>
+</div>
+</div>
+</div>
+<!-- Available Services Bento Grid -->
+<h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md px-1">Services disponibles</h3>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-stack-md mb-stack-lg">
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 flex flex-col items-center justify-center text-center gap-2 hover:bg-surface-container-low transition-colors cursor-pointer shadow-sm">
+<div class="w-12 h-12 bg-primary-container/20 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="send_money" style="font-variation-settings: 'FILL' 1;">send_money</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface text-[14px]">Dépôt</p>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 flex flex-col items-center justify-center text-center gap-2 hover:bg-surface-container-low transition-colors cursor-pointer shadow-sm">
+<div class="w-12 h-12 bg-primary-container/20 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="payments" style="font-variation-settings: 'FILL' 1;">payments</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface text-[14px]">Retrait</p>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 flex flex-col items-center justify-center text-center gap-2 hover:bg-surface-container-low transition-colors cursor-pointer shadow-sm">
+<div class="w-12 h-12 bg-primary-container/20 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface text-[14px]">Paiement Factures</p>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 flex flex-col items-center justify-center text-center gap-2 hover:bg-surface-container-low transition-colors cursor-pointer shadow-sm opacity-50">
+<div class="w-12 h-12 bg-surface-variant rounded-full flex items-center justify-center text-outline">
+<span class="material-symbols-outlined" data-icon="sim_card">sim_card</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface-variant text-[14px]">Achat Crédit</p>
+<span class="font-label-caps text-label-caps text-[10px] text-error">Indisponible</span>
+</div>
+</div>
+</main>
+<!-- Note: BottomNavBar is intentionally suppressed here as this is a specific Detail/Transactional intent screen ("Détail de l'agent"), conforming to the Semantic Shell Mandate which requires suppressing the navigation on sub-pages implying a temporary departure from the main flow. -->
+<script src="../assets/switch.router.js"></script>
+</body></html>

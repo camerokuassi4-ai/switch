@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Générer QR code de réception</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+
+<!-- Material Symbols Outlined -->
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+<!-- Tailwind Configuration -->
+
+<style>
+        body {
+            background-color: #fdf8ff; /* background */
+            color: #1c1a24; /* on-background */
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar to match aesthetics */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #c9c4d7; /* outline-variant */
+            border-radius: 9999px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col font-body-lg text-body-lg">
+<!-- TopAppBar -->
+<header class="bg-background text-primary font-headline-md text-headline-md-mobile full-width top-0 bg-background flat no shadows flex justify-between items-center px-gutter py-4 w-full md:hidden">
+<div class="flex items-center gap-2 font-headline-md text-headline-md-mobile font-bold text-on-surface">
+<!-- Back button for task flow -->
+<button class="p-2 hover:bg-surface-container-low transition-colors rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<h1>Recevoir</h1>
+</div>
+<button class="p-2 hover:bg-surface-container-low transition-colors rounded-full active:scale-95 transition-transform text-primary">
+<span class="material-symbols-outlined" data-weight="fill">notifications</span>
+</button>
+</header>
+<!-- Desktop Nav (Hidden on Mobile) -->
+<header class="hidden md:flex bg-background text-primary font-headline-md text-headline-md-mobile full-width top-0 bg-background flat no shadows justify-between items-center px-gutter py-4 w-full">
+<div class="flex items-center gap-4 font-headline-md text-headline-md-mobile font-bold text-on-surface">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="A highly detailed close up portrait of a professional West African business owner, smiling gently. The image should have a soft, bright, light-mode corporate aesthetic with subtle purple hues in the background to match the fintech brand. The lighting is studio quality, soft and flattering." src="../assets/images/img_018.jpg"/>
+</div>
+<span>Business Dashboard</span>
+</div>
+
+<button class="p-2 hover:bg-surface-container-low transition-colors rounded-full active:scale-95 transition-transform text-primary">
+<span class="material-symbols-outlined" data-weight="fill">notifications</span>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow flex flex-col items-center justify-start px-container-margin py-stack-lg max-w-4xl mx-auto w-full pb-32">
+<div class="w-full text-center mb-stack-lg">
+<h2 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface mb-stack-sm">Générer QR</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Présentez ce code pour recevoir un paiement.</p>
+</div>
+<!-- Glassmorphism Container for QR Configuration -->
+<div class="w-full max-w-md bg-white rounded-xl p-card-padding shadow-[0_10px_20px_rgba(0,0,0,0.04)] mb-stack-lg relative overflow-hidden isolate">
+<!-- Fluid Silk Gradient subtle background -->
+<div class="absolute inset-0 opacity-20 -z-10" style="background: radial-gradient(circle at 100% 0%, #cabeff 0%, transparent 50%), radial-gradient(circle at 0% 100%, #e6deff 0%, transparent 50%);"></div>
+<!-- Tab Selection (Fixed vs Dynamic) -->
+<div class="flex p-1 bg-surface-container-low rounded-lg mb-stack-md relative">
+<div class="absolute inset-y-1 left-1 w-[calc(50%-4px)] bg-white rounded-md shadow-sm transition-transform duration-300 ease-out" id="tab-indicator"></div>
+<button class="flex-1 py-2 relative z-10 font-label-caps text-label-caps text-primary text-center transition-colors duration-200" id="btn-fixed" onclick="switchTab('fixed')">
+                    FIXE (COMPTE)
+                </button>
+<button class="flex-1 py-2 relative z-10 font-label-caps text-label-caps text-on-surface-variant text-center transition-colors duration-200" id="btn-dynamic" onclick="switchTab('dynamic')">
+                    DYNAMIQUE (MONTANT)
+                </button>
+</div>
+<!-- Dynamic Amount Input (Hidden by default) -->
+<div class="hidden mb-stack-md transition-opacity duration-300 opacity-0" id="dynamic-input-area">
+<label class="block font-body-sm text-body-sm text-on-surface-variant mb-stack-sm">Montant à recevoir (FCFA)</label>
+<div class="relative">
+<input class="w-full bg-white border border-outline-variant rounded-lg px-4 py-3 font-headline-md text-headline-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-[0_0_10px_rgba(94,59,220,0.1)] transition-all" placeholder="0" type="number"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 font-body-lg text-body-lg text-on-surface-variant">FCFA</span>
+</div>
+</div>
+<!-- QR Code Placeholder area -->
+<div class="flex flex-col items-center justify-center bg-surface-container-lowest border-2 border-dashed border-outline-variant rounded-xl p-stack-lg min-h-[250px] transition-all hover:border-primary-fixed-dim relative group overflow-hidden">
+<!-- Scan-ready frame brackets -->
+<div class="absolute top-4 left-4 w-6 h-6 border-t-4 border-l-4 border-primary rounded-tl-md"></div>
+<div class="absolute top-4 right-4 w-6 h-6 border-t-4 border-r-4 border-primary rounded-tr-md"></div>
+<div class="absolute bottom-4 left-4 w-6 h-6 border-b-4 border-l-4 border-primary rounded-bl-md"></div>
+<div class="absolute bottom-4 right-4 w-6 h-6 border-b-4 border-r-4 border-primary rounded-br-md"></div>
+<img class="w-48 h-48 object-contain" data-alt="A highly detailed, perfectly square generated QR code centered on a clean white background. The QR code should have subtle purple branding elements subtly integrated into the corners or center, but remain highly scannable and functional looking. Clean, crisp edges, modern minimalist style." src="../assets/images/img_019.jpg"/>
+<div class="mt-stack-md flex items-center gap-2 font-label-caps text-label-caps text-primary bg-primary-fixed px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-sm">qr_code_scanner</span>
+<span>PRÊT À SCANNER</span>
+</div>
+</div>
+<p class="text-center font-body-sm text-body-sm text-on-surface-variant mt-stack-md">
+                Scanner via Moov ou MTN MoMo
+            </p>
+</div>
+<!-- Action Buttons -->
+<div class="flex gap-4 w-full max-w-md">
+<button class="flex-1 flex items-center justify-center gap-2 bg-white border border-outline-variant text-primary rounded-full py-3 font-label-caps text-label-caps hover:bg-surface-container-lowest transition-colors shadow-sm">
+<span class="material-symbols-outlined">share</span>
+                PARTAGER
+            </button>
+<button class="flex-1 flex items-center justify-center gap-2 bg-primary text-white rounded-full py-3 font-label-caps text-label-caps hover:bg-primary-container hover:text-white transition-colors shadow-md">
+<span class="material-symbols-outlined">download</span>
+                TÉLÉCHARGER
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+
+<script>
+        function switchTab(tab) {
+            const indicator = document.getElementById('tab-indicator');
+            const btnFixed = document.getElementById('btn-fixed');
+            const btnDynamic = document.getElementById('btn-dynamic');
+            const dynamicInput = document.getElementById('dynamic-input-area');
+
+            if (tab === 'fixed') {
+                indicator.style.transform = 'translateX(0)';
+                btnFixed.classList.replace('text-on-surface-variant', 'text-primary');
+                btnDynamic.classList.replace('text-primary', 'text-on-surface-variant');
+                
+                dynamicInput.classList.remove('opacity-100');
+                dynamicInput.classList.add('opacity-0');
+                setTimeout(() => {
+                    dynamicInput.classList.add('hidden');
+                }, 300);
+
+            } else {
+                // Assuming standard padding/margins for 50% width shift
+                indicator.style.transform = 'translateX(100%)';
+                btnDynamic.classList.replace('text-on-surface-variant', 'text-primary');
+                btnFixed.classList.replace('text-primary', 'text-on-surface-variant');
+                
+                dynamicInput.classList.remove('hidden');
+                // slight delay to allow display block to apply before opacity transition
+                setTimeout(() => {
+                    dynamicInput.classList.replace('opacity-0', 'opacity-100');
+                }, 10);
+            }
+        }
+    </script>
+<script src="../assets/switch.router.js"></script>
+
+<nav id="switch-nav" role="navigation" aria-label="Navigation Marchand" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+  <a href="../tableau_de_bord_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">store</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+  </a>
+  <a href="../historique_des_ventes/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">receipt_long</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Ventes</span>
+  </a>
+  <a href="../g_n_rer_qr_code_de_r_ception/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">qr_code_2</span>
+    <span class="nav-label" style="font-size:10px;font-weight:700;">QR</span>
+  </a>
+  <a href="../profil_de_l_entreprise/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">business</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Entreprise</span>
+  </a>
+  <a href="../support_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">help</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Support</span>
+  </a>
+</nav>
+</body></html>

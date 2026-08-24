@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notifications - Beninese Fintech</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body {
+            background-color: #fdf8ff; /* background */
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .ambient-shadow-sm {
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.03);
+        }
+        
+        .ambient-shadow-md {
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04);
+        }
+        
+        .ambient-shadow-lg {
+            box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Toggle Switch Styling */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #5e3bdc;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #5e3bdc;
+        }
+        .toggle-checkbox {
+            right: 0;
+            z-index: 1;
+            border-color: #e6e0ee;
+            transition: all 0.3s;
+        }
+        .toggle-label {
+            width: 3rem;
+            height: 1.5rem;
+            background-color: #e6e0ee;
+            border-radius: 9999px;
+            transition: all 0.3s;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-lg text-on-surface antialiased min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="docked full-width top-0 bg-transparent flex justify-between items-center px-container-margin py-stack-md w-full sticky z-40">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-on-surface font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Notifications</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined font-variation-settings: 'FILL' 0;" data-icon="search">search</span>
+</button>
+</header>
+<main class="px-container-margin pt-stack-md pb-stack-lg max-w-2xl mx-auto space-y-stack-lg">
+<!-- Unread / Recent Section -->
+<section>
+<div class="flex justify-between items-center mb-stack-sm">
+<h2 class="font-headline-md text-headline-md text-on-surface">Récents</h2>
+<button class="text-primary font-label-caps text-label-caps uppercase hover:underline">Tout marquer comme lu</button>
+</div>
+<div class="space-y-stack-sm">
+<!-- Notification: Transfer Received (Unread) -->
+<div class="bg-surface-container-lowest rounded-xl p-4 flex gap-4 ambient-shadow-sm items-start relative overflow-hidden group hover:ambient-shadow-md transition-shadow cursor-pointer border border-transparent hover:border-surface-container-high">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-l-xl"></div>
+<div class="relative">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined font-variation-settings: 'FILL' 1;">arrow_downward</span>
+</div>
+<div class="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-surface-container-lowest"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface">Transfert reçu</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant whitespace-nowrap">À l'instant</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Vous avez reçu 50 000 FCFA de Jean Doe via MTN MoMo.</p>
+</div>
+</div>
+<!-- Notification: Security Alert (Unread) -->
+<div class="bg-surface-container-lowest rounded-xl p-4 flex gap-4 ambient-shadow-sm items-start relative overflow-hidden group hover:ambient-shadow-md transition-shadow cursor-pointer border border-transparent hover:border-surface-container-high">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error rounded-l-xl"></div>
+<div class="relative">
+<div class="w-12 h-12 rounded-full bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined font-variation-settings: 'FILL' 1;">gpp_maybe</span>
+</div>
+<div class="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-surface-container-lowest"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-body-lg text-body-lg font-semibold text-error">Alerte sécurité</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant whitespace-nowrap">Il y a 10 min</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Nouvelle connexion détectée depuis un appareil inconnu à Cotonou.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Earlier Section -->
+<section>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-sm">Plus tôt</h2>
+<div class="space-y-stack-sm">
+<!-- Notification: New Offer (Read) -->
+<div class="bg-surface-container-lowest rounded-xl p-4 flex gap-4 ambient-shadow-sm items-start relative overflow-hidden group hover:ambient-shadow-md transition-shadow cursor-pointer border border-transparent hover:border-surface-container-high opacity-80">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined font-variation-settings: 'FILL' 0;">local_offer</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface">Nouvelle offre</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant whitespace-nowrap">Hier</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Découvrez notre nouveau service de paiement marchand avec 0% de frais.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Settings Section -->
+<section class="mt-stack-lg pt-stack-lg border-t border-surface-variant">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-md">Paramètres</h2>
+<div class="bg-surface-container-lowest rounded-2xl ambient-shadow-sm overflow-hidden">
+<!-- Push -->
+<div class="flex justify-between items-center p-4 border-b border-surface-variant">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary font-variation-settings: 'FILL' 0;">notifications</span>
+</div>
+<div>
+<h4 class="font-body-lg text-body-lg font-semibold text-on-surface">Push</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Alertes sur votre appareil</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" id="toggle-push" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer" for="toggle-push"></label>
+</div>
+</div>
+<!-- SMS -->
+<div class="flex justify-between items-center p-4 border-b border-surface-variant">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary font-variation-settings: 'FILL' 0;">sms</span>
+</div>
+<div>
+<h4 class="font-body-lg text-body-lg font-semibold text-on-surface">SMS</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Notifications par texto</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" id="toggle-sms" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer" for="toggle-sms"></label>
+</div>
+</div>
+<!-- Email -->
+<div class="flex justify-between items-center p-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary font-variation-settings: 'FILL' 0;">mail</span>
+</div>
+<div>
+<h4 class="font-body-lg text-body-lg font-semibold text-on-surface">Email</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Récapitulatifs et offres</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" id="toggle-email" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer" for="toggle-email"></label>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+
+<script src="../assets/switch.router.js"></script>
+
+<nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+  <a href="../tableau_de_bord_mis_jour/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">home</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+  </a>
+  <a href="../historique_des_transactions/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">receipt_long</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Historique</span>
+  </a>
+  <a href="../achats_en_ligne_cartes_virtuelles/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">account_balance_wallet</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Portefeuille</span>
+  </a>
+  <a href="../param_tres_g_n_raux/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">settings</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Paramètres</span>
+  </a>
+</nav>
+</body></html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title data-i18n="page_title">Historique des Transactions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        .shadow-ambient-soft {
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.04);
+        }
+        .shadow-floating-nav {
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
+        }
+        /* Fluid Silk Mesh Gradient simulation */
+        .bg-mesh-primary {
+            background-image: 
+                radial-gradient(at 40% 20%, hsla(255, 71%, 61%, 0.8) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, hsla(268, 100%, 75%, 0.7) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(245, 100%, 85%, 0.9) 0px, transparent 50%),
+                radial-gradient(at 80% 50%, hsla(276, 100%, 65%, 0.8) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(250, 100%, 75%, 0.7) 0px, transparent 50%),
+                radial-gradient(at 80% 100%, hsla(240, 100%, 65%, 0.8) 0px, transparent 50%),
+                radial-gradient(at 0% 0%, hsla(260, 100%, 85%, 0.7) 0px, transparent 50%);
+            background-color: #fdf8ff;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-transparent text-primary font-headline-md text-headline-md font-bold docked full-width top-0 bg-transparent flat no shadows flex justify-between items-center px-container-margin py-stack-md w-full md:hidden">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container-highest shrink-0">
+<img alt="User profile picture" class="w-full h-full object-cover" data-alt="A close up professional headshot of an individual with a warm smile, well lit in a bright modern office setting. The aesthetic is clean, corporate modern, and friendly, reflecting the high-quality, trustworthy nature of the fintech app." src="../assets/images/img_021.jpg"/>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface font-bold truncate" data-i18n="greeting">Bonjour, Adele</span>
+</div>
+<div class="flex items-center gap-2">
+<select class="bg-surface-container-low text-on-surface-variant text-sm rounded-md border-outline-variant py-1 pl-2 pr-6 h-8 focus:ring-primary focus:border-primary" id="lang-switch-mobile">
+<option value="fr">FR</option>
+<option value="en">EN</option>
+<option value="es">ES</option>
+<option value="de">DE</option>
+</select>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-95 transition-transform shrink-0">
+<span class="material-symbols-outlined" data-icon="search" style="font-variation-settings: 'FILL' 0;">search</span>
+</button>
+</div>
+</header>
+<!-- Desktop Nav (Hidden on Mobile) -->
+
+<!-- Main Content Canvas -->
+<main class="px-container-margin md:max-w-3xl md:mx-auto pt-stack-sm md:pt-stack-lg">
+<!-- Header & Filters Section -->
+<section class="mb-stack-lg">
+<h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface mb-stack-md" data-i18n="page_heading">Historique</h1>
+<div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-container-margin px-container-margin md:mx-0 md:px-0">
+<button id="filter-all" class="bg-primary text-on-primary font-label-caps text-label-caps px-5 py-2.5 rounded-full whitespace-nowrap shadow-ambient-soft transition-all" data-i18n="filter_all">
+                    Tout
+                </button>
+<button id="filter-received" class="bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-caps text-label-caps px-5 py-2.5 rounded-full whitespace-nowrap hover:bg-surface-container-low transition-all" data-i18n="filter_received">
+                    Reçu
+                </button>
+<button id="filter-sent" class="bg-surface-container-lowest text-on-surface-variant border border-outline-variant font-label-caps text-label-caps px-5 py-2.5 rounded-full whitespace-nowrap hover:bg-surface-container-low transition-all" data-i18n="filter_sent">
+                    Envoyé
+                </button>
+</div>
+</section>
+<!-- Chronological List -->
+<section class="space-y-stack-lg">
+<!-- Date Group: Aujourd'hui -->
+<div>
+<h2 class="font-label-caps text-label-caps text-on-surface-variant mb-stack-md tracking-wider" data-i18n="date_today">Aujourd'hui</h2>
+<div class="space-y-3">
+<!-- Transaction Item: Reçu -->
+<a href="../d_tail_de_transaction/code.html" data-type="received"
+   class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between shadow-ambient-soft hover:bg-surface-container-low transition-colors cursor-pointer"
+   style="text-decoration:none; color:inherit;">
+<div class="flex items-center gap-4 min-w-0 pr-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">arrow_downward</span>
+</div>
+<div class="min-w-0">
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold truncate" data-i18n="tx_momo_deposit">Dépôt MoMo</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate"><span data-i18n="time_momo">14:32</span> • MTN Bénin</p>
+</div>
+</div>
+<div class="text-right shrink-0">
+<span class="font-body-lg text-body-lg text-primary font-bold">+ 15 000 FCFA</span>
+</div>
+</a>
+<!-- Transaction Item: Envoyé -->
+<a href="../d_tail_de_transaction/code.html" data-type="sent"
+   class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between shadow-ambient-soft hover:bg-surface-container-low transition-colors cursor-pointer"
+   style="text-decoration:none; color:inherit;">
+<div class="flex items-center gap-4 min-w-0 pr-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">arrow_upward</span>
+</div>
+<div class="min-w-0">
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold truncate" data-i18n="tx_sbee_payment">Paiement SBEE</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate"><span data-i18n="time_sbee">09:15</span> • <span data-i18n="desc_invoice">Facture</span></p>
+</div>
+</div>
+<div class="text-right shrink-0">
+<span class="font-body-lg text-body-lg text-on-surface font-bold">- 12 500 FCFA</span>
+</div>
+</a>
+</div>
+</div>
+<!-- Date Group: Hier -->
+<div>
+<h2 class="font-label-caps text-label-caps text-on-surface-variant mb-stack-md tracking-wider" data-i18n="date_yesterday">Hier</h2>
+<div class="space-y-3">
+<!-- Transaction Item: Reçu -->
+<a href="../d_tail_de_transaction/code.html" data-type="received"
+   class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between shadow-ambient-soft hover:bg-surface-container-low transition-colors cursor-pointer"
+   style="text-decoration:none; color:inherit;">
+<div class="flex items-center gap-4 min-w-0 pr-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">sync_alt</span>
+</div>
+<div class="min-w-0">
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold truncate" data-i18n="tx_transfer_received">Transfert Reçu</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate"><span data-i18n="time_transfer">18:45</span> • Moov Money</p>
+</div>
+</div>
+<div class="text-right shrink-0">
+<span class="font-body-lg text-body-lg text-primary font-bold">+ 5 000 FCFA</span>
+</div>
+</a>
+<!-- Transaction Item: Envoyé -->
+<a href="../d_tail_de_transaction/code.html" data-type="sent"
+   class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between shadow-ambient-soft hover:bg-surface-container-low transition-colors cursor-pointer"
+   style="text-decoration:none; color:inherit;">
+<div class="flex items-center gap-4 min-w-0 pr-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">credit_card</span>
+</div>
+<div class="min-w-0">
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold truncate" data-i18n="tx_erevan_purchase">Achat Supermarché Erevan</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate"><span data-i18n="time_erevan">12:20</span> • <span data-i18n="desc_bank_card">Carte Bancaire</span></p>
+</div>
+</div>
+<div class="text-right shrink-0">
+<span class="font-body-lg text-body-lg text-on-surface font-bold">- 23 400 FCFA</span>
+</div>
+</a>
+<!-- Transaction Item: Envoyé -->
+<a href="../d_tail_de_transaction/code.html" data-type="sent"
+   class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between shadow-ambient-soft hover:bg-surface-container-low transition-colors cursor-pointer"
+   style="text-decoration:none; color:inherit;">
+<div class="flex items-center gap-4 min-w-0 pr-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">storefront</span>
+</div>
+<div class="min-w-0">
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold truncate" data-i18n="tx_pharmacy">Boutique Pharmacie</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate"><span data-i18n="time_pharmacy">08:10</span> • <span data-i18n="desc_merchant">Marchand Celtiis</span></p>
+</div>
+</div>
+<div class="text-right shrink-0">
+<span class="font-body-lg text-body-lg text-on-surface font-bold">- 4 200 FCFA</span>
+</div>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+
+<script>
+    const translations = {
+        fr: {
+            page_title: "Historique des Transactions",
+            greeting: "Bonjour, Adele",
+            nav_home: "Accueil",
+            nav_history: "Historique",
+            nav_wallet: "Portefeuille",
+            nav_settings: "Paramètres",
+            page_heading: "Historique",
+            filter_all: "Tout",
+            filter_received: "Reçu",
+            filter_sent: "Envoyé",
+            date_today: "Aujourd'hui",
+            tx_momo_deposit: "Dépôt MoMo",
+            tx_sbee_payment: "Paiement SBEE",
+            desc_invoice: "Facture",
+            date_yesterday: "Hier",
+            tx_transfer_received: "Transfert Reçu",
+            tx_erevan_purchase: "Achat Supermarché Erevan",
+            desc_bank_card: "Carte Bancaire",
+            tx_pharmacy: "Boutique Pharmacie",
+            desc_merchant: "Marchand Celtiis",
+            time_momo: "14:32",
+            time_sbee: "09:15",
+            time_transfer: "18:45",
+            time_erevan: "12:20",
+            time_pharmacy: "08:10",
+        },
+        en: {
+            page_title: "Transaction History",
+            greeting: "Hello, Adele",
+            nav_home: "Home",
+            nav_history: "History",
+            nav_wallet: "Wallet",
+            nav_settings: "Settings",
+            page_heading: "History",
+            filter_all: "All",
+            filter_received: "Received",
+            filter_sent: "Sent",
+            date_today: "Today",
+            tx_momo_deposit: "MoMo Deposit",
+            tx_sbee_payment: "SBEE Payment",
+            desc_invoice: "Invoice",
+            date_yesterday: "Yesterday",
+            tx_transfer_received: "Transfer Received",
+            tx_erevan_purchase: "Erevan Supermarket Purchase",
+            desc_bank_card: "Bank Card",
+            tx_pharmacy: "Pharmacy Shop",
+            desc_merchant: "Celtiis Merchant",
+            time_momo: "2:32 PM",
+            time_sbee: "9:15 AM",
+            time_transfer: "6:45 PM",
+            time_erevan: "12:20 PM",
+            time_pharmacy: "8:10 AM",
+        },
+        es: {
+            page_title: "Historial de Transacciones",
+            greeting: "Hola, Adele",
+            nav_home: "Inicio",
+            nav_history: "Historial",
+            nav_wallet: "Cartera",
+            nav_settings: "Ajustes",
+            page_heading: "Historial",
+            filter_all: "Todo",
+            filter_received: "Recibido",
+            filter_sent: "Enviado",
+            date_today: "Hoy",
+            tx_momo_deposit: "Depósito MoMo",
+            tx_sbee_payment: "Pago SBEE",
+            desc_invoice: "Factura",
+            date_yesterday: "Ayer",
+            tx_transfer_received: "Transferencia Recibida",
+            tx_erevan_purchase: "Compra Supermercado Erevan",
+            desc_bank_card: "Tarjeta Bancaria",
+            tx_pharmacy: "Tienda Farmacia",
+            desc_merchant: "Comerciante Celtiis",
+            time_momo: "14:32",
+            time_sbee: "09:15",
+            time_transfer: "18:45",
+            time_erevan: "12:20",
+            time_pharmacy: "08:10",
+        },
+        de: {
+            page_title: "Transaktionsverlauf",
+            greeting: "Hallo, Adele",
+            nav_home: "Startseite",
+            nav_history: "Verlauf",
+            nav_wallet: "Brieftasche",
+            nav_settings: "Einstellungen",
+            page_heading: "Verlauf",
+            filter_all: "Alle",
+            filter_received: "Erhalten",
+            filter_sent: "Gesendet",
+            date_today: "Heute",
+            tx_momo_deposit: "MoMo Einzahlung",
+            tx_sbee_payment: "SBEE Zahlung",
+            desc_invoice: "Rechnung",
+            date_yesterday: "Gestern",
+            tx_transfer_received: "Überweisung Erhalten",
+            tx_erevan_purchase: "Einkauf Supermarkt Erevan",
+            desc_bank_card: "Bankkarte",
+            tx_pharmacy: "Apotheke",
+            desc_merchant: "Celtiis Händler",
+            time_momo: "14:32",
+            time_sbee: "09:15",
+            time_transfer: "18:45",
+            time_erevan: "12:20",
+            time_pharmacy: "08:10",
+        }
+    };
+
+    function setLanguage(lang) {
+        document.documentElement.lang = lang;
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[lang] && translations[lang][key]) {
+                el.textContent = translations[lang][key];
+            }
+        });
+        document.getElementById('lang-switch-mobile').value = lang;
+        document.getElementById('lang-switch-desktop').value = lang;
+    }
+
+    document.getElementById('lang-switch-mobile').addEventListener('change', (e) => setLanguage(e.target.value));
+    document.getElementById('lang-switch-desktop').addEventListener('change', (e) => setLanguage(e.target.value));
+
+    // --- Filtres Tout / Reçu / Envoyé ---
+    const filterBtns = {
+        all:      document.getElementById('filter-all'),
+        received: document.getElementById('filter-received'),
+        sent:     document.getElementById('filter-sent'),
+    };
+    const txItems = document.querySelectorAll('[data-type]');
+
+    const activeClass    = ['bg-primary', 'text-on-primary', 'shadow-ambient-soft'];
+    const inactiveClass  = ['bg-surface-container-lowest', 'text-on-surface-variant', 'border', 'border-outline-variant'];
+
+    function setFilter(type) {
+        // Styles des boutons
+        Object.entries(filterBtns).forEach(([key, btn]) => {
+            if (key === type) {
+                btn.classList.remove(...inactiveClass);
+                btn.classList.add(...activeClass);
+            } else {
+                btn.classList.remove(...activeClass);
+                btn.classList.add(...inactiveClass);
+            }
+        });
+        // Affichage des transactions
+        txItems.forEach(item => {
+            if (type === 'all' || item.dataset.type === type) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    filterBtns.all.addEventListener('click',      () => setFilter('all'));
+    filterBtns.received.addEventListener('click', () => setFilter('received'));
+    filterBtns.sent.addEventListener('click',     () => setFilter('sent'));
+</script>
+<script src="../assets/switch.router.js"></script>
+
+<nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+  <a href="../tableau_de_bord_mis_jour/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">home</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+  </a>
+  <a href="../historique_des_transactions/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">receipt_long</span>
+    <span class="nav-label" style="font-size:10px;font-weight:700;">Historique</span>
+  </a>
+  <a href="../achats_en_ligne_cartes_virtuelles/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">account_balance_wallet</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Portefeuille</span>
+  </a>
+  <a href="../param_tres_g_n_raux/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">settings</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Paramètres</span>
+  </a>
+</nav>
+</body></html>

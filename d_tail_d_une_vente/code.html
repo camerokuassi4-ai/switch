@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Détail de la transaction</title>
+<!-- Google Fonts: Hanken Grotesk -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+
+<!-- Material Symbols -->
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        /* Ambient Shadows & Glassmorphism */
+        .shadow-level-1 {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Fluid Silk Gradient for Hero Card */
+        .fluid-silk {
+            background: linear-gradient(135deg, #7758f6 0%, #5e3bdc 100%);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .fluid-silk::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 0%, transparent 60%);
+            transform: rotate(30deg);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .fluid-silk::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            right: -10%;
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-sm antialiased min-h-screen pb-24">
+<!-- 
+        Navigation Shell Suppressed:
+        As a task-focused "Detail" screen with a back action, the global TopAppBar and BottomNavBar 
+        are intentionally excluded to prioritize the canvas and contextual actions.
+    -->
+<!-- Contextual Header -->
+<header class="sticky top-0 z-40 bg-background/90 backdrop-blur-md">
+<div class="flex justify-between items-center px-container-margin py-4">
+<button aria-label="Retour" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-on-surface">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">Détail de la vente</h1>
+<button aria-label="Plus d'options" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-on-surface">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">more_vert</span>
+</button>
+</div>
+</header>
+<main class="px-container-margin mt-stack-sm space-y-stack-lg max-w-3xl mx-auto">
+<!-- Hero Section: Fluid Silk Balance Card -->
+<section class="fluid-silk rounded-xl p-card-padding shadow-level-1 text-on-primary flex flex-col items-center text-center relative">
+<div class="flex items-center space-x-2 bg-on-primary/20 backdrop-blur-sm px-3 py-1 rounded-full mb-stack-md">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-caps text-label-caps tracking-widest uppercase">Transaction Réussie</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-primary/80 mb-1">Montant reçu</p>
+<h2 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg mb-2">45 000 FCFA</h2>
+<p class="font-body-sm text-body-sm text-on-primary/80">14 Octobre 2023 à 10:45</p>
+<!-- Abstract decorative element -->
+<div class="absolute top-4 right-4 opacity-20">
+<span class="material-symbols-outlined text-[48px]">all_inclusive</span>
+</div>
+</section>
+<!-- Bento Grid Details -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<!-- Customer Card -->
+<div class="bg-surface-container-lowest rounded-xl p-card-padding shadow-level-1 border border-surface-variant flex flex-col space-y-stack-md">
+<div class="flex items-center space-x-3 text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">person</span>
+<h3 class="font-label-caps text-label-caps uppercase">Informations Client</h3>
+</div>
+<div class="flex items-center space-x-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary font-headline-md text-headline-md">
+                        AA
+                    </div>
+<div>
+<p class="font-headline-md text-headline-md text-on-surface">Aminata Assogba</p>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-1">+229 97 00 00 00</p>
+</div>
+</div>
+</div>
+<!-- Payment Method Card -->
+<div class="bg-surface-container-lowest rounded-xl p-card-padding shadow-level-1 border border-surface-variant flex flex-col space-y-stack-md">
+<div class="flex items-center space-x-3 text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_balance_wallet</span>
+<h3 class="font-label-caps text-label-caps uppercase">Moyen de paiement</h3>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-headline-md text-headline-md text-on-surface">MTN Mobile Money</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Via QR Code marchand</p>
+</div>
+<!-- Stylized MTN placeholder -->
+<div class="w-10 h-10 rounded-full bg-[#FFCC00] flex items-center justify-center shadow-inner">
+<span class="material-symbols-outlined text-black" style="font-variation-settings: 'FILL' 1;">phone_iphone</span>
+</div>
+</div>
+</div>
+<!-- Transaction Breakdown (Spans 2 columns on desktop) -->
+<div class="bg-surface-container-lowest rounded-xl p-card-padding shadow-level-1 border border-surface-variant md:col-span-2 space-y-stack-sm">
+<div class="flex items-center space-x-3 text-secondary mb-stack-md">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">receipt_long</span>
+<h3 class="font-label-caps text-label-caps uppercase">Détails de facturation</h3>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="font-body-lg text-body-lg text-on-surface-variant">Référence de transaction</span>
+<span class="font-body-sm text-body-sm text-on-surface font-mono bg-surface-container px-2 py-1 rounded">TXN-98273645B</span>
+</div>
+<div class="h-px w-full bg-surface-variant my-2"></div>
+<div class="flex justify-between items-center py-2">
+<span class="font-body-lg text-body-lg text-on-surface-variant">Sous-total</span>
+<span class="font-body-lg text-body-lg text-on-surface">45 000 FCFA</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="font-body-lg text-body-lg text-on-surface-variant">Frais de réseau (0%)</span>
+<span class="font-body-lg text-body-lg text-on-surface">0 FCFA</span>
+</div>
+<div class="h-px w-full bg-outline-variant my-2 border-dashed border-t"></div>
+<div class="flex justify-between items-center py-2">
+<span class="font-headline-md text-headline-md text-on-surface">Montant Net</span>
+<span class="font-headline-md text-headline-md text-primary">45 000 FCFA</span>
+</div>
+</div>
+</section>
+<!-- Action Buttons -->
+<section class="flex flex-col sm:flex-row gap-stack-md pt-stack-sm">
+<button class="flex-1 bg-primary text-on-primary rounded-full py-4 px-6 flex justify-center items-center space-x-2 shadow-level-1 hover:bg-on-primary-fixed-variant transition-colors group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 0;">download</span>
+<span class="font-headline-md text-headline-md">Télécharger le reçu</span>
+</button>
+<button class="flex-1 bg-surface-container-lowest text-primary border border-outline-variant rounded-full py-4 px-6 flex justify-center items-center space-x-2 shadow-level-1 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">undo</span>
+<span class="font-headline-md text-headline-md">Rembourser</span>
+</button>
+</section>
+</main>
+<script src="../assets/switch.router.js"></script>
+</body></html>

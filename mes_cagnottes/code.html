@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cagnottes</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        .shadow-soft {
+            box-shadow: 0 10px 20px -4px rgba(0, 0, 0, 0.04);
+        }
+        .shadow-float {
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32 font-body-lg">
+<!-- TopAppBar -->
+<header class="docked full-width top-0 bg-transparent flex justify-between items-center px-container-margin py-stack-md w-full sticky z-40">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden">
+<img alt="Avatar" class="w-full h-full object-cover" data-alt="Portrait photo of a young professional African woman smiling warmly. Bright lighting, clean modern aesthetic, white background. Corporate modern style." src="../assets/images/img_029.jpg"/>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Mes Cagnottes</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="px-container-margin flex flex-col gap-stack-lg mt-4">
+<!-- Bento Grid Layout for Cagnottes -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<!-- Cagnotte Card 1: Active/Urgent -->
+<div class="bg-surface rounded-xl p-card-padding shadow-soft border border-surface-variant relative overflow-hidden group hover:shadow-md transition-shadow">
+<!-- Subtle Gradient Background Hint -->
+<div class="absolute inset-0 bg-gradient-to-br from-primary-fixed/20 to-transparent opacity-50"></div>
+<div class="relative z-10 flex flex-col h-full justify-between gap-stack-md">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">Anniversaire Maman</h2>
+<span class="font-label-caps text-label-caps text-primary bg-primary-container px-2 py-1 rounded-full">En cours</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="mt-2">
+<div class="flex justify-between items-end mb-2">
+<div class="font-display-lg-mobile text-display-lg-mobile text-on-surface">
+                                75 000 <span class="font-body-lg text-body-lg text-on-surface-variant">FCFA</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant text-right">
+                                sur 100 000 FCFA
+                            </div>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-3/4"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Cagnotte Card 2: New -->
+<div class="bg-surface rounded-xl p-card-padding shadow-soft border border-surface-variant relative overflow-hidden group hover:shadow-md transition-shadow">
+<div class="relative z-10 flex flex-col h-full justify-between gap-stack-md">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">Projet Agricole</h2>
+<span class="font-label-caps text-label-caps text-on-surface-variant bg-surface-variant px-2 py-1 rounded-full">Nouveau</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="mt-2">
+<div class="flex justify-between items-end mb-2">
+<div class="font-display-lg-mobile text-display-lg-mobile text-on-surface">
+                                10 000 <span class="font-body-lg text-body-lg text-on-surface-variant">FCFA</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant text-right">
+                                sur 500 000 FCFA
+                            </div>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[2%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Cagnotte Card 3: Completed -->
+<div class="bg-surface rounded-xl p-card-padding shadow-soft border border-surface-variant relative overflow-hidden group hover:shadow-md transition-shadow opacity-80">
+<div class="relative z-10 flex flex-col h-full justify-between gap-stack-md">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">Frais Scolaires</h2>
+<span class="font-label-caps text-label-caps text-green-700 bg-green-100 px-2 py-1 rounded-full">Terminé</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="mt-2">
+<div class="flex justify-between items-end mb-2">
+<div class="font-display-lg-mobile text-display-lg-mobile text-on-surface">
+                                150 000 <span class="font-body-lg text-body-lg text-on-surface-variant">FCFA</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant text-right">
+                                Objectif atteint
+                            </div>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-green-500 rounded-full w-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Create CTA -->
+<div class="flex justify-center mt-4 mb-20">
+<button class="flex items-center gap-2 bg-primary text-on-primary px-6 py-4 rounded-full font-headline-md text-headline-md hover:bg-surface-tint transition-colors shadow-soft">
+<span class="material-symbols-outlined">add</span>
+                Créer une cagnotte
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+
+<script src="../assets/switch.router.js"></script>
+</body></html>

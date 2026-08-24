@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Support - Assistance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        .glass-card {
+            background: rgba(253, 248, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+        }
+        .mesh-gradient {
+            background-color: #fdf8ff;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,100%,94%,1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(253,100%,94%,1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(285,100%,96%,1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(253,100%,94%,1) 0px, transparent 50%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-lg min-h-screen pb-32 mesh-gradient">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-container-margin py-stack-md w-full bg-transparent docked full-width top-0 z-40 sticky">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface bg-surface-container-high">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A close-up portrait of a professional African woman smiling softly. The lighting is soft and bright, highlighting a corporate modern aesthetic suitable for a fintech app avatar. The background is a clean, out-of-focus light gray wall." src="../assets/images/img_044.jpg"/>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Bonjour, Adele</h1>
+</div>
+<button aria-label="Search" class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="search" style="font-variation-settings: 'FILL' 0;">search</span>
+</button>
+</header>
+<main class="px-container-margin mt-stack-md space-y-stack-lg">
+<!-- Header Section -->
+<section>
+<h2 class="font-display-lg-mobile text-display-lg-mobile text-on-surface md:font-display-lg md:text-display-lg">Comment pouvons-nous vous aider ?</h2>
+</section>
+<!-- Search Bar -->
+<section>
+<div class="relative w-full shadow-sm rounded-xl overflow-hidden glass-card">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant z-10">search</span>
+<input class="w-full pl-12 pr-4 py-4 bg-transparent border-none focus:ring-2 focus:ring-primary text-body-lg placeholder:text-on-surface-variant transition-shadow duration-200 outline-none" placeholder="Rechercher dans la FAQ..." type="text"/>
+</div>
+</section>
+<!-- Quick Access Buttons -->
+<section class="grid grid-cols-3 gap-gutter">
+<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-surface-container shadow-sm hover:shadow-md transition-all active:scale-95 border border-outline-variant/30">
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" data-icon="chat" style="font-variation-settings: 'FILL' 1;">chat</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface text-center">Parler à un agent</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-surface-container shadow-sm hover:shadow-md transition-all active:scale-95 border border-outline-variant/30">
+<div class="w-12 h-12 rounded-full bg-surface border border-outline-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="call" style="font-variation-settings: 'FILL' 0;">call</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface text-center">Appeler le support</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-surface-container shadow-sm hover:shadow-md transition-all active:scale-95 border border-outline-variant/30">
+<div class="w-12 h-12 rounded-full bg-surface border border-outline-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="mail" style="font-variation-settings: 'FILL' 0;">mail</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface text-center">Email</span>
+</button>
+</section>
+<!-- Popular Questions -->
+<section class="space-y-stack-md">
+<h3 class="font-headline-md text-headline-md text-on-surface">Questions populaires</h3>
+<div class="space-y-3">
+<!-- FAQ Item 1 -->
+<div class="glass-card rounded-xl p-4 flex items-center justify-between cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-sm" data-icon="help" style="font-variation-settings: 'FILL' 0;">help</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">Comment réinitialiser mon mot de passe ?</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+<!-- FAQ Item 2 -->
+<div class="glass-card rounded-xl p-4 flex items-center justify-between cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-sm" data-icon="help" style="font-variation-settings: 'FILL' 0;">help</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">Quels sont les frais de transfert ?</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+<!-- FAQ Item 3 -->
+<div class="glass-card rounded-xl p-4 flex items-center justify-between cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-sm" data-icon="help" style="font-variation-settings: 'FILL' 0;">help</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">Comment lier mon compte MTN MoMo ?</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+
+<script src="../assets/switch.router.js"></script>
+</body></html>

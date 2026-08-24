@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Moyens de Paiement</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body {
+            background-color: #F8F9FA;
+        }
+        .mesh-gradient {
+            background: linear-gradient(135deg, rgba(94,59,220,0.8) 0%, rgba(119,88,246,0.6) 50%, rgba(202,190,255,0.4) 100%);
+            background-size: 200% 200%;
+            animation: gradientMove 10s ease infinite;
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .card-shadow {
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.04);
+        }
+        .nav-shadow {
+            box-shadow: 0 15px 30px -5px rgba(0,0,0,0.15);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-sm text-on-surface antialiased pb-32">
+<!-- Header: Suppressed global nav elements as this is a focused settings/wallet screen, using custom back header -->
+<header class="flex justify-between items-center px-container-margin py-stack-md w-full sticky top-0 bg-[#F8F9FA]/90 backdrop-blur-md z-40">
+<button aria-label="Retour" class="w-10 h-10 rounded-full bg-white flex items-center justify-center card-shadow active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">Moyens de Paiement</h1>
+<div class="w-10"></div> <!-- Balancer -->
+</header>
+<main class="px-container-margin mt-stack-md flex flex-col gap-stack-lg max-w-md mx-auto">
+<!-- Linked Accounts Section -->
+<section class="flex flex-col gap-stack-sm">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Comptes Liés</h2>
+<!-- Visa Card -->
+<div class="bg-white rounded-xl p-card-padding card-shadow flex items-center justify-between group hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<div class="flex items-center gap-gutter">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 mesh-gradient opacity-20"></div>
+<span class="material-symbols-outlined text-primary" data-icon="credit_card">credit_card</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg font-semibold text-on-surface">Carte Visa</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">**** 1234</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full hover:bg-surface-variant flex items-center justify-center transition-colors text-on-surface-variant group-hover:text-primary">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+<!-- MTN MoMo -->
+<div class="bg-white rounded-xl p-card-padding card-shadow flex items-center justify-between group hover:bg-surface-container-lowest transition-colors cursor-pointer mt-stack-sm">
+<div class="flex items-center gap-gutter">
+<div class="w-12 h-12 rounded-full bg-[#FFCC00]/20 flex items-center justify-center relative overflow-hidden">
+<span class="font-bold text-[#FFCC00] text-lg">M</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg font-semibold text-on-surface">MTN MoMo</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">+229 97 ** ** **</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full hover:bg-surface-variant flex items-center justify-center transition-colors text-on-surface-variant group-hover:text-primary">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</section>
+<!-- Add New Account Action -->
+<section class="mt-4">
+<button class="w-full bg-primary text-on-primary rounded-full py-4 px-6 flex items-center justify-center gap-2 font-body-lg text-body-lg font-semibold hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95 shadow-md">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+                Ajouter un compte
+            </button>
+</section>
+</main>
+<!-- BottomNavBar - Nav shell active on this screen based on prompt requirements -->
+
+<!-- Mobile BottomNav (Showing as default for smaller screens, hiding desktop version above via responsive classes) -->
+
+<script src="../assets/switch.router.js"></script>
+</body></html>
