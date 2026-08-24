@@ -1,169 +1,259 @@
 <!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Mes Cartes Virtuelles - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
 
-<html class="light" lang="fr"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Mes Cartes Virtuelles</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="../assets/switch.css">
-<script src="../assets/switch.config.js"></script>
-
-<style>
-        body { font-family: 'Hanken Grotesk', sans-serif; }
-        .mesh-gradient-1 { background: radial-gradient(circle at 0% 0%, #7B5CFA 0%, transparent 60%), radial-gradient(circle at 100% 100%, #cabeff 0%, transparent 60%), #5e3bdc; }
-        .mesh-gradient-2 { background: radial-gradient(circle at 100% 0%, #1c0062 0%, transparent 70%), radial-gradient(circle at 0% 100%, #7B5CFA 0%, transparent 70%), #1c1a24; }
-        .glass-card { background: rgba(255, 255, 255, 0.1); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
-    </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); background-color: #F8F9FD; }
+    .card-purple-gradient { background: linear-gradient(135deg, #7B5CFA 0%, #5E3BDC 50%, #2A1175 100%); box-shadow: 0 16px 36px -10px rgba(94, 59, 220, 0.35); }
+    .card-black-gradient { background: linear-gradient(135deg, #2D2C34 0%, #1A1920 100%); }
+    .glass-pill { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
   </style>
-  </head>
-<body class="bg-background text-on-background min-h-screen pb-32">
-<!-- TopAppBar -->
-<header class="docked full-width top-0 bg-transparent flex justify-between items-center px-container-margin py-stack-md w-full flat no shadows">
-<div class="flex items-center gap-stack-sm">
-<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden shrink-0">
-<img alt="User profile picture" class="w-full h-full object-cover" data-alt="Adele Doe profile picture" src="../assets/images/img_046.jpg"/>
-</div>
-<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Mes Cartes</h1>
-</div>
-<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors text-primary font-bold">
-<span class="material-symbols-outlined">search</span>
-</button>
-</header>
-<!-- Main Content -->
-<main class="px-container-margin pt-stack-md flex flex-col gap-stack-lg max-w-3xl mx-auto w-full">
-<!-- Cards List -->
-<section class="flex flex-col gap-stack-md">
-<!-- Virtual Card 1 -->
-<div class="w-full rounded-2xl mesh-gradient-1 relative overflow-hidden text-white shadow-[0_10px_20px_rgba(0,0,0,0.04)] p-6 flex flex-col justify-between min-h-[200px]">
-<!-- Abstract Pattern Overlay -->
-<div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent pointer-events-none"></div>
-<div class="flex justify-between items-start relative z-10">
-  <div class="flex flex-col gap-1">
-    <span class="font-label-caps text-label-caps text-white/80">Carte Achats en Ligne</span>
-    <div class="flex items-center gap-2">
-      <div class="w-2 h-2 rounded-full bg-green-400"></div>
-      <span class="font-body-sm text-body-sm">Active</span>
-    </div>
-  </div>
-  <div class="flex items-center gap-2">
-    <span class="material-symbols-outlined text-3xl">contactless</span>
-    <!-- Toggle visibility button -->
-    <button id="toggle-card-1" onclick="toggleCard1()"
-        class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors active:scale-90 cursor-pointer">
-      <span class="material-symbols-outlined text-[18px]" id="eye-icon-1" style="font-variation-settings:'FILL' 0">visibility</span>
-    </button>
-  </div>
-</div>
-<div class="relative z-10 flex flex-col gap-2 my-4">
-  <div class="text-xl sm:text-2xl tracking-widest font-mono font-bold opacity-95 transition-all duration-300" id="card-number-1">**** **** **** 4289</div>
-  <div class="flex justify-between items-end mt-2">
-    <div class="flex gap-6">
-      <div class="flex flex-col">
-        <span class="font-label-caps text-label-caps text-white/60">VALIDE JUSQU'AU</span>
-        <span class="font-body-lg text-body-lg font-semibold" id="card-exp-1">12/26</span>
-      </div>
-      <div class="flex flex-col">
-        <span class="font-label-caps text-label-caps text-white/60">CVV</span>
-        <span class="font-body-lg text-body-lg font-semibold" id="card-cvv-1">***</span>
+</head>
+<body class="text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
+
+  <!-- TopAppBar -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-lg sm:text-xl font-extrabold text-on-surface">Cartes Virtuelles</h1>
+        <p class="text-xs text-on-surface-variant">Visa & Mastercard Internationales</p>
       </div>
     </div>
-    <div class="font-bold text-xl italic tracking-wider">VISA</div>
-  </div>
-</div>
-</div>
-<!-- Virtual Card 2 (Inactive/Dark) -->
-<div class="w-full rounded-2xl mesh-gradient-2 relative overflow-hidden text-white shadow-[0_10px_20px_rgba(0,0,0,0.04)] p-6 flex flex-col justify-between opacity-85 min-h-[200px]">
-<div class="flex justify-between items-start relative z-10">
-<div class="flex flex-col gap-1">
-<span class="font-label-caps text-label-caps text-white/80">Abonnements</span>
-<div class="flex items-center gap-2">
-<div class="w-2 h-2 rounded-full bg-yellow-400"></div>
-<span class="font-body-sm text-body-sm">En pause</span>
-</div>
-</div>
-<div class="flex items-center gap-2">
-  <span class="material-symbols-outlined text-3xl opacity-70">contactless</span>
-</div>
-</div>
-<div class="relative z-10 flex flex-col gap-2 my-4">
-<div class="text-xl sm:text-2xl tracking-widest font-mono font-bold opacity-80">**** **** **** 9012</div>
-<div class="flex justify-between items-end mt-2">
-<div class="flex gap-6 opacity-80">
-<div class="flex flex-col">
-<span class="font-label-caps text-label-caps text-white/60">VALIDE JUSQU'AU</span>
-<span class="font-body-lg text-body-lg font-semibold">08/25</span>
-</div>
-<div class="flex flex-col">
-<span class="font-label-caps text-label-caps text-white/60">CVV</span>
-<span class="font-body-lg text-body-lg font-semibold">***</span>
-</div>
-</div>
-<div class="font-bold text-xl italic tracking-wider opacity-90">Mastercard</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Quick Actions -->
-<section class="grid grid-cols-2 gap-stack-md mt-stack-sm">
-<a href="../confirmation_de_l_op_ration_code/code.html" class="bg-surface-container-lowest p-card-padding rounded-xl shadow-[0_10px_20px_rgba(0,0,0,0.04)] flex flex-col items-center justify-center gap-stack-sm hover:bg-surface-container-low transition-colors no-underline">
-<div class="w-12 h-12 rounded-full border border-surface-variant flex items-center justify-center text-primary">
-<span class="material-symbols-outlined">add_card</span>
-</div>
-<span class="font-body-sm text-body-sm font-semibold text-on-surface">Créer une carte</span>
-</a>
-<a href="../limites_de_transaction/code.html" class="bg-surface-container-lowest p-card-padding rounded-xl shadow-[0_10px_20px_rgba(0,0,0,0.04)] flex flex-col items-center justify-center gap-stack-sm hover:bg-surface-container-low transition-colors no-underline">
-<div class="w-12 h-12 rounded-full border border-surface-variant flex items-center justify-center text-primary">
-<span class="material-symbols-outlined">settings_overscan</span>
-</div>
-<span class="font-body-sm text-body-sm font-semibold text-on-surface">Gérer plafonds</span>
-</a>
-</section>
-</main>
-<script>
-  var card1Visible = false;
-  function toggleCard1() {
-    card1Visible = !card1Visible;
-    var num = document.getElementById('card-number-1');
-    var cvv = document.getElementById('card-cvv-1');
-    var eye = document.getElementById('eye-icon-1');
-    if (!num || !cvv || !eye) return;
-    if (card1Visible) {
-      num.textContent = '4289 3301 8847 4289';
-      cvv.textContent = '742';
-      eye.textContent = 'visibility_off';
-      eye.style.fontVariationSettings = "'FILL' 1";
-    } else {
-      num.textContent = '**** **** **** 4289';
-      cvv.textContent = '***';
-      eye.textContent = 'visibility';
-      eye.style.fontVariationSettings = "'FILL' 0";
+
+    <!-- Create Card Button -->
+    <a href="../creer_carte_virtuelle/code.html" class="flex items-center gap-1.5 bg-primary text-white text-xs font-bold px-3.5 py-2 rounded-full shadow-md hover:opacity-90 active:scale-95 transition-all no-underline cursor-pointer">
+      <span class="material-symbols-outlined text-sm font-bold">add</span>
+      <span>Nouvelle</span>
+    </a>
+  </header>
+
+  <!-- Main Content -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-6 pt-1">
+
+    <!-- Active Card 1 (Visa Multi-usage) -->
+    <div class="card-purple-gradient rounded-[32px] p-6 text-white relative overflow-hidden flex flex-col justify-between min-h-[220px]">
+      
+      <!-- Top Row -->
+      <div class="flex justify-between items-start">
+        <div>
+          <span class="text-[11px] font-bold text-purple-200 uppercase tracking-wider block">Achats & Abonnements</span>
+          <div class="flex items-center gap-1.5 mt-0.5" id="card-status-badge">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="status-dot"></span>
+            <span class="text-xs font-bold text-white" id="status-label">Active • 3D Secure</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- Copy details button -->
+          <button onclick="copyCardDetails()" class="glass-pill px-3 py-1 rounded-full text-xs font-bold text-white flex items-center gap-1 hover:bg-white/30 transition-colors cursor-pointer" title="Copier le numéro">
+            <span class="material-symbols-outlined text-xs">content_copy</span>
+            <span>Copier</span>
+          </button>
+
+          <!-- Toggle view numbers -->
+          <button onclick="toggleCardVisibility()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center hover:bg-white/30 transition-colors cursor-pointer" title="Afficher/Masquer">
+            <span class="material-symbols-outlined text-sm" id="card-eye-icon">visibility</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card Number -->
+      <div class="my-3">
+        <span class="text-xl sm:text-2xl font-mono font-bold tracking-widest block transition-all" id="card-num-text">4289 •••• •••• 4289</span>
+        <div class="flex gap-6 mt-2 text-xs text-purple-200">
+          <span>EXP : <b class="text-white font-mono" id="card-exp-text">12/28</b></span>
+          <span>CVV : <b class="text-white font-mono" id="card-cvv-text">•••</b></span>
+          <span>Solde : <b class="text-white font-mono">75 000 FCFA</b></span>
+        </div>
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="flex justify-between items-end pt-2 border-t border-white/20">
+        <span class="text-xs font-black uppercase tracking-wider text-white">ADELE DOE</span>
+        <span class="text-2xl font-black italic tracking-wider">VISA</span>
+      </div>
+    </div>
+
+    <!-- Quick Management Hub (Recharger, Geler, Plafonds) -->
+    <div class="grid grid-cols-3 gap-3 bg-white p-3.5 rounded-3xl border border-outline-variant/40 shadow-sm text-center">
+      <!-- Recharger -->
+      <button onclick="rechargeCardPrompt()" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-surface-container transition-colors cursor-pointer">
+        <div class="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">add_card</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface">Recharger</span>
+      </button>
+
+      <!-- Geler / Débloquer -->
+      <button onclick="toggleFreezeCard()" id="btn-freeze" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-surface-container transition-colors cursor-pointer">
+        <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center" id="freeze-icon-box">
+          <span class="material-symbols-outlined text-xl" id="freeze-icon">ac_unit</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface" id="freeze-label">Geler carte</span>
+      </button>
+
+      <!-- Plafonds & Paramètres -->
+      <a href="../limites_de_transaction/code.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-surface-container transition-colors cursor-pointer no-underline">
+        <div class="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">tune</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface">Plafonds</span>
+      </a>
+    </div>
+
+    <!-- Card 2: Éphémère (Secondary Card) -->
+    <div class="card-black-gradient rounded-3xl p-5 text-white shadow-md flex justify-between items-center opacity-90 hover:opacity-100 transition-opacity">
+      <div class="flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-2xl bg-white/10 flex items-center justify-center font-bold">
+          <span class="material-symbols-outlined text-2xl text-amber-400">bolt</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h4 class="text-sm font-bold text-white">Carte Éphémère (Pubs & Tests)</h4>
+            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300">Usage Unique</span>
+          </div>
+          <span class="text-xs font-mono text-gray-400">5520 •••• •••• 9012 • 12 500 F</span>
+        </div>
+      </div>
+      <span class="text-lg font-black italic tracking-wider text-gray-300">Mastercard</span>
+    </div>
+
+    <!-- Recent Card Transactions -->
+    <section class="flex flex-col gap-3">
+      <div class="flex items-center justify-between px-1">
+        <h3 class="text-xs font-black text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-base">receipt_long</span>
+          <span>Achats en Ligne Récents</span>
+        </h3>
+        <span class="text-xs text-on-surface-variant font-medium">Temps réel</span>
+      </div>
+
+      <div class="bg-white rounded-3xl p-2 border border-outline-variant/40 shadow-sm flex flex-col divide-y divide-outline-variant/30">
+        
+        <!-- Tx 1: Netflix -->
+        <div class="p-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center font-bold text-xs">
+              N
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold text-on-surface">Netflix International</h4>
+              <p class="text-[10px] text-on-surface-variant">Abonnement Premium • 20 Août</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs sm:text-sm font-black font-mono text-on-surface block">-6 500 F</span>
+            <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full">Approuvé</span>
+          </div>
+        </div>
+
+        <!-- Tx 2: Spotify -->
+        <div class="p-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center font-bold text-xs">
+              S
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold text-on-surface">Spotify AB</h4>
+              <p class="text-[10px] text-on-surface-variant">Musique • 15 Août</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs sm:text-sm font-black font-mono text-on-surface block">-2 500 F</span>
+            <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full">Approuvé</span>
+          </div>
+        </div>
+
+        <!-- Tx 3: Google Play -->
+        <div class="p-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">
+              G
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold text-on-surface">Google Play Store</h4>
+              <p class="text-[10px] text-on-surface-variant">Application • 10 Août</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs sm:text-sm font-black font-mono text-on-surface block">-1 200 F</span>
+            <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full">Approuvé</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    let isDetailsVisible = false;
+    let isFrozen = false;
+
+    function toggleCardVisibility() {
+      isDetailsVisible = !isDetailsVisible;
+      const num = document.getElementById('card-num-text');
+      const cvv = document.getElementById('card-cvv-text');
+      const eye = document.getElementById('card-eye-icon');
+
+      if (isDetailsVisible) {
+        num.textContent = '4289 3301 8847 4289';
+        cvv.textContent = '742';
+        eye.textContent = 'visibility_off';
+      } else {
+        num.textContent = '4289 •••• •••• 4289';
+        cvv.textContent = '•••';
+        eye.textContent = 'visibility';
+      }
     }
-  }
-</script>
-<!-- BottomNavBar -->
 
-<script src="../assets/switch.router.js"></script>
+    function copyCardDetails() {
+      navigator.clipboard.writeText("4289330188474289");
+      alert("Numéro de carte copié dans le presse-papiers (4289 3301 8847 4289) !");
+    }
 
-<nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
-  <a href="../tableau_de_bord_mis_jour/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">home</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
-  </a>
-  <a href="../historique_des_transactions/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">receipt_long</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Historique</span>
-  </a>
-  <a href="../achats_en_ligne_cartes_virtuelles/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">account_balance_wallet</span>
-    <span class="nav-label" style="font-size:10px;font-weight:700;">Portefeuille</span>
-  </a>
-  <a href="../param_tres_g_n_raux/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">settings</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Paramètres</span>
-  </a>
-</nav>
-</body></html>
+    function toggleFreezeCard() {
+      isFrozen = !isFrozen;
+      const dot = document.getElementById('status-dot');
+      const label = document.getElementById('status-label');
+      const freezeIcon = document.getElementById('freeze-icon');
+      const freezeLabel = document.getElementById('freeze-label');
+      const freezeBox = document.getElementById('freeze-icon-box');
+
+      if (isFrozen) {
+        dot.className = 'w-2 h-2 rounded-full bg-red-400';
+        label.textContent = 'Gelée • Transactions bloquées';
+        freezeIcon.textContent = 'lock_open';
+        freezeLabel.textContent = 'Débloquer';
+        freezeBox.className = 'w-11 h-11 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center';
+        alert("Carte gelée avec succès. Aucun paiement ne pourra être débité.");
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+        label.textContent = 'Active • 3D Secure';
+        freezeIcon.textContent = 'ac_unit';
+        freezeLabel.textContent = 'Geler carte';
+        freezeBox.className = 'w-11 h-11 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center';
+        alert("Carte réactivée avec succès !");
+      }
+    }
+
+    function rechargeCardPrompt() {
+      const amt = prompt("Entrez le montant à recharger sur votre carte virtuelle (FCFA) :", "10000");
+      if (amt && parseInt(amt) > 0) {
+        alert(`${amt} FCFA ont été transférés avec succès depuis votre Solde Principal vers votre Carte Virtuelle !`);
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

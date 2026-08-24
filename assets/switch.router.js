@@ -221,7 +221,10 @@
     },
     "achats_en_ligne_cartes_virtuelles": {
       space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: "wallet",
-      actions: { "Créer": ROOT + "confirmation_de_l_op_ration_code/code.html", "Continuer": ROOT + "confirmation_de_l_op_ration_code/code.html" }
+      actions: { "Créer": ROOT + "creer_carte_virtuelle/code.html", "Nouvelle": ROOT + "creer_carte_virtuelle/code.html" }
+    },
+    "creer_carte_virtuelle": {
+      space: "user", back: ROOT + "achats_en_ligne_cartes_virtuelles/code.html", nav: null, actions: {}
     },
     "localiser_un_agent_switch": {
       space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null,
