@@ -56,11 +56,11 @@
 </head>
 <body class="h-screen w-screen overflow-hidden relative flex flex-col justify-between antialiased selection:bg-primary selection:text-white">
 
-  <!-- Camera Viewport Simulation Background -->
-  <div id="camera-bg" class="absolute inset-0 z-0 transition-opacity duration-300">
-    <img alt="Camera Viewport" class="w-full h-full object-cover brightness-75 contrast-105" src="../assets/images/img_043.jpg"/>
-    <!-- Dark Vignette Overlay -->
-    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/80"></div>
+  <!-- Clean Minimalist Dark Backdrop -->
+  <div id="camera-bg" class="absolute inset-0 z-0 bg-[#0F0E17] transition-opacity duration-300">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#1F1A3A] via-[#12101F] to-[#0A0912]"></div>
+    <!-- Ambient scanner glow -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
   </div>
 
   <!-- Top Action Header -->
