@@ -17,31 +17,38 @@
 <body class="bg-background text-on-background min-h-screen pb-24 flex flex-col antialiased relative overflow-hidden">
   <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
 
+  <!-- Top Close to Home bar -->
+  <div class="w-full max-w-md mx-auto pt-4 px-container-margin flex justify-end z-20">
+    <button onclick="window.switchNavigate ? window.switchNavigate('../tableau_de_bord_mis_jour/code.html') : window.location.href='../tableau_de_bord_mis_jour/code.html'" class="w-9 h-9 rounded-full bg-white/80 backdrop-blur-md shadow-sm border border-outline-variant flex items-center justify-center text-on-surface hover:bg-surface-container transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-lg">close</span>
+    </button>
+  </div>
+
   <!-- Main Content -->
-  <main class="flex-1 flex flex-col items-center justify-center p-container-margin max-w-md mx-auto w-full pt-10 text-center gap-6 z-10">
+  <main class="flex-1 flex flex-col items-center justify-center p-container-margin max-w-md mx-auto w-full pt-4 text-center gap-5 z-10">
     <!-- Success Celebration Icon -->
-    <div class="relative w-24 h-24 flex items-center justify-center">
+    <div class="relative w-20 h-20 flex items-center justify-center">
       <div class="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse"></div>
-      <div class="w-20 h-20 rounded-full gold-glow text-white shadow-xl flex items-center justify-center">
-        <span class="material-symbols-outlined text-4xl">celebration</span>
+      <div class="w-18 h-18 rounded-full gold-glow text-white shadow-xl flex items-center justify-center">
+        <span class="material-symbols-outlined text-3xl">celebration</span>
       </div>
     </div>
 
     <!-- Title & Subtitle -->
     <div>
       <h1 class="text-2xl sm:text-3xl font-extrabold text-on-surface">Félicitations, Adele !</h1>
-      <p class="text-sm text-on-surface-variant mt-1">Votre compte <b>Switch Bénin</b> est vérifié et 100% opérationnel.</p>
+      <p class="text-xs sm:text-sm text-on-surface-variant mt-1">Votre compte <b>Switch Bénin</b> est actif et prêt à l'emploi.</p>
     </div>
 
     <!-- Welcome Gift Card (500 FCFA Bonus) -->
-    <div class="w-full bg-gradient-to-r from-purple-500 to-indigo-600 rounded-3xl p-5 text-white shadow-lg flex items-center justify-between text-left">
+    <div class="w-full bg-gradient-to-r from-purple-500 to-indigo-600 rounded-3xl p-4 sm:p-5 text-white shadow-lg flex items-center justify-between text-left">
       <div class="flex items-center gap-3.5">
-        <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center font-bold text-2xl">
+        <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center font-bold text-2xl">
           🎁
         </div>
         <div>
           <span class="text-[10px] font-bold uppercase tracking-wider text-purple-200">Cadeau de Bienvenue</span>
-          <h3 class="text-xl font-black font-mono mt-0.5">+500 FCFA Offerts</h3>
+          <h3 class="text-lg sm:text-xl font-black font-mono mt-0.5">+500 FCFA Offerts</h3>
         </div>
       </div>
       <span class="bg-white text-primary text-xs font-black px-3 py-1 rounded-full shadow-sm">
@@ -50,7 +57,7 @@
     </div>
 
     <!-- Generated RIB & Account Details -->
-    <div class="w-full bg-surface-container-lowest rounded-3xl p-5 soft-shadow border border-outline-variant text-left flex flex-col gap-3 text-xs">
+    <div class="w-full bg-surface-container-lowest rounded-3xl p-4 sm:p-5 soft-shadow border border-outline-variant text-left flex flex-col gap-2.5 text-xs">
       <div class="flex justify-between items-center pb-2 border-b border-outline-variant/50">
         <span class="font-bold text-on-surface uppercase tracking-wider text-[11px]">Identifiant Bancaire UEMOA</span>
         <span class="text-green-600 font-bold flex items-center gap-1">
@@ -78,14 +85,15 @@
     </div>
 
     <!-- Actions Area -->
-    <div class="w-full flex flex-col gap-3 mt-2">
-      <button onclick="window.switchNavigate ? window.switchNavigate('../d_p_t_de_fonds/code.html') : window.location.href='../d_p_t_de_fonds/code.html'" class="w-full bg-primary text-on-primary font-bold py-4 rounded-full shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base cursor-pointer">
-        <span class="material-symbols-outlined text-xl">add_card</span>
-        <span>Faire mon premier dépôt (Sans frais)</span>
+    <div class="w-full flex flex-col gap-2.5 mt-1">
+      <button onclick="window.switchNavigate ? window.switchNavigate('../tableau_de_bord_mis_jour/code.html') : window.location.href='../tableau_de_bord_mis_jour/code.html'" class="w-full bg-primary text-on-primary font-bold py-4 rounded-full shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base cursor-pointer">
+        <span>Accéder à l'Accueil</span>
+        <span class="material-symbols-outlined text-xl">arrow_forward</span>
       </button>
 
-      <button onclick="window.switchNavigate ? window.switchNavigate('../tableau_de_bord_mis_jour/code.html') : window.location.href='../tableau_de_bord_mis_jour/code.html'" class="w-full py-3.5 bg-surface-container border border-outline-variant text-on-surface rounded-full font-bold text-sm hover:bg-surface-container-high active:scale-[0.98] transition-all cursor-pointer">
-        Accéder à mon tableau de bord
+      <button onclick="window.switchNavigate ? window.switchNavigate('../d_p_t_de_fonds/code.html') : window.location.href='../d_p_t_de_fonds/code.html'" class="w-full py-3.5 bg-surface-container border border-outline-variant text-on-surface rounded-full font-bold text-xs sm:text-sm hover:bg-surface-container-high active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+        <span class="material-symbols-outlined text-lg text-primary">add_card</span>
+        <span>Recharger mon compte (Dépôt gratuit)</span>
       </button>
     </div>
   </main>
