@@ -151,17 +151,17 @@
           </div>
         </div>
 
-        <button onclick="openCommissionTransferModal()" class="px-3.5 py-2.5 rounded-2xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-black hover:bg-emerald-100 transition-colors flex items-center gap-1 cursor-pointer shrink-0 shadow-2xs">
+        <a href="../retrait_commissions_agent/code.html" class="px-3.5 py-2.5 rounded-2xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-black hover:bg-emerald-100 transition-colors flex items-center gap-1 cursor-pointer shrink-0 shadow-2xs no-underline">
           <span class="material-symbols-outlined text-sm">payments</span>
-          <span>Transférer</span>
-        </button>
+          <span>Retirer</span>
+        </a>
       </div>
 
     </section>
 
-    <!-- 2. Actions Rapides du Guichet (Grille 5 boutons) -->
+    <!-- 2. Actions Rapides du Guichet (Grille 4 boutons) -->
     <section class="flex flex-col gap-2.5">
-      <h2 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Opérations Rapides</h2>
+      <h2 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Opérations Guichet</h2>
 
       <div class="grid grid-cols-4 sm:grid-cols-4 gap-3">
         
@@ -188,8 +188,8 @@
           <div class="w-13 h-13 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors">
             <span class="material-symbols-outlined text-2xl">qr_code_scanner</span>
           </div>
-          <span class="text-xs font-bold leading-tight">Valider Code</span>
-          <span class="text-[9px] text-emerald-800 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-full">Code 6 ch.</span>
+          <span class="text-xs font-bold leading-tight">Servir Client</span>
+          <span class="text-[9px] text-emerald-800 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-full">OTP & QR</span>
         </a>
 
         <!-- 4. Recharger Float -->
@@ -201,6 +201,29 @@
           <span class="text-[9px] text-indigo-800 font-bold bg-indigo-50 px-1.5 py-0.2 rounded-full">Liquidité</span>
         </a>
 
+      </div>
+
+      <!-- Outils secondaires Agent -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+        <a href="../cloture_de_caisse_agent/code.html" class="p-3 rounded-2xl bg-white border border-outline-variant/40 shadow-2xs hover:border-primary flex items-center gap-2 text-xs font-bold text-on-surface no-underline transition-all">
+          <span class="material-symbols-outlined text-primary text-base">lock_clock</span>
+          <span>Clôture Caisse</span>
+        </a>
+
+        <a href="../releve_operations_agent/code.html" class="p-3 rounded-2xl bg-white border border-outline-variant/40 shadow-2xs hover:border-primary flex items-center gap-2 text-xs font-bold text-on-surface no-underline transition-all">
+          <span class="material-symbols-outlined text-emerald-700 text-base">receipt_long</span>
+          <span>Relevé PDF/Excel</span>
+        </a>
+
+        <a href="../gestion_caissiers_agent/code.html" class="p-3 rounded-2xl bg-white border border-outline-variant/40 shadow-2xs hover:border-primary flex items-center gap-2 text-xs font-bold text-on-surface no-underline transition-all">
+          <span class="material-symbols-outlined text-blue-700 text-base">badge</span>
+          <span>Caissiers</span>
+        </a>
+
+        <a href="../bareme_commissions_agent/code.html" class="p-3 rounded-2xl bg-white border border-outline-variant/40 shadow-2xs hover:border-primary flex items-center gap-2 text-xs font-bold text-on-surface no-underline transition-all">
+          <span class="material-symbols-outlined text-amber-700 text-base">percent</span>
+          <span>Barème & Gains</span>
+        </a>
       </div>
     </section>
 

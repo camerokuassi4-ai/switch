@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Clôture de Caisse Journalière - Espace Agent Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .input-focus {
+      transition: all 0.2s ease;
+    }
+
+    .input-focus:focus-within {
+      border-color: #5E3BDC;
+      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.12);
+    }
+
+    /* Modal Animation */
+    .modal-enter {
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @media print {
+      body { background: white !important; padding: 0 !important; }
+      header, .no-print, #switch-nav { display: none !important; }
+      #printable-cloture { border: 1px solid #000 !important; box-shadow: none !important; width: 100% !important; margin: 0 auto; }
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md no-print">
+    <button aria-label="Retour" onclick="goBack()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Clôture de Caisse Journalière</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Bilan de fin de journée & décompte physique</p>
+    </div>
+
+    <!-- Agent Badge -->
+    <div class="w-10 h-10 rounded-full bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold text-xs">
+      AGT
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Session Information Banner -->
+    <div class="bg-gradient-to-r from-purple-900 to-indigo-900 rounded-3xl p-5 text-white shadow-soft flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-xs font-black uppercase tracking-wider text-purple-200">Session Ouverte</span>
+        </div>
+        <h2 class="text-base font-black mt-1">Guichet Adèle K. (AGT-4092)</h2>
+        <p class="text-xs text-purple-200 font-mono mt-0.5">25 Août 2026 • 08:00 à Maintenant</p>
+      </div>
+
+      <div class="text-right">
+        <span class="text-[10px] text-purple-200 block">Opérations Servies</span>
+        <b class="text-xl font-mono font-black text-amber-300">18 TRX</b>
+      </div>
+    </div>
+
+    <!-- 2. Synthèse Théorique de la Journée (Calculée par le système) -->
+    <section id="printable-cloture" class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3.5">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2.5">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-lg">point_of_sale</span>
+          <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">Synthèse des Mouvements de Caisse</h2>
+        </div>
+        <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">BCEAO Bénin</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5 text-xs">
+        <div class="p-3 rounded-2xl bg-surface-container-low/60 border border-outline-variant/40">
+          <span class="text-gray-500 text-[10px] font-medium block">Espèces Encaissées (Dépôts)</span>
+          <b class="text-sm font-black font-mono text-emerald-700 mt-0.5 block">+325 000 FCFA</b>
+          <span class="text-[9px] text-gray-400">11 Dépôts clients</span>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-surface-container-low/60 border border-outline-variant/40">
+          <span class="text-gray-500 text-[10px] font-medium block">Espèces Décaissées (Retraits)</span>
+          <b class="text-sm font-black font-mono text-rose-600 mt-0.5 block">-180 000 FCFA</b>
+          <span class="text-[9px] text-gray-400">7 Retraits servis</span>
+        </div>
+      </div>
+
+      <div class="p-3.5 rounded-2xl bg-purple-50/80 border border-purple-200/80 flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-bold text-purple-900 uppercase">Commissions Générées Aujourd'hui</span>
+          <p class="text-xs text-primary font-medium">Créditées en temps réel sur votre solde</p>
+        </div>
+        <b class="text-base font-black font-mono text-primary bg-white px-2.5 py-1 rounded-xl border border-purple-200">
+          +8 750 FCFA
+        </b>
+      </div>
+
+      <!-- Solde Théorique d'Espèces Attendu -->
+      <div class="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/60 flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-bold text-gray-500 uppercase">Espèces Théoriques Attendues en Tiroir</span>
+          <p class="text-xs text-on-surface font-bold">Total net physique à remettre en coffre</p>
+        </div>
+        <b id="theorique-amount" class="text-lg font-black font-mono text-on-surface">
+          145 000 FCFA
+        </b>
+      </div>
+    </section>
+
+    <!-- 3. Billetage Physique (Décompte des Billets & Pièces) -->
+    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3.5">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-lg">calculate</span>
+          <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">Décompte Physique des Billets (Billetage)</h2>
+        </div>
+        <button type="button" onclick="autoFillExactBilletage()" class="text-[10px] font-bold text-primary hover:underline cursor-pointer">
+          Remplir Exact
+        </button>
+      </div>
+
+      <!-- Denominations Grid -->
+      <div class="flex flex-col gap-2 text-xs">
+        
+        <!-- 10 000 FCFA -->
+        <div class="flex items-center justify-between gap-3 p-2 rounded-xl bg-gray-50 border border-outline-variant/30">
+          <span class="font-mono font-bold text-on-surface w-24">10 000 FCFA</span>
+          <div class="flex items-center gap-2">
+            <span class="text-gray-400 text-xs font-bold">x</span>
+            <input type="number" id="bill-10000" min="0" value="10" oninput="calculateBilletage()" class="w-16 h-8 text-center bg-white border border-outline-variant/60 rounded-lg font-mono font-bold text-xs focus:ring-primary focus:border-primary"/>
+          </div>
+          <span id="subtotal-10000" class="font-mono font-bold text-primary w-24 text-right">100 000 F</span>
+        </div>
+
+        <!-- 5 000 FCFA -->
+        <div class="flex items-center justify-between gap-3 p-2 rounded-xl bg-gray-50 border border-outline-variant/30">
+          <span class="font-mono font-bold text-on-surface w-24">5 000 FCFA</span>
+          <div class="flex items-center gap-2">
+            <span class="text-gray-400 text-xs font-bold">x</span>
+            <input type="number" id="bill-5000" min="0" value="6" oninput="calculateBilletage()" class="w-16 h-8 text-center bg-white border border-outline-variant/60 rounded-lg font-mono font-bold text-xs focus:ring-primary focus:border-primary"/>
+          </div>
+          <span id="subtotal-5000" class="font-mono font-bold text-primary w-24 text-right">30 000 F</span>
+        </div>
+
+        <!-- 2 000 FCFA -->
+        <div class="flex items-center justify-between gap-3 p-2 rounded-xl bg-gray-50 border border-outline-variant/30">
+          <span class="font-mono font-bold text-on-surface w-24">2 000 FCFA</span>
+          <div class="flex items-center gap-2">
+            <span class="text-gray-400 text-xs font-bold">x</span>
+            <input type="number" id="bill-2000" min="0" value="5" oninput="calculateBilletage()" class="w-16 h-8 text-center bg-white border border-outline-variant/60 rounded-lg font-mono font-bold text-xs focus:ring-primary focus:border-primary"/>
+          </div>
+          <span id="subtotal-2000" class="font-mono font-bold text-primary w-24 text-right">10 000 F</span>
+        </div>
+
+        <!-- 1 000 FCFA -->
+        <div class="flex items-center justify-between gap-3 p-2 rounded-xl bg-gray-50 border border-outline-variant/30">
+          <span class="font-mono font-bold text-on-surface w-24">1 000 FCFA</span>
+          <div class="flex items-center gap-2">
+            <span class="text-gray-400 text-xs font-bold">x</span>
+            <input type="number" id="bill-1000" min="0" value="4" oninput="calculateBilletage()" class="w-16 h-8 text-center bg-white border border-outline-variant/60 rounded-lg font-mono font-bold text-xs focus:ring-primary focus:border-primary"/>
+          </div>
+          <span id="subtotal-1000" class="font-mono font-bold text-primary w-24 text-right">4 000 F</span>
+        </div>
+
+        <!-- 500 FCFA & Pièces -->
+        <div class="flex items-center justify-between gap-3 p-2 rounded-xl bg-gray-50 border border-outline-variant/30">
+          <span class="font-mono font-bold text-on-surface w-24">500 F & Pièces</span>
+          <div class="flex items-center gap-2">
+            <span class="text-gray-400 text-xs font-bold">x</span>
+            <input type="number" id="bill-500" min="0" value="2" oninput="calculateBilletage()" class="w-16 h-8 text-center bg-white border border-outline-variant/60 rounded-lg font-mono font-bold text-xs focus:ring-primary focus:border-primary"/>
+          </div>
+          <span id="subtotal-500" class="font-mono font-bold text-primary w-24 text-right">1 000 F</span>
+        </div>
+
+      </div>
+
+      <!-- Result Comparison & Ecart Display -->
+      <div id="ecart-box" class="mt-1 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-black uppercase text-emerald-800 tracking-wider">Total Physique Compté</span>
+          <h3 id="total-physique-amount" class="text-xl font-black font-mono text-emerald-900 mt-0.5">145 000 FCFA</h3>
+        </div>
+
+        <div class="text-right">
+          <span class="text-[10px] font-bold text-gray-500 block">Écart de Caisse</span>
+          <span id="ecart-indicator" class="text-xs font-black text-emerald-700 bg-white px-2 py-0.5 rounded-lg border border-emerald-200 shadow-2xs inline-block mt-0.5">
+            0 FCFA (Caisse Parfaite ✅)
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col gap-2.5 pt-1 no-print">
+      <!-- 1. Clôturer et Verrouiller -->
+      <button type="button" onclick="openPinConfirmation()" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm cursor-pointer">
+        <span class="material-symbols-outlined text-xl">lock_clock</span>
+        <span>Valider la Clôture & Verrouiller la Caisse</span>
+      </button>
+
+      <!-- 2. Actions Secondaires (Print & WhatsApp) -->
+      <div class="grid grid-cols-2 gap-2">
+        <button type="button" onclick="window.print()" class="bg-white border border-outline-variant/60 hover:border-primary py-3 rounded-2xl flex items-center justify-center gap-1.5 text-xs font-bold text-on-surface shadow-soft active:scale-95 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-primary text-base">print</span>
+          <span>Imprimer Bilan</span>
+        </button>
+
+        <button type="button" onclick="shareWhatsAppReport()" class="bg-[#25D366] text-white py-3 rounded-2xl flex items-center justify-center gap-1.5 text-xs font-bold shadow-md hover:opacity-90 active:scale-95 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-base">share</span>
+          <span>Bilan WhatsApp</span>
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : Confirmation PIN Sécurité Clôture -->
+  <!-- ============================================================ -->
+  <div id="pin-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm hidden flex items-end justify-center">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-10 shadow-2xl modal-enter flex flex-col gap-4">
+      
+      <div class="w-full flex items-center justify-between">
+        <span class="w-12 h-1 bg-outline-variant rounded-full mx-auto -mr-6"></span>
+        <button onclick="closePinModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-2xl">lock_clock</span>
+        </div>
+        <div>
+          <h3 class="text-base font-black text-on-surface">Confirmer la Clôture de Caisse</h3>
+          <p class="text-xs text-on-surface-variant">Saisissez votre code PIN Agent pour clôturer</p>
+        </div>
+      </div>
+
+      <!-- Recap Box -->
+      <div class="p-3.5 rounded-2xl bg-surface-container-low/60 border border-outline-variant/60 flex flex-col gap-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-gray-500 font-medium">Guichetier :</span>
+          <b class="text-on-surface font-bold">Adèle K. (AGT-4092)</b>
+        </div>
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-gray-500 font-medium">Commissions du jour :</span>
+          <b class="text-emerald-700 font-bold">+8 750 FCFA</b>
+        </div>
+        <div class="flex items-center justify-between text-xs pt-1.5 border-t border-outline-variant/40">
+          <span class="text-gray-700 font-bold">Espèces physiques remises :</span>
+          <b id="modal-recap-amount" class="text-base font-black font-mono text-primary">145 000 FCFA</b>
+        </div>
+      </div>
+
+      <!-- PIN Dots -->
+      <div class="flex items-center justify-center gap-3 my-2">
+        <div id="pindot-1" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-2" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-3" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-4" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+      </div>
+
+      <!-- Keypad -->
+      <div class="grid grid-cols-3 gap-2.5 max-w-xs mx-auto w-full">
+        <button type="button" onclick="pressPin('1')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">1</button>
+        <button type="button" onclick="pressPin('2')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">2</button>
+        <button type="button" onclick="pressPin('3')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">3</button>
+        
+        <button type="button" onclick="pressPin('4')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">4</button>
+        <button type="button" onclick="pressPin('5')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">5</button>
+        <button type="button" onclick="pressPin('6')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">6</button>
+        
+        <button type="button" onclick="pressPin('7')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">7</button>
+        <button type="button" onclick="pressPin('8')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">8</button>
+        <button type="button" onclick="pressPin('9')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">9</button>
+        
+        <button type="button" onclick="pressBiometric()" class="h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center cursor-pointer active:scale-95 transition-transform" title="Empreinte">
+          <span class="material-symbols-outlined text-xl">fingerprint</span>
+        </button>
+        <button type="button" onclick="pressPin('0')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">0</button>
+        <button type="button" onclick="deletePin()" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface cursor-pointer active:scale-95 transition-transform">
+          <span class="material-symbols-outlined text-lg">backspace</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Logic -->
+  <script>
+    const theoriqueNet = 145000;
+    let pinCode = "";
+
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../tableau_de_bord_agent/code.html';
+      }
+    }
+
+    function calculateBilletage() {
+      const c10000 = (parseInt(document.getElementById('bill-10000').value) || 0) * 10000;
+      const c5000 = (parseInt(document.getElementById('bill-5000').value) || 0) * 5000;
+      const c2000 = (parseInt(document.getElementById('bill-2000').value) || 0) * 2000;
+      const c1000 = (parseInt(document.getElementById('bill-1000').value) || 0) * 1000;
+      const c500 = (parseInt(document.getElementById('bill-500').value) || 0) * 500;
+
+      document.getElementById('subtotal-10000').textContent = `${c10000.toLocaleString('fr-FR')} F`;
+      document.getElementById('subtotal-5000').textContent = `${c5000.toLocaleString('fr-FR')} F`;
+      document.getElementById('subtotal-2000').textContent = `${c2000.toLocaleString('fr-FR')} F`;
+      document.getElementById('subtotal-1000').textContent = `${c1000.toLocaleString('fr-FR')} F`;
+      document.getElementById('subtotal-500').textContent = `${c500.toLocaleString('fr-FR')} F`;
+
+      const totalPhysique = c10000 + c5000 + c2000 + c1000 + c500;
+      document.getElementById('total-physique-amount').textContent = `${totalPhysique.toLocaleString('fr-FR')} FCFA`;
+
+      const ecart = totalPhysique - theoriqueNet;
+      const ecartBox = document.getElementById('ecart-box');
+      const ecartInd = document.getElementById('ecart-indicator');
+
+      if (ecart === 0) {
+        ecartBox.className = "mt-1 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between";
+        ecartInd.className = "text-xs font-black text-emerald-700 bg-white px-2 py-0.5 rounded-lg border border-emerald-200 shadow-2xs inline-block mt-0.5";
+        ecartInd.textContent = "0 FCFA (Caisse Parfaite ✅)";
+      } else if (ecart > 0) {
+        ecartBox.className = "mt-1 p-4 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-between";
+        ecartInd.className = "text-xs font-black text-blue-700 bg-white px-2 py-0.5 rounded-lg border border-blue-200 shadow-2xs inline-block mt-0.5";
+        ecartInd.textContent = `+${ecart.toLocaleString('fr-FR')} F (Excédent de Caisse)`;
+      } else {
+        ecartBox.className = "mt-1 p-4 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-between";
+        ecartInd.className = "text-xs font-black text-rose-700 bg-white px-2 py-0.5 rounded-lg border border-rose-200 shadow-2xs inline-block mt-0.5";
+        ecartInd.textContent = `${ecart.toLocaleString('fr-FR')} F (Déficit de Caisse ⚠️)`;
+      }
+    }
+
+    function autoFillExactBilletage() {
+      document.getElementById('bill-10000').value = 10;
+      document.getElementById('bill-5000').value = 6;
+      document.getElementById('bill-2000').value = 5;
+      document.getElementById('bill-1000').value = 4;
+      document.getElementById('bill-500').value = 2;
+      calculateBilletage();
+    }
+
+    function shareWhatsAppReport() {
+      const tot = document.getElementById('total-physique-amount').textContent;
+      const ecart = document.getElementById('ecart-indicator').textContent;
+      const msg = encodeURIComponent(`📊 Bilan de Clôture Caisse Switch Bénin (Agent AGT-4092 - Adèle K.) :\nDate : 25 Août 2026\n• Total Dépôts : +325 000 FCFA (11 TRX)\n• Total Retraits : -180 000 FCFA (7 TRX)\n• Commissions du jour : +8 750 FCFA\n• Espèces en coffre : ${tot}\n• Statut : ${ecart}\nSession clôturée avec succès.`);
+      window.open("https://wa.me/?text=" + msg, "_blank");
+    }
+
+    // Modal PIN
+    function openPinConfirmation() {
+      const tot = document.getElementById('total-physique-amount').textContent;
+      document.getElementById('modal-recap-amount').textContent = tot;
+      pinCode = "";
+      updatePinDots();
+      document.getElementById('pin-modal').classList.remove('hidden');
+    }
+
+    function closePinModal() {
+      document.getElementById('pin-modal').classList.add('hidden');
+    }
+
+    function pressPin(num) {
+      if (pinCode.length < 4) {
+        pinCode += num;
+        updatePinDots();
+        if (pinCode.length === 4) {
+          setTimeout(executeCloture, 200);
+        }
+      }
+    }
+
+    function deletePin() {
+      if (pinCode.length > 0) {
+        pinCode = pinCode.slice(0, -1);
+        updatePinDots();
+      }
+    }
+
+    function pressBiometric() {
+      pinCode = "1234";
+      updatePinDots();
+      setTimeout(executeCloture, 200);
+    }
+
+    function updatePinDots() {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`pindot-${i}`);
+        if (i <= pinCode.length) {
+          dot.className = "w-3.5 h-3.5 rounded-full border-2 border-primary bg-primary transition-all scale-110";
+        } else {
+          dot.className = "w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all";
+        }
+      }
+    }
+
+    function executeCloture() {
+      closePinModal();
+      alert("🔒 Caisse Journalière Clôturée et Verrouillée avec succès !\nLe rapport a été transmis à la comptabilité Switch Bénin.");
+      window.location.href = '../tableau_de_bord_agent/code.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      calculateBilletage();
+    });
+  </script>
+
+  <!-- Bottom Navigation Bar Agent -->
+  <nav id="switch-nav" role="navigation" aria-label="Navigation Agent" class="no-print" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+    <a href="../tableau_de_bord_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5E3BDC;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">dashboard</span>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;">Accueil</span>
+    </a>
+    <a href="../historique_des_op_rations_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">swap_horiz</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Opérations</span>
+    </a>
+    <a href="../valider_une_op_ration_client/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.3);position:relative;top:-6px;">
+        <span class="material-symbols-outlined" style="font-size:22px;">qr_code_scanner</span>
+      </div>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-4px;">Servir</span>
+    </a>
+    <a href="../demande_de_r_approvisionnement_float/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">account_balance_wallet</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Float</span>
+    </a>
+    <a href="../param_tres_et_profil_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">manage_accounts</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Guichet</span>
+    </a>
+  </nav>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="fr"><head>
 <meta charset="utf-8"/>
@@ -24,14 +24,23 @@
   </head>
 <body class="bg-surface text-on-surface font-body-lg min-h-screen pb-32">
 <!-- TopAppBar -->
-<header class="w-full top-0 sticky bg-surface dark:bg-surface-dim flat no shadows flex items-center justify-between px-gutter py-4 w-full max-w-7xl mx-auto z-40">
+<header class="w-full top-0 sticky bg-surface/90 backdrop-blur-md flex items-center justify-between px-gutter py-4 w-full max-w-7xl mx-auto z-40">
 <div class="flex items-center gap-3">
-<img alt="Agent Profile Picture" class="w-10 h-10 rounded-full object-cover shadow-sm" data-alt="A professional headshot of a Beninese mobile money agent in bright outdoor daylight. The agent wears a neat uniform shirt. The lighting is crisp and clear, reflecting a modern, reliable corporate style. The background is softly blurred to focus on the professional." src="../assets/images/img_020.jpg"/>
-<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Espace Agent</h1>
+<a href="../tableau_de_bord_agent/code.html" class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-xl">arrow_back</span>
+</a>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Historique Agent</h1>
 </div>
-<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary dark:text-primary-fixed-dim hover:opacity-80 transition-opacity active:scale-95 duration-150">
+<div class="flex items-center gap-2">
+<a href="../releve_operations_agent/code.html" class="px-3 py-1.5 rounded-full bg-purple-50 hover:bg-purple-100 text-primary font-bold text-xs flex items-center gap-1 transition-colors no-underline">
+<span class="material-symbols-outlined text-base">picture_as_pdf</span>
+<span class="hidden sm:inline">Relevé & Export</span>
+</a>
+<a href="../centre_de_notifications_agent/code.html" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:opacity-80 transition-opacity active:scale-95 duration-150 relative">
 <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-</button>
+<span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-rose-500"></span>
+</a>
+</div>
 </header>
 <main class="max-w-3xl mx-auto px-gutter mt-6">
 <!-- Header & Filters -->
