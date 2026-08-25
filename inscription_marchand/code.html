@@ -88,7 +88,7 @@
   <!-- Main Content Area -->
   <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-2 flex-grow">
 
-    <!-- Stepper Progress Bar -->
+    <!-- Stepper Progress Bar (Directement Cliquable pour naviguer entre 1, 2 et 3) -->
     <div class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft">
       <div class="flex items-center justify-between relative px-2">
         <!-- Connecting Line -->
@@ -96,27 +96,27 @@
         <div id="progress-bar-fill" class="absolute left-6 top-1/2 -translate-y-1/2 h-1 bg-emerald-600 rounded-full z-0 step-transition" style="width: 0%;"></div>
 
         <!-- Step 1 Indicator -->
-        <div class="relative z-10 flex flex-col items-center gap-1">
-          <div id="step-dot-1" class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shadow-md step-transition">
+        <div onclick="goToStep(1)" class="relative z-10 flex flex-col items-center gap-1 cursor-pointer group">
+          <div id="step-dot-1" class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shadow-md step-transition group-hover:scale-105">
             1
           </div>
-          <span id="step-label-1" class="text-[10px] font-bold text-emerald-700">Commerce</span>
+          <span id="step-label-1" class="text-[10px] font-bold text-emerald-700">1. Commerce</span>
         </div>
 
         <!-- Step 2 Indicator -->
-        <div class="relative z-10 flex flex-col items-center gap-1">
-          <div id="step-dot-2" class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition">
+        <div onclick="goToStep(2)" class="relative z-10 flex flex-col items-center gap-1 cursor-pointer group">
+          <div id="step-dot-2" class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition group-hover:scale-105">
             2
           </div>
-          <span id="step-label-2" class="text-[10px] font-medium text-gray-400">Emplacement</span>
+          <span id="step-label-2" class="text-[10px] font-medium text-gray-400">2. Emplacement</span>
         </div>
 
         <!-- Step 3 Indicator -->
-        <div class="relative z-10 flex flex-col items-center gap-1">
-          <div id="step-dot-3" class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition">
+        <div onclick="goToStep(3)" class="relative z-10 flex flex-col items-center gap-1 cursor-pointer group">
+          <div id="step-dot-3" class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition group-hover:scale-105">
             3
           </div>
-          <span id="step-label-3" class="text-[10px] font-medium text-gray-400">Fiscalité & Pay</span>
+          <span id="step-label-3" class="text-[10px] font-medium text-gray-400">3. Fiscalité & Pay</span>
         </div>
       </div>
     </div>
@@ -155,7 +155,7 @@
             </label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">store</span>
-              <input type="text" id="businessName" placeholder="Ex: Supermarché Le Dauphin, Restaurant Le Béninois" required class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="text" id="businessName" value="Boutique & Restaurant La Plage" placeholder="Ex: Supermarché Le Dauphin, Restaurant Le Béninois" required class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
             </div>
           </div>
 
@@ -166,7 +166,7 @@
             </label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">person</span>
-              <input type="text" id="managerName" placeholder="Ex: Kossivi Jean DOSSOU" required class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="text" id="managerName" value="Kossivi Jean DOSSOU" placeholder="Ex: Kossivi Jean DOSSOU" required class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
             </div>
           </div>
         </div>
@@ -315,7 +315,7 @@
             </label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">home_pin</span>
-              <input type="text" id="neighborhood" placeholder="Ex: Haie Vive, Akpakpa, Ganhi, Sainte Rita" required class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="text" id="neighborhood" value="Haie Vive, Cotonou" placeholder="Ex: Haie Vive, Akpakpa, Ganhi, Sainte Rita" required class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
             </div>
           </div>
 
@@ -326,7 +326,7 @@
             </label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">flag</span>
-              <input type="text" id="landmark" placeholder="Ex: En face de la pharmacie du Camp, à 50m du carrefour" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="text" id="landmark" value="En face de la pharmacie du Camp, à 50m du carrefour" placeholder="Ex: En face de la pharmacie du Camp, à 50m du carrefour" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
             </div>
           </div>
         </div>
@@ -388,7 +388,7 @@
             </div>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">tag</span>
-              <input type="text" id="ifuNumber" maxlength="13" inputmode="numeric" placeholder="Ex: 3201910293847" required class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="text" id="ifuNumber" value="3201910293847" maxlength="13" inputmode="numeric" placeholder="Ex: 3201910293847" required class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
             </div>
           </div>
 
@@ -399,7 +399,7 @@
             </label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">corporate_fare</span>
-              <input type="text" id="rccmNumber" placeholder="Ex: RB/COT/21 B 14920" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="text" id="rccmNumber" value="RB/COT/21 B 14920" placeholder="Ex: RB/COT/21 B 14920" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
             </div>
           </div>
         </div>
@@ -422,7 +422,7 @@
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">phone_android</span>
               <span class="absolute left-10 text-xs font-bold font-mono text-gray-500 border-r border-gray-300 pr-2">+229</span>
-              <input type="tel" id="merchantPhone" maxlength="8" inputmode="numeric" placeholder="97 12 34 56" required class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-24 pr-4 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="tel" id="merchantPhone" value="97123456" maxlength="8" inputmode="numeric" placeholder="97 12 34 56" required class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-24 pr-4 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
             </div>
             <p class="text-[10px] text-on-surface-variant">Les paiements QR des clients seront crédités immédiatement sur ce compte.</p>
           </div>
@@ -434,7 +434,7 @@
             </label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">mail</span>
-              <input type="email" id="merchantEmail" placeholder="contact@moncommerce.bj" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="email" id="merchantEmail" value="contact@boutiquelaplage.bj" placeholder="contact@moncommerce.bj" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
             </div>
           </div>
         </div>
@@ -456,7 +456,7 @@
 
         <!-- Conditions & Acceptation -->
         <div class="bg-white rounded-2xl p-4 border border-outline-variant/40 shadow-xs flex items-start gap-3">
-          <input type="checkbox" id="merchant-terms" required class="mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-gray-300"/>
+          <input type="checkbox" id="merchant-terms" checked required class="mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-gray-300"/>
           <label for="merchant-terms" class="text-[11px] text-on-surface leading-tight">
             Je certifie l'exactitude des informations fournies et j'accepte les 
             <a href="../conditions_utilisation/code.html" class="text-emerald-700 font-bold underline">Conditions Générales Commerçant Switch</a> 
@@ -540,6 +540,13 @@
       const hiddenInput = document.getElementById('selectedSectors');
       if (hiddenInput) {
         hiddenInput.value = selectedSectors.join(',');
+      }
+    }
+
+    function goToStep(stepNumber) {
+      if (stepNumber >= 1 && stepNumber <= totalSteps) {
+        currentStep = stepNumber;
+        updateUI();
       }
     }
 
