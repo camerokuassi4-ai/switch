@@ -1,130 +1,263 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Détail de l'Agent - Kiosque Agréé Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
 
-<html class="light" lang="fr"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Détail de l'agent</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="../assets/switch.css">
-<script src="../assets/switch.config.js"></script>
-
-<style>
-        body { font-family: 'Hanken Grotesk', sans-serif; }
-    </style>
-<style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
     body {
+      font-family: 'Hanken Grotesk', sans-serif;
       min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
     }
   </style>
-  </head>
-<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0">
-<!-- Top App Bar -->
-<header class="bg-surface dark:bg-surface-dim w-full top-0 sticky z-40 flat no shadows bg-surface dark:bg-surface-dim transition-all">
-<div class="flex items-center justify-between px-gutter py-4 w-full max-w-7xl mx-auto">
-<div class="flex items-center gap-3">
-<button class="text-on-surface-variant hover:bg-surface-variant/50 p-2 rounded-full transition-colors active:scale-95 duration-150">
-<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
-</button>
-<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Espace Agent</h1>
-</div>
-<button class="relative text-on-surface-variant hover:bg-surface-variant/50 p-2 rounded-full transition-colors active:scale-95 duration-150">
-<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
-</button>
-</div>
-</header>
-<!-- Main Content Canvas -->
-<main class="max-w-7xl mx-auto px-gutter py-stack-lg">
-<!-- Agent Profile Header Card -->
-<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden mb-stack-lg relative">
-<!-- Cover / Map Placeholder -->
-<div class="h-48 w-full bg-surface-variant relative overflow-hidden">
-<img class="w-full h-full object-cover opacity-80 mix-blend-multiply" data-alt="A stylized, modern map view showing a central location pin in Cotonou, Benin. The map should use a light, minimalist color palette with soft violet and gray tones. Roads and landmarks are subtly highlighted, conveying a clean, professional aesthetic suitable for a high-end corporate application." src="../assets/images/img_016.jpg"/>
-</div>
-<!-- Profile Info Section -->
-<div class="px-card-padding pb-card-padding pt-0 relative">
-<!-- Avatar & Status -->
-<div class="flex justify-between items-end -mt-12 mb-6">
-<div class="relative">
-<img class="w-24 h-24 rounded-full border-4 border-surface-container-lowest shadow-sm object-cover bg-surface-container-high" data-alt="A professional headshot of a confident Beninese financial agent in modern business casual attire. The agent is smiling slightly, positioned against a clean, bright, out-of-focus background. Lighting is natural and soft, emphasizing trustworthiness and reliability in a corporate context." src="../assets/images/img_017.jpg"/>
-<div class="absolute bottom-1 right-1 w-5 h-5 bg-liquidity-high rounded-full border-2 border-surface-container-lowest"></div>
-</div>
-<div class="bg-liquidity-high/10 text-liquidity-high font-label-caps text-label-caps px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-inner">
-<span class="material-symbols-outlined text-[16px]" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
-                        Actif
-                    </div>
-</div>
-<!-- Identity -->
-<div class="mb-4">
-<h2 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface mb-1">Boutique Assiba</h2>
-<p class="font-body-lg text-body-lg text-on-surface-variant flex items-center gap-2">
-<span>Agent Indépendant</span>
-<span class="w-1 h-1 bg-outline rounded-full"></span>
-<span class="flex items-center text-commission-accent font-headline-sm text-headline-sm">
-<span class="material-symbols-outlined text-[18px] mr-1" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-                            4.8 <span class="text-on-surface-variant text-body-sm font-body-sm ml-1">(124 avis)</span>
-</span>
-</p>
-</div>
-<!-- Key Details Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md mb-stack-lg">
-<div class="flex items-start gap-3 p-3 rounded-lg bg-surface-container-low">
-<span class="material-symbols-outlined text-primary mt-0.5" data-icon="location_on">location_on</span>
-<div>
-<p class="font-headline-sm text-headline-sm text-on-surface mb-0.5">Adresse</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Carrefour Cica Toyota, Quartier Zongo, Cotonou</p>
-</div>
-</div>
-<div class="flex items-start gap-3 p-3 rounded-lg bg-surface-container-low">
-<span class="material-symbols-outlined text-primary mt-0.5" data-icon="schedule">schedule</span>
-<div>
-<p class="font-headline-sm text-headline-sm text-on-surface mb-0.5">Heures d'ouverture</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Aujourd'hui : 08:00 - 19:00</p>
-</div>
-</div>
-</div>
-<!-- Primary Actions -->
-<div class="flex flex-col sm:flex-row gap-stack-sm w-full">
-<button class="flex-1 border-2 border-outline-variant text-primary font-headline-sm text-headline-sm py-3 px-6 rounded-full flex justify-center items-center gap-2 hover:bg-surface-variant/30 active:scale-95 transition-all">
-<span class="material-symbols-outlined" data-icon="directions_walk">directions_walk</span>
-                        Y aller
-                    </button>
-<button class="flex-1 bg-primary text-on-primary font-headline-sm text-headline-sm py-3 px-6 rounded-full flex justify-center items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-md shadow-primary/20">
-<span class="material-symbols-outlined" data-icon="point_of_sale">point_of_sale</span>
-                        Démarrer une opération
-                    </button>
-</div>
-</div>
-</div>
-<!-- Available Services Bento Grid -->
-<h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md px-1">Services disponibles</h3>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-stack-md mb-stack-lg">
-<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 flex flex-col items-center justify-center text-center gap-2 hover:bg-surface-container-low transition-colors cursor-pointer shadow-sm">
-<div class="w-12 h-12 bg-primary-container/20 rounded-full flex items-center justify-center text-primary">
-<span class="material-symbols-outlined" data-icon="send_money" style="font-variation-settings: 'FILL' 1;">send_money</span>
-</div>
-<p class="font-headline-sm text-headline-sm text-on-surface text-[14px]">Dépôt</p>
-</div>
-<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 flex flex-col items-center justify-center text-center gap-2 hover:bg-surface-container-low transition-colors cursor-pointer shadow-sm">
-<div class="w-12 h-12 bg-primary-container/20 rounded-full flex items-center justify-center text-primary">
-<span class="material-symbols-outlined" data-icon="payments" style="font-variation-settings: 'FILL' 1;">payments</span>
-</div>
-<p class="font-headline-sm text-headline-sm text-on-surface text-[14px]">Retrait</p>
-</div>
-<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 flex flex-col items-center justify-center text-center gap-2 hover:bg-surface-container-low transition-colors cursor-pointer shadow-sm">
-<div class="w-12 h-12 bg-primary-container/20 rounded-full flex items-center justify-center text-primary">
-<span class="material-symbols-outlined" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
-</div>
-<p class="font-headline-sm text-headline-sm text-on-surface text-[14px]">Paiement Factures</p>
-</div>
-<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 flex flex-col items-center justify-center text-center gap-2 hover:bg-surface-container-low transition-colors cursor-pointer shadow-sm opacity-50">
-<div class="w-12 h-12 bg-surface-variant rounded-full flex items-center justify-center text-outline">
-<span class="material-symbols-outlined" data-icon="sim_card">sim_card</span>
-</div>
-<p class="font-headline-sm text-headline-sm text-on-surface-variant text-[14px]">Achat Crédit</p>
-<span class="font-label-caps text-label-caps text-[10px] text-error">Indisponible</span>
-</div>
-</div>
-</main>
-<!-- Note: BottomNavBar is intentionally suppressed here as this is a specific Detail/Transactional intent screen ("Détail de l'agent"), conforming to the Semantic Shell Mandate which requires suppressing the navigation on sub-pages implying a temporary departure from the main flow. -->
-<script src="../assets/switch.router.js"></script>
-</body></html>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-24 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <button aria-label="Retour" onclick="goBack()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Kiosque Agent Agréé</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Point de service officiel Switch Bénin</p>
+    </div>
+
+    <!-- Share Button -->
+    <button onclick="shareAgentInfo()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer" title="Partager">
+      <span class="material-symbols-outlined text-xl">share</span>
+    </button>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Agent Profile Hero Card -->
+    <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-soft overflow-hidden flex flex-col">
+      
+      <!-- Top Cover Map Preview -->
+      <div class="h-36 w-full relative overflow-hidden bg-purple-900">
+        <img class="w-full h-full object-cover opacity-75" src="../assets/images/img_036.jpg" alt="Plan de localisation Cadjehoun Cotonou"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        
+        <!-- Live Open Badge -->
+        <div class="absolute top-3 right-3 bg-white/95 backdrop-blur-md text-emerald-800 text-[10px] font-black px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Ouvert • Jusqu'à 20:00</span>
+        </div>
+
+        <!-- Distance Badge -->
+        <div class="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm text-amber-400">near_me</span>
+          <span>À 250 m de votre position</span>
+        </div>
+      </div>
+
+      <!-- Agent Main Info -->
+      <div class="p-5 flex flex-col gap-3 relative">
+        
+        <!-- Avatar & Verified Badge -->
+        <div class="flex items-end justify-between -mt-11">
+          <div class="relative">
+            <div class="w-16 h-16 rounded-2xl overflow-hidden border-4 border-white shadow-md bg-white">
+              <img src="../assets/images/img_045.jpg" alt="Adèle K." class="w-full h-full object-cover"/>
+            </div>
+            <span class="absolute -bottom-1 -right-1 w-4.5 h-4.5 rounded-full bg-primary text-white flex items-center justify-center text-[10px]" title="Vérifié">
+              ✓
+            </span>
+          </div>
+
+          <div class="flex items-center gap-1 bg-amber-50 text-amber-900 px-2.5 py-1 rounded-full border border-amber-200">
+            <span class="material-symbols-outlined text-amber-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+            <b class="text-xs font-black">4.9</b>
+            <span class="text-[10px] text-gray-500">(148 avis)</span>
+          </div>
+        </div>
+
+        <!-- Details -->
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="text-lg font-black text-on-surface">Kiosque Central Cadjehoun</h2>
+            <span class="text-[9px] font-black uppercase text-purple-900 bg-purple-100 px-2 py-0.5 rounded-md">Agent Certifié</span>
+          </div>
+          <p class="text-xs text-gray-500 font-medium mt-0.5">Gérant : Adèle K. • ID: AGT-4092</p>
+        </div>
+
+        <!-- Address & Contact Info Box -->
+        <div class="flex flex-col gap-2 pt-1 border-t border-outline-variant/30 text-xs">
+          <div class="flex items-start gap-2.5">
+            <span class="material-symbols-outlined text-primary text-base shrink-0 mt-0.5">location_on</span>
+            <span class="text-gray-700 font-medium">Avenue Steinmetz, face Pharmacie Cadjehoun, Cotonou</span>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-primary text-base shrink-0">phone</span>
+            <span class="font-mono text-gray-700 font-bold">+229 97 45 67 89</span>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-emerald-600 text-base shrink-0">check_circle</span>
+            <span class="text-emerald-700 font-bold">Liquidité Disponible : Élevée (Dépôts & Retraits garantis)</span>
+          </div>
+        </div>
+
+        <!-- Direct Contact Actions -->
+        <div class="grid grid-cols-3 gap-2 pt-2">
+          <a href="https://maps.google.com/?q=Cadjehoun+Cotonou" target="_blank" class="py-2.5 rounded-2xl bg-surface-container-low/70 border border-outline-variant/60 hover:border-primary flex items-center justify-center gap-1.5 text-xs font-bold text-on-surface no-underline transition-all">
+            <span class="material-symbols-outlined text-primary text-base">directions_walk</span>
+            <span>Itinéraire</span>
+          </a>
+
+          <a href="tel:+22997456789" class="py-2.5 rounded-2xl bg-surface-container-low/70 border border-outline-variant/60 hover:border-primary flex items-center justify-center gap-1.5 text-xs font-bold text-on-surface no-underline transition-all">
+            <span class="material-symbols-outlined text-primary text-base">call</span>
+            <span>Appeler</span>
+          </a>
+
+          <a href="https://wa.me/22997456789?text=Bonjour%20Kiosque%20Switch%20Cadjehoun" target="_blank" class="py-2.5 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/30 text-[#128C7E] flex items-center justify-center gap-1.5 text-xs font-bold no-underline hover:bg-[#25D366]/20 transition-all">
+            <span class="material-symbols-outlined text-base">chat</span>
+            <span>WhatsApp</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 2. Primary Operations for User (Deposit or Withdrawal) -->
+    <div class="grid grid-cols-2 gap-2.5">
+      <!-- Faire un Dépôt -->
+      <a href="../d_p_t_de_fonds/code.html" class="p-4 rounded-3xl bg-white border border-outline-variant/40 shadow-soft hover:border-primary flex flex-col gap-2 no-underline text-on-surface transition-all group">
+        <div class="w-10 h-10 rounded-2xl bg-purple-50 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+          <span class="material-symbols-outlined text-xl">arrow_downward</span>
+        </div>
+        <div>
+          <b class="text-xs font-black block">Faire un Dépôt</b>
+          <span class="text-[10px] text-gray-500">Verser des espèces</span>
+        </div>
+      </a>
+
+      <!-- Faire un Retrait -->
+      <a href="../retrait_de_fonds/code.html" class="p-4 rounded-3xl bg-white border border-outline-variant/40 shadow-soft hover:border-primary flex flex-col gap-2 no-underline text-on-surface transition-all group">
+        <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center group-hover:bg-amber-600 group-hover:text-white transition-colors">
+          <span class="material-symbols-outlined text-xl">arrow_upward</span>
+        </div>
+        <div>
+          <b class="text-xs font-black block">Faire un Retrait</b>
+          <span class="text-[10px] text-gray-500">Générer code à 6 ch.</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- 3. Services Disponibles au Guichet (Bento Grid) -->
+    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider border-b border-outline-variant/30 pb-2">
+        Services Disponibles au Guichet
+      </h3>
+
+      <div class="grid grid-cols-2 gap-2 text-xs">
+        
+        <div class="p-3 rounded-2xl bg-surface-container-low/50 border border-outline-variant/30 flex items-center gap-2.5">
+          <span class="material-symbols-outlined text-primary text-lg">download</span>
+          <div>
+            <b class="text-on-surface block text-[11px]">Dépôt d'Espèces</b>
+            <span class="text-[9px] text-emerald-700 font-bold">Disponible 0%</span>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-surface-container-low/50 border border-outline-variant/30 flex items-center gap-2.5">
+          <span class="material-symbols-outlined text-amber-700 text-lg">upload</span>
+          <div>
+            <b class="text-on-surface block text-[11px]">Retrait d'Espèces</b>
+            <span class="text-[9px] text-emerald-700 font-bold">Disponible</span>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-surface-container-low/50 border border-outline-variant/30 flex items-center gap-2.5">
+          <span class="material-symbols-outlined text-blue-700 text-lg">receipt</span>
+          <div>
+            <b class="text-on-surface block text-[11px]">Factures SBEE / SONEB</b>
+            <span class="text-[9px] text-emerald-700 font-bold">Instantané</span>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-surface-container-low/50 border border-outline-variant/30 flex items-center gap-2.5">
+          <span class="material-symbols-outlined text-purple-700 text-lg">how_to_reg</span>
+          <div>
+            <b class="text-on-surface block text-[11px]">Vérification ANIP</b>
+            <span class="text-[9px] text-purple-700 font-bold">Enrôlement</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. Derniers Avis Clients Vérifiés -->
+    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+        <h3 class="text-xs font-black text-on-surface uppercase tracking-wider">Avis Récents des Clients</h3>
+        <span class="text-[10px] text-emerald-700 font-bold">100% Vérifiés</span>
+      </div>
+
+      <div class="flex flex-col divide-y divide-outline-variant/30 text-xs">
+        
+        <!-- Review 1 -->
+        <div class="py-2.5 flex flex-col gap-1">
+          <div class="flex items-center justify-between">
+            <b class="text-on-surface">Koffi M.</b>
+            <span class="text-amber-500 font-bold text-[11px]">★★★★★</span>
+          </div>
+          <p class="text-gray-600 text-[11px]">« Service très rapide pour mon retrait et accueil très chaleureux ! »</p>
+          <span class="text-[9px] text-gray-400 font-mono">Il y a 2 jours • Retrait 50 000 FCFA</span>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="py-2.5 flex flex-col gap-1">
+          <div class="flex items-center justify-between">
+            <b class="text-on-surface">Mariam S.</b>
+            <span class="text-amber-500 font-bold text-[11px]">★★★★★</span>
+          </div>
+          <p class="text-gray-600 text-[11px]">« Toujours du float disponible, pas d'attente. »</p>
+          <span class="text-[9px] text-gray-400 font-mono">Il y a 4 jours • Dépôt RIB Switch</span>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Logic -->
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../carte_agents_guichets/code.html';
+      }
+    }
+
+    function shareAgentInfo() {
+      const msg = encodeURIComponent(`📍 Kiosque Agent Agréé Switch Bénin :\nKiosque Central Cadjehoun (Adèle K. - AGT-4092)\n• Adresse : Av. Steinmetz, Cotonou\n• Tél : +229 97 45 67 89\n• Note : 4.9 ★\nOuvert pour dépôts et retraits !`);
+      window.open("https://wa.me/?text=" + msg, "_blank");
+    }
+  </script>
+
+</body>
+</html>
