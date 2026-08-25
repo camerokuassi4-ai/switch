@@ -236,7 +236,7 @@
 
     "modifier_le_profil": {
       space: "user", back: ROOT + "profil_utilisateur/code.html", nav: null,
-      actions: { "Enregistrer": ROOT + "profil_utilisateur/code.html", "Sauvegarder": ROOT + "profil_utilisateur/code.html" }
+      actions: {}
     },
     "param_tres_g_n_raux": {
       space: "user", back: "javascript:history.back()", nav: "settings",

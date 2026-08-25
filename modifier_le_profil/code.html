@@ -294,7 +294,7 @@
 
       <!-- Submit Action Button (Opens PIN Modal) -->
       <div class="pt-2">
-        <button id="save-btn" type="submit" class="w-full bg-primary text-on-primary font-bold py-4 rounded-full shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer">
+        <button id="save-btn" type="submit" onclick="handleInitialSubmit(event)" data-no-router="true" class="w-full bg-primary text-on-primary font-bold py-4 rounded-full shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer">
           <span>Enregistrer les modifications</span>
           <span class="material-symbols-outlined text-lg">lock</span>
         </button>
