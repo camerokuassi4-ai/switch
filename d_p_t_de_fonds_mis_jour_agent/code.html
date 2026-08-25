@@ -568,11 +568,11 @@
 
       localStorage.setItem('switch_last_transaction', JSON.stringify(trxData));
 
-      // Redirection immédiate vers la page officielle de confirmation de succès
+      // Redirection immédiate vers le reçu officiel Guichet Agent
       if (window.switchNavigate) {
-        window.switchNavigate('../confirmation_de_succ_s/code.html');
+        window.switchNavigate('../recu_operation_agent/code.html');
       } else {
-        window.location.href = '../confirmation_de_succ_s/code.html';
+        window.location.href = '../recu_operation_agent/code.html';
       }
     }
 
