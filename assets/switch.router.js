@@ -400,7 +400,7 @@
     },
     "demande_de_r_approvisionnement_float": {
       space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
-      actions: { "Envoyer": ROOT + "recu_operation_agent/code.html", "Demander": ROOT + "recu_operation_agent/code.html", "Soumettre": ROOT + "recu_operation_agent/code.html" }
+      actions: {}
     },
     "recu_operation_agent": {
       space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
