@@ -1,194 +1,404 @@
 <!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Catalogue Produits & Services - Switch Marchand</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
 
-<html lang="fr"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Catalogue produits/services</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="../assets/switch.css">
-<script src="../assets/switch.config.js"></script>
-
-<style>
-        body { background-color: #F8F9FA; }
-        .card-shadow { box-shadow: 0 10px 20px rgba(0,0,0,0.04); }
-        .nav-shadow { box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
-    </style>
-<style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
     body {
-      min-height: max(884px, 100dvh);
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .cat-hero-gradient {
+      background: linear-gradient(135deg, #064E3B 0%, #047857 50%, #059669 100%);
+      box-shadow: 0 16px 36px -10px rgba(5, 150, 105, 0.35);
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(5, 150, 105, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .cat-pill-active {
+      background-color: #059669;
+      color: #ffffff;
+      font-weight: 700;
     }
   </style>
-  </head>
-<body class="font-body-lg text-on-background min-h-screen pb-32">
-<!-- TopAppBar -->
-<header class="bg-background dark:bg-on-surface docked full-width top-0 bg-background dark:bg-on-surface flex justify-between items-center px-gutter py-4 w-full sticky z-40">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
-                MP
-            </div>
-<h1 class="font-headline-md text-headline-md-mobile font-bold text-on-surface dark:text-surface-bright">Business Dashboard</h1>
-</div>
-<button class="text-primary dark:text-primary-fixed hover:bg-surface-container-low transition-colors p-2 rounded-full Active: scale-95 transition-transform">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-</button>
-</header>
-<main class="px-container-margin pt-stack-md max-w-4xl mx-auto">
-<div class="flex justify-between items-center mb-stack-lg">
-<div>
-<h2 class="font-display-lg-mobile md:font-display-lg text-on-surface mb-1">Catalogue</h2>
-<p class="font-body-sm text-secondary">Gérez vos produits et services</p>
-</div>
-<button onclick="window.location.href='../g_n_rer_qr_code_de_r_ception/code.html'"
-        class="bg-primary text-on-primary rounded-full px-6 py-3 flex items-center gap-2 hover:opacity-90 transition-opacity card-shadow active:scale-95">
-    <span class="material-symbols-outlined text-xl" data-icon="add">add</span>
-    <span class="font-label-caps text-label-caps hidden sm:inline">Ajouter un produit</span>
-</button>
-</div>
-<!-- Filters/Search -->
-<div class="mb-stack-md relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
-<input class="w-full bg-surface rounded-full py-3 pl-12 pr-4 border border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow font-body-sm" placeholder="Rechercher un produit..." type="text"/>
-</div>
-<!-- Bento Grid Catalogue -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-md">
-<!-- Item 1 -->
-<div class="bg-surface rounded-xl p-card-padding card-shadow flex flex-col relative group">
-<div class="w-full h-32 rounded-lg bg-surface-container-low mb-4 overflow-hidden relative" data-alt="A modern, abstract digital rendering of a sleek coffee cup on a minimalist white table, bathed in soft, diffused light. The aesthetic is extremely clean and premium, evoking a high-end Beninese cafe. The color palette focuses on creamy whites, subtle beiges, and a tiny pop of vibrant primary purple in the background to tie into the fintech brand identity." style="background-image: url('../assets/images/img_005.jpg')">
-</div>
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline-md text-headline-md-mobile text-on-surface line-clamp-1">Café Espresso Premium</h3>
-<span class="font-headline-md text-headline-md-mobile text-primary font-bold">1500F</span>
-</div>
-<p class="font-body-sm text-secondary mb-4 line-clamp-2 flex-grow">Café noir intense, torréfaction locale. Parfait pour commencer la journée.</p>
-<div class="flex gap-2 mt-auto">
-<button class="flex-1 bg-surface-container text-on-surface py-2 rounded-lg font-label-caps text-label-caps hover:bg-surface-variant transition-colors flex items-center justify-center gap-1 border border-surface-variant">
-<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
-</button>
-<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-label-caps text-label-caps hover:opacity-90 transition-colors flex items-center justify-center gap-2 shadow-sm">
-<span class="material-symbols-outlined text-sm" data-icon="qr_code_2">qr_code_2</span>
-                        Code QR
-                    </button>
-</div>
-</div>
-<!-- Item 2 -->
-<div class="bg-surface rounded-xl p-card-padding card-shadow flex flex-col relative group">
-<div class="w-full h-32 rounded-lg bg-surface-container-low mb-4 overflow-hidden relative" data-alt="A beautifully designed, minimalist digital illustration of a fresh pastry on a pristine white plate. The lighting is soft and airy, creating a sense of morning freshness. The image uses a clean, light mode palette with subtle hints of warm gold and the brand's primary purple acting as a soft, atmospheric glow in the corners, ensuring it feels modern and premium." style="background-image: url('../assets/images/img_006.jpg')">
-</div>
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline-md text-headline-md-mobile text-on-surface line-clamp-1">Croissant Beurre</h3>
-<span class="font-headline-md text-headline-md-mobile text-primary font-bold">800F</span>
-</div>
-<p class="font-body-sm text-secondary mb-4 line-clamp-2 flex-grow">Croissant pur beurre, croustillant à l'extérieur et moelleux à l'intérieur.</p>
-<div class="flex gap-2 mt-auto">
-<button class="flex-1 bg-surface-container text-on-surface py-2 rounded-lg font-label-caps text-label-caps hover:bg-surface-variant transition-colors flex items-center justify-center gap-1 border border-surface-variant">
-<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
-</button>
-<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-label-caps text-label-caps hover:opacity-90 transition-colors flex items-center justify-center gap-2 shadow-sm">
-<span class="material-symbols-outlined text-sm" data-icon="qr_code_2">qr_code_2</span>
-                        Code QR
-                    </button>
-</div>
-</div>
-<!-- Item 3 -->
-<div class="bg-surface rounded-xl p-card-padding card-shadow flex flex-col relative group">
-<div class="w-full h-32 rounded-lg bg-surface-container-low mb-4 overflow-hidden relative" data-alt="A highly stylized, modern digital rendering representing a consulting service. It features clean, geometric floating elements like stylized documents and abstract chat bubbles in a bright, white studio environment. The aesthetic is progressive and trustworthy, utilizing deep blacks, pristine whites, and smooth gradients of the primary purple hue to convey high-end business efficiency." style="background-image: url('../assets/images/img_007.jpg')">
-</div>
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline-md text-headline-md-mobile text-on-surface line-clamp-1">Consultation (1h)</h3>
-<span class="font-headline-md text-headline-md-mobile text-primary font-bold">15000F</span>
-</div>
-<p class="font-body-sm text-secondary mb-4 line-clamp-2 flex-grow">Session de conseil personnalisé. Réservation requise.</p>
-<div class="flex gap-2 mt-auto">
-<button class="flex-1 bg-surface-container text-on-surface py-2 rounded-lg font-label-caps text-label-caps hover:bg-surface-variant transition-colors flex items-center justify-center gap-1 border border-surface-variant">
-<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
-</button>
-<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-label-caps text-label-caps hover:opacity-90 transition-colors flex items-center justify-center gap-2 shadow-sm">
-<span class="material-symbols-outlined text-sm" data-icon="qr_code_2">qr_code_2</span>
-                        Code QR
-                    </button>
-</div>
-</div>
-<!-- Item 4 (Add Card) -->
-<div onclick="openAddProductModal()" class="bg-surface rounded-xl p-card-padding card-shadow flex flex-col relative group border-2 border-dashed border-outline-variant hover:border-primary transition-colors cursor-pointer justify-center items-center h-full min-h-[280px]">
-<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-4 text-primary group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
-</div>
-<span class="font-headline-md text-headline-md-mobile text-on-surface font-bold">Nouveau produit</span>
-<p class="text-xs text-secondary mt-1">Ajouter au catalogue</p>
-</div>
-</div>
-</main>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased">
 
-<!-- Floating Action Button (FAB) Mobile only -->
-<button onclick="openAddProductModal()" class="md:hidden fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-xl flex items-center justify-center hover:opacity-90 transition-opacity z-40 cursor-pointer">
-<span class="material-symbols-outlined text-2xl" data-icon="add">add</span>
-</button>
-
-<!-- Add Product Modal -->
-<div id="product-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-  <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 flex flex-col gap-4 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
-    <div class="flex justify-between items-center">
-      <h3 class="text-base font-bold text-on-surface">Ajouter un Produit / Service</h3>
-      <button onclick="closeAddProductModal()" class="p-1.5 rounded-full hover:bg-gray-100 text-on-surface-variant cursor-pointer">
-        <span class="material-symbols-outlined">close</span>
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-emerald-700 hover:bg-emerald-50 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
       </button>
+      <div>
+        <h1 class="text-base sm:text-lg font-black text-on-surface tracking-tight">Catalogue & Articles</h1>
+        <p id="cat-store-name" class="text-[11px] text-on-surface-variant font-medium">Boutique La Plage • Gestion Stocks & Prix</p>
+      </div>
     </div>
 
-    <form onsubmit="handleAddProduct(event)" class="flex flex-col gap-3">
-      <div class="flex flex-col gap-1">
-        <label class="text-xs font-bold text-on-surface-variant">Nom de l'article *</label>
-        <input type="text" id="prod-name" required placeholder="Ex: Robe Wax Soie Africaine" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-semibold focus:outline-none focus:border-primary"/>
-      </div>
+    <!-- Add Product Button -->
+    <button onclick="openAddProductModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-full flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-base">add</span>
+      <span>Ajouter</span>
+    </button>
+  </header>
 
-      <div class="grid grid-cols-2 gap-2">
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-bold text-on-surface-variant">Prix (FCFA) *</label>
-          <input type="number" id="prod-price" required min="100" placeholder="12500" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2.5 text-sm font-bold font-mono focus:outline-none focus:border-primary"/>
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Hero Inventory & Catalogue Summary Card -->
+    <div class="cat-hero-gradient rounded-[28px] p-5 text-white shadow-soft flex flex-col gap-4 relative overflow-hidden">
+      <div class="flex justify-between items-start z-10">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-emerald-200 block">Valeur Totale du Stock</span>
+          <h2 class="text-2xl sm:text-3xl font-black font-mono text-white mt-0.5" id="stock-value-display">
+            1 850 000 <span class="text-lg font-bold font-sans">FCFA</span>
+          </h2>
         </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-bold text-on-surface-variant">Stock dispo</label>
-          <input type="number" id="prod-stock" min="1" placeholder="25" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary"/>
+        <span class="text-[10px] font-bold bg-white/20 backdrop-blur-md text-emerald-100 px-2.5 py-1 rounded-full border border-white/25">
+          24 articles actifs
+        </span>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 text-xs pt-3 border-t border-white/20 z-10 text-center">
+        <div class="bg-white/10 rounded-xl p-2">
+          <span class="text-[9px] text-emerald-200 uppercase font-black block">Boissons & Resto</span>
+          <span class="font-bold text-white text-xs">12 items</span>
+        </div>
+        <div class="bg-white/10 rounded-xl p-2">
+          <span class="text-[9px] text-emerald-200 uppercase font-black block">Boutique Mode</span>
+          <span class="font-bold text-white text-xs">8 items</span>
+        </div>
+        <div class="bg-white/10 rounded-xl p-2">
+          <span class="text-[9px] text-emerald-200 uppercase font-black block">Services</span>
+          <span class="font-bold text-white text-xs">4 items</span>
         </div>
       </div>
 
-      <div class="flex flex-col gap-1">
-        <label class="text-xs font-bold text-on-surface-variant">Catégorie</label>
-        <select id="prod-cat" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2.5 text-xs font-semibold focus:outline-none focus:border-primary">
-          <option value="Boutique & Mode">Boutique & Mode</option>
-          <option value="Restauration & Bar">Restauration & Bar</option>
-          <option value="Supermarché & Vivres">Supermarché & Vivres</option>
-          <option value="Prestation & Service">Prestation & Service</option>
-        </select>
+      <!-- Glow Orb -->
+      <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+    </div>
+
+    <!-- 2. Search & Category Filters -->
+    <div class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+      
+      <!-- Search Input -->
+      <div class="relative flex items-center">
+        <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">search</span>
+        <input type="text" id="cat-search-input" oninput="filterCatalogue()" placeholder="Rechercher un article ou un prix..." class="w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-4 text-xs font-semibold text-on-surface focus:outline-none focus:border-emerald-600"/>
       </div>
 
-      <div class="flex flex-col gap-1">
-        <label class="text-xs font-bold text-on-surface-variant">Description courte</label>
-        <textarea id="prod-desc" rows="2" placeholder="Description de l'article..." class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-primary"></textarea>
+      <!-- Category Filter Chips -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 text-xs font-bold">
+        <button type="button" onclick="setCategory('all', this)" class="cat-pill cat-pill-active px-3 py-1.5 rounded-xl transition-colors cursor-pointer shrink-0">
+          Tous les Articles
+        </button>
+        <button type="button" onclick="setCategory('food', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          Restauration & Bar 🍔
+        </button>
+        <button type="button" onclick="setCategory('retail', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          Boutique & Mode 👗
+        </button>
+        <button type="button" onclick="setCategory('service', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          Prestations & Services 💼
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. Products Bento Grid -->
+    <div class="grid grid-cols-2 gap-3" id="products-grid">
+
+      <!-- Product 1: Café Espresso -->
+      <div class="product-card bg-white rounded-3xl p-3.5 border border-outline-variant/40 shadow-soft flex flex-col justify-between gap-2.5 relative group" data-category="food" data-title="Café Espresso Premium" data-price="1500">
+        <div class="w-full h-28 rounded-2xl bg-amber-50 relative overflow-hidden flex items-center justify-center">
+          <img src="../assets/images/img_005.jpg" alt="Café Espresso" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+          <span class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-800 text-white px-2 py-0.5 rounded-full">
+            28 en stock
+          </span>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold text-on-surface line-clamp-1">Café Espresso Premium</h4>
+          <span class="text-sm font-black font-mono text-emerald-700 block mt-0.5">1 500 FCFA</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-1.5 pt-1 border-t border-gray-100">
+          <button onclick="chargeDirect('Café Espresso Premium', 1500)" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">qr_code_2</span>
+            <span>Encaisser</span>
+          </button>
+          <button onclick="this.closest('.product-card').remove(); alert('Article retiré du catalogue.');" class="w-8 h-8 rounded-xl bg-gray-100 hover:bg-rose-50 text-gray-500 hover:text-rose-600 flex items-center justify-center transition-colors cursor-pointer" title="Supprimer">
+            <span class="material-symbols-outlined text-sm">delete</span>
+          </button>
+        </div>
       </div>
 
-      <div class="flex gap-2.5 mt-2">
-        <button type="button" onclick="closeAddProductModal()" class="flex-1 py-3 rounded-full border border-outline-variant font-semibold text-xs hover:bg-surface-container cursor-pointer">Annuler</button>
-        <button type="submit" class="flex-1 py-3 rounded-full bg-primary text-white font-bold text-xs hover:opacity-90 active:scale-95 transition-all shadow-md cursor-pointer">Enregistrer</button>
+      <!-- Product 2: Croissant Beurre -->
+      <div class="product-card bg-white rounded-3xl p-3.5 border border-outline-variant/40 shadow-soft flex flex-col justify-between gap-2.5 relative group" data-category="food" data-title="Croissant Beurre Artisanal" data-price="800">
+        <div class="w-full h-28 rounded-2xl bg-amber-50 relative overflow-hidden flex items-center justify-center">
+          <img src="../assets/images/img_006.jpg" alt="Croissant" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+          <span class="absolute top-2 right-2 text-[9px] font-black uppercase bg-amber-600 text-white px-2 py-0.5 rounded-full">
+            5 restants
+          </span>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold text-on-surface line-clamp-1">Croissant Beurre Artisanal</h4>
+          <span class="text-sm font-black font-mono text-emerald-700 block mt-0.5">800 FCFA</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-1.5 pt-1 border-t border-gray-100">
+          <button onclick="chargeDirect('Croissant Beurre Artisanal', 800)" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">qr_code_2</span>
+            <span>Encaisser</span>
+          </button>
+          <button onclick="this.closest('.product-card').remove(); alert('Article retiré du catalogue.');" class="w-8 h-8 rounded-xl bg-gray-100 hover:bg-rose-50 text-gray-500 hover:text-rose-600 flex items-center justify-center transition-colors cursor-pointer" title="Supprimer">
+            <span class="material-symbols-outlined text-sm">delete</span>
+          </button>
+        </div>
       </div>
-    </form>
+
+      <!-- Product 3: Robe Wax Soie -->
+      <div class="product-card bg-white rounded-3xl p-3.5 border border-outline-variant/40 shadow-soft flex flex-col justify-between gap-2.5 relative group" data-category="retail" data-title="Robe Wax Soie Africaine" data-price="25000">
+        <div class="w-full h-28 rounded-2xl bg-purple-50 relative overflow-hidden flex items-center justify-center">
+          <div class="w-full h-full bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white">
+            <span class="material-symbols-outlined text-4xl">checkroom</span>
+          </div>
+          <span class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-800 text-white px-2 py-0.5 rounded-full">
+            12 en stock
+          </span>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold text-on-surface line-clamp-1">Robe Wax Soie Africaine</h4>
+          <span class="text-sm font-black font-mono text-emerald-700 block mt-0.5">25 000 FCFA</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-1.5 pt-1 border-t border-gray-100">
+          <button onclick="chargeDirect('Robe Wax Soie Africaine', 25000)" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">qr_code_2</span>
+            <span>Encaisser</span>
+          </button>
+          <button onclick="this.closest('.product-card').remove(); alert('Article retiré du catalogue.');" class="w-8 h-8 rounded-xl bg-gray-100 hover:bg-rose-50 text-gray-500 hover:text-rose-600 flex items-center justify-center transition-colors cursor-pointer" title="Supprimer">
+            <span class="material-symbols-outlined text-sm">delete</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Product 4: Consultation / Prestation -->
+      <div class="product-card bg-white rounded-3xl p-3.5 border border-outline-variant/40 shadow-soft flex flex-col justify-between gap-2.5 relative group" data-category="service" data-title="Consultation & Expertise (1h)" data-price="15000">
+        <div class="w-full h-28 rounded-2xl bg-blue-50 relative overflow-hidden flex items-center justify-center">
+          <img src="../assets/images/img_007.jpg" alt="Consultation" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+          <span class="absolute top-2 right-2 text-[9px] font-black uppercase bg-blue-800 text-white px-2 py-0.5 rounded-full">
+            Service
+          </span>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold text-on-surface line-clamp-1">Consultation & Expertise (1h)</h4>
+          <span class="text-sm font-black font-mono text-emerald-700 block mt-0.5">15 000 FCFA</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-1.5 pt-1 border-t border-gray-100">
+          <button onclick="chargeDirect('Consultation & Expertise (1h)', 15000)" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">qr_code_2</span>
+            <span>Encaisser</span>
+          </button>
+          <button onclick="this.closest('.product-card').remove(); alert('Article retiré du catalogue.');" class="w-8 h-8 rounded-xl bg-gray-100 hover:bg-rose-50 text-gray-500 hover:text-rose-600 flex items-center justify-center transition-colors cursor-pointer" title="Supprimer">
+            <span class="material-symbols-outlined text-sm">delete</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div id="cat-empty-state" class="hidden bg-white rounded-3xl p-8 border border-outline-variant/40 shadow-soft flex flex-col items-center justify-center text-center gap-3 my-4">
+      <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center">
+        <span class="material-symbols-outlined text-3xl">inventory_2</span>
+      </div>
+      <h3 class="text-base font-extrabold text-on-surface">Aucun article trouvé</h3>
+      <p class="text-xs text-on-surface-variant max-w-xs">
+        Essayez un autre mot-clé ou ajoutez un nouveau produit à votre boutique.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Add Product Modal -->
+  <div id="product-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 flex flex-col gap-4 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-bold text-on-surface">Ajouter un Article au Catalogue</h3>
+        <button onclick="closeAddProductModal()" class="p-1.5 rounded-full hover:bg-gray-100 text-on-surface-variant cursor-pointer">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="handleAddProduct(event)" class="flex flex-col gap-3.5">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-bold text-on-surface-variant">Nom du produit / service *</label>
+          <input type="text" id="prod-name" required placeholder="Ex: Chemise Lin Cotonou" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2.5 text-xs font-bold focus:outline-none focus:border-emerald-600"/>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div class="flex flex-col gap-1">
+            <label class="text-xs font-bold text-on-surface-variant">Prix (FCFA) *</label>
+            <input type="number" id="prod-price" required min="100" placeholder="12500" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2.5 text-xs font-mono font-bold focus:outline-none focus:border-emerald-600"/>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-xs font-bold text-on-surface-variant">Stock initial</label>
+            <input type="number" id="prod-stock" min="1" placeholder="20" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2.5 text-xs font-mono focus:outline-none focus:border-emerald-600"/>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-bold text-on-surface-variant">Catégorie *</label>
+          <select id="prod-cat" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2.5 text-xs font-semibold focus:outline-none focus:border-emerald-600">
+            <option value="food">Restauration & Bar</option>
+            <option value="retail">Boutique & Mode</option>
+            <option value="service">Prestations & Services</option>
+          </select>
+        </div>
+
+        <div class="p-3 bg-emerald-50 rounded-xl text-xs text-emerald-900 border border-emerald-200">
+          💡 Cet article apparaîtra automatiquement sur le terminal tactile de caisse de vos caissiers.
+        </div>
+
+        <div class="flex gap-2.5 mt-2">
+          <button type="button" onclick="closeAddProductModal()" class="flex-1 py-3 rounded-full border border-outline-variant font-semibold text-xs hover:bg-surface-container cursor-pointer">Annuler</button>
+          <button type="submit" class="flex-1 py-3 rounded-full bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 active:scale-95 transition-all shadow-md cursor-pointer">Ajouter au Catalogue</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 
-<script>
-  function openAddProductModal() {
-    document.getElementById('product-modal').classList.remove('hidden');
-  }
-  function closeAddProductModal() {
-    document.getElementById('product-modal').classList.add('hidden');
-  }
-  function handleAddProduct(e) {
-    e.preventDefault();
-    const name = document.getElementById('prod-name').value.trim();
-    const price = document.getElementById('prod-price').value.trim();
-    closeAddProductModal();
-    alert('Article "' + name + '" (' + parseInt(price).toLocaleString('fr-FR') + ' FCFA) ajouté au catalogue avec succès !');
-  }
-</script>
+  <script src="../assets/switch.router.js"></script>
 
-<script src="../assets/switch.router.js"></script>
-</body></html>
+  <script>
+    let activeCategory = 'all';
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const bName = localStorage.getItem('switch_merchant_business_name') || "Boutique La Plage";
+      const storeEl = document.getElementById('cat-store-name');
+      if (storeEl) storeEl.textContent = bName + " • Gestion Stocks & Prix";
+    });
+
+    function setCategory(cat, btn) {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(b => {
+        b.className = "cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0";
+      });
+      btn.className = "cat-pill cat-pill-active px-3 py-1.5 rounded-xl transition-colors cursor-pointer shrink-0";
+      filterCatalogue();
+    }
+
+    function filterCatalogue() {
+      const query = document.getElementById('cat-search-input').value.toLowerCase().trim();
+      const items = document.querySelectorAll('.product-card');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const title = (item.getAttribute('data-title') || '').toLowerCase();
+        const price = (item.getAttribute('data-price') || '');
+        const cat = item.getAttribute('data-category');
+
+        const matchQuery = !query || title.includes(query) || price.includes(query);
+        const matchCategory = (activeCategory === 'all') || (cat === activeCategory);
+
+        if (matchQuery && matchCategory) {
+          item.style.display = 'flex';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      const emptyEl = document.getElementById('cat-empty-state');
+      if (visibleCount === 0) {
+        emptyEl.classList.remove('hidden');
+      } else {
+        emptyEl.classList.add('hidden');
+      }
+    }
+
+    function openAddProductModal() {
+      document.getElementById('product-modal').classList.remove('hidden');
+    }
+
+    function closeAddProductModal() {
+      document.getElementById('product-modal').classList.add('hidden');
+    }
+
+    function handleAddProduct(e) {
+      e.preventDefault();
+      const name = document.getElementById('prod-name').value.trim();
+      const price = parseInt(document.getElementById('prod-price').value, 10);
+      const stock = document.getElementById('prod-stock').value.trim() || "15";
+      const cat = document.getElementById('prod-cat').value;
+
+      const newCard = document.createElement('div');
+      newCard.className = "product-card bg-white rounded-3xl p-3.5 border border-outline-variant/40 shadow-soft flex flex-col justify-between gap-2.5 relative group";
+      newCard.setAttribute('data-category', cat);
+      newCard.setAttribute('data-title', name);
+      newCard.setAttribute('data-price', price);
+      newCard.innerHTML = `
+        <div class="w-full h-28 rounded-2xl bg-emerald-50 relative overflow-hidden flex items-center justify-center">
+          <div class="w-full h-full bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white">
+            <span class="material-symbols-outlined text-4xl">inventory_2</span>
+          </div>
+          <span class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-800 text-white px-2 py-0.5 rounded-full">
+            ${stock} en stock
+          </span>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold text-on-surface line-clamp-1">${name}</h4>
+          <span class="text-sm font-black font-mono text-emerald-700 block mt-0.5">${price.toLocaleString('fr-FR')} FCFA</span>
+        </div>
+
+        <div class="flex gap-1.5 pt-1 border-t border-gray-100">
+          <button onclick="chargeDirect('${name}', ${price})" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">qr_code_2</span>
+            <span>Encaisser</span>
+          </button>
+          <button onclick="this.closest('.product-card').remove(); alert('Article retiré du catalogue.');" class="w-8 h-8 rounded-xl bg-gray-100 hover:bg-rose-50 text-gray-500 hover:text-rose-600 flex items-center justify-center transition-colors cursor-pointer" title="Supprimer">
+            <span class="material-symbols-outlined text-sm">delete</span>
+          </button>
+        </div>
+      `;
+
+      document.getElementById('products-grid').prepend(newCard);
+      closeAddProductModal();
+      alert("✅ Article '" + name + "' (" + price.toLocaleString('fr-FR') + " FCFA) ajouté avec succès au catalogue !");
+    }
+
+    function chargeDirect(prodName, amount) {
+      if (confirm("Générer un QR Code de caisse immédiat pour '" + prodName + "' (" + amount.toLocaleString('fr-FR') + " FCFA) ?")) {
+        window.location.href = '../g_n_rer_qr_code_de_r_ception/code.html';
+      }
+    }
+  </script>
+
+</body>
+</html>
