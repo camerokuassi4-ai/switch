@@ -1,133 +1,570 @@
 <!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Dépôt d'espèces Client (Cash-In) - Terminal Agent Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
 
-<html lang="fr"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Déposer des fonds</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="../assets/switch.css">
-<script src="../assets/switch.config.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
 
-<style>
-        body {
-            background-color: #fdf8ff; /* background */
-            color: #1c1a24; /* on-surface */
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        .shadow-30px-y-15px-opacity-15 {
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
 
-        .ambient-shadow-level-1 {
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
-        }
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
 
-        /* Custom styles for the input focus state */
-        .input-focus-ring:focus-within {
-            border-color: #5e3bdc; /* primary */
-            box-shadow: 0 0 0 4px rgba(94, 59, 220, 0.1);
-        }
-        
-        /* Grid layout for sources */
-        .source-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-    </style>
+    .input-focus {
+      transition: all 0.2s ease;
+    }
+
+    .input-focus:focus-within {
+      border-color: #5E3BDC;
+      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.12);
+    }
+
+    /* Modal Animation */
+    .modal-enter {
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Quick pill transition */
+    .pill-active {
+      background-color: #5E3BDC !important;
+      color: #FFFFFF !important;
+      border-color: #5E3BDC !important;
+      box-shadow: 0 4px 12px rgba(94, 59, 220, 0.25);
+    }
+  </style>
 </head>
-<body class="min-h-screen pb-40">
-<!-- Top Navigation (Contextual, Back button implied for 'Top-up' flow but keeping simple header) -->
-<header class="flex justify-between items-center px-container-margin py-stack-md w-full bg-transparent top-0 sticky z-10">
-<button aria-label="Retour" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high hover:bg-surface-variant transition-colors">
-<span class="material-symbols-outlined text-on-surface">arrow_back</span>
-</button>
-<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Déposer des fonds</h1>
-<div class="w-10 h-10"></div> <!-- Spacer for centering -->
-</header>
-<main class="px-container-margin pt-stack-md flex flex-col gap-stack-lg max-w-lg mx-auto">
-<!-- Source Selection Section -->
-<section>
-<h2 class="font-body-lg text-body-lg font-semibold text-on-surface mb-stack-md">Sélectionner la source</h2>
-<div class="source-grid">
-<!-- Agent Switch Option -->
-<button class="bg-surface-container-lowest ambient-shadow-level-1 rounded-xl p-card-padding flex flex-col items-center justify-center gap-3 border-2 border-transparent hover:border-surface-variant transition-transform active:scale-95">
-<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-2">
-<span class="material-symbols-outlined text-primary" style="font-size: 32px;">storefront</span>
-</div>
-<span class="font-body-sm text-body-sm text-on-surface font-semibold text-center">Via un Agent Switch</span>
-</button>
-<!-- MTN MoMo Option (Selected State) -->
-<button class="relative bg-surface-container-lowest ambient-shadow-level-1 rounded-xl p-card-padding flex flex-col items-center justify-center gap-3 border-2 border-primary transition-transform active:scale-95">
-<div class="absolute top-3 right-3 text-primary">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-</div>
-<!-- Placeholder for MTN MoMo Logo -->
-<div class="w-16 h-16 rounded-full bg-yellow-400 flex items-center justify-center mb-2 overflow-hidden">
-<span class="font-headline-md text-black font-bold">MTN</span>
-</div>
-<span class="font-body-sm text-body-sm text-on-surface font-semibold text-center">MTN MoMo</span>
-</button>
-<!-- Moov Money Option -->
-<button class="bg-surface-container-lowest ambient-shadow-level-1 rounded-xl p-card-padding flex flex-col items-center justify-center gap-3 border-2 border-transparent hover:border-surface-variant transition-transform active:scale-95">
-<!-- Placeholder for Moov Money Logo -->
-<div class="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center mb-2 overflow-hidden">
-<span class="font-headline-md text-white font-bold">Moov</span>
-</div>
-<span class="font-body-sm text-body-sm text-on-surface font-semibold text-center">Moov Money</span>
-</button>
-<!-- Celtiis Cash Option -->
-<button class="bg-surface-container-lowest ambient-shadow-level-1 rounded-xl p-card-padding flex flex-col items-center justify-center gap-3 border-2 border-transparent hover:border-surface-variant transition-transform active:scale-95">
-<!-- Placeholder for Celtiis Cash Logo -->
-<div class="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center mb-2 overflow-hidden">
-<span class="font-headline-md text-white font-bold">Celtiis</span>
-</div>
-<span class="font-body-sm text-body-sm text-on-surface font-semibold text-center">Celtiis Cash</span>
-</button>
-<!-- Bank Card Option -->
-<button class="bg-surface-container-lowest ambient-shadow-level-1 rounded-xl p-card-padding flex flex-col items-center justify-center gap-3 border-2 border-transparent hover:border-surface-variant transition-transform active:scale-95">
-<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-2">
-<span class="material-symbols-outlined text-primary" style="font-size: 32px;">credit_card</span>
-</div>
-<span class="font-body-sm text-body-sm text-on-surface font-semibold text-center">Carte bancaire</span>
-</button>
-</div>
-</section>
-<!-- Amount Input Section -->
-<section class="mt-stack-sm">
-<h2 class="font-body-lg text-body-lg font-semibold text-on-surface mb-stack-sm">Montant à déposer</h2>
-<div class="input-focus-ring bg-surface-container-lowest ambient-shadow-level-1 rounded-xl border border-outline-variant flex items-center p-4 transition-all duration-200">
-<span class="font-headline-md text-headline-md text-on-surface-variant mr-2">FCFA</span>
-<input class="flex-1 bg-transparent border-none outline-none font-display-lg-mobile text-display-lg-mobile text-on-surface p-0 placeholder:text-surface-variant appearance-none" placeholder="0" style="-moz-appearance: textfield;" type="number"/>
-</div>
-<div class="flex justify-between items-center mt-2 px-1">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Min: 500 FCFA</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">Max: 1 000 000 FCFA</span>
-</div>
-</section>
-<!-- Action Button -->
-<section class="mt-auto pt-stack-lg pb-stack-md">
-<button onclick="window.location.href='../confirmation_de_l_op_ration_code/code.html'"
-        class="w-full bg-primary hover:bg-surface-tint text-on-primary rounded-xl py-4 flex items-center justify-center font-body-lg text-body-lg font-bold transition-transform active:scale-95 shadow-md">
-    Continuer
-    <span class="material-symbols-outlined ml-2">arrow_forward</span>
-</button>
-</section>
-</main>
-<!-- Suppressed BottomNavBar - Transactional Screen -->
-<!-- The BottomNavBar is intentionally excluded here because this is a transactional flow (Top-up/Deposit), 
-         which represents a linear, focused task where a 'Close' or 'Back' action implies temporary departure 
-         from the main navigation flow. -->
-<script>
-        // Simple input formatting script (optional UX enhancement)
-        document.querySelector('input[type="number"]').addEventListener('input', function (e) {
-            // This is a basic example. In a real app, you'd want more robust formatting for currency.
-            if(this.value.length > 10) {
-                this.value = this.value.slice(0, 10);
-            }
-        });
-    </script>
-<script src="../assets/switch.forms.js"></script>
-<script src="../assets/switch.router.js"></script>
-</body></html>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <button aria-label="Retour" onclick="goBack()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Dépôt d'espèces (Cash-In)</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Recharger le compte d'un client au guichet</p>
+    </div>
+
+    <!-- Active Float Indicator Badge -->
+    <div class="flex flex-col items-end">
+      <span class="text-[9px] font-bold uppercase text-on-surface-variant">Float Caisse</span>
+      <span id="current-float-badge" class="text-xs font-mono font-black text-primary bg-primary/10 px-2.5 py-0.5 rounded-full border border-primary/20">
+        1 500 000 F
+      </span>
+    </div>
+  </header>
+
+  <!-- Main Content Form Area -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- Form Container -->
+    <form id="deposit-form" onsubmit="event.preventDefault(); openPinConfirmation();" class="flex flex-col gap-4">
+
+      <!-- 1. Réseau de Destination -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">account_balance_wallet</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">1. Réseau de destination</h2>
+          </div>
+          <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Sans frais client</span>
+        </div>
+
+        <!-- Network Selector Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          
+          <!-- Switch Bénin (Recommandé) -->
+          <div onclick="selectNetwork('switch')" id="net-card-switch" class="p-3 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center shadow-xs">
+            <div class="w-9 h-9 rounded-xl bg-primary text-white flex items-center justify-center font-black text-xs">
+              SW
+            </div>
+            <span class="text-xs font-bold text-on-surface">Switch Bénin</span>
+            <span class="text-[9px] font-black text-primary bg-white px-1.5 py-0.2 rounded-md border border-primary/20">Com. Max</span>
+          </div>
+
+          <!-- MTN MoMo -->
+          <div onclick="selectNetwork('mtn')" id="net-card-mtn" class="p-3 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-yellow-400 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center">
+            <div class="w-9 h-9 rounded-xl bg-yellow-400 text-black flex items-center justify-center font-black text-xs shadow-xs">
+              MoMo
+            </div>
+            <span class="text-xs font-bold text-on-surface">MTN MoMo</span>
+            <span class="text-[9px] font-bold text-gray-500">Bénin</span>
+          </div>
+
+          <!-- Moov Money -->
+          <div onclick="selectNetwork('moov')" id="net-card-moov" class="p-3 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-blue-500 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center">
+            <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-xs shadow-xs">
+              Moov
+            </div>
+            <span class="text-xs font-bold text-on-surface">Moov Money</span>
+            <span class="text-[9px] font-bold text-gray-500">Flooz</span>
+          </div>
+
+          <!-- Celtiis Cash -->
+          <div onclick="selectNetwork('celtiis')" id="net-card-celtiis" class="p-3 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-emerald-500 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center">
+            <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-xs shadow-xs">
+              Celtiis
+            </div>
+            <span class="text-xs font-bold text-on-surface">Celtiis Cash</span>
+            <span class="text-[9px] font-bold text-gray-500">SBIN</span>
+          </div>
+
+        </div>
+        <input type="hidden" id="selectedNetwork" value="switch"/>
+      </section>
+
+      <!-- 2. Numéro du Client Bénéficiaire -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">person</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">2. Client Bénéficiaire (+229)</h2>
+          </div>
+          <span class="text-[10px] text-on-surface-variant font-medium">Compte récepteur</span>
+        </div>
+
+        <!-- Phone Input with clean flex group -->
+        <div class="flex flex-col gap-1.5">
+          <div class="input-focus flex items-center rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 overflow-hidden">
+            <div class="flex items-center gap-1.5 px-3.5 py-3.5 bg-gray-100/80 border-r border-outline-variant/50 text-xs font-bold text-on-surface select-none shrink-0">
+              <span class="text-base leading-none">🇧🇯</span>
+              <span class="font-mono text-gray-700 font-bold">+229</span>
+            </div>
+            <input type="tel" id="clientPhone" required oninput="handlePhoneInput(this.value)" placeholder="97 00 00 00" maxlength="12" class="w-full bg-transparent border-0 py-3 px-3.5 text-sm sm:text-base font-mono font-bold text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none"/>
+            <button type="button" onclick="pickDemoClient('97456789', 'Koffi MENSAH')" class="px-3 py-1.5 mr-2 rounded-xl bg-purple-50 text-primary text-[10px] font-bold hover:bg-purple-100 transition-colors shrink-0 cursor-pointer" title="Remplir un client test">
+              Récent
+            </button>
+          </div>
+
+          <!-- Verified Client Card / Badge -->
+          <div id="verified-client-box" class="p-3 rounded-2xl bg-emerald-50/80 border border-emerald-200/80 flex items-center justify-between transition-all">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-700 text-lg">verified_user</span>
+              <div class="flex flex-col">
+                <span id="verified-client-name" class="text-xs font-black text-emerald-900">Koffi MENSAH</span>
+                <span class="text-[10px] text-emerald-700 font-mono">Compte Switch N2 • Titulaire Vérifié</span>
+              </div>
+            </div>
+            <span class="text-[10px] font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-full border border-emerald-200">Actif</span>
+          </div>
+
+          <!-- Quick Recent Clients Pills -->
+          <div class="flex items-center gap-1.5 pt-1 overflow-x-auto pb-1 text-[10px]">
+            <span class="text-gray-400 font-medium shrink-0">Récents :</span>
+            <button type="button" onclick="pickDemoClient('97456789', 'Koffi MENSAH')" class="px-2.5 py-1 rounded-full bg-gray-100 hover:bg-purple-50 hover:text-primary text-gray-700 font-bold shrink-0 cursor-pointer">
+              Koffi M. (97 45 67 89)
+            </button>
+            <button type="button" onclick="pickDemoClient('95123456', 'Mariam SANNI')" class="px-2.5 py-1 rounded-full bg-gray-100 hover:bg-purple-50 hover:text-primary text-gray-700 font-bold shrink-0 cursor-pointer">
+              Mariam S. (95 12 34 56)
+            </button>
+            <button type="button" onclick="pickDemoClient('66789012', 'Eric BOKO')" class="px-2.5 py-1 rounded-full bg-gray-100 hover:bg-purple-50 hover:text-primary text-gray-700 font-bold shrink-0 cursor-pointer">
+              Eric B. (66 78 90 12)
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Montant du Dépôt en Espèces -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">payments</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">3. Montant remis en espèces (Cash)</h2>
+          </div>
+          <span class="text-[10px] font-mono text-gray-500 font-bold">Min: 500 F</span>
+        </div>
+
+        <!-- Big Amount Display Input -->
+        <div class="flex flex-col gap-2">
+          <div class="input-focus flex items-center justify-between rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 px-4 py-3.5">
+            <input type="number" id="depositAmount" required oninput="calculateCommission(this.value)" value="25000" min="500" max="1500000" class="w-full bg-transparent border-0 p-0 text-2xl sm:text-3xl font-mono font-black text-on-surface placeholder:text-gray-300 focus:ring-0 focus:outline-none"/>
+            <span class="text-base sm:text-lg font-extrabold text-primary shrink-0 ml-2">FCFA</span>
+          </div>
+
+          <!-- Quick Amount Selection Pills -->
+          <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5 pt-1">
+            <button type="button" onclick="setDepositAmount(5000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">5 000</button>
+            <button type="button" onclick="setDepositAmount(10000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">10 000</button>
+            <button type="button" onclick="setDepositAmount(25000)" class="quick-pill pill-active py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">25 000</button>
+            <button type="button" onclick="setDepositAmount(50000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">50 000</button>
+            <button type="button" onclick="setDepositAmount(100000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">100 000</button>
+            <button type="button" onclick="setDepositAmount(250000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">250 000</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Calculation Card (Earnings + Float Impact) -->
+        <div class="mt-2 p-4 rounded-2xl bg-gradient-to-br from-purple-50 to-emerald-50/40 border border-purple-200/80 flex flex-col gap-2.5">
+          
+          <!-- Commission Agent perçue -->
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-gray-700 font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-emerald-600 text-base">savings</span>
+              Votre Commission Agent :
+            </span>
+            <span id="agent-commission-text" class="font-mono font-black text-emerald-700 text-sm bg-white px-2 py-0.5 rounded-lg border border-emerald-200">
+              +175 FCFA
+            </span>
+          </div>
+
+          <!-- Frais Client -->
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-gray-600 font-medium">Frais facturés au client :</span>
+            <span class="font-mono font-bold text-emerald-700">0 FCFA (Gratuit)</span>
+          </div>
+
+          <!-- Impact Float -->
+          <div class="flex items-center justify-between text-xs pt-2 border-t border-purple-200/60">
+            <span class="text-gray-600 font-medium">Votre Float après opération :</span>
+            <span id="remaining-float-text" class="font-mono font-black text-primary text-xs">
+              1 475 000 FCFA
+            </span>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- Submit Action Button -->
+      <div class="pt-2">
+        <button type="submit" id="submit-deposit-btn" data-no-router="true" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm cursor-pointer">
+          <span class="material-symbols-outlined text-xl">send_to_mobile</span>
+          <span>Valider le Dépôt Client</span>
+        </button>
+      </div>
+
+    </form>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : Confirmation PIN Sécurité de l'Agent -->
+  <!-- ============================================================ -->
+  <div id="pin-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm hidden flex items-end justify-center">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-10 shadow-2xl modal-enter flex flex-col gap-4">
+      
+      <!-- Top Handle & Close -->
+      <div class="w-full flex items-center justify-between">
+        <span class="w-12 h-1 bg-outline-variant rounded-full mx-auto -mr-6"></span>
+        <button onclick="closePinModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <!-- Modal Header -->
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-2xl">lock</span>
+        </div>
+        <div>
+          <h3 class="text-base font-black text-on-surface">Confirmer le Dépôt Espèces</h3>
+          <p class="text-xs text-on-surface-variant">Saisissez votre code PIN Agent à 4 chiffres</p>
+        </div>
+      </div>
+
+      <!-- Operation Recap Card -->
+      <div class="p-3.5 rounded-2xl bg-surface-container-low/60 border border-outline-variant/60 flex flex-col gap-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-gray-500 font-medium">Bénéficiaire :</span>
+          <b id="modal-recap-client" class="text-on-surface font-bold">Koffi MENSAH (+229 97 45 67 89)</b>
+        </div>
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-gray-500 font-medium">Réseau :</span>
+          <b id="modal-recap-network" class="text-primary font-bold">Switch Bénin</b>
+        </div>
+        <div class="flex items-center justify-between text-xs pt-1.5 border-t border-outline-variant/40">
+          <span class="text-gray-700 font-bold">Montant à créditer :</span>
+          <b id="modal-recap-amount" class="text-base font-black font-mono text-primary">25 000 FCFA</b>
+        </div>
+      </div>
+
+      <!-- PIN Input Dots -->
+      <div class="flex items-center justify-center gap-3 my-2">
+        <div id="pindot-1" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-2" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-3" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-4" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+      </div>
+
+      <!-- Virtual Numeric Keypad -->
+      <div class="grid grid-cols-3 gap-2.5 max-w-xs mx-auto w-full">
+        <button type="button" onclick="pressPin('1')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">1</button>
+        <button type="button" onclick="pressPin('2')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">2</button>
+        <button type="button" onclick="pressPin('3')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">3</button>
+        
+        <button type="button" onclick="pressPin('4')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">4</button>
+        <button type="button" onclick="pressPin('5')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">5</button>
+        <button type="button" onclick="pressPin('6')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">6</button>
+        
+        <button type="button" onclick="pressPin('7')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">7</button>
+        <button type="button" onclick="pressPin('8')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">8</button>
+        <button type="button" onclick="pressPin('9')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">9</button>
+        
+        <button type="button" onclick="pressBiometric()" class="h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center cursor-pointer active:scale-95 transition-transform" title="Empreinte">
+          <span class="material-symbols-outlined text-xl">fingerprint</span>
+        </button>
+        <button type="button" onclick="pressPin('0')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">0</button>
+        <button type="button" onclick="deletePin()" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface cursor-pointer active:scale-95 transition-transform">
+          <span class="material-symbols-outlined text-lg">backspace</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : Succès du Dépôt & Reçu Imprimable -->
+  <!-- ============================================================ -->
+  <div id="success-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl modal-enter flex flex-col items-center text-center gap-4">
+      
+      <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center animate-bounce">
+        <span class="material-symbols-outlined text-3xl">check_circle</span>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-black text-on-surface">Dépôt Réussi !</h3>
+        <p class="text-xs text-on-surface-variant mt-0.5">Le compte client a été crédité avec succès.</p>
+      </div>
+
+      <div class="w-full bg-gray-50 rounded-2xl p-4 border border-gray-200 flex flex-col gap-2 text-xs">
+        <div class="flex justify-between text-gray-500">
+          <span>Réf. Transaction :</span>
+          <b id="receipt-ref" class="text-gray-800 font-mono">TRX-DEP-84920</b>
+        </div>
+        <div class="flex justify-between text-gray-500">
+          <span>Client :</span>
+          <b id="receipt-client" class="text-gray-800 font-bold">Koffi MENSAH</b>
+        </div>
+        <div class="flex justify-between text-gray-500">
+          <span>Montant crédité :</span>
+          <b id="receipt-amount" class="text-primary font-mono font-black text-sm">25 000 FCFA</b>
+        </div>
+        <div class="flex justify-between text-emerald-700 font-bold pt-2 border-t border-gray-200">
+          <span>Commission perçue :</span>
+          <span id="receipt-commission" class="font-mono">+175 FCFA</span>
+        </div>
+      </div>
+
+      <div class="w-full flex flex-col gap-2 pt-1">
+        <button onclick="window.print()" class="w-full py-3 rounded-full bg-surface-container text-on-surface font-bold text-xs hover:bg-surface-container-high transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-base">print</span>
+          <span>Imprimer le Reçu Client</span>
+        </button>
+        <button onclick="finishDeposit()" class="w-full py-3.5 rounded-full bg-primary text-white font-bold text-xs hover:opacity-90 transition-opacity cursor-pointer">
+          Retour au Tableau de Bord
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Terminal Logic -->
+  <script>
+    let initialFloat = 1500000;
+    let pinCode = "";
+
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../tableau_de_bord_agent/code.html';
+      }
+    }
+
+    // 1. Sélection du Réseau
+    function selectNetwork(netKey) {
+      document.getElementById('selectedNetwork').value = netKey;
+      const nets = ['switch', 'mtn', 'moov', 'celtiis'];
+      
+      nets.forEach(n => {
+        const card = document.getElementById(`net-card-${n}`);
+        if (card) {
+          if (n === netKey) {
+            card.className = "p-3 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center shadow-xs";
+          } else {
+            card.className = "p-3 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-gray-300 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center";
+          }
+        }
+      });
+
+      calculateCommission(document.getElementById('depositAmount').value);
+    }
+
+    // 2. Détection du Client
+    function handlePhoneInput(val) {
+      const clean = val.replace(/\s+/g, '');
+      const clientBox = document.getElementById('verified-client-box');
+      const clientName = document.getElementById('verified-client-name');
+
+      if (clean.length >= 8) {
+        clientBox.classList.remove('hidden');
+        if (clean.includes('97')) {
+          clientName.textContent = "Koffi MENSAH";
+        } else if (clean.includes('95')) {
+          clientName.textContent = "Mariam SANNI";
+        } else {
+          clientName.textContent = "Client Switch Enregistré";
+        }
+      }
+    }
+
+    function pickDemoClient(phone, name) {
+      document.getElementById('clientPhone').value = phone;
+      document.getElementById('verified-client-name').textContent = name;
+      document.getElementById('verified-client-box').classList.remove('hidden');
+      calculateCommission(document.getElementById('depositAmount').value);
+    }
+
+    // 3. Montant & Calcul Commissions
+    function setDepositAmount(amt) {
+      document.getElementById('depositAmount').value = amt;
+      
+      // Update active pill
+      const pills = document.querySelectorAll('.quick-pill');
+      pills.forEach(p => {
+        if (parseInt(p.textContent.replace(/\s+/g, '')) === amt) {
+          p.classList.add('pill-active');
+        } else {
+          p.classList.remove('pill-active');
+        }
+      });
+
+      calculateCommission(amt);
+    }
+
+    function calculateCommission(amount) {
+      const amt = parseInt(amount) || 0;
+      const net = document.getElementById('selectedNetwork').value;
+      
+      // Calcul du barème commissions agent BCEAO Bénin (~0.7% sur Switch, ~0.5% sur Mobile Money)
+      let rate = (net === 'switch') ? 0.007 : 0.005;
+      let commission = Math.max(50, Math.round(amt * rate));
+      
+      document.getElementById('agent-commission-text').textContent = `+${commission.toLocaleString('fr-FR')} FCFA`;
+      
+      const rem = Math.max(0, initialFloat - amt);
+      document.getElementById('remaining-float-text').textContent = `${rem.toLocaleString('fr-FR')} FCFA`;
+    }
+
+    // 4. Modale PIN
+    function openPinConfirmation() {
+      const phone = document.getElementById('clientPhone').value.trim();
+      const amount = document.getElementById('depositAmount').value;
+
+      if (!phone || phone.length < 8) {
+        alert("Veuillez saisir un numéro de téléphone client valide (+229).");
+        return;
+      }
+      if (!amount || amount < 500) {
+        alert("Le montant minimum de dépôt est de 500 FCFA.");
+        return;
+      }
+
+      const clientName = document.getElementById('verified-client-name').textContent;
+      document.getElementById('modal-recap-client').textContent = `${clientName} (+229 ${phone})`;
+      
+      const net = document.getElementById('selectedNetwork').value.toUpperCase();
+      document.getElementById('modal-recap-network').textContent = (net === 'SWITCH') ? 'Switch Bénin' : net;
+      document.getElementById('modal-recap-amount').textContent = `${parseInt(amount).toLocaleString('fr-FR')} FCFA`;
+
+      pinCode = "";
+      updatePinDots();
+      document.getElementById('pin-modal').classList.remove('hidden');
+    }
+
+    function closePinModal() {
+      document.getElementById('pin-modal').classList.add('hidden');
+    }
+
+    function pressPin(num) {
+      if (pinCode.length < 4) {
+        pinCode += num;
+        updatePinDots();
+        if (pinCode.length === 4) {
+          setTimeout(executeDeposit, 200);
+        }
+      }
+    }
+
+    function deletePin() {
+      if (pinCode.length > 0) {
+        pinCode = pinCode.slice(0, -1);
+        updatePinDots();
+      }
+    }
+
+    function pressBiometric() {
+      pinCode = "1234";
+      updatePinDots();
+      setTimeout(executeDeposit, 200);
+    }
+
+    function updatePinDots() {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`pindot-${i}`);
+        if (i <= pinCode.length) {
+          dot.className = "w-3.5 h-3.5 rounded-full border-2 border-primary bg-primary transition-all scale-110";
+        } else {
+          dot.className = "w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all";
+        }
+      }
+    }
+
+    // 5. Exécution du Dépôt & Reçu
+    function executeDeposit() {
+      closePinModal();
+      
+      const amount = parseInt(document.getElementById('depositAmount').value) || 25000;
+      const client = document.getElementById('verified-client-name').textContent;
+      const commText = document.getElementById('agent-commission-text').textContent;
+
+      document.getElementById('receipt-ref').textContent = `TRX-DEP-${Math.floor(10000 + Math.random() * 90000)}`;
+      document.getElementById('receipt-client').textContent = client;
+      document.getElementById('receipt-amount').textContent = `${amount.toLocaleString('fr-FR')} FCFA`;
+      document.getElementById('receipt-commission').textContent = commText;
+
+      document.getElementById('success-modal').classList.remove('hidden');
+    }
+
+    function finishDeposit() {
+      if (window.switchNavigate) {
+        window.switchNavigate('../tableau_de_bord_agent/code.html');
+      } else {
+        window.location.href = '../tableau_de_bord_agent/code.html';
+      }
+    }
+
+    // Initialize calculations
+    document.addEventListener('DOMContentLoaded', () => {
+      calculateCommission(25000);
+    });
+  </script>
+
+</body>
+</html>
