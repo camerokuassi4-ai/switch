@@ -23,6 +23,7 @@
       border-color: #7B5CFA;
       border-style: solid;
       position: absolute;
+      transition: border-color 0.2s ease;
     }
     .corner-tl { top: -2px; left: -2px; border-width: 4px 0 0 4px; border-top-left-radius: 16px; }
     .corner-tr { top: -2px; right: -2px; border-width: 4px 4px 0 0; border-top-right-radius: 16px; }
@@ -70,6 +71,20 @@
     <div class="absolute inset-0 bg-black/30 pointer-events-none"></div>
   </div>
 
+  <!-- INSTANT DETECTION SUCCESS OVERLAY -->
+  <div id="scan-success-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-md z-50 flex flex-col items-center justify-center gap-5 transition-all duration-300 opacity-0 pointer-events-none scale-95">
+    <div class="w-24 h-24 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-[0_0_60px_rgba(16,185,129,0.9)] animate-pulse">
+      <span class="material-symbols-outlined text-5xl font-black">check_circle</span>
+    </div>
+    <div class="text-center px-6">
+      <h2 class="text-2xl font-black text-white">QR Code Détecté !</h2>
+      <p class="text-sm text-emerald-300 mt-1 font-bold" id="detected-merchant-name">Supermarché Erevan • Cotonou</p>
+      <span class="inline-block mt-3 text-xs bg-emerald-500/20 text-emerald-200 px-4 py-1.5 rounded-full border border-emerald-400/30 font-semibold">
+        Redirection vers le paiement...
+      </span>
+    </div>
+  </div>
+
   <!-- Top Action Header -->
   <header class="relative z-30 w-full max-w-xl mx-auto px-container-margin pt-6 flex items-center justify-between">
     <button aria-label="Fermer" onclick="stopCameraAndBack()" class="w-11 h-11 rounded-full glass-dark flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer">
@@ -115,15 +130,15 @@
     </div>
 
     <!-- Scanner Reticle Frame -->
-    <div onclick="simulateScanSuccess()" class="relative w-64 h-64 sm:w-72 sm:h-72 rounded-3xl bg-white/5 border border-white/20 backdrop-blur-[1px] overflow-hidden cursor-pointer group shadow-2xl">
+    <div id="reticle-box" onclick="simulateScanSuccess()" class="relative w-64 h-64 sm:w-72 sm:h-72 rounded-3xl bg-white/5 border border-white/20 backdrop-blur-[1px] overflow-hidden cursor-pointer group shadow-2xl transition-all duration-300">
       <!-- 4 Glowing Corners -->
-      <div class="corner corner-tl"></div>
-      <div class="corner corner-tr"></div>
-      <div class="corner corner-bl"></div>
-      <div class="corner corner-br"></div>
+      <div class="corner corner-tl" id="c-tl"></div>
+      <div class="corner corner-tr" id="c-tr"></div>
+      <div class="corner corner-bl" id="c-bl"></div>
+      <div class="corner corner-br" id="c-br"></div>
 
       <!-- Animated Laser Line -->
-      <div class="scan-laser"></div>
+      <div class="scan-laser" id="laser-line"></div>
 
       <!-- Center Aim Cross -->
       <div class="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
@@ -207,6 +222,29 @@
     window.currentFacingMode = window.currentFacingMode || 'environment';
     window.torchOn = false;
     window.currentMode = 'scan';
+    window.isScanning = false;
+
+    // Web Audio Positive Beep Synthesizer
+    function playScanBeep() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1400, ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.22);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.22);
+      } catch (e) {
+        console.warn("Audio Context unavailable:", e);
+      }
+    }
 
     // Initialize Camera on load
     window.initCamera = async function(facing = 'environment') {
@@ -313,14 +351,14 @@
     };
 
     window.simulateGalleryImport = function() {
-      alert("Image sélectionnée depuis votre galerie ! Détection du QR Code Switch...");
+      alert("Image sélectionnée depuis votre galerie !");
       window.simulateScanSuccess();
     };
 
     window.promptManualId = function() {
       const code = prompt("Saisissez l'Identifiant Marchand ou Numéro Switch :", "SW-MCH-8820");
       if (code) {
-        window.simulateScanSuccess();
+        window.simulateScanSuccess("Marchand Manuel (" + code + ")");
       }
     };
 
@@ -333,16 +371,47 @@
       alert("Votre QR Code Switch personnel a été enregistré dans votre galerie photo !");
     };
 
-    window.simulateScanSuccess = function() {
-      if (navigator.vibrate) navigator.vibrate(100);
-      if (window.currentStream) {
-        window.currentStream.getTracks().forEach(t => t.stop());
+    window.simulateScanSuccess = function(merchantName) {
+      if (window.isScanning) return;
+      window.isScanning = true;
+
+      // 1. Play Sound & Vibration
+      playScanBeep();
+      if (navigator.vibrate) navigator.vibrate([60, 40, 120]);
+
+      // 2. Turn Reticle Green
+      const reticle = document.getElementById('reticle-box');
+      if (reticle) {
+        reticle.style.borderColor = '#10B981';
+        reticle.style.boxShadow = '0 0 50px rgba(16, 185, 129, 0.8)';
       }
-      if (window.switchNavigate) {
-        window.switchNavigate('../confirmation_paiement_qr/code.html');
-      } else {
-        window.location.href = '../confirmation_paiement_qr/code.html';
+      ['c-tl', 'c-tr', 'c-bl', 'c-br'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.borderColor = '#10B981';
+      });
+
+      // 3. Show Success Overlay
+      if (merchantName) {
+        const mLabel = document.getElementById('detected-merchant-name');
+        if (mLabel) mLabel.textContent = merchantName;
       }
+      const overlay = document.getElementById('scan-success-overlay');
+      if (overlay) {
+        overlay.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+        overlay.classList.add('opacity-100', 'scale-100');
+      }
+
+      // 4. Smooth Redirect after 700ms delight moment
+      setTimeout(function() {
+        if (window.currentStream) {
+          window.currentStream.getTracks().forEach(t => t.stop());
+        }
+        if (window.switchNavigate) {
+          window.switchNavigate('../confirmation_paiement_qr/code.html');
+        } else {
+          window.location.href = '../confirmation_paiement_qr/code.html';
+        }
+      }, 700);
     };
 
     // Auto-launch camera when screen is shown
