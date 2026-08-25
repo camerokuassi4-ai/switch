@@ -431,9 +431,26 @@
     }
 
     function pressBiometric() {
-      pinCode = "1234";
-      updatePinDots();
-      setTimeout(executeValidation, 200);
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      const ref = `TRX-RET-${Math.floor(10000 + Math.random() * 90000)}`;
+
+      const trxData = {
+        title: "Retrait d'espèces Client (Cash-Out)",
+        amount: 25000,
+        fee: "0 FCFA",
+        beneficiary: "Mariam SANNI (+229 96 44 33 22)",
+        network: "Switch Bénin",
+        commission: "+200 FCFA",
+        source: "Caisse Espèces Guichet",
+        ref: ref,
+        date: dateStr,
+        returnUrl: "../tableau_de_bord_agent/code.html",
+        returnLabel: "Retour au Tableau de Bord Agent"
+      };
+
+      localStorage.setItem('switch_last_transaction', JSON.stringify(trxData));
+      window.location.href = '../confirmation_biometrique_agent/code.html';
     }
 
     function updatePinDots() {

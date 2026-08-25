@@ -352,9 +352,28 @@
     }
 
     function pressBiometric() {
-      pinCode = "1234";
-      updatePinDots();
-      setTimeout(executeFloatTransfer, 300);
+      const amt = parseInt(document.getElementById('transferFloatAmt').value) || 100000;
+      const ref = `FLT-TRF-${Math.floor(10000 + Math.random() * 90000)}`;
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+      const trxData = {
+        title: "Transfert Float Inter-Agents",
+        amount: amt,
+        fee: "0 FCFA",
+        beneficiary: `${currentAgent.name} (${currentAgent.id})`,
+        network: "Réseau Distributeurs Switch",
+        commission: "0 FCFA (Gratuit)",
+        source: "Trésorerie Float Agent",
+        ref: ref,
+        date: dateStr,
+        returnUrl: "../tableau_de_bord_agent/code.html",
+        returnLabel: "Retour au Tableau de Bord Agent"
+      };
+
+      localStorage.setItem('switch_last_transaction', JSON.stringify(trxData));
+      window.location.href = '../confirmation_biometrique_agent/code.html';
     }
 
     function updatePinDots() {
