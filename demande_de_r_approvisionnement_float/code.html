@@ -1,162 +1,477 @@
 <!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Réapprovisionnement Float - Espace Agent Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
 
-<html class="light" lang="fr"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Réapprovisionnement - Espace Agent</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="../assets/switch.css">
-<script src="../assets/switch.config.js"></script>
-
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        body {
-            font-family: 'Hanken Grotesk', sans-serif;
-            background-color: #fdf8ff; /* surface */
-        }
-        /* Custom Input Styling */
-        .agent-input {
-            width: 100%;
-            background-color: #f1ebf9; /* surface-container */
-            border: 1px solid #c9c4d7; /* outline-variant */
-            color: #1c1a24; /* on-surface */
-            border-radius: 0.5rem; /* rounded-lg */
-            padding: 1rem 1rem 1rem 3rem; /* Leave room for icon */
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-        .agent-input:focus {
-            outline: none;
-            border-color: #5e3bdc; /* primary */
-            box-shadow: 0 0 0 2px rgba(94, 59, 220, 0.2);
-            background-color: #ffffff; /* surface-container-lowest */
-        }
-        .agent-input-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #797586; /* outline */
-            pointer-events: none;
-        }
-        .agent-input:focus + .agent-input-icon,
-        .agent-input:focus ~ .agent-input-icon {
-            color: #5e3bdc; /* primary */
-        }
-        
-        /* Custom Select Styling */
-        .agent-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23797586'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1.5em;
-            padding-right: 2.5rem;
-        }
-    </style>
-<style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
     body {
+      font-family: 'Hanken Grotesk', sans-serif;
       min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .input-focus {
+      transition: all 0.2s ease;
+    }
+
+    .input-focus:focus-within {
+      border-color: #5E3BDC;
+      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.12);
+    }
+
+    .pill-active {
+      background-color: #5E3BDC !important;
+      color: #FFFFFF !important;
+      border-color: #5E3BDC !important;
+      box-shadow: 0 4px 12px rgba(94, 59, 220, 0.25);
+    }
+
+    /* Modal Animation */
+    .modal-enter {
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
   </style>
-  </head>
-<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col">
-<!-- TopAppBar -->
-<header class="bg-surface dark:bg-surface-dim w-full top-0 sticky z-40 transition-colors duration-200">
-<div class="flex items-center justify-between px-gutter py-4 w-full max-w-7xl mx-auto">
-<div class="flex items-center gap-3">
-<button aria-label="Retour" class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center p-2 rounded-full hover:bg-surface-container active:scale-95 duration-150">
-<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
-</button>
-<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Réapprovisionnement</h1>
-</div>
-<div class="flex items-center gap-4">
-<button class="relative text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container active:scale-95 duration-150">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-error rounded-full border-2 border-surface"></span>
-</button>
-<div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden border-2 border-surface shadow-sm">
-<img alt="Agent Profile Picture" class="w-full h-full object-cover" data-alt="A professional headshot of a confident Beninese mobile money agent in bright, clear daylight. The lighting is crisp and natural, highlighting a friendly yet serious expression suitable for a trusted financial representative. The background is slightly blurred, showing a clean, modern street setting in Cotonou. The overall tone is reliable, modern, and high-quality." src="../assets/images/img_011.jpg"/>
-</div>
-</div>
-</div>
-</header>
-<!-- Main Content Canvas -->
-<main class="flex-grow w-full max-w-3xl mx-auto px-gutter py-stack-lg pb-32">
-<!-- Liquidity Status Indicator -->
-<div class="mb-stack-lg flex items-center justify-between bg-surface-container-low rounded-xl p-card-padding border border-outline-variant shadow-sm">
-<div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">Liquidité Actuelle (Float)</p>
-<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">15,000 FCFA</h2>
-</div>
-<div class="flex items-center gap-2 bg-error-container text-on-error-container px-3 py-1.5 rounded-full border border-liquidity-low/30 shadow-[inset_0_1px_4px_rgba(239,68,68,0.1)]">
-<span class="material-symbols-outlined text-sm" data-icon="warning">warning</span>
-<span class="font-label-caps text-label-caps">Niveau Bas</span>
-</div>
-</div>
-<!-- Refill Form Card -->
-<div class="bg-surface-container-lowest rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.04)] border border-surface-container p-card-padding relative overflow-hidden">
-<!-- Decorative subtle gradient top border -->
-<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-primary-container"></div>
-<form action="#" class="space-y-stack-md" method="POST">
-<!-- Amount Input -->
-<div class="space-y-stack-sm">
-<label class="block font-headline-sm text-headline-sm text-on-surface" for="amount">Montant à recharger</label>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Saisissez le montant nécessaire pour vos opérations.</p>
-<div class="relative">
-<input class="agent-input pl-12 text-right pr-16 font-display-lg-mobile h-16" id="amount" name="amount" placeholder="0" required="" type="number"/>
-<span class="agent-input-icon left-4 material-symbols-outlined" data-icon="payments">payments</span>
-<span class="absolute right-4 top-1/2 -translate-y-1/2 font-headline-md text-headline-md text-on-surface-variant pointer-events-none">FCFA</span>
-</div>
-<!-- Quick Amount Chips -->
-<div class="flex flex-wrap gap-2 mt-3">
-<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant hover:bg-primary-container/10 hover:text-primary hover:border-primary transition-colors font-label-caps text-label-caps" type="button">50,000</button>
-<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant hover:bg-primary-container/10 hover:text-primary hover:border-primary transition-colors font-label-caps text-label-caps" type="button">100,000</button>
-<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant hover:bg-primary-container/10 hover:text-primary hover:border-primary transition-colors font-label-caps text-label-caps" type="button">250,000</button>
-</div>
-</div>
-<div class="w-full h-px bg-surface-container-high my-stack-md"></div>
-<!-- Payment Method Select -->
-<div class="space-y-stack-sm">
-<label class="block font-headline-sm text-headline-sm text-on-surface" for="payment_method">Méthode de financement</label>
-<div class="relative">
-<select class="agent-input agent-select pl-12" id="payment_method" name="payment_method" required="">
-<option disabled="" selected="" value="">Sélectionnez une méthode</option>
-<option value="bank">Virement Bancaire (Instantané)</option>
-<option value="distributor">Auprès d'un Distributeur Agréé</option>
-<option value="cash">Dépôt en Agence Principale</option>
-</select>
-<span class="agent-input-icon material-symbols-outlined" data-icon="account_balance">account_balance</span>
-</div>
-</div>
-<!-- Proof of deposit (Conditional, shown here for completeness) -->
-<div class="space-y-stack-sm mt-stack-md">
-<label class="block font-headline-sm text-headline-sm text-on-surface">Preuve de dépôt (Optionnel)</label>
-<div class="border-2 border-dashed border-outline-variant rounded-lg p-6 flex flex-col items-center justify-center text-center hover:bg-surface-container-low hover:border-primary transition-colors cursor-pointer group">
-<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-3 group-hover:bg-primary-container/20 group-hover:text-primary transition-colors text-on-surface-variant">
-<span class="material-symbols-outlined" data-icon="add_photo_alternate">add_photo_alternate</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Appuyez pour scanner ou télécharger un reçu</p>
-</div>
-</div>
-<!-- Actions -->
-<div class="pt-stack-md mt-stack-md">
-<button onclick="event.preventDefault(); window.location.href='../confirmation_de_succ_s/code.html'"
-        class="w-full bg-primary text-on-primary font-headline-md text-headline-md py-4 rounded-xl shadow-[0_4px_12px_rgba(94,59,220,0.3)] hover:opacity-90 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2" type="submit">
-    <span class="material-symbols-outlined" data-icon="send">send</span>
-    Envoyer la demande
-</button>
-<p class="text-center font-body-sm text-body-sm text-on-surface-variant mt-4 flex items-center justify-center gap-1">
-<span class="material-symbols-outlined text-[16px]" data-icon="lock">lock</span>
-                        Transaction sécurisée et chiffrée
-                    </p>
-</div>
-</form>
-</div>
-</main>
-<script src="../assets/switch.forms.js"></script>
-<script src="../assets/switch.router.js"></script>
-</body></html>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation (Notification Bell Removed as requested) -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <button aria-label="Retour" onclick="goBack()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Réapprovisionnement Float</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Recharger votre trésorerie caisse de guichet</p>
+    </div>
+
+    <!-- Agent ID Badge -->
+    <div class="w-10 h-10 rounded-full bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold text-xs">
+      AGT
+    </div>
+  </header>
+
+  <!-- Main Content Form Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Current Liquidity Float Status Box -->
+    <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex items-center justify-between">
+      <div class="flex flex-col">
+        <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Trésorerie Float Actuelle</span>
+        <h2 id="current-float-display" class="text-2xl font-black font-mono text-on-surface mt-0.5">
+          1 500 000 <span class="text-xs font-sans font-bold text-gray-500">FCFA</span>
+        </h2>
+      </div>
+
+      <div class="flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-2xl shadow-2xs">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="text-xs font-bold font-mono">Liquidité Optimale</span>
+      </div>
+    </div>
+
+    <!-- 2. Refill Form Card -->
+    <form id="refill-form" onsubmit="event.preventDefault(); openPinConfirmation();" class="flex flex-col gap-4">
+
+      <!-- 2.1 Montant de la Recharge -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">payments</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">1. Montant à Recharger</h2>
+          </div>
+          <span class="text-[10px] font-mono text-gray-500 font-bold">Min: 50 000 F</span>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <div class="input-focus flex items-center justify-between rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 px-4 py-3.5">
+            <input type="number" id="refillAmount" required oninput="calculateProjectedFloat(this.value)" value="500000" min="50000" max="10000000" class="w-full bg-transparent border-0 p-0 text-2xl sm:text-3xl font-mono font-black text-on-surface placeholder:text-gray-300 focus:ring-0 focus:outline-none"/>
+            <span class="text-base sm:text-lg font-extrabold text-primary shrink-0 ml-2">FCFA</span>
+          </div>
+
+          <!-- Quick Amount Selection Chips -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+            <button type="button" onclick="setRefillAmount(100000)" class="quick-pill py-2.5 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">100 000 F</button>
+            <button type="button" onclick="setRefillAmount(250000)" class="quick-pill py-2.5 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">250 000 F</button>
+            <button type="button" onclick="setRefillAmount(500000)" class="quick-pill pill-active py-2.5 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">500 000 F</button>
+            <button type="button" onclick="setRefillAmount(1000000)" class="quick-pill py-2.5 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">1 000 000 F</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2.2 Méthode de Financement -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">account_balance</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">2. Canal de Financement</h2>
+          </div>
+          <span class="text-[10px] text-gray-500">Source des fonds</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <!-- 1. Virement Bancaire -->
+          <div onclick="selectFundingMethod('bank')" id="method-card-bank" class="p-3.5 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer transition-all flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="material-symbols-outlined text-primary text-xl">account_balance</span>
+              <span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md border border-emerald-200">Instantané</span>
+            </div>
+            <span class="text-xs font-bold text-on-surface">Virement Bancaire</span>
+            <p class="text-[10px] text-on-surface-variant">UBA, BOA, Ecobank, Coris, BGFI</p>
+          </div>
+
+          <!-- 2. Distributeur Master -->
+          <div onclick="selectFundingMethod('distributor')" id="method-card-distributor" class="p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-gray-300 cursor-pointer transition-all flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="material-symbols-outlined text-gray-700 text-xl">storefront</span>
+              <span class="text-[9px] font-bold text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded-md">Partenaire</span>
+            </div>
+            <span class="text-xs font-bold text-on-surface">Super-Distributeur</span>
+            <p class="text-[10px] text-on-surface-variant">Point relais grossiste agréé</p>
+          </div>
+
+          <!-- 3. Dépôt Caisse Centrale -->
+          <div onclick="selectFundingMethod('cash')" id="method-card-cash" class="p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-gray-300 cursor-pointer transition-all flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="material-symbols-outlined text-gray-700 text-xl">domain</span>
+              <span class="text-[9px] font-bold text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded-md">Siège</span>
+            </div>
+            <span class="text-xs font-bold text-on-surface">Dépôt Agence Siège</span>
+            <p class="text-[10px] text-on-surface-variant">Cotonou (Haie Vive / Ganhi)</p>
+          </div>
+        </div>
+        <input type="hidden" id="selectedMethod" value="bank"/>
+      </section>
+
+      <!-- 2.3 Preuve de Virement / Bordereau de Dépôt -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">receipt_long</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">3. Bordereau ou Preuve de Dépôt</h2>
+          </div>
+          <span class="text-[10px] text-gray-400 font-medium">PNG, JPG, PDF</span>
+        </div>
+
+        <input type="file" id="proofFileInput" accept="image/*,.pdf" onchange="handleProofUpload(event)" class="hidden"/>
+
+        <div onclick="document.getElementById('proofFileInput').click()" class="border-2 border-dashed border-outline-variant/80 hover:border-primary rounded-2xl p-5 flex flex-col items-center justify-center text-center hover:bg-purple-50/40 transition-all cursor-pointer group">
+          <div id="proof-icon-box" class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+            <span class="material-symbols-outlined text-2xl">add_photo_alternate</span>
+          </div>
+          <p id="proof-text-label" class="text-xs font-bold text-on-surface">
+            Appuyez pour joindre votre bordereau ou reçu
+          </p>
+          <span id="proof-sub-label" class="text-[10px] text-on-surface-variant mt-0.5">
+            Validation automatique par OCR en moins de 5 minutes
+          </span>
+        </div>
+      </section>
+
+      <!-- 2.4 Synthèse Trésorerie Post-Recharge -->
+      <div class="p-4 rounded-3xl bg-gradient-to-br from-purple-50 to-emerald-50/30 border border-purple-200/80 flex flex-col gap-2 text-xs">
+        <div class="flex items-center justify-between">
+          <span class="text-gray-600 font-medium">Recharge demandée :</span>
+          <b id="recap-refill-amount" class="font-mono text-primary font-bold">+500 000 FCFA</b>
+        </div>
+        <div class="flex items-center justify-between pt-1 border-t border-purple-200/50">
+          <span class="text-gray-700 font-bold">Nouveau Float prévisionnel :</span>
+          <b id="recap-projected-float" class="font-mono text-emerald-700 font-black text-sm">2 000 000 FCFA</b>
+        </div>
+      </div>
+
+      <!-- Submit Action Button -->
+      <div class="pt-1">
+        <button type="submit" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm cursor-pointer">
+          <span class="material-symbols-outlined text-xl">send</span>
+          <span>Transmettre la Demande de Float</span>
+        </button>
+      </div>
+
+    </form>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : Confirmation PIN Sécurité de l'Agent -->
+  <!-- ============================================================ -->
+  <div id="pin-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm hidden flex items-end justify-center">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-10 shadow-2xl modal-enter flex flex-col gap-4">
+      
+      <div class="w-full flex items-center justify-between">
+        <span class="w-12 h-1 bg-outline-variant rounded-full mx-auto -mr-6"></span>
+        <button onclick="closePinModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-2xl">lock</span>
+        </div>
+        <div>
+          <h3 class="text-base font-black text-on-surface">Confirmer la Demande de Float</h3>
+          <p class="text-xs text-on-surface-variant">Saisissez votre code PIN Agent</p>
+        </div>
+      </div>
+
+      <!-- Recap Box -->
+      <div class="p-3.5 rounded-2xl bg-surface-container-low/60 border border-outline-variant/60 flex flex-col gap-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-gray-500 font-medium">Canal de versement :</span>
+          <b id="modal-recap-method" class="text-primary font-bold">Virement Bancaire Instantané</b>
+        </div>
+        <div class="flex items-center justify-between text-xs pt-1.5 border-t border-outline-variant/40">
+          <span class="text-gray-700 font-bold">Montant demandé :</span>
+          <b id="modal-recap-amount" class="text-base font-black font-mono text-primary">500 000 FCFA</b>
+        </div>
+      </div>
+
+      <!-- PIN Dots -->
+      <div class="flex items-center justify-center gap-3 my-2">
+        <div id="pindot-1" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-2" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-3" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-4" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+      </div>
+
+      <!-- Keypad -->
+      <div class="grid grid-cols-3 gap-2.5 max-w-xs mx-auto w-full">
+        <button type="button" onclick="pressPin('1')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">1</button>
+        <button type="button" onclick="pressPin('2')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">2</button>
+        <button type="button" onclick="pressPin('3')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">3</button>
+        
+        <button type="button" onclick="pressPin('4')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">4</button>
+        <button type="button" onclick="pressPin('5')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">5</button>
+        <button type="button" onclick="pressPin('6')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">6</button>
+        
+        <button type="button" onclick="pressPin('7')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">7</button>
+        <button type="button" onclick="pressPin('8')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">8</button>
+        <button type="button" onclick="pressPin('9')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">9</button>
+        
+        <button type="button" onclick="pressBiometric()" class="h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center cursor-pointer active:scale-95 transition-transform" title="Empreinte">
+          <span class="material-symbols-outlined text-xl">fingerprint</span>
+        </button>
+        <button type="button" onclick="pressPin('0')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">0</button>
+        <button type="button" onclick="deletePin()" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface cursor-pointer active:scale-95 transition-transform">
+          <span class="material-symbols-outlined text-lg">backspace</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Terminal Logic -->
+  <script>
+    let currentFloat = 1500000;
+    let pinCode = "";
+
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../tableau_de_bord_agent/code.html';
+      }
+    }
+
+    // 1. Gestion des Montants Rapides
+    function setRefillAmount(amt) {
+      document.getElementById('refillAmount').value = amt;
+      
+      const pills = document.querySelectorAll('.quick-pill');
+      pills.forEach(p => {
+        if (parseInt(p.textContent.replace(/\D/g, '')) === amt) {
+          p.classList.add('pill-active');
+        } else {
+          p.classList.remove('pill-active');
+        }
+      });
+
+      calculateProjectedFloat(amt);
+    }
+
+    function calculateProjectedFloat(amt) {
+      const amount = parseInt(amt) || 0;
+      document.getElementById('recap-refill-amount').textContent = `+${amount.toLocaleString('fr-FR')} FCFA`;
+      
+      const projected = currentFloat + amount;
+      document.getElementById('recap-projected-float').textContent = `${projected.toLocaleString('fr-FR')} FCFA`;
+    }
+
+    // 2. Sélection de la Méthode de Financement
+    function selectFundingMethod(methodKey) {
+      document.getElementById('selectedMethod').value = methodKey;
+      const methods = ['bank', 'distributor', 'cash'];
+
+      methods.forEach(m => {
+        const card = document.getElementById(`method-card-${m}`);
+        if (card) {
+          if (m === methodKey) {
+            card.className = "p-3.5 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer transition-all flex flex-col gap-1.5";
+          } else {
+            card.className = "p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-gray-300 cursor-pointer transition-all flex flex-col gap-1.5";
+          }
+        }
+      });
+    }
+
+    // 3. Upload de Preuve de Bordereau
+    function handleProofUpload(e) {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById('proof-icon-box').innerHTML = `<span class="material-symbols-outlined text-2xl text-emerald-600">verified</span>`;
+        document.getElementById('proof-icon-box').className = "w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-2";
+        document.getElementById('proof-text-label').textContent = `✅ ${file.name}`;
+        document.getElementById('proof-sub-label').textContent = `${(file.size / 1024).toFixed(1)} Ko • Prêt pour validation immédiate`;
+      }
+    }
+
+    // 4. Modale PIN
+    function openPinConfirmation() {
+      const amt = document.getElementById('refillAmount').value;
+      if (!amt || amt < 50000) {
+        alert("Le montant minimum de réapprovisionnement Float est de 50 000 FCFA.");
+        return;
+      }
+
+      const methodKey = document.getElementById('selectedMethod').value;
+      const methodLabel = (methodKey === 'bank') ? 'Virement Bancaire Instantané' : (methodKey === 'distributor' ? 'Super-Distributeur Agréé' : 'Dépôt Agence Siège');
+
+      document.getElementById('modal-recap-method').textContent = methodLabel;
+      document.getElementById('modal-recap-amount').textContent = `${parseInt(amt).toLocaleString('fr-FR')} FCFA`;
+
+      pinCode = "";
+      updatePinDots();
+      document.getElementById('pin-modal').classList.remove('hidden');
+    }
+
+    function closePinModal() {
+      document.getElementById('pin-modal').classList.add('hidden');
+    }
+
+    function pressPin(num) {
+      if (pinCode.length < 4) {
+        pinCode += num;
+        updatePinDots();
+        if (pinCode.length === 4) {
+          setTimeout(executeRefillRequest, 200);
+        }
+      }
+    }
+
+    function deletePin() {
+      if (pinCode.length > 0) {
+        pinCode = pinCode.slice(0, -1);
+        updatePinDots();
+      }
+    }
+
+    function pressBiometric() {
+      pinCode = "1234";
+      updatePinDots();
+      setTimeout(executeRefillRequest, 200);
+    }
+
+    function updatePinDots() {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`pindot-${i}`);
+        if (i <= pinCode.length) {
+          dot.className = "w-3.5 h-3.5 rounded-full border-2 border-primary bg-primary transition-all scale-110";
+        } else {
+          dot.className = "w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all";
+        }
+      }
+    }
+
+    // 5. Exécution & Redirection vers le Reçu Agent
+    function executeRefillRequest() {
+      closePinModal();
+      
+      const amount = parseInt(document.getElementById('refillAmount').value) || 500000;
+      const methodLabel = document.getElementById('modal-recap-method').textContent;
+      const ref = `FLOAT-REQ-${Math.floor(10000 + Math.random() * 90000)}`;
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+      const trxData = {
+        title: "Demande de Réapprovisionnement Float",
+        amount: amount,
+        fee: "0 FCFA",
+        beneficiary: "Trésorerie Switch Bénin (Caisse Agent AGT-4092)",
+        network: methodLabel,
+        commission: "Crédit Trésorerie",
+        source: "Compte Bancaire / Bordereau Agent",
+        ref: ref,
+        date: dateStr,
+        returnUrl: "../tableau_de_bord_agent/code.html",
+        returnLabel: "Retour au Tableau de Bord Agent"
+      };
+
+      localStorage.setItem('switch_last_transaction', JSON.stringify(trxData));
+
+      if (window.switchNavigate) {
+        window.switchNavigate('../recu_operation_agent/code.html');
+      } else {
+        window.location.href = '../recu_operation_agent/code.html';
+      }
+    }
+
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', () => {
+      calculateProjectedFloat(500000);
+    });
+  </script>
+
+  <!-- Bottom Navigation Bar Agent (Active on Float) -->
+  <nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+    <a href="../tableau_de_bord_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">dashboard</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+    </a>
+    <a href="../historique_des_op_rations_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">swap_horiz</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Opérations</span>
+    </a>
+    <a href="../valider_une_op_ration_client/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.3);position:relative;top:-6px;">
+        <span class="material-symbols-outlined" style="font-size:22px;">qr_code_scanner</span>
+      </div>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-4px;">Servir</span>
+    </a>
+    <a href="../demande_de_r_approvisionnement_float/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5E3BDC;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">account_balance_wallet</span>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;">Float</span>
+    </a>
+    <a href="../param_tres_et_profil_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">manage_accounts</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Guichet</span>
+    </a>
+  </nav>
+
+</body>
+</html>
