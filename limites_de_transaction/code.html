@@ -1,118 +1,188 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Plafonds & Limites de Transaction - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
 
-<html lang="fr"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Limites - Beninese Fintech</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="../assets/switch.css">
-<script src="../assets/switch.config.js"></script>
-
-<style>
-          body {
-              background-color: #F8F9FA;
-          }
-          .shadow-ambient-card {
-              box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04);
-          }
-          .shadow-30px-y-15px-opacity-15 {
-              box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.15);
-          }
-          .mesh-gradient-subtle {
-              background-color: #ffffff;
-              background-image: radial-gradient(at 8% 85%, hsla(253, 71%, 63%, 0.15) 0px, transparent 50%),
-                                radial-gradient(at 93% 15%, hsla(253, 71%, 63%, 0.1) 0px, transparent 50%);
-          }
-      </style>
-<style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
     body {
+      font-family: 'Hanken Grotesk', sans-serif;
       min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .limit-hero {
+      background: linear-gradient(135deg, #5E3BDC 0%, #4323B0 50%, #2A1175 100%);
+      box-shadow: 0 16px 36px -10px rgba(94, 59, 220, 0.3);
     }
   </style>
-  </head>
-<body class="text-on-background font-body-sm min-h-screen pb-32">
-<!-- TopAppBar -->
-<header class="bg-transparent docked full-width top-0 flex justify-between items-center px-container-margin py-stack-md w-full sticky z-10 transition-colors">
-<div class="flex items-center gap-3">
-<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
-</button>
-<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Limites</h1>
-</div>
-<button class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
-</button>
-</header>
-<main class="px-container-margin mt-stack-md flex flex-col gap-stack-lg max-w-2xl mx-auto">
-<!-- Explanation Text -->
-<section class="text-center px-4">
-<p class="font-body-lg text-body-lg text-on-surface-variant">
-                Gérez vos limites de transaction pour assurer la sécurité de votre compte tout en gardant la flexibilité dont vous avez besoin.
-            </p>
-</section>
-<!-- Daily Limit Gauge Card -->
-<section class="bg-surface-container-lowest rounded-3xl p-card-padding shadow-ambient-card mesh-gradient-subtle relative overflow-hidden flex flex-col gap-6">
-<div class="flex justify-between items-start">
-<div>
-<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Limite Journalière</h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Transferts &amp; Paiements</p>
-</div>
-<div class="bg-surface-container px-3 py-1 rounded-full border border-outline-variant">
-<span class="font-label-caps text-label-caps text-primary">Standard</span>
-</div>
-</div>
-<!-- Gauge UI -->
-<div class="flex flex-col gap-3 mt-4">
-<div class="flex justify-between items-end">
-<div>
-<span class="font-body-sm text-body-sm text-on-surface-variant block mb-1">Utilisé aujourd'hui</span>
-<span class="font-display-lg-mobile text-display-lg-mobile text-on-surface md:font-display-lg md:text-display-lg">500,000</span>
-<span class="font-body-lg text-body-lg text-on-surface-variant ml-1">FCFA</span>
-</div>
-<div class="text-right">
-<span class="font-body-sm text-body-sm text-on-surface-variant block mb-1">Maximum</span>
-<span class="font-headline-md text-headline-md text-on-surface-variant">1,000,000</span>
-</div>
-</div>
-<!-- Progress Bar -->
-<div class="h-4 w-full bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-primary rounded-full transition-all duration-1000 ease-out" style="width: 50%;"></div>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant text-center mt-2">
-                    Il vous reste <span class="font-bold text-on-surface">500,000 FCFA</span> pour la journée.
-                </p>
-</div>
-</section>
-<!-- Monthly Limit Info (Secondary) -->
-<section class="bg-surface-container-lowest rounded-3xl p-card-padding shadow-ambient-card flex flex-col gap-4">
-<div class="flex justify-between items-center">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
-<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
-</div>
-<div>
-<h3 class="font-body-lg text-body-lg font-semibold text-on-surface">Limite Mensuelle</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Réinitialisée le 1er du mois</p>
-</div>
-</div>
-<div class="text-right">
-<span class="font-body-lg text-body-lg font-bold text-on-surface">2.5M / 5M</span>
-</div>
-</div>
-<!-- Small Progress -->
-<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
-<div class="h-full bg-tertiary rounded-full" style="width: 50%;"></div>
-</div>
-</section>
-<!-- Action Button -->
-<section class="mt-4 flex justify-center">
-<button class="bg-primary text-on-primary py-4 px-8 rounded-full font-body-lg text-body-lg font-semibold shadow-ambient-card hover:bg-primary-container hover:text-on-primary-container transition-all flex items-center gap-2 active:scale-95">
-<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
-                Demander une augmentation
-            </button>
-</section>
-</main>
-<!-- BottomNavBar (Hidden on desktop as per rules, though usually suppressed on purely transactional/settings pages, we render it if considered a main destination, but 'Limites' is a setting. However, prompt explicitly requests "Navigation ovale flottante", so we must include it despite standard suppression rules to follow prompt.) -->
+</head>
+<body class="min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
 
-<script src="../assets/switch.router.js"></script>
-</body></html>
+  <!-- Top App Bar -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-lg sm:text-xl font-extrabold text-on-surface">Plafonds & Limites</h1>
+        <p class="text-xs text-on-surface-variant">Sécurité et capacités de votre compte</p>
+      </div>
+    </div>
+    <span class="text-xs font-black uppercase text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">Niveau 2</span>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-6 pt-1">
+
+    <!-- 1. Hero KYC Status Card -->
+    <section class="limit-hero rounded-[32px] p-6 text-white relative overflow-hidden flex flex-col gap-3">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-purple-200 block">Statut Actuel du Compte</span>
+          <h2 class="text-xl sm:text-2xl font-black mt-0.5">Niveau 2 : Vérifié ANIP</h2>
+        </div>
+        <div class="w-11 h-11 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center text-emerald-300">
+          <span class="material-symbols-outlined text-2xl font-bold">verified</span>
+        </div>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/15 flex items-center justify-between text-xs">
+        <span>Plafond Quotidien Total :</span>
+        <span class="font-black font-mono text-sm text-emerald-300">2 000 000 FCFA / jour</span>
+      </div>
+    </section>
+
+    <!-- 2. Consumption Gauges (Envois, Retraits, Cartes) -->
+    <section class="flex flex-col gap-4">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Utilisation en Temps Réel (Aujourd'hui)</h3>
+
+      <!-- Gauge 1: Transferts & Paiements -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-lg">send</span>
+            </div>
+            <div>
+              <h4 class="font-extrabold text-xs sm:text-sm text-on-surface">Transferts & Envois</h4>
+              <p class="text-[10px] text-on-surface-variant">Switch, MoMo, Banques</p>
+            </div>
+          </div>
+          <span class="text-xs font-black font-mono text-primary">450 000 / 2 000 000 F</span>
+        </div>
+
+        <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+          <div class="h-full bg-primary rounded-full" style="width: 22.5%;"></div>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] text-on-surface-variant font-medium">
+          <span>Consommé : 22.5%</span>
+          <span class="text-emerald-700 font-bold">Reste disponible : 1 550 000 FCFA</span>
+        </div>
+      </div>
+
+      <!-- Gauge 2: Retraits en Espèces (Agences & Kiosques) -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-lg">storefront</span>
+            </div>
+            <div>
+              <h4 class="font-extrabold text-xs sm:text-sm text-on-surface">Retraits en Espèces</h4>
+              <p class="text-[10px] text-on-surface-variant">Kiosques & Agences Switch</p>
+            </div>
+          </div>
+          <span class="text-xs font-black font-mono text-emerald-700">100 000 / 1 000 000 F</span>
+        </div>
+
+        <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+          <div class="h-full bg-emerald-500 rounded-full" style="width: 10%;"></div>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] text-on-surface-variant font-medium">
+          <span>Consommé : 10%</span>
+          <span class="text-emerald-700 font-bold">Reste disponible : 900 000 FCFA</span>
+        </div>
+      </div>
+
+      <!-- Gauge 3: Cartes Virtuelles Internationales -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-lg">credit_card</span>
+            </div>
+            <div>
+              <h4 class="font-extrabold text-xs sm:text-sm text-on-surface">Achats Cartes Virtuelles</h4>
+              <p class="text-[10px] text-on-surface-variant">Paiements Visa en ligne</p>
+            </div>
+          </div>
+          <span class="text-xs font-black font-mono text-indigo-700">75 000 / 500 000 F</span>
+        </div>
+
+        <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+          <div class="h-full bg-indigo-600 rounded-full" style="width: 15%;"></div>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] text-on-surface-variant font-medium">
+          <span>Consommé : 15%</span>
+          <span class="text-indigo-700 font-bold">Reste disponible : 425 000 FCFA</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Security Limiter Slider -->
+    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h4 class="font-extrabold text-sm text-on-surface">Plafond Personnel Personnalisé</h4>
+          <p class="text-xs text-on-surface-variant">Ajustez vous-même votre limite de sécurité maximale</p>
+        </div>
+        <span class="font-black font-mono text-primary text-base" id="slider-val">1 000 000 F</span>
+      </div>
+
+      <input type="range" min="100000" max="2000000" step="50000" value="1000000" oninput="updateCustomLimit(this.value)" class="w-full accent-primary cursor-pointer"/>
+      
+      <div class="flex justify-between text-[10px] text-on-surface-variant font-bold">
+        <span>100 000 F (Strict)</span>
+        <span>2 000 000 F (Maximum Niveau 2)</span>
+      </div>
+    </section>
+
+    <!-- 4. Upgrade to Level 3 VIP Action -->
+    <div class="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-400/30 rounded-3xl p-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold">
+          <span class="material-symbols-outlined text-2xl">workspace_premium</span>
+        </div>
+        <div>
+          <h4 class="font-extrabold text-xs sm:text-sm text-amber-950">Débloquer le Niveau 3 VIP</h4>
+          <p class="text-[11px] text-amber-800">Plafond jusqu'à 10 000 000 FCFA / jour</p>
+        </div>
+      </div>
+      <button onclick="window.switchNavigate ? window.switchNavigate('../kyc_verification_identite/code.html') : window.location.href='../kyc_verification_identite/code.html'" class="px-3.5 py-2 rounded-full bg-amber-500 text-white font-bold text-xs shadow-sm hover:bg-amber-600 transition-colors cursor-pointer">
+        Augmenter
+      </button>
+    </div>
+
+  </main>
+
+  <script>
+    function updateCustomLimit(val) {
+      document.getElementById('slider-val').textContent = parseInt(val).toLocaleString() + ' F';
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>
