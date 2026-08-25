@@ -56,16 +56,23 @@
 </head>
 <body class="h-screen w-screen overflow-hidden relative flex flex-col justify-between antialiased selection:bg-primary selection:text-white">
 
-  <!-- Clean Minimalist Dark Backdrop -->
-  <div id="camera-bg" class="absolute inset-0 z-0 bg-[#0F0E17] transition-opacity duration-300">
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#1F1A3A] via-[#12101F] to-[#0A0912]"></div>
-    <!-- Ambient scanner glow -->
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+  <!-- Live Camera Video Feed & Dark Backdrop -->
+  <div id="camera-bg" class="absolute inset-0 z-0 bg-[#0F0E17] transition-opacity duration-300 flex items-center justify-center overflow-hidden">
+    <!-- Real Video Stream from Device Camera -->
+    <video id="camera-video" autoplay playsinline muted class="w-full h-full object-cover hidden"></video>
+    
+    <!-- Fallback Dark Backdrop if Camera is inactive / denied -->
+    <div id="camera-fallback" class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#1F1A3A] via-[#12101F] to-[#0A0912]">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+    </div>
+
+    <!-- Soft Overlay Tint -->
+    <div class="absolute inset-0 bg-black/30 pointer-events-none"></div>
   </div>
 
   <!-- Top Action Header -->
   <header class="relative z-30 w-full max-w-xl mx-auto px-container-margin pt-6 flex items-center justify-between">
-    <button aria-label="Fermer" onclick="window.history.back()" class="w-11 h-11 rounded-full glass-dark flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer">
+    <button aria-label="Fermer" onclick="stopCameraAndBack()" class="w-11 h-11 rounded-full glass-dark flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer">
       <span class="material-symbols-outlined text-xl">close</span>
     </button>
 
@@ -79,14 +86,28 @@
       </button>
     </div>
 
-    <!-- Torch Toggle -->
-    <button id="torch-btn" onclick="toggleTorch()" class="w-11 h-11 rounded-full glass-dark flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer" title="Lampe torche">
-      <span class="material-symbols-outlined text-xl" id="torch-icon">flashlight_on</span>
-    </button>
+    <!-- Right Quick Actions: Switch Camera & Torch -->
+    <div class="flex items-center gap-2">
+      <!-- Switch Camera (Front/Back) -->
+      <button id="switch-cam-btn" onclick="flipCamera()" class="w-11 h-11 rounded-full glass-dark flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer" title="Changer de caméra">
+        <span class="material-symbols-outlined text-xl">flip_camera_ios</span>
+      </button>
+
+      <!-- Torch Toggle -->
+      <button id="torch-btn" onclick="toggleTorch()" class="w-11 h-11 rounded-full glass-dark flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer" title="Lampe torche">
+        <span class="material-symbols-outlined text-xl" id="torch-icon">flashlight_on</span>
+      </button>
+    </div>
   </header>
 
   <!-- MODE 1 : SCANNER CAMERA VIEW -->
   <main id="view-scan" class="relative z-20 flex-1 flex flex-col items-center justify-center px-container-margin gap-5">
+    <!-- Camera Status Banner (if permissions are pending/denied) -->
+    <div id="camera-status-banner" class="hidden text-center max-w-xs bg-amber-500/20 border border-amber-400/40 text-amber-200 px-4 py-2 rounded-2xl text-xs backdrop-blur-md">
+      <span>Caméra non disponible. Cliquez ci-dessous pour réessayer :</span>
+      <button onclick="initCamera()" class="underline font-bold text-white ml-1 cursor-pointer">Activer la caméra</button>
+    </div>
+
     <!-- Instructions -->
     <div class="text-center max-w-xs">
       <h1 class="text-xl sm:text-2xl font-black text-white drop-shadow-md">Scannez pour payer</h1>
@@ -94,7 +115,7 @@
     </div>
 
     <!-- Scanner Reticle Frame -->
-    <div onclick="simulateScanSuccess()" class="relative w-64 h-64 sm:w-72 sm:h-72 rounded-3xl bg-white/5 border border-white/20 backdrop-blur-[2px] overflow-hidden cursor-pointer group shadow-2xl">
+    <div onclick="simulateScanSuccess()" class="relative w-64 h-64 sm:w-72 sm:h-72 rounded-3xl bg-white/5 border border-white/20 backdrop-blur-[1px] overflow-hidden cursor-pointer group shadow-2xl">
       <!-- 4 Glowing Corners -->
       <div class="corner corner-tl"></div>
       <div class="corner corner-tr"></div>
@@ -173,7 +194,7 @@
     </div>
   </main>
 
-  <!-- Bottom Bar Helper info -->
+  <!-- Bottom Bar Trigger Button -->
   <footer class="relative z-30 w-full max-w-xl mx-auto px-container-margin pb-6 text-center">
     <button onclick="simulateScanSuccess()" class="w-full max-w-xs mx-auto py-3.5 rounded-full bg-primary text-white font-bold text-sm shadow-xl hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
       <span class="material-symbols-outlined text-xl">qr_code_scanner</span>
@@ -182,8 +203,62 @@
   </footer>
 
   <script>
+    let currentStream = null;
+    let currentFacingMode = 'environment';
     let torchOn = false;
     let currentMode = 'scan';
+
+    // Initialize Camera on load
+    async function initCamera(facing = 'environment') {
+      currentFacingMode = facing;
+      const videoEl = document.getElementById('camera-video');
+      const fallbackEl = document.getElementById('camera-fallback');
+      const statusBanner = document.getElementById('camera-status-banner');
+
+      if (currentStream) {
+        currentStream.getTracks().forEach(t => t.stop());
+      }
+
+      try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error("getUserMedia non supporté");
+        }
+
+        const constraints = {
+          video: {
+            facingMode: facing,
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          audio: false
+        };
+
+        currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+        if (videoEl) {
+          videoEl.srcObject = currentStream;
+          videoEl.classList.remove('hidden');
+          if (fallbackEl) fallbackEl.classList.add('hidden');
+          if (statusBanner) statusBanner.classList.add('hidden');
+        }
+      } catch (err) {
+        console.warn("Accès caméra impossible ou non accordé :", err);
+        if (videoEl) videoEl.classList.add('hidden');
+        if (fallbackEl) fallbackEl.classList.remove('hidden');
+        if (statusBanner) statusBanner.classList.remove('hidden');
+      }
+    }
+
+    function flipCamera() {
+      const nextFacing = currentFacingMode === 'environment' ? 'user' : 'environment';
+      initCamera(nextFacing);
+    }
+
+    function stopCameraAndBack() {
+      if (currentStream) {
+        currentStream.getTracks().forEach(t => t.stop());
+      }
+      window.history.back();
+    }
 
     function setMode(mode) {
       currentMode = mode;
@@ -199,19 +274,35 @@
         viewScan.classList.remove('hidden');
         viewMyQr.classList.add('hidden');
         cameraBg.style.opacity = '1';
+        initCamera(currentFacingMode);
       } else {
         tabScan.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold text-white/70 hover:text-white transition-all cursor-pointer';
         tabMyQr.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold bg-primary text-white shadow-md transition-all cursor-pointer';
         viewScan.classList.add('hidden');
         viewMyQr.classList.remove('hidden');
         cameraBg.style.opacity = '0.3';
+        if (currentStream) {
+          currentStream.getTracks().forEach(t => t.stop());
+        }
       }
     }
 
-    function toggleTorch() {
+    async function toggleTorch() {
       torchOn = !torchOn;
       const btn = document.getElementById('torch-btn');
       const icon = document.getElementById('torch-icon');
+
+      if (currentStream) {
+        const track = currentStream.getVideoTracks()[0];
+        if (track && track.getCapabilities && track.getCapabilities().torch) {
+          try {
+            await track.applyConstraints({ advanced: [{ torch: torchOn }] });
+          } catch (e) {
+            console.warn("Torch non supportée :", e);
+          }
+        }
+      }
+
       if (torchOn) {
         btn.className = 'w-11 h-11 rounded-full bg-amber-400 text-black flex items-center justify-center transition-all cursor-pointer shadow-lg';
         icon.textContent = 'flashlight_off';
@@ -244,12 +335,18 @@
 
     function simulateScanSuccess() {
       if (navigator.vibrate) navigator.vibrate(100);
+      if (currentStream) {
+        currentStream.getTracks().forEach(t => t.stop());
+      }
       if (window.switchNavigate) {
         window.switchNavigate('../confirmation_paiement_qr/code.html');
       } else {
         window.location.href = '../confirmation_paiement_qr/code.html';
       }
     }
+
+    // Auto-launch camera when screen is shown
+    initCamera('environment');
   </script>
 
   <script src="../assets/switch.router.js"></script>
