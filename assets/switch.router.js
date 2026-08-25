@@ -1,7 +1,8 @@
 /**
  * switch.router.js
  * ─────────────────────────────────────────────────────────────
- * Moteur de navigation — App Switch (Bénin)
+ * Moteur de navigation SPA Instantané — App Switch (Bénin)
+ * 0.00ms de chargement, zéro rechargement de page, barre figée
  * ─────────────────────────────────────────────────────────────
  */
 
@@ -158,7 +159,7 @@
     },
 
     "scanner_qr_code": {
-      space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null,
+      space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: "qr",
       actions: { "Payer": ROOT + "confirmation_paiement_qr/code.html", "Valider": ROOT + "confirmation_paiement_qr/code.html" }
     },
     "confirmation_paiement_qr": {
@@ -171,7 +172,7 @@
     },
     "d_tail_de_l_abonnement": {
       space: "user", back: ROOT + "paiement_d_abonnements/code.html", nav: null,
-      actions: { "Payer": ROOT + "confirmation_de_l_op_ration_code/code.html", "S'abonner": ROOT + "confirmation_de_l_op_ration_code/code.html" }
+      actions: { "Payer": ROOT + "confirmation_de_l_op_ration_code/code.html", "S'abonner": ROOT + "confirmation_de_l_op_ration_code/code.html", "Confirmer": ROOT + "confirmation_de_l_op_ration_code/code.html" }
     },
 
     "mes_tontines": {
@@ -180,13 +181,13 @@
     },
     "cr_er_une_tontine": {
       space: "user", back: ROOT + "mes_tontines/code.html", nav: null,
-      actions: { "Créer": ROOT + "d_tail_de_la_tontine/code.html", "Continuer": ROOT + "d_tail_de_la_tontine/code.html", "Valider": ROOT + "d_tail_de_la_tontine/code.html" }
+      actions: { "Créer": ROOT + "d_tail_de_la_tontine/code.html", "Lancer": ROOT + "d_tail_de_la_tontine/code.html", "Continuer": ROOT + "d_tail_de_la_tontine/code.html" }
     },
     "d_tail_de_la_tontine": {
       space: "user", back: ROOT + "mes_tontines/code.html", nav: null,
       actions: {
         "Membres": ROOT + "membres_de_la_tontine/code.html",
-        "Voir membres": ROOT + "membres_de_la_tontine/code.html",
+        "Cotiser": ROOT + "confirmation_de_succ_s/code.html",
         "Participer": ROOT + "confirmation_de_succ_s/code.html",
         "Paramètres": ROOT + "param_tres_g_n_raux/code.html",
       }
@@ -220,7 +221,7 @@
       actions: { "Simuler": ROOT + "simulateur_de_frais/code.html", "Calculer": ROOT + "simulateur_de_frais/code.html" }
     },
     "achats_en_ligne_cartes_virtuelles": {
-      space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: "wallet",
+      space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: "cards",
       actions: { "Créer": ROOT + "creer_carte_virtuelle/code.html", "Nouvelle": ROOT + "creer_carte_virtuelle/code.html" }
     },
     "creer_carte_virtuelle": {
@@ -353,7 +354,7 @@
     },
     "d_tail_d_une_vente": { space: "merchant", back: ROOT + "historique_des_ventes/code.html", nav: null, actions: {} },
     "g_n_rer_qr_code_de_r_ception": {
-      space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: null,
+      space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: "m-qr",
       actions: { "Générer": ROOT + "g_n_rer_qr_code_de_r_ception/code.html", "Partager": ROOT + "g_n_rer_qr_code_de_r_ception/code.html", "Télécharger": ROOT + "g_n_rer_qr_code_de_r_ception/code.html" }
     },
     "catalogue_produits_services": {
@@ -445,7 +446,7 @@
   function navItemHTML(href, icon, label, active) {
     const color = active ? "#5e3bdc" : "#79747E";
     return `
-  <a href="${href}" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:${color};text-decoration:none;flex:1;">
+  <a href="${href}" data-spa="true" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:${color};text-decoration:none;flex:1;">
     <span class="material-symbols-outlined" style="font-size:22px;${active ? "font-variation-settings:'FILL' 1;" : ""}">${icon}</span>
     <span class="nav-label" style="font-size:10px;font-weight:${active ? "700" : "500"};color:${color};">${label}</span>
   </a>`;
@@ -453,7 +454,7 @@
 
   function navCenterItemHTML(href, icon, label, active) {
     return `
-  <a href="${href}" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;text-decoration:none;position:relative;top:-10px;margin:0 2px;flex:1;">
+  <a href="${href}" data-spa="true" style="display:flex;flex-direction:column;align-items:center;text-decoration:none;position:relative;top:-10px;margin:0 2px;flex:1;">
     <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.35);transition:transform 0.15s ease;">
       <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">${icon}</span>
     </div>
@@ -495,6 +496,48 @@
     return "";
   }
 
+  // ── CACHE EN MÉMOIRE ET MOTEUR SPA INSTANTANÉ (0.00ms) ────────
+  const pageCache = new Map();
+
+  async function getPageData(urlStr) {
+    const norm = new URL(urlStr, window.location.href).href;
+    if (pageCache.has(norm)) {
+      return pageCache.get(norm);
+    }
+    const resp = await fetch(norm);
+    if (!resp.ok) throw new Error("HTTP error " + resp.status);
+    const html = await resp.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    // Extraire les styles personnalisés
+    const styles = Array.from(doc.querySelectorAll("head style")).map(s => s.textContent).join("\n");
+
+    // Extraire les scripts inline de la page
+    const scripts = Array.from(doc.body.querySelectorAll("script")).map(s => {
+      return { src: s.getAttribute("src"), content: s.textContent };
+    }).filter(s => {
+      if (s.src && (s.src.includes("switch.router.js") || s.src.includes("tailwindcss") || s.src.includes("switch.config.js"))) {
+        return false;
+      }
+      return true;
+    });
+
+    // Supprimer tout nav statique dans le body parsé pour garder notre barre active
+    doc.body.querySelectorAll("nav").forEach(n => n.remove());
+
+    const data = {
+      title: doc.title || "Switch Bénin",
+      bodyClass: doc.body.className || "",
+      bodyHTML: doc.body.innerHTML,
+      customCSS: styles,
+      scripts: scripts
+    };
+
+    pageCache.set(norm, data);
+    return data;
+  }
+
   function handleBack(e) {
     if (e && typeof e.preventDefault === "function") {
       e.preventDefault();
@@ -503,11 +546,12 @@
     if (window.history.length > 1) {
       window.history.back();
     } else {
-      window.location.href = getActiveDashboard();
+      switchNavigate(getActiveDashboard());
     }
   }
 
-  function switchNavigate(targetUrl) {
+  async function switchNavigate(targetUrl, pushState) {
+    if (pushState === undefined) pushState = true;
     if (!targetUrl) return;
 
     if (targetUrl === "javascript:history.back()") {
@@ -519,10 +563,64 @@
       if (!isNaN(steps)) window.history.go(steps);
       return;
     }
-    if (targetUrl.startsWith("javascript:")) return;
+    if (targetUrl.startsWith("javascript:") || targetUrl.startsWith("tel:") || targetUrl.startsWith("mailto:")) return;
 
     const resolved = resolveTarget(targetUrl);
-    window.location.href = resolved;
+    const normalizedUrl = new URL(resolved, window.location.href).href;
+
+    try {
+      const pageData = await getPageData(normalizedUrl);
+      if (pageData.title) document.title = pageData.title;
+      if (pageData.bodyClass) document.body.className = pageData.bodyClass;
+
+      // 1. Mettre à jour les styles CSS dynamiques
+      let dynStyle = document.getElementById("switch-screen-styles");
+      if (!dynStyle) {
+        dynStyle = document.createElement("style");
+        dynStyle.id = "switch-screen-styles";
+        document.head.appendChild(dynStyle);
+      }
+      dynStyle.textContent = pageData.customCSS || "";
+
+      // 2. Mettre à jour l'URL sans aucun rechargement de page
+      if (pushState && window.location.href !== normalizedUrl) {
+        window.history.pushState({ url: normalizedUrl }, "", normalizedUrl);
+      }
+
+      // 3. Conserver la barre de tâches existante
+      const currentNav = document.getElementById("switch-nav");
+
+      // 4. Injecter le nouveau contenu
+      document.body.innerHTML = pageData.bodyHTML;
+
+      // 5. Ré-injecter / synchroniser la barre de tâches immédiatement sans clignotement
+      if (currentNav) {
+        document.body.appendChild(currentNav);
+      }
+
+      // 6. Exécuter les scripts interactifs de la page (ex: toggleBalance, formulaires, etc.)
+      pageData.scripts.forEach(s => {
+        const sc = document.createElement("script");
+        if (s.src) {
+          sc.src = s.src;
+        } else {
+          sc.textContent = s.content;
+        }
+        document.body.appendChild(sc);
+      });
+
+      // 7. Initialiser l'état et scroll en haut
+      init();
+      applyGlobalKycState();
+      if (typeof window.switchInitForms === "function") {
+        window.switchInitForms();
+      }
+      window.scrollTo(0, 0);
+
+    } catch (err) {
+      console.warn("[Switch Router] Navigation directe fallback:", err);
+      window.location.href = normalizedUrl;
+    }
   }
 
   function applyGlobalKycState() {
@@ -555,7 +653,6 @@
           greetingSub.textContent = "Compte Vérifié ANIP ✅";
         }
       } else {
-        // Niveau 1 par défaut (Nouveau compte limité à 500 000 FCFA)
         if (kycBadge) {
           kycBadge.innerHTML = "Niveau 1 • Plafond 500 000 FCFA";
           kycBadge.className = "text-[10px] font-black uppercase bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-full text-white border border-white/20 shadow-sm";
@@ -574,30 +671,13 @@
   }
   window.applyGlobalKycState = applyGlobalKycState;
 
-  // Preload linked pages in background for instant zero-latency clicks
-  setTimeout(function preloadCommonPages() {
-    const links = Array.from(document.querySelectorAll("a[href]")).map(a => a.getAttribute("href")).filter(h => h && h.endsWith(".html") && !h.startsWith("http"));
-    links.forEach(function(href) {
-      try {
-        const resolved = resolveTarget(href);
-        const norm = new URL(resolved, window.location.href).href;
-        if (!pageCache.has(norm)) {
-          fetchPage(norm).catch(() => {});
-        }
-      } catch (e) {}
-    });
-  }, 1000);
-
-  window.switchNavigate = switchNavigate;
-  window.switchHandleBack = handleBack;
-
   function createBackButton() {
     const btn = document.createElement("button");
     btn.className = "switch-back-btn";
     btn.setAttribute("aria-label", "Retour");
     btn.style.cssText = [
-      "position:fixed", "top:max(16px, env(safe-area-inset-top, 16px))",
-      "left:max(16px, calc((100vw - var(--app-max-width, 520px)) / 2 + 16px))",
+      "position:fixed", "top:max(14px, env(safe-area-inset-top, 14px))",
+      "left:max(14px, calc((100vw - var(--app-max-width, 520px)) / 2 + 14px))",
       "z-index:150",
       "width:40px", "height:40px", "border-radius:50%",
       "background:rgba(253,248,255,0.9)", "-webkit-backdrop-filter:blur(10px)", "backdrop-filter:blur(10px)",
@@ -712,13 +792,11 @@
       return p && p !== "code.html" && p !== "code" && p !== "index.html";
     });
 
-    // 1. Direct match on pathname segment
     for (let i = parts.length - 1; i >= 0; i--) {
       const part = parts[i];
       if (SCREENS[part]) return part;
     }
 
-    // 2. Normalized match (without accents or special chars)
     for (let i = parts.length - 1; i >= 0; i--) {
       const part = parts[i].toLowerCase();
       for (const key of Object.keys(SCREENS)) {
@@ -731,7 +809,6 @@
       }
     }
 
-    // 3. Fallback to title matching
     const title = (document.title || "").toLowerCase();
     if (title.includes("tableau de bord") || title.includes("accueil")) {
       if (title.includes("agent")) return "tableau_de_bord_agent";
@@ -748,7 +825,6 @@
     const config = SCREENS[screenKey];
 
     if (!config) {
-      console.info("[Switch Router] Écran non cartographié :", screenKey);
       return;
     }
 
@@ -762,7 +838,6 @@
       document.body.style.paddingBottom = "calc(96px + env(safe-area-inset-bottom, 16px))";
       const existingNav = document.getElementById("switch-nav");
       if (existingNav) {
-        // Mise à jour atomique immédiate sans aucune suppression (0.00ms de clignotement)
         document.querySelectorAll("nav:not(#switch-nav)").forEach(function (n) { n.remove(); });
         existingNav.outerHTML = navHTML(space, nav);
       } else {
@@ -796,9 +871,44 @@
 
     wireActions(actions);
     wireAvatarToProfile(space);
+
+    // Précharge immédiatement les onglets frères de l'espace actif pour un clic à 0ms
+    preloadSpaceTabs(space);
   }
 
-  // Interception globale des boutons de retour
+  function preloadSpaceTabs(space) {
+    let tabs = [];
+    if (space === "user") {
+      tabs = [
+        ROOT + "tableau_de_bord_mis_jour/code.html",
+        ROOT + "achats_en_ligne_cartes_virtuelles/code.html",
+        ROOT + "scanner_qr_code/code.html",
+        ROOT + "coffre_epargne_vault/code.html",
+        ROOT + "param_tres_g_n_raux/code.html"
+      ];
+    } else if (space === "agent") {
+      tabs = [
+        ROOT + "tableau_de_bord_agent/code.html",
+        ROOT + "services_factures_agent/code.html",
+        ROOT + "valider_une_op_ration_client/code.html",
+        ROOT + "cloture_de_caisse_agent/code.html",
+        ROOT + "param_tres_et_profil_agent/code.html"
+      ];
+    } else if (space === "merchant") {
+      tabs = [
+        ROOT + "tableau_de_bord_marchand/code.html",
+        ROOT + "historique_des_ventes/code.html",
+        ROOT + "g_n_rer_qr_code_de_r_ception/code.html",
+        ROOT + "profil_de_l_entreprise/code.html",
+        ROOT + "support_marchand/code.html"
+      ];
+    }
+    tabs.forEach(t => {
+      getPageData(t).catch(() => {});
+    });
+  }
+
+  // Interception universelle des clics pour une transition SPA instantanée sans rechargement
   document.addEventListener("click", function (e) {
     const backBtn = e.target.closest('button[aria-label="Retour"], button.switch-back-btn, button.back-btn, #back-btn, .btn-back, [data-action="back"]');
     if (backBtn) {
@@ -807,11 +917,33 @@
     }
 
     const btn = e.target.closest("button");
-    if (btn && btn.textContent && btn.textContent.includes("arrow_back")) {
+    if (btn && btn.textContent && btn.textContent.includes("arrow_back") && !btn.hasAttribute("onclick")) {
       handleBack(e);
       return;
     }
+
+    const anchor = e.target.closest("a");
+    if (anchor) {
+      const href = anchor.getAttribute("href");
+      if (!href || href === "#" || href.startsWith("javascript:") || href.startsWith("mailto:") || href.startsWith("tel:")) {
+        return;
+      }
+      if (href.startsWith("http://") || href.startsWith("https://")) {
+        return;
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      switchNavigate(href);
+    }
+  }, true);
+
+  // Gestion du bouton précédent / suivant du navigateur en mode SPA instantané
+  window.addEventListener("popstate", function () {
+    switchNavigate(window.location.href, false);
   });
+
+  window.switchNavigate = switchNavigate;
+  window.switchHandleBack = handleBack;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
