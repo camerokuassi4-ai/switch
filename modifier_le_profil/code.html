@@ -9,7 +9,7 @@
   <script src="../assets/switch.config.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
     
     body {
       font-family: 'Hanken Grotesk', sans-serif;
@@ -17,6 +17,10 @@
       background-color: #F8F9FD;
       color: #1C1A24;
       -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .shadow-soft {
@@ -33,6 +37,27 @@
       outline: none;
     }
 
+    /* Modal Animation */
+    .modal-enter {
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Shake animation for invalid PIN */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .animate-shake {
+      animation: shake 0.4s ease-in-out;
+    }
+
     /* Toast animation */
     @keyframes toastSlide {
       0% { transform: translate(-50%, -100%); opacity: 0; }
@@ -44,18 +69,29 @@
     .toast-animate {
       animation: toastSlide 2.5s ease forwards;
     }
+
+    /* Keypad button */
+    .key-btn {
+      transition: all 0.12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .key-btn:active {
+      transform: scale(0.92);
+      background-color: #ECE6F0;
+    }
   </style>
 </head>
 <body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-36 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
 
   <!-- Success Toast (Hidden by default) -->
-  <div id="save-toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 hidden max-w-sm w-[90%] bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3">
-    <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-      <span class="material-symbols-outlined text-xl">check_circle</span>
+  <div id="save-toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-[1100] hidden max-w-sm w-[90%] bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+    <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-2xl">check_circle</span>
     </div>
     <div>
       <h4 class="text-xs font-black">Profil Enregistré !</h4>
-      <p class="text-[11px] text-white/90">Vos informations ont été mises à jour avec succès.</p>
+      <p class="text-[11px] text-white/90">Vos modifications ont été confirmées et validées par PIN.</p>
     </div>
   </div>
 
@@ -97,7 +133,7 @@
     </div>
 
     <!-- Form -->
-    <form id="profile-form" onsubmit="handleProfileSubmit(event)" class="flex flex-col gap-4">
+    <form id="profile-form" onsubmit="handleInitialSubmit(event)" class="flex flex-col gap-4">
 
       <!-- Section 1 : Identité Personnelle -->
       <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3.5">
@@ -256,11 +292,11 @@
         </a>
       </div>
 
-      <!-- Submit Action Button -->
+      <!-- Submit Action Button (Opens PIN Modal) -->
       <div class="pt-2">
         <button id="save-btn" type="submit" class="w-full bg-primary text-on-primary font-bold py-4 rounded-full shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer">
-          <span id="save-btn-text">Enregistrer les modifications</span>
-          <span id="save-btn-icon" class="material-symbols-outlined text-lg">save</span>
+          <span>Enregistrer les modifications</span>
+          <span class="material-symbols-outlined text-lg">lock</span>
         </button>
       </div>
 
@@ -268,12 +304,71 @@
 
   </main>
 
+  <!-- ============================================================ -->
+  <!-- MODAL DE CONFIRMATION DE SÉCURITÉ PAR CODE PIN -->
+  <!-- ============================================================ -->
+  <div id="pin-security-modal" class="fixed inset-0 z-[1000] bg-black/70 backdrop-blur-sm hidden flex items-end justify-center">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-10 shadow-2xl modal-enter flex flex-col items-center gap-5">
+      
+      <!-- Top Handle & Close -->
+      <div class="w-full flex items-center justify-between">
+        <span class="w-12 h-1 bg-outline-variant rounded-full mx-auto -mr-6"></span>
+        <button onclick="closePinModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <!-- Shield Header -->
+      <div class="text-center flex flex-col items-center gap-1.5">
+        <div class="w-14 h-14 rounded-2xl bg-purple-50 text-primary border border-purple-200 flex items-center justify-center shadow-sm">
+          <span class="material-symbols-outlined text-3xl">lock</span>
+        </div>
+        <h3 class="text-base sm:text-lg font-black text-on-surface mt-1">Confirmation de Sécurité</h3>
+        <p class="text-xs text-on-surface-variant max-w-xs">Entrez votre code PIN secret à 4 chiffres pour valider la mise à jour de vos informations.</p>
+      </div>
+
+      <!-- PIN Indicator Dots -->
+      <div id="pin-dots-container" class="flex items-center gap-4 my-2">
+        <div id="pin-dot-1" class="w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent transition-all duration-150"></div>
+        <div id="pin-dot-2" class="w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent transition-all duration-150"></div>
+        <div id="pin-dot-3" class="w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent transition-all duration-150"></div>
+        <div id="pin-dot-4" class="w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent transition-all duration-150"></div>
+      </div>
+
+      <!-- Error / Loading Feedback -->
+      <div id="pin-status-msg" class="text-xs font-bold text-purple-700 min-h-[18px]"></div>
+
+      <!-- Numeric Virtual Keypad -->
+      <div class="grid grid-cols-3 gap-3 w-full max-w-xs select-none">
+        <button type="button" onclick="handlePinKey('1')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">1</button>
+        <button type="button" onclick="handlePinKey('2')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">2</button>
+        <button type="button" onclick="handlePinKey('3')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">3</button>
+        <button type="button" onclick="handlePinKey('4')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">4</button>
+        <button type="button" onclick="handlePinKey('5')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">5</button>
+        <button type="button" onclick="handlePinKey('6')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">6</button>
+        <button type="button" onclick="handlePinKey('7')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">7</button>
+        <button type="button" onclick="handlePinKey('8')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">8</button>
+        <button type="button" onclick="handlePinKey('9')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">9</button>
+        <button type="button" onclick="handleBiometricAuth()" class="key-btn h-14 rounded-2xl bg-purple-50 text-primary font-bold flex items-center justify-center cursor-pointer shadow-xs" title="Empreinte / Face ID">
+          <span class="material-symbols-outlined text-2xl">fingerprint</span>
+        </button>
+        <button type="button" onclick="handlePinKey('0')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">0</button>
+        <button type="button" onclick="handlePinDelete()" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface-variant flex items-center justify-center cursor-pointer shadow-xs" title="Effacer">
+          <span class="material-symbols-outlined text-2xl">backspace</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Router Script -->
   <script src="../assets/switch.router.js"></script>
 
   <!-- Interactive Logic -->
   <script>
-    // 1. Charger les valeurs sauvegardées si existantes
+    let currentEnteredPin = "";
+
+    // 1. Charger les valeurs sauvegardées au chargement
     document.addEventListener('DOMContentLoaded', () => {
       const savedFirstname = localStorage.getItem('switch_user_firstname');
       const savedLastname = localStorage.getItem('switch_user_lastname');
@@ -310,47 +405,111 @@
       }
     }
 
-    // 3. Gestion de la soumission du formulaire
-    function handleProfileSubmit(e) {
+    // 3. Déclenchement de la soumission du formulaire -> Ouvre la modale PIN
+    function handleInitialSubmit(e) {
       e.preventDefault();
-      
-      const btn = document.getElementById('save-btn');
-      const btnText = document.getElementById('save-btn-text');
-      const btnIcon = document.getElementById('save-btn-icon');
-      const toast = document.getElementById('save-toast');
-
-      // Sauvegarde des champs
-      const firstname = document.getElementById('input-firstname').value.trim();
-      const lastname = document.getElementById('input-lastname').value.trim();
-      const email = document.getElementById('input-email').value.trim();
-      const city = document.getElementById('input-city').value;
-      const address = document.getElementById('input-address').value.trim();
-      const profession = document.getElementById('input-profession').value.trim();
-
-      localStorage.setItem('switch_user_firstname', firstname);
-      localStorage.setItem('switch_user_lastname', lastname);
-      localStorage.setItem('switch_user_fullname', `${firstname} ${lastname}`);
-      localStorage.setItem('switch_user_email', email);
-      localStorage.setItem('switch_user_city', city);
-      localStorage.setItem('switch_user_address', address);
-      localStorage.setItem('switch_user_profession', profession);
-
-      // Animation bouton
-      btn.disabled = true;
-      btnText.textContent = "Enregistrement...";
-      btnIcon.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>`;
-
-      // Afficher Toast
-      if (toast) {
-        toast.classList.remove('hidden');
-        toast.classList.add('toast-animate');
-      }
-
-      // Redirection fluide après 1.2s vers le profil
-      setTimeout(() => {
-        window.location.href = '../profil_utilisateur/code.html';
-      }, 1200);
+      currentEnteredPin = "";
+      updatePinDots();
+      document.getElementById('pin-status-msg').textContent = "";
+      document.getElementById('pin-security-modal').classList.remove('hidden');
     }
+
+    function closePinModal() {
+      document.getElementById('pin-security-modal').classList.add('hidden');
+      currentEnteredPin = "";
+      updatePinDots();
+    }
+
+    // 4. Gestion du Clavier Virtuel PIN
+    function handlePinKey(digit) {
+      if (currentEnteredPin.length < 4) {
+        currentEnteredPin += digit;
+        updatePinDots();
+        if (currentEnteredPin.length === 4) {
+          setTimeout(verifyAndSaveProfile, 200);
+        }
+      }
+    }
+
+    function handlePinDelete() {
+      if (currentEnteredPin.length > 0) {
+        currentEnteredPin = currentEnteredPin.slice(0, -1);
+        updatePinDots();
+      }
+    }
+
+    function updatePinDots() {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`pin-dot-${i}`);
+        if (dot) {
+          if (i <= currentEnteredPin.length) {
+            dot.className = "w-4 h-4 rounded-full border-2 border-primary bg-primary scale-110 transition-all duration-150";
+          } else {
+            dot.className = "w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent transition-all duration-150";
+          }
+        }
+      }
+    }
+
+    // 5. Authentification Biométrique (Face ID / Empreinte)
+    function handleBiometricAuth() {
+      const statusEl = document.getElementById('pin-status-msg');
+      statusEl.textContent = "Authentification Biométrique réussie ✅";
+      setTimeout(verifyAndSaveProfile, 400);
+    }
+
+    // 6. Validation Finale et Sauvegarde Sécurisée
+    function verifyAndSaveProfile() {
+      const statusEl = document.getElementById('pin-status-msg');
+      statusEl.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-primary border-t-transparent rounded-full mr-1"></span> Validation du PIN...`;
+
+      setTimeout(() => {
+        // Sauvegarde des champs dans localStorage
+        const firstname = document.getElementById('input-firstname').value.trim();
+        const lastname = document.getElementById('input-lastname').value.trim();
+        const email = document.getElementById('input-email').value.trim();
+        const city = document.getElementById('input-city').value;
+        const address = document.getElementById('input-address').value.trim();
+        const profession = document.getElementById('input-profession').value.trim();
+
+        localStorage.setItem('switch_user_firstname', firstname);
+        localStorage.setItem('switch_user_lastname', lastname);
+        localStorage.setItem('switch_user_fullname', `${firstname} ${lastname}`);
+        localStorage.setItem('switch_user_email', email);
+        localStorage.setItem('switch_user_city', city);
+        localStorage.setItem('switch_user_address', address);
+        localStorage.setItem('switch_user_profession', profession);
+
+        // Fermer la modale PIN
+        closePinModal();
+
+        // Afficher Toast de succès
+        const toast = document.getElementById('save-toast');
+        if (toast) {
+          toast.classList.remove('hidden');
+          toast.classList.add('toast-animate');
+        }
+
+        // Redirection vers le profil
+        setTimeout(() => {
+          window.location.href = '../profil_utilisateur/code.html';
+        }, 1000);
+      }, 500);
+    }
+
+    // Support de la saisie au clavier physique (chiffres 0-9 et Backspace)
+    document.addEventListener('keydown', (e) => {
+      const pinModal = document.getElementById('pin-security-modal');
+      if (pinModal && !pinModal.classList.contains('hidden')) {
+        if (e.key >= '0' && e.key <= '9') {
+          handlePinKey(e.key);
+        } else if (e.key === 'Backspace') {
+          handlePinDelete();
+        } else if (e.key === 'Escape') {
+          closePinModal();
+        }
+      }
+    });
   </script>
 
 </body>
