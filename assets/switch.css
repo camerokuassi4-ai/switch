@@ -1,25 +1,35 @@
 /*
  * switch.css
  * ─────────────────────────────────────────────────────────────
- * Feuille de styles globale — App Switch (Bénin)
- * Styles partagés entre les 65 écrans (3 espaces)
- *
- * Ce fichier gère :
- *  1. Import des polices Google
- *  2. Reset & base
- *  3. Composants réutilisables
- *  4. Animations communes
- *  5. Utilitaires personnalisés
+ * Feuille de styles globale et adaptative — App Switch (Bénin)
+ * Compatible 100% avec tous écrans :
+ *   • Smartphones Android (Samsung, Xiaomi, Pixel, Transsion...)
+ *   • iPhones (SE, 11, 12, 13, 14, 15, 16 Pro / Max)
+ *   • Tablettes & iPads (iPad Mini, Air, Pro, Galaxy Tab)
+ *   • Pliables & Écrans Larges / Bureau
  * ─────────────────────────────────────────────────────────────
  */
 
-/* ── 1. POLICES ─────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&display=swap');
+/* ── 1. POLICES ET VARIABLES SYSTÈME ───────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 
-/* ── 2. RESET & BASE ────────────────────────────────────────── */
+:root {
+  /* Safe area insets pour encoches iPhone / Dynamic Island & Home indicator */
+  --sat: env(safe-area-inset-top, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+
+  /* Largeur max adaptative du conteneur de l'application */
+  --app-max-width: 520px;
+  --nav-height: 64px;
+}
+
+/* ── 2. RESET, BASE & VIEWPORT UNIVERSEL ────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -27,25 +37,119 @@ html {
   -moz-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-behavior: smooth;
+  height: 100%;
+  background-color: #0d0b14;
 }
 
 body {
-  font-family: 'Hanken Grotesk', sans-serif;
+  font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background-color: #fdf8ff;
   color: #1c1a24;
-  min-height: 100vh;
-  margin: 0;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  margin: 0 auto;
   padding: 0;
+  padding-top: var(--sat);
+  padding-left: var(--sal);
+  padding-right: var(--sar);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Simule un écran mobile dans le navigateur */
-  max-width: 430px;
-  margin: 0 auto;
+  touch-action: manipulation;
+  width: 100%;
+  max-width: var(--app-max-width);
   position: relative;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-/* ── 3. ICÔNES MATERIAL SYMBOLS ─────────────────────────────── */
+/* Optimisation universelle pour images et médias */
+img, svg, video, canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Empêche le zoom automatique indésirable sur iOS Safari lors du focus */
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+/* ── 3. MEDIA QUERIES RESPONSIVES (SMARTPHONES, IPADS, TABLETTES) ── */
+
+/* ── A. Petits & Moyens Smartphones (Android & iPhone <= 580px) ── */
+@media (max-width: 580px) {
+  :root {
+    --app-max-width: 100%;
+  }
+
+  html {
+    background-color: #fdf8ff;
+  }
+
+  body {
+    max-width: 100%;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0;
+    border: none;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+  }
+}
+
+/* ── B. Tablettes & iPads (581px à 1024px) ── */
+@media (min-width: 581px) and (max-width: 1024px) {
+  :root {
+    --app-max-width: 580px;
+  }
+
+  html {
+    background: linear-gradient(145deg, #1b172a 0%, #261f3d 50%, #3d227a 100%);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 0;
+  }
+
+  body {
+    max-width: var(--app-max-width);
+    margin: auto;
+    border-radius: 32px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(202, 190, 255, 0.25);
+    min-height: min(94vh, 960px) !important;
+    min-height: min(94dvh, 960px) !important;
+  }
+}
+
+/* ── C. Écrans Larges, Ordinateurs & Grand Format (> 1024px) ── */
+@media (min-width: 1025px) {
+  :root {
+    --app-max-width: 480px;
+  }
+
+  html {
+    background: radial-gradient(circle at 50% 20%, #2d1c59 0%, #151122 60%, #0c0a14 100%);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 0;
+  }
+
+  body {
+    max-width: var(--app-max-width);
+    margin: auto;
+    border-radius: 36px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5), 0 0 0 1.5px rgba(202, 190, 255, 0.2);
+    min-height: min(92vh, 920px) !important;
+    min-height: min(92dvh, 920px) !important;
+  }
+}
+
+/* ── 4. ICÔNES MATERIAL SYMBOLS ─────────────────────────────── */
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   -webkit-user-select: none;
@@ -54,7 +158,7 @@ body {
   line-height: 1;
 }
 
-/* ── 4. COMPOSANTS PARTAGÉS ─────────────────────────────────── */
+/* ── 5. COMPOSANTS PARTAGÉS & ADAPTATIFS ─────────────────────── */
 
 /* --- Carte de solde "Fluid Silk" (hero card) --- */
 .switch-balance-card {
@@ -106,64 +210,16 @@ body {
   animation: float 10s infinite ease-in-out alternate;
 }
 
-/* --- Navigation flottante --- */
-.switch-floating-nav {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1c1a24;
-  border-radius: 9999px;
-  padding: 12px 24px;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  z-index: 100;
-  width: auto;
-  max-width: calc(100% - 40px);
-}
-
-.switch-floating-nav a,
-.switch-floating-nav button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  color: rgba(255,255,255,0.5);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 12px;
-  transition: color 0.2s;
-  text-decoration: none;
-}
-
-.switch-floating-nav a.active,
-.switch-floating-nav a:hover,
-.switch-floating-nav button.active,
-.switch-floating-nav button:hover {
-  color: #cabeff;
-}
-
-.switch-floating-nav .nav-label {
-  font-size: 10px;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: 0.02em;
-}
-
-/* --- Bouton primaire --- */
+/* --- Bouton primaire universel --- */
 .btn-primary {
   background-color: #5e3bdc;
   color: #ffffff;
   border-radius: 9999px;
   padding: 16px 24px;
   font-family: 'Hanken Grotesk', sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 28px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
   box-shadow: 0 10px 20px rgba(94,59,220,0.3);
   border: none;
   cursor: pointer;
@@ -185,7 +241,7 @@ body {
   transform: scale(0.96);
 }
 
-/* --- Bouton secondaire --- */
+/* --- Bouton secondaire universel --- */
 .btn-secondary {
   background-color: #ffffff;
   color: #5e3bdc;
@@ -214,9 +270,9 @@ body {
 /* --- Cartes standard --- */
 .switch-card {
   background: #ffffff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.04);
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
 }
 
 /* --- Champs de saisie --- */
@@ -224,7 +280,7 @@ body {
   width: 100%;
   background: #ffffff;
   border: 1px solid #e6e0ee;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 14px 16px;
   font-family: 'Hanken Grotesk', sans-serif;
   font-size: 16px;
@@ -256,25 +312,25 @@ body {
   padding: 4px 10px;
   border-radius: 9999px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 16px;
   letter-spacing: 0.02em;
 }
 
-/* --- Transaction list item --- */
+/* --- Liste transactions & items --- */
 .tx-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 0;
+  padding: 12px 0;
   border-bottom: 1px solid #f1ebf9;
 }
 
 .tx-item:last-child { border-bottom: none; }
 
 .tx-icon {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: #f7f1ff;
   display: flex;
@@ -283,11 +339,11 @@ body {
   flex-shrink: 0;
 }
 
-/* --- En-tête d'écran (top bar) --- */
+/* --- En-tête d'écran avec support safe-area --- */
 .screen-header {
   display: flex;
   align-items: center;
-  padding: 20px 20px 12px;
+  padding: max(16px, var(--sat)) 16px 12px;
   gap: 12px;
   position: sticky;
   top: 0;
@@ -305,41 +361,15 @@ body {
   animation: spin 0.8s linear infinite;
 }
 
-/* ── 5. ANIMATIONS ──────────────────────────────────────────── */
+/* ── 6. ANIMATIONS ──────────────────────────────────────────── */
 @keyframes float {
   0%   { transform: translateY(0)    scale(1); }
-  50%  { transform: translateY(-20px) scale(1.05); }
+  50%  { transform: translateY(-16px) scale(1.03); }
   100% { transform: translateY(0)    scale(1); }
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
-}
-
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes slide-in-right {
-  from { opacity: 0; transform: translateX(32px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes scale-in {
-  from { opacity: 0; transform: scale(0.9); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-@keyframes pulse-ring {
-  0%   { box-shadow: 0 0 0 0    rgba(94,59,220,0.4); }
-  70%  { box-shadow: 0 0 0 12px rgba(94,59,220,0); }
-  100% { box-shadow: 0 0 0 0    rgba(94,59,220,0); }
 }
 
 .animate-fade-in-up,
@@ -351,44 +381,35 @@ body {
   transform: none !important;
 }
 
-.animate-float         { animation: float 6s ease-in-out infinite alternate; }
-.animate-pulse-ring    { animation: pulse-ring 2s ease-out infinite; }
+.animate-float      { animation: float 6s ease-in-out infinite alternate; }
 
-/* Délais d'animation désactivés pour un affichage immédiat */
-.delay-100, .delay-200, .delay-300, .delay-400, .delay-500 {
-  animation-delay: 0s !important;
-}
+/* ── 7. UTILITAIRES DE LAYOUT & ADAPTABILITÉ ─────────────────── */
 
-/* ── 6. UTILITAIRES ─────────────────────────────────────────── */
-
-/* Conteneur principal centré (mobile) */
 .switch-container {
-  max-width: 430px;
+  width: 100%;
+  max-width: var(--app-max-width);
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 16px;
 }
 
-/* Padding bottom pour ne pas être masqué par la nav flottante */
-.pb-nav { padding-bottom: calc(72px + 24px + 20px); }
+/* Padding bottom pour contenu sans chevauchement avec la barre de navigation */
+.pb-nav {
+  padding-bottom: calc(76px + var(--sab)) !important;
+}
 
-/* Fond dégradé violet pour sections hero */
 .gradient-primary {
   background: linear-gradient(135deg, #5e3bdc, #7758f6);
 }
 
-/* Texte montant positif (crédit) */
 .amount-credit { color: #16a34a; }
-/* Texte montant négatif (débit) */
 .amount-debit  { color: #1c1a24; }
 
-/* Séparateur horizontal */
 .switch-divider {
   height: 1px;
   background: #e6e0ee;
-  margin: 16px 0;
+  margin: 14px 0;
 }
 
-/* Overlay semi-transparent */
 .switch-overlay {
   position: fixed;
   inset: 0;
@@ -398,39 +419,56 @@ body {
   backdrop-filter: blur(4px);
 }
 
-/* ── 7. RESPONSIVE ──────────────────────────────────────────── */
-/* En-dessous de 430px, plein écran */
-@media (max-width: 430px) {
-  body { max-width: 100%; }
-}
-
-/* Sur bureau, centrage avec fond neutre */
-@media (min-width: 431px) {
-  html { background: #e6e0ee; }
-  body {
-    box-shadow: 0 0 60px rgba(0,0,0,0.15);
-    min-height: 100vh;
-  }
-}
-
-/* Style garanti pour la barre de navigation unifiée #switch-nav */
+/* ── 8. BARRE DE NAVIGATION ADAPTATIVE (#switch-nav) ────────── */
 #switch-nav {
   position: fixed !important;
   bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
   width: 100% !important;
-  z-index: 50 !important;
+  max-width: var(--app-max-width) !important;
+  z-index: 90 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-around !important;
-  padding: 10px 8px !important;
-  background: #ffffff !important;
+  padding: 8px 12px !important;
+  padding-bottom: max(10px, var(--sab)) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  backdrop-filter: blur(20px) !important;
   border-top: 1px solid #ECE6F0 !important;
-  box-shadow: 0 -2px 12px rgba(0,0,0,0.06) !important;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.06) !important;
 }
 
-/* Cache les barres de navigation statiques d'origine pour éviter tout clignotement */
+@media (min-width: 581px) {
+  #switch-nav {
+    border-bottom-left-radius: 32px !important;
+    border-bottom-right-radius: 32px !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  #switch-nav {
+    border-bottom-left-radius: 36px !important;
+    border-bottom-right-radius: 36px !important;
+  }
+}
+
+/* Cache toute barre de navigation superflue */
 nav:not(#switch-nav) {
   display: none !important;
+}
+
+/* Bouton de retour universel */
+.switch-back-btn {
+  position: fixed !important;
+  top: max(16px, var(--sat)) !important;
+  left: max(16px, calc((100vw - var(--app-max-width)) / 2 + 16px)) !important;
+  z-index: 150 !important;
+}
+
+@media (max-width: 580px) {
+  .switch-back-btn {
+    left: 16px !important;
+  }
 }

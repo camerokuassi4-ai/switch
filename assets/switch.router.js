@@ -424,11 +424,15 @@
   };
 
   const NAV_BAR_STYLE = [
-    "position:fixed", "bottom:0", "left:0", "right:0", "width:100%",
-    "z-index:50", "display:flex", "align-items:center",
-    "justify-content:space-around", "padding:10px 8px",
-    "background:#ffffff", "border-top:1px solid #ECE6F0",
-    "box-shadow:0 -2px 12px rgba(0,0,0,0.06)",
+    "position:fixed", "bottom:0", "left:50%", "transform:translateX(-50%)",
+    "width:100%", "max-width:var(--app-max-width, 520px)",
+    "z-index:90", "display:flex", "align-items:center",
+    "justify-content:space-around", "padding:8px 12px",
+    "padding-bottom:max(10px, env(safe-area-inset-bottom, 10px))",
+    "background:rgba(255, 255, 255, 0.96)",
+    "-webkit-backdrop-filter:blur(20px)", "backdrop-filter:blur(20px)",
+    "border-top:1px solid #ECE6F0",
+    "box-shadow:0 -4px 20px rgba(0,0,0,0.06)",
   ].join(";");
 
   function navItemHTML(href, icon, label, active) {
@@ -684,7 +688,9 @@
     btn.className = "switch-back-btn";
     btn.setAttribute("aria-label", "Retour");
     btn.style.cssText = [
-      "position:fixed", "top:16px", "left:16px", "z-index:200",
+      "position:fixed", "top:max(16px, env(safe-area-inset-top, 16px))",
+      "left:max(16px, calc((100vw - var(--app-max-width, 520px)) / 2 + 16px))",
+      "z-index:150",
       "width:40px", "height:40px", "border-radius:50%",
       "background:rgba(253,248,255,0.9)", "-webkit-backdrop-filter:blur(10px)", "backdrop-filter:blur(10px)",
       "border:1px solid #e6e0ee", "box-shadow:0 4px 12px rgba(0,0,0,0.08)",
@@ -816,7 +822,7 @@
     document.querySelectorAll("nav:not(#switch-nav)").forEach(function (existingNav) { existingNav.remove(); });
 
     if (nav) {
-      document.body.style.paddingBottom = "84px";
+      document.body.style.paddingBottom = "calc(76px + env(safe-area-inset-bottom, 12px))";
       if (!document.getElementById("switch-nav")) {
         const navEl = document.createElement("div");
         navEl.innerHTML = navHTML(space, nav);
