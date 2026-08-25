@@ -14,7 +14,7 @@
     body {
       font-family: 'Hanken Grotesk', sans-serif;
       min-height: max(884px, 100dvh);
-      background-color: #0F0926;
+      background-color: #0B061E;
       color: #1C1A24;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
@@ -23,39 +23,39 @@
     /* Ambient Glowing Orbs */
     .glow-orb-1 {
       position: absolute;
-      width: 380px;
-      height: 380px;
+      width: 420px;
+      height: 420px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(123, 92, 250, 0.45) 0%, rgba(94, 59, 220, 0) 70%);
-      top: -60px;
-      left: -80px;
+      background: radial-gradient(circle, rgba(123, 92, 250, 0.4) 0%, rgba(94, 59, 220, 0) 70%);
+      top: -100px;
+      left: -100px;
       filter: blur(50px);
       pointer-events: none;
-      animation: pulseGlow 8s ease-in-out infinite alternate;
+      animation: pulseGlow 9s ease-in-out infinite alternate;
     }
 
     .glow-orb-2 {
       position: absolute;
-      width: 320px;
-      height: 320px;
+      width: 360px;
+      height: 360px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(0, 212, 170, 0.25) 0%, rgba(94, 59, 220, 0) 70%);
-      bottom: 40px;
-      right: -60px;
+      background: radial-gradient(circle, rgba(0, 212, 170, 0.3) 0%, rgba(94, 59, 220, 0) 70%);
+      bottom: 20px;
+      right: -80px;
       filter: blur(60px);
       pointer-events: none;
-      animation: pulseGlow 6s ease-in-out infinite alternate-reverse;
+      animation: pulseGlow 7s ease-in-out infinite alternate-reverse;
     }
 
     @keyframes pulseGlow {
-      0% { transform: scale(1) translateY(0); opacity: 0.7; }
-      100% { transform: scale(1.15) translateY(20px); opacity: 1; }
+      0% { transform: scale(1) translateY(0); opacity: 0.6; }
+      100% { transform: scale(1.2) translateY(25px); opacity: 0.95; }
     }
 
     /* Logo Floating Animation */
     @keyframes floatSoft {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(1deg); }
     }
 
     .animate-float {
@@ -78,11 +78,11 @@
       background: linear-gradient(
         to right,
         rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0.35) 50%,
         rgba(255, 255, 255, 0) 100%
       );
       transform: rotate(25deg);
-      animation: shimmer 3.8s infinite;
+      animation: shimmer 3.5s infinite;
     }
 
     @keyframes shimmer {
@@ -90,22 +90,22 @@
       30%, 100% { left: 140%; }
     }
 
-    /* Glassmorphic Sheet */
+    /* Ultra-Premium Glassmorphic Sheet */
     .glass-sheet {
-      background: rgba(255, 255, 255, 0.88);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.75);
-      box-shadow: 0 24px 60px -12px rgba(31, 18, 77, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 28px 64px -16px rgba(11, 6, 30, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.95) inset;
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between overflow-hidden relative selection:bg-[#5E3BDC] selection:text-white">
 
-  <!-- 1. Background Image with Rich Vignette Gradient Overlay -->
+  <!-- 1. Cinematic Background Wallpaper with Ambient Cybernetic Lighting -->
   <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-    <img src="../assets/images/img_002.jpg" alt="Background" class="w-full h-full object-cover scale-105 filter saturate-[1.1] brightness-[0.9]"/>
-    <div class="absolute inset-0 bg-gradient-to-b from-[#0F0926]/40 via-[#1C1242]/30 to-[#0F0926]/85"></div>
+    <img src="../assets/images/img_splash_bg.jpg" alt="Fintech Cybernetic Waves" class="w-full h-full object-cover scale-105 filter brightness-[0.95] contrast-[1.05]"/>
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0B061E]/50 via-transparent to-[#0B061E]/80"></div>
     <div class="glow-orb-1"></div>
     <div class="glow-orb-2"></div>
   </div>
@@ -113,19 +113,19 @@
   <!-- 2. Main Content Canvas -->
   <main class="flex-grow flex flex-col justify-between items-center relative w-full h-full px-5 pt-12 pb-8 z-10 max-w-md mx-auto min-h-screen">
 
-    <!-- Top Badge & Logo Section -->
+    <!-- Top Badge & Floating Logo -->
     <div class="flex flex-col items-center justify-start w-full pt-2">
       
-      <!-- Top Benin Fintech Badge -->
-      <div class="mb-5 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/25 backdrop-blur-md border border-white/40 text-white text-[11px] font-bold shadow-lg">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        <span class="tracking-wide">🇧🇯 SWITCH BÉNIN • S.A.S</span>
+      <!-- Top Official Badge -->
+      <div class="mb-5 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/40 text-white text-[11px] font-bold shadow-xl">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="tracking-wider uppercase">SWITCH BÉNIN • S.A.S</span>
       </div>
 
-      <!-- Floating Logo Box -->
+      <!-- Floating Logo Box with Neon Aura -->
       <div class="animate-float relative group">
-        <div class="absolute -inset-1.5 rounded-[32px] bg-gradient-to-tr from-[#5E3BDC] to-[#00D4AA] opacity-40 blur-md group-hover:opacity-70 transition-opacity"></div>
-        <div class="relative bg-white/95 backdrop-blur-xl rounded-[28px] p-4 shadow-[0_20px_40px_rgba(94,59,220,0.28)] flex items-center justify-center w-24 h-24 border border-white">
+        <div class="absolute -inset-2 rounded-[34px] bg-gradient-to-tr from-[#5E3BDC] via-[#7B5CFA] to-[#00D4AA] opacity-50 blur-lg group-hover:opacity-80 transition-opacity"></div>
+        <div class="relative bg-white/95 backdrop-blur-xl rounded-[28px] p-4 shadow-[0_20px_45px_rgba(94,59,220,0.35)] flex items-center justify-center w-24 h-24 border-2 border-white/80">
           <img alt="Logo Switch" class="w-full h-full object-contain drop-shadow-sm" src="../assets/images/img_003.jpg"/>
         </div>
       </div>
@@ -144,13 +144,13 @@
         La façon la plus rapide et sécurisée de gérer votre argent au Bénin et au-delà.
       </p>
 
-      <!-- Trust Indicator Pills -->
-      <div class="pt-2 flex items-center justify-center gap-2 border-t border-gray-100/80 w-full text-[10px] font-bold text-gray-500">
+      <!-- Trust Badges -->
+      <div class="pt-2 flex items-center justify-center gap-2.5 border-t border-gray-100/90 w-full text-[10px] font-bold text-gray-500">
         <span class="flex items-center gap-1">
           <span class="material-symbols-outlined text-xs text-[#5E3BDC]">verified_user</span>
           Agrément BCEAO
         </span>
-        <span>•</span>
+        <span class="text-gray-300">•</span>
         <span class="flex items-center gap-1">
           <span class="material-symbols-outlined text-xs text-emerald-600">bolt</span>
           0F sans frais
@@ -163,13 +163,13 @@
     <div class="w-full pb-2 flex flex-col gap-3.5">
       
       <!-- Primary Action CTA Button -->
-      <button onclick="startNewAccount()" class="btn-shimmer w-full bg-gradient-to-r from-[#5E3BDC] via-[#6F47E8] to-[#7B5CFA] text-white py-4 px-6 rounded-full font-extrabold text-sm sm:text-base shadow-[0_14px_32px_rgba(94,59,220,0.45)] hover:shadow-[0_18px_40px_rgba(94,59,220,0.55)] hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer group">
+      <button onclick="startNewAccount()" class="btn-shimmer w-full bg-gradient-to-r from-[#5E3BDC] via-[#6F47E8] to-[#7B5CFA] text-white py-4 px-6 rounded-full font-extrabold text-sm sm:text-base shadow-[0_14px_32px_rgba(94,59,220,0.5)] hover:shadow-[0_18px_40px_rgba(94,59,220,0.65)] hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer group">
         <span>Commencer</span>
         <span class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
       </button>
 
       <!-- Login Link Card -->
-      <div class="text-center py-2 px-4 rounded-full bg-white/20 backdrop-blur-md border border-white/30">
+      <div class="text-center py-2 px-4 rounded-full bg-white/20 backdrop-blur-md border border-white/30 shadow-lg">
         <p class="text-xs sm:text-sm text-white font-medium">
           Vous avez déjà un compte ?
           <button onclick="goToLogin()" class="text-white font-black underline underline-offset-4 hover:text-[#00D4AA] ml-1 transition-colors cursor-pointer">
