@@ -1,126 +1,678 @@
 <!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Retrait d'espèces Client (Cash-Out) - Terminal Agent Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
 
-<html class="light" lang="fr"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Retrait de fonds</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="../assets/switch.css">
-<script src="../assets/switch.config.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
 
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .icon-fill {
-            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        /* Fluid Silk Gradient for accents if needed */
-        .bg-fluid-silk {
-            background: radial-gradient(120% 120% at 50% -20%, #ebe6f3 0%, #fdf8ff 100%);
-        }
-    </style>
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .input-focus {
+      transition: all 0.2s ease;
+    }
+
+    .input-focus:focus-within {
+      border-color: #5E3BDC;
+      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.12);
+    }
+
+    /* Modal Animation */
+    .modal-enter {
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Quick pill active state */
+    .pill-active {
+      background-color: #5E3BDC !important;
+      color: #FFFFFF !important;
+      border-color: #5E3BDC !important;
+      box-shadow: 0 4px 12px rgba(94, 59, 220, 0.25);
+    }
+  </style>
 </head>
-<body class="bg-background text-on-surface font-body-lg min-h-screen flex flex-col items-center">
-<!-- Top App Bar -->
-<header class="docked full-width top-0 bg-transparent flex justify-between items-center px-container-margin py-stack-md w-full max-w-md mx-auto">
-<button aria-label="Retour" class="text-on-surface p-2 rounded-full hover:bg-surface-container-high transition-colors -ml-2" onclick="history.back()">
-<span class="material-symbols-outlined text-[24px]">arrow_back</span>
-</button>
-<h1 class="font-headline-md text-headline-md text-on-surface font-bold text-center flex-1 pr-[40px]">Retrait de fonds</h1>
-</header>
-<!-- Main Content Canvas -->
-<main class="w-full max-w-md px-container-margin flex-1 flex flex-col gap-stack-lg pb-40">
-<!-- Balance Context -->
-<section class="bg-surface-container-low rounded-xl p-card-padding flex justify-between items-center border border-surface-variant">
-<div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">Solde disponible</p>
-<p class="font-headline-md text-headline-md text-on-surface">450 000 FCFA</p>
-</div>
-<div class="bg-surface-container w-12 h-12 rounded-full flex items-center justify-center">
-<span class="material-symbols-outlined text-primary text-[24px]">account_balance_wallet</span>
-</div>
-</section>
-<!-- Destination Selection -->
-<section class="flex flex-col gap-stack-sm">
-<h2 class="font-headline-md text-headline-md text-on-surface">Destination</h2>
-<div class="grid grid-cols-2 gap-3">
-<!-- Agent Switch -->
-<button class="bg-surface rounded-xl p-4 flex flex-col items-center justify-center gap-2 border border-surface-variant hover:border-primary-fixed-dim transition-all shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] focus:outline-none">
-<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center font-bold text-on-primary-container">
-<span class="material-symbols-outlined text-[20px]">storefront</span>
-</div>
-<span class="font-body-sm text-body-sm text-on-surface-variant">Agent Switch</span>
-</button>
-<!-- MTN MoMo -->
-<button class="relative bg-surface rounded-xl p-4 flex flex-col items-center justify-center gap-2 border-2 border-primary transition-all shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] focus:outline-none">
-<div class="absolute top-2 right-2 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
-<span class="material-symbols-outlined text-on-primary text-[12px] font-bold">check</span>
-</div>
-<div class="w-10 h-10 rounded-full bg-[#FFCC00] flex items-center justify-center font-bold text-[#000000] text-xs">MTN</div>
-<span class="font-body-sm text-body-sm text-on-surface font-semibold">MTN MoMo</span>
-</button>
-<!-- Moov Money -->
-<button class="bg-surface rounded-xl p-4 flex flex-col items-center justify-center gap-2 border border-surface-variant hover:border-primary-fixed-dim transition-all shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] focus:outline-none">
-<div class="w-10 h-10 rounded-full bg-[#005A9C] flex items-center justify-center font-bold text-white text-xs">Moov</div>
-<span class="font-body-sm text-body-sm text-on-surface-variant">Moov</span>
-</button>
-<!-- Celtiis -->
-<button class="bg-surface rounded-xl p-4 flex flex-col items-center justify-center gap-2 border border-surface-variant hover:border-primary-fixed-dim transition-all shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] focus:outline-none">
-<div class="w-10 h-10 rounded-full bg-[#000000] flex items-center justify-center font-bold text-white text-xs">Celtiis</div>
-<span class="font-body-sm text-body-sm text-on-surface-variant">Celtiis</span>
-</button>
-</div>
-<!-- Phone Number Input (Appears when mobile money is selected) -->
-<div class="mt-4 flex flex-col gap-1">
-<label class="font-body-sm text-body-sm text-on-surface-variant" for="phone">Numéro de téléphone</label>
-<div class="relative flex items-center">
-<span class="absolute left-4 font-body-lg text-body-lg text-on-surface-variant">+229</span>
-<input class="w-full bg-surface border border-outline-variant rounded-lg py-3 pl-16 pr-4 font-body-lg text-body-lg text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow placeholder-outline" id="phone" placeholder="Numéro" type="tel" value="97 00 00 00"/>
-<button class="absolute right-2 p-2 text-primary hover:bg-surface-container rounded-full transition-colors">
-<span class="material-symbols-outlined text-[20px]">contacts</span>
-</button>
-</div>
-</div>
-</section>
-<!-- Amount Input -->
-<section class="flex flex-col gap-stack-sm mt-4">
-<h2 class="font-headline-md text-headline-md text-on-surface">Montant à retirer</h2>
-<div class="bg-surface border border-outline-variant rounded-xl p-6 flex flex-col items-center justify-center focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)]">
-<div class="flex items-baseline justify-center gap-2">
-<input class="bg-transparent border-none text-center font-display-lg-mobile text-display-lg-mobile text-on-surface w-32 focus:ring-0 p-0 outline-none" placeholder="0" type="text" value="50 000"/>
-<span class="font-headline-md text-headline-md text-on-surface-variant">FCFA</span>
-</div>
-<p class="font-body-sm text-body-sm text-secondary mt-2">Frais: 500 FCFA</p>
-</div>
-<!-- Quick Amounts -->
-<div class="flex gap-2 mt-2 overflow-x-auto pb-2 scrollbar-hide snap-x">
-<button class="shrink-0 snap-start bg-surface-container px-4 py-2 rounded-full font-label-caps text-label-caps text-on-surface hover:bg-primary-container hover:text-on-primary-container transition-colors">10 000</button>
-<button class="shrink-0 snap-start bg-surface-container px-4 py-2 rounded-full font-label-caps text-label-caps text-on-surface hover:bg-primary-container hover:text-on-primary-container transition-colors">20 000</button>
-<button class="shrink-0 snap-start bg-primary-container px-4 py-2 rounded-full font-label-caps text-label-caps text-on-primary-container font-bold">50 000</button>
-<button class="shrink-0 snap-start bg-surface-container px-4 py-2 rounded-full font-label-caps text-label-caps text-on-surface hover:bg-primary-container hover:text-on-primary-container transition-colors">100 000</button>
-</div>
-</section>
-<!-- Action Button -->
-<div class="mt-auto pt-8">
-<button onclick="window.location.href='../confirmation_de_l_op_ration_code/code.html'"
-        class="w-full bg-primary text-on-primary py-4 rounded-xl font-headline-md text-headline-md shadow-[0_4px_14px_0_rgba(94,59,220,0.39)] hover:shadow-[0_6px_20px_rgba(94,59,220,0.23)] hover:-translate-y-0.5 transition-all duration-200">
-    Confirmer le retrait
-</button>
-</div>
-</main>
-<!-- Bottom Nav Bar (Floating Oval) - Suppressed as per Task-Focused/Linear intent rules -->
-<!-- The prompt says "Navigation ovale flottante", but the global rules dictate: "Automatic Suppression: You MUST exclude the navigation shell if the page intent is: Linear/Transactional... Task-Focused: Any sub-page featuring a 'Close' or 'Back' action". I will obey the strict global rule to suppress it to prioritize the content canvas. -->
-<script>
-        // Simple input formatting for amount
-        const amountInput = document.querySelector('input[type="text"]');
-        amountInput.addEventListener('input', function(e) {
-            // Remove non-digits
-            let val = this.value.replace(/\D/g, '');
-            // Format with spaces
-            this.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-        });
-    </script>
-<script src="../assets/switch.forms.js"></script>
-<script src="../assets/switch.router.js"></script>
-</body></html>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <button aria-label="Retour" onclick="goBack()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Retrait d'espèces (Cash-Out)</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Servir et décaisser les espèces pour un client</p>
+    </div>
+
+    <!-- Active Float Indicator Badge -->
+    <div class="flex flex-col items-end">
+      <span class="text-[9px] font-bold uppercase text-on-surface-variant">Float Caisse</span>
+      <span id="current-float-badge" class="text-xs font-mono font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+        1 500 000 F
+      </span>
+    </div>
+  </header>
+
+  <!-- Main Content Form Area -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- Withdrawal Mode Toggle Tabs -->
+    <div class="bg-white rounded-2xl p-1.5 border border-outline-variant/40 shadow-soft grid grid-cols-2 gap-1">
+      <button type="button" onclick="setWithdrawalMode('code')" id="tab-mode-code" class="py-2.5 rounded-xl font-bold text-xs bg-primary text-white shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-base">pin</span>
+        <span>Par Code Retrait (Recommandé)</span>
+      </button>
+      <button type="button" onclick="setWithdrawalMode('direct')" id="tab-mode-direct" class="py-2.5 rounded-xl font-bold text-xs text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+        <span class="material-symbols-outlined text-base">phonelink_ring</span>
+        <span>Par RIB / Demande Push</span>
+      </button>
+    </div>
+
+    <!-- Form Container -->
+    <form id="withdrawal-form" onsubmit="event.preventDefault(); openPinConfirmation();" class="flex flex-col gap-4">
+
+      <!-- ============================================================ -->
+      <!-- SECTION 1 : MODE CODE RETRAIT TEMPORAIRE (PAR DÉFAUT) -->
+      <!-- ============================================================ -->
+      <section id="section-mode-code" class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3.5">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">qr_code_scanner</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">1. Code de Retrait Client (6 chiffres)</h2>
+          </div>
+          <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Généré sur Switch</span>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <div class="flex gap-2">
+            <div class="input-focus relative flex-1 flex items-center rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 overflow-hidden">
+              <span class="material-symbols-outlined absolute left-3.5 text-primary text-lg">pin</span>
+              <input type="text" id="withdrawalCode" maxlength="8" oninput="handleCodeInput(this.value)" value="882104" placeholder="Ex: 882104" class="w-full bg-transparent border-0 py-3.5 pl-10 pr-3 text-base sm:text-lg font-mono font-black tracking-wider text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none"/>
+            </div>
+            <button type="button" onclick="scanQrCodeDemo()" class="px-4 rounded-2xl bg-purple-50 text-primary border border-purple-200 font-bold text-xs hover:bg-purple-100 transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer" title="Scanner le QR Code du client">
+              <span class="material-symbols-outlined text-lg">qr_code_scanner</span>
+              <span class="hidden sm:inline">Scanner</span>
+            </button>
+          </div>
+
+          <!-- Verified Code Card -->
+          <div id="verified-code-box" class="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-200/80 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold">
+                <span class="material-symbols-outlined text-xl">verified</span>
+              </div>
+              <div class="flex flex-col">
+                <span id="code-client-name" class="text-xs font-black text-emerald-900">Mariam SANNI (+229 95 12 34 56)</span>
+                <span class="text-[10px] text-emerald-700 font-mono">Code #882104 Actif • Expire dans 14 min</span>
+              </div>
+            </div>
+            <span class="text-xs font-black font-mono text-emerald-800 bg-white px-2.5 py-1 rounded-xl border border-emerald-200">
+              25 000 F
+            </span>
+          </div>
+
+          <!-- Quick Test Codes -->
+          <div class="flex items-center gap-1.5 pt-1 overflow-x-auto pb-1 text-[10px]">
+            <span class="text-gray-400 font-medium shrink-0">Codes récents :</span>
+            <button type="button" onclick="pickDemoCode('882104', 'Mariam SANNI', 25000)" class="px-2.5 py-1 rounded-full bg-gray-100 hover:bg-purple-50 hover:text-primary text-gray-700 font-bold shrink-0 cursor-pointer font-mono">
+              #882104 (25 000 F)
+            </button>
+            <button type="button" onclick="pickDemoCode('409152', 'Koffi MENSAH', 50000)" class="px-2.5 py-1 rounded-full bg-gray-100 hover:bg-purple-50 hover:text-primary text-gray-700 font-bold shrink-0 cursor-pointer font-mono">
+              #409152 (50 000 F)
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 2 : MODE DIRECT (RIB SWITCH OU MOBILE MONEY PUSH) -->
+      <!-- ============================================================ -->
+      <section id="section-mode-direct" class="hidden flex flex-col gap-4">
+        
+        <!-- 2.1 Réseau Source du Client -->
+        <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+          <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-lg">account_balance_wallet</span>
+              <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">1. Réseau du compte client</h2>
+            </div>
+            <span class="text-[10px] font-bold text-gray-500">Compte à débiter</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <!-- Switch Bénin -->
+            <div onclick="selectDirectNetwork('switch')" id="net-card-switch" class="p-3 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center shadow-xs">
+              <div class="w-9 h-9 rounded-xl bg-primary text-white flex items-center justify-center font-black text-xs">
+                SW
+              </div>
+              <span class="text-xs font-bold text-on-surface">Switch Bénin</span>
+              <span class="text-[9px] font-black text-primary bg-white px-1.5 py-0.2 rounded-md border border-primary/20">RIB / Tél</span>
+            </div>
+
+            <!-- MTN MoMo -->
+            <div onclick="selectDirectNetwork('mtn')" id="net-card-mtn" class="p-3 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-yellow-400 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center">
+              <div class="w-9 h-9 rounded-xl bg-yellow-400 text-black flex items-center justify-center font-black text-xs shadow-xs">
+                MoMo
+              </div>
+              <span class="text-xs font-bold text-on-surface">MTN MoMo</span>
+              <span class="text-[9px] font-bold text-gray-500">Push OTP</span>
+            </div>
+
+            <!-- Moov Money -->
+            <div onclick="selectDirectNetwork('moov')" id="net-card-moov" class="p-3 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-blue-500 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center">
+              <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-xs shadow-xs">
+                Moov
+              </div>
+              <span class="text-xs font-bold text-on-surface">Moov Money</span>
+              <span class="text-[9px] font-bold text-gray-500">Push OTP</span>
+            </div>
+
+            <!-- Celtiis Cash -->
+            <div onclick="selectDirectNetwork('celtiis')" id="net-card-celtiis" class="p-3 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-emerald-500 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center">
+              <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-xs shadow-xs">
+                Celtiis
+              </div>
+              <span class="text-xs font-bold text-on-surface">Celtiis Cash</span>
+              <span class="text-[9px] font-bold text-gray-500">Push OTP</span>
+            </div>
+          </div>
+          <input type="hidden" id="selectedDirectNetwork" value="switch"/>
+        </div>
+
+        <!-- 2.2 Saisie RIB ou Téléphone Client -->
+        <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+          <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-lg" id="direct-id-icon">account_balance</span>
+              <h2 class="text-xs font-black text-on-surface uppercase tracking-wider" id="direct-id-title">2. RIB Compte Switch Bénin</h2>
+            </div>
+            
+            <div id="direct-switch-toggle" class="flex items-center bg-gray-100 p-0.5 rounded-xl text-[10px] font-bold">
+              <button type="button" onclick="setDirectIdMode('rib')" id="direct-toggle-rib" class="px-2.5 py-1 rounded-lg bg-white text-primary shadow-xs transition-all cursor-pointer">
+                Par RIB
+              </button>
+              <button type="button" onclick="setDirectIdMode('phone')" id="direct-toggle-phone" class="px-2.5 py-1 rounded-lg text-gray-500 hover:text-on-surface transition-all cursor-pointer">
+                Par N° Tél
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <!-- RIB Input Wrapper -->
+            <div id="direct-rib-wrapper" class="input-focus flex items-center rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 overflow-hidden">
+              <div class="flex items-center gap-1.5 px-3.5 py-3.5 bg-purple-50 border-r border-outline-variant/50 text-xs font-bold text-primary select-none shrink-0">
+                <span class="material-symbols-outlined text-base">account_balance</span>
+                <span class="font-mono font-bold">RIB</span>
+              </div>
+              <input type="text" id="directClientRib" value="BJ062 01001 98765432109 12" placeholder="BJ062 01001 98765432109 12" class="w-full bg-transparent border-0 py-3 px-3.5 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none"/>
+            </div>
+
+            <!-- Phone Input Wrapper -->
+            <div id="direct-phone-wrapper" class="hidden input-focus flex items-center rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 overflow-hidden">
+              <div class="flex items-center gap-1.5 px-3.5 py-3.5 bg-gray-100/80 border-r border-outline-variant/50 text-xs font-bold text-on-surface select-none shrink-0">
+                <span class="text-base leading-none">🇧🇯</span>
+                <span class="font-mono text-gray-700 font-bold">+229</span>
+              </div>
+              <input type="tel" id="directClientPhone" placeholder="95 12 34 56" maxlength="12" class="w-full bg-transparent border-0 py-3 px-3.5 text-sm sm:text-base font-mono font-bold text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none"/>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 3 : MONTANT DU RETRAIT & CALCUL COMMISSIONS -->
+      <!-- ============================================================ -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">payments</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">Montant en espèces à décaisser</h2>
+          </div>
+          <span class="text-[10px] font-mono text-gray-500 font-bold">Min: 500 F</span>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <div class="input-focus flex items-center justify-between rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 px-4 py-3.5">
+            <input type="number" id="withdrawAmount" required oninput="calculateWithdrawal(this.value)" value="25000" min="500" max="1500000" class="w-full bg-transparent border-0 p-0 text-2xl sm:text-3xl font-mono font-black text-on-surface placeholder:text-gray-300 focus:ring-0 focus:outline-none"/>
+            <span class="text-base sm:text-lg font-extrabold text-primary shrink-0 ml-2">FCFA</span>
+          </div>
+
+          <!-- Quick Amount Selection Pills -->
+          <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5 pt-1">
+            <button type="button" onclick="setWithdrawAmount(5000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">5 000</button>
+            <button type="button" onclick="setWithdrawAmount(10000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">10 000</button>
+            <button type="button" onclick="setWithdrawAmount(25000)" class="quick-pill pill-active py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">25 000</button>
+            <button type="button" onclick="setWithdrawAmount(50000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">50 000</button>
+            <button type="button" onclick="setWithdrawAmount(100000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">100 000</button>
+            <button type="button" onclick="setWithdrawAmount(200000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">200 000</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Calculation Card -->
+        <div class="mt-2 p-4 rounded-2xl bg-gradient-to-br from-purple-50 to-emerald-50/40 border border-purple-200/80 flex flex-col gap-2.5">
+          
+          <!-- Commission Agent perçue -->
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-gray-700 font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-emerald-600 text-base">savings</span>
+              Votre Commission Agent :
+            </span>
+            <span id="withdraw-commission-text" class="font-mono font-black text-emerald-700 text-sm bg-white px-2 py-0.5 rounded-lg border border-emerald-200">
+              +200 FCFA
+            </span>
+          </div>
+
+          <!-- Espèces physiques à donner -->
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-gray-600 font-medium">Billets de banque à remettre :</span>
+            <span id="cash-to-give-text" class="font-mono font-black text-rose-600 text-xs">
+              25 000 FCFA
+            </span>
+          </div>
+
+          <!-- Impact Float -->
+          <div class="flex items-center justify-between text-xs pt-2 border-t border-purple-200/60">
+            <span class="text-gray-600 font-medium">Votre Float après retrait :</span>
+            <span id="increased-float-text" class="font-mono font-black text-primary text-xs">
+              1 525 000 FCFA (+25k F crédités)
+            </span>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- Submit Action Button -->
+      <div class="pt-2">
+        <button type="submit" id="submit-withdraw-btn" data-no-router="true" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm cursor-pointer">
+          <span class="material-symbols-outlined text-xl">payments</span>
+          <span id="submit-withdraw-label">Valider le Retrait & Décaisser</span>
+        </button>
+      </div>
+
+    </form>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : Confirmation PIN Sécurité de l'Agent -->
+  <!-- ============================================================ -->
+  <div id="pin-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm hidden flex items-end justify-center">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-10 shadow-2xl modal-enter flex flex-col gap-4">
+      
+      <!-- Top Handle & Close -->
+      <div class="w-full flex items-center justify-between">
+        <span class="w-12 h-1 bg-outline-variant rounded-full mx-auto -mr-6"></span>
+        <button onclick="closePinModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <!-- Modal Header -->
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-2xl">lock</span>
+        </div>
+        <div>
+          <h3 class="text-base font-black text-on-surface">Confirmer le Décaissement Espèces</h3>
+          <p class="text-xs text-on-surface-variant">Saisissez votre code PIN Agent à 4 chiffres</p>
+        </div>
+      </div>
+
+      <!-- Operation Recap Card -->
+      <div class="p-3.5 rounded-2xl bg-surface-container-low/60 border border-outline-variant/60 flex flex-col gap-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-gray-500 font-medium">Bénéficiaire :</span>
+          <b id="modal-recap-client" class="text-on-surface font-bold">Mariam SANNI (+229 95 12 34 56)</b>
+        </div>
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-gray-500 font-medium">Mode de retrait :</span>
+          <b id="modal-recap-network" class="text-primary font-bold">Code Retrait #882104</b>
+        </div>
+        <div class="flex items-center justify-between text-xs pt-1.5 border-t border-outline-variant/40">
+          <span class="text-gray-700 font-bold">Espèces à remettre :</span>
+          <b id="modal-recap-amount" class="text-base font-black font-mono text-rose-600">25 000 FCFA</b>
+        </div>
+      </div>
+
+      <!-- PIN Input Dots -->
+      <div class="flex items-center justify-center gap-3 my-2">
+        <div id="pindot-1" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-2" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-3" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-4" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+      </div>
+
+      <!-- Virtual Numeric Keypad -->
+      <div class="grid grid-cols-3 gap-2.5 max-w-xs mx-auto w-full">
+        <button type="button" onclick="pressPin('1')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">1</button>
+        <button type="button" onclick="pressPin('2')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">2</button>
+        <button type="button" onclick="pressPin('3')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">3</button>
+        
+        <button type="button" onclick="pressPin('4')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">4</button>
+        <button type="button" onclick="pressPin('5')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">5</button>
+        <button type="button" onclick="pressPin('6')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">6</button>
+        
+        <button type="button" onclick="pressPin('7')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">7</button>
+        <button type="button" onclick="pressPin('8')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">8</button>
+        <button type="button" onclick="pressPin('9')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">9</button>
+        
+        <button type="button" onclick="pressBiometric()" class="h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center cursor-pointer active:scale-95 transition-transform" title="Empreinte">
+          <span class="material-symbols-outlined text-xl">fingerprint</span>
+        </button>
+        <button type="button" onclick="pressPin('0')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">0</button>
+        <button type="button" onclick="deletePin()" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface cursor-pointer active:scale-95 transition-transform">
+          <span class="material-symbols-outlined text-lg">backspace</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Terminal Logic -->
+  <script>
+    let initialFloat = 1500000;
+    let pinCode = "";
+    let withdrawalMode = "code"; // 'code' or 'direct'
+    let directIdMode = "rib"; // 'rib' or 'phone'
+
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../tableau_de_bord_agent/code.html';
+      }
+    }
+
+    // 1. Bascule Mode Retrait (Code vs Direct)
+    function setWithdrawalMode(mode) {
+      withdrawalMode = mode;
+      const tabCode = document.getElementById('tab-mode-code');
+      const tabDirect = document.getElementById('tab-mode-direct');
+      const secCode = document.getElementById('section-mode-code');
+      const secDirect = document.getElementById('section-mode-direct');
+      const submitLabel = document.getElementById('submit-withdraw-label');
+
+      if (mode === 'code') {
+        tabCode.className = "py-2.5 rounded-xl font-bold text-xs bg-primary text-white shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer";
+        tabDirect.className = "py-2.5 rounded-xl font-bold text-xs text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+        secCode.classList.remove('hidden');
+        secDirect.classList.add('hidden');
+        submitLabel.textContent = "Valider le Code & Décaisser";
+      } else {
+        tabDirect.className = "py-2.5 rounded-xl font-bold text-xs bg-primary text-white shadow-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer";
+        tabCode.className = "py-2.5 rounded-xl font-bold text-xs text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+        secDirect.classList.remove('hidden');
+        secCode.classList.add('hidden');
+        submitLabel.textContent = "Initier la Demande de Débit";
+      }
+    }
+
+    // 2. Mode Direct Réseau & Saisie
+    function selectDirectNetwork(netKey) {
+      document.getElementById('selectedDirectNetwork').value = netKey;
+      const nets = ['switch', 'mtn', 'moov', 'celtiis'];
+      
+      nets.forEach(n => {
+        const card = document.getElementById(`net-card-${n}`);
+        if (card) {
+          if (n === netKey) {
+            card.className = "p-3 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center shadow-xs";
+          } else {
+            card.className = "p-3 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-gray-300 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center";
+          }
+        }
+      });
+
+      const toggle = document.getElementById('direct-switch-toggle');
+      const title = document.getElementById('direct-id-title');
+      const icon = document.getElementById('direct-id-icon');
+
+      if (netKey === 'switch') {
+        toggle.classList.remove('hidden');
+        title.textContent = "2. RIB Compte Switch Bénin";
+        icon.textContent = "account_balance";
+        setDirectIdMode(directIdMode);
+      } else {
+        toggle.classList.add('hidden');
+        const netName = (netKey === 'mtn') ? 'MTN MoMo' : (netKey === 'moov' ? 'Moov Money' : 'Celtiis Cash');
+        title.textContent = `2. Numéro ${netName} (+229)`;
+        icon.textContent = "phone_android";
+        document.getElementById('direct-rib-wrapper').classList.add('hidden');
+        document.getElementById('direct-phone-wrapper').classList.remove('hidden');
+      }
+
+      calculateWithdrawal(document.getElementById('withdrawAmount').value);
+    }
+
+    function setDirectIdMode(mode) {
+      directIdMode = mode;
+      const btnRib = document.getElementById('direct-toggle-rib');
+      const btnPhone = document.getElementById('direct-toggle-phone');
+      const ribWrap = document.getElementById('direct-rib-wrapper');
+      const phoneWrap = document.getElementById('direct-phone-wrapper');
+
+      if (mode === 'rib') {
+        btnRib.className = "px-2.5 py-1 rounded-lg bg-white text-primary shadow-xs transition-all cursor-pointer";
+        btnPhone.className = "px-2.5 py-1 rounded-lg text-gray-500 hover:text-on-surface transition-all cursor-pointer";
+        ribWrap.classList.remove('hidden');
+        phoneWrap.classList.add('hidden');
+      } else {
+        btnPhone.className = "px-2.5 py-1 rounded-lg bg-white text-primary shadow-xs transition-all cursor-pointer";
+        btnRib.className = "px-2.5 py-1 rounded-lg text-gray-500 hover:text-on-surface transition-all cursor-pointer";
+        ribWrap.classList.add('hidden');
+        phoneWrap.classList.remove('hidden');
+      }
+    }
+
+    // 3. Gestion Saisie Code Retrait
+    function handleCodeInput(val) {
+      const clean = val.replace(/\s+/g, '');
+      const codeBox = document.getElementById('verified-code-box');
+      const clientName = document.getElementById('code-client-name');
+
+      if (clean.length >= 6) {
+        codeBox.classList.remove('hidden');
+        if (clean === '882104') {
+          clientName.textContent = "Mariam SANNI (+229 95 12 34 56)";
+          setWithdrawAmount(25000);
+        } else if (clean === '409152') {
+          clientName.textContent = "Koffi MENSAH (+229 97 45 67 89)";
+          setWithdrawAmount(50000);
+        } else {
+          clientName.textContent = "Client Switch Enregistré";
+        }
+      }
+    }
+
+    function pickDemoCode(code, name, amount) {
+      document.getElementById('withdrawalCode').value = code;
+      document.getElementById('code-client-name').textContent = `${name} (+229 ...)`;
+      document.getElementById('verified-code-box').classList.remove('hidden');
+      setWithdrawAmount(amount);
+    }
+
+    function scanQrCodeDemo() {
+      alert("📷 Scanner QR Code activé : Code #882104 détecté avec succès !");
+      pickDemoCode('882104', 'Mariam SANNI', 25000);
+    }
+
+    // 4. Montants & Calculs
+    function setWithdrawAmount(amt) {
+      document.getElementById('withdrawAmount').value = amt;
+      
+      const pills = document.querySelectorAll('.quick-pill');
+      pills.forEach(p => {
+        if (parseInt(p.textContent.replace(/\s+/g, '')) === amt) {
+          p.classList.add('pill-active');
+        } else {
+          p.classList.remove('pill-active');
+        }
+      });
+
+      calculateWithdrawal(amt);
+    }
+
+    function calculateWithdrawal(amount) {
+      const amt = parseInt(amount) || 0;
+      
+      // Commissions Agent sur Retrait (~0.8% à 1% sur Switch)
+      let commission = Math.max(100, Math.round(amt * 0.008));
+      document.getElementById('withdraw-commission-text').textContent = `+${commission.toLocaleString('fr-FR')} FCFA`;
+      document.getElementById('cash-to-give-text').textContent = `${amt.toLocaleString('fr-FR')} FCFA`;
+
+      const newFloat = initialFloat + amt;
+      document.getElementById('increased-float-text').textContent = `${newFloat.toLocaleString('fr-FR')} FCFA (+${amt.toLocaleString('fr-FR')} F)`;
+    }
+
+    // 5. Modale PIN
+    function openPinConfirmation() {
+      const amount = document.getElementById('withdrawAmount').value;
+      if (!amount || amount < 500) {
+        alert("Le montant minimum de retrait est de 500 FCFA.");
+        return;
+      }
+
+      let clientLabel = "";
+      let networkLabel = "";
+
+      if (withdrawalMode === 'code') {
+        const code = document.getElementById('withdrawalCode').value.trim();
+        if (!code || code.length < 4) {
+          alert("Veuillez saisir le code de retrait client.");
+          return;
+        }
+        clientLabel = document.getElementById('code-client-name').textContent;
+        networkLabel = `Code Retrait Switch #${code}`;
+      } else {
+        const net = document.getElementById('selectedDirectNetwork').value;
+        if (net === 'switch') {
+          const ident = (directIdMode === 'rib') ? document.getElementById('directClientRib').value.trim() : document.getElementById('directClientPhone').value.trim();
+          clientLabel = `Client Switch (${ident})`;
+          networkLabel = "Switch Bénin (Push)";
+        } else {
+          const phone = document.getElementById('directClientPhone').value.trim();
+          clientLabel = `Client (+229 ${phone})`;
+          networkLabel = (net === 'mtn') ? 'MTN MoMo' : (net === 'moov' ? 'Moov Money' : 'Celtiis Cash');
+        }
+      }
+
+      document.getElementById('modal-recap-client').textContent = clientLabel;
+      document.getElementById('modal-recap-network').textContent = networkLabel;
+      document.getElementById('modal-recap-amount').textContent = `${parseInt(amount).toLocaleString('fr-FR')} FCFA`;
+
+      pinCode = "";
+      updatePinDots();
+      document.getElementById('pin-modal').classList.remove('hidden');
+    }
+
+    function closePinModal() {
+      document.getElementById('pin-modal').classList.add('hidden');
+    }
+
+    function pressPin(num) {
+      if (pinCode.length < 4) {
+        pinCode += num;
+        updatePinDots();
+        if (pinCode.length === 4) {
+          setTimeout(executeWithdrawal, 200);
+        }
+      }
+    }
+
+    function deletePin() {
+      if (pinCode.length > 0) {
+        pinCode = pinCode.slice(0, -1);
+        updatePinDots();
+      }
+    }
+
+    function pressBiometric() {
+      pinCode = "1234";
+      updatePinDots();
+      setTimeout(executeWithdrawal, 200);
+    }
+
+    function updatePinDots() {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`pindot-${i}`);
+        if (i <= pinCode.length) {
+          dot.className = "w-3.5 h-3.5 rounded-full border-2 border-primary bg-primary transition-all scale-110";
+        } else {
+          dot.className = "w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all";
+        }
+      }
+    }
+
+    // 6. Exécution du Retrait & Redirection vers le Reçu Agent
+    function executeWithdrawal() {
+      closePinModal();
+      
+      const amount = parseInt(document.getElementById('withdrawAmount').value) || 25000;
+      const client = document.getElementById('modal-recap-client').textContent;
+      const netLabel = document.getElementById('modal-recap-network').textContent;
+      const commText = document.getElementById('withdraw-commission-text').textContent;
+      const ref = `TRX-RET-${Math.floor(10000 + Math.random() * 90000)}`;
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+      const trxData = {
+        title: "Retrait d'espèces (Cash-Out Client)",
+        amount: amount,
+        fee: "0 FCFA",
+        beneficiary: client,
+        network: netLabel,
+        commission: commText,
+        source: "Caisse Espèces Guichet",
+        ref: ref,
+        date: dateStr,
+        returnUrl: "../tableau_de_bord_agent/code.html",
+        returnLabel: "Retour au Tableau de Bord Agent"
+      };
+
+      localStorage.setItem('switch_last_transaction', JSON.stringify(trxData));
+
+      if (window.switchNavigate) {
+        window.switchNavigate('../recu_operation_agent/code.html');
+      } else {
+        window.location.href = '../recu_operation_agent/code.html';
+      }
+    }
+
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', () => {
+      calculateWithdrawal(25000);
+    });
+  </script>
+
+</body>
+</html>
