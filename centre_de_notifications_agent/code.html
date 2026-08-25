@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Notifications Guichet Agent - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .notif-card {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .notif-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Modal Animation */
+    .modal-enter {
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-32 flex flex-col justify-between antialiased selection:bg-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-lg mx-auto px-container-margin pt-6 pb-2 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="goBack()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-lg font-extrabold text-on-surface">Notifications Guichet</h1>
+          <span class="text-[9px] font-black uppercase text-purple-900 bg-purple-100 border border-purple-300 px-2 py-0.5 rounded-full">
+            AGT-4092
+          </span>
+        </div>
+        <p class="text-xs text-on-surface-variant font-medium">Alertes de trésorerie, commissions & sécurité</p>
+      </div>
+    </div>
+
+    <!-- Actions: Mark all read & Clear -->
+    <div class="flex items-center gap-1.5">
+      <button onclick="markAllRead()" class="px-3 py-1.5 rounded-full bg-white border border-outline-variant/40 hover:bg-purple-50 text-primary font-bold text-xs shadow-sm transition-colors cursor-pointer flex items-center gap-1" title="Tout marquer comme lu">
+        <span class="material-symbols-outlined text-base">done_all</span>
+        <span class="hidden sm:inline">Tout lire</span>
+      </button>
+      <button onclick="clearAllNotifications()" class="w-9 h-9 rounded-full bg-white border border-outline-variant/40 hover:bg-rose-50 hover:text-rose-600 text-gray-400 flex items-center justify-center transition-colors cursor-pointer" title="Effacer tout">
+        <span class="material-symbols-outlined text-base">delete_sweep</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-lg mx-auto px-container-margin flex flex-col gap-4 pt-2 flex-1">
+    
+    <!-- Filter Tabs (Toutes, Commissions, Float, Sécurité) -->
+    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+      <button type="button" onclick="filterNotifs('all')" id="tab-all" class="px-4 py-2 rounded-full text-xs font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap flex items-center gap-1.5">
+        <span>Toutes</span>
+        <span id="badge-all" class="bg-white/20 px-1.5 py-0.2 rounded-full text-[10px]">3</span>
+      </button>
+      <button type="button" onclick="filterNotifs('comm')" id="tab-comm" class="px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap flex items-center gap-1.5">
+        <span>Commissions 💰</span>
+        <span id="badge-comm" class="bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded-full text-[10px]">1</span>
+      </button>
+      <button type="button" onclick="filterNotifs('float')" id="tab-float" class="px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap flex items-center gap-1.5">
+        <span>Trésorerie & Float 🏦</span>
+        <span id="badge-float" class="bg-purple-100 text-primary px-1.5 py-0.2 rounded-full text-[10px]">1</span>
+      </button>
+      <button type="button" onclick="filterNotifs('sec')" id="tab-sec" class="px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap flex items-center gap-1.5">
+        <span>Sécurité Guichet 🛡️</span>
+        <span id="badge-sec" class="bg-rose-100 text-rose-700 px-1.5 py-0.2 rounded-full text-[10px]">1</span>
+      </button>
+    </div>
+
+    <!-- Notifications List Section -->
+    <div class="flex flex-col gap-3" id="notifs-list">
+
+      <!-- 1. Commission Agent Créditée (Commissions) -->
+      <div id="notif-item-1" data-cat="comm" onclick="openNotifDetail(1)" class="notif-card bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md">
+        <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shrink-0">
+          <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">payments</span>
+        </div>
+        <div class="flex-1 space-y-1">
+          <div class="flex items-center justify-between">
+            <h3 class="font-extrabold text-sm text-on-surface">Commissions cumulées créditées</h3>
+            <span class="text-[11px] text-gray-400 font-medium">À l'instant</span>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Félicitations ! Vous avez généré <b class="text-emerald-700 font-mono">+1 450 FCFA</b> de commissions sur vos 4 dernières opérations du guichet.
+          </p>
+        </div>
+        <span id="dot-1" class="w-2.5 h-2.5 rounded-full bg-primary shrink-0 mt-1.5 unread-dot"></span>
+      </div>
+
+      <!-- 2. Validation Float Réapprovisionnement (Float) -->
+      <div id="notif-item-2" data-cat="float" onclick="openNotifDetail(2)" class="notif-card bg-white rounded-3xl p-4.5 border border-purple-100 bg-purple-50/20 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md">
+        <div class="w-11 h-11 rounded-2xl bg-purple-100 text-primary flex items-center justify-center font-bold shrink-0">
+          <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+        </div>
+        <div class="flex-1 space-y-1">
+          <div class="flex items-center justify-between">
+            <h3 class="font-extrabold text-sm text-primary">Réapprovisionnement Float Validé</h3>
+            <span class="text-[11px] text-primary font-medium">Il y a 30 min</span>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Votre demande de Float de <b class="text-primary font-mono">+500 000 FCFA</b> a été approuvée et créditée sur votre trésorerie caisse.
+          </p>
+        </div>
+        <span id="dot-2" class="w-2.5 h-2.5 rounded-full bg-primary shrink-0 mt-1.5 unread-dot"></span>
+      </div>
+
+      <!-- 3. Alerte Sécurité Connexion Guichet (Sécurité) -->
+      <div id="notif-item-3" data-cat="sec" onclick="openNotifDetail(3)" class="notif-card bg-white rounded-3xl p-4.5 border border-rose-100 bg-rose-50/20 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md">
+        <div class="w-11 h-11 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold shrink-0">
+          <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">security</span>
+        </div>
+        <div class="flex-1 space-y-1">
+          <div class="flex items-center justify-between">
+            <h3 class="font-extrabold text-sm text-rose-800">Alerte Sécurité Session Guichet</h3>
+            <span class="text-[11px] text-rose-600 font-medium">Il y a 2h</span>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Ouverture de session de caisse confirmée sur le terminal <b>POS-COTONOU-04</b> avec vérification biométrique.
+          </p>
+        </div>
+        <span id="dot-3" class="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0 mt-1.5 unread-dot"></span>
+      </div>
+
+      <!-- 4. Circulaire Partenaire Réseau (Commissions) -->
+      <div id="notif-item-4" data-cat="comm" onclick="openNotifDetail(4)" class="notif-card bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md">
+        <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold shrink-0">
+          <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">campaign</span>
+        </div>
+        <div class="flex-1 space-y-1">
+          <div class="flex items-center justify-between">
+            <h3 class="font-extrabold text-sm text-on-surface">Bonus Volume Cash-In & Cash-Out</h3>
+            <span class="text-[11px] text-gray-400 font-medium">Hier</span>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Atteignez 2 000 000 FCFA d'opérations cette semaine et recevez un <b class="text-primary font-mono">+15 000 FCFA de Prime Agent</b>.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="hidden bg-white rounded-3xl p-8 border border-outline-variant/40 shadow-sm flex flex-col items-center justify-center text-center gap-3 my-4">
+      <div class="w-16 h-16 rounded-full bg-purple-50 text-primary flex items-center justify-center">
+        <span class="material-symbols-outlined text-3xl">notifications_off</span>
+      </div>
+      <h3 class="text-base font-extrabold text-on-surface">Guichet à jour !</h3>
+      <p class="text-xs text-on-surface-variant max-w-xs">
+        Aucune alerte en attente dans cette catégorie.
+      </p>
+      <button onclick="filterNotifs('all')" class="mt-2 px-4 py-2 rounded-full bg-purple-50 text-primary text-xs font-bold hover:bg-purple-100 transition-colors cursor-pointer">
+        Voir toutes les notifications
+      </button>
+    </div>
+
+    <!-- Agent Notification Channels Preferences -->
+    <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3.5 mt-2">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2.5">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-xl">tune</span>
+          <h3 class="font-extrabold text-sm text-on-surface">Canaux d'Alerte Guichet</h3>
+        </div>
+        <span class="text-[10px] font-bold text-on-surface-variant uppercase">Paramètres</span>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <!-- Push Caisse -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-purple-50 text-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-base">notifications_active</span>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-on-surface">Alertes Caisse Push</h4>
+              <p class="text-[10px] text-on-surface-variant">Seuil de Float bas et codes clients</p>
+            </div>
+          </div>
+          <input type="checkbox" checked class="w-5 h-5 text-primary rounded-md focus:ring-primary cursor-pointer"/>
+        </div>
+
+        <!-- SMS Float -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <span class="material-symbols-outlined text-base">sms</span>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-on-surface">Avis SMS de Réapprovisionnement</h4>
+              <p class="text-[10px] text-on-surface-variant">Reçu de dépôt banque au +229 97 00 00 00</p>
+            </div>
+          </div>
+          <input type="checkbox" checked class="w-5 h-5 text-primary rounded-md focus:ring-primary cursor-pointer"/>
+        </div>
+
+        <!-- WhatsApp Agent -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
+              <span class="material-symbols-outlined text-base">chat</span>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-on-surface">Rapport Quotidien WhatsApp</h4>
+              <p class="text-[10px] text-on-surface-variant">Synthèse des commissions & clôture caisse</p>
+            </div>
+          </div>
+          <input type="checkbox" checked class="w-5 h-5 text-primary rounded-md focus:ring-primary cursor-pointer"/>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : Détail d'une Notification Agent -->
+  <!-- ============================================================ -->
+  <div id="notif-detail-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm hidden flex items-end justify-center">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-10 shadow-2xl modal-enter flex flex-col gap-4">
+      
+      <div class="w-full flex items-center justify-between">
+        <span class="w-12 h-1 bg-outline-variant rounded-full mx-auto -mr-6"></span>
+        <button onclick="closeNotifModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div id="modal-icon-box" class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center shrink-0">
+          <span id="modal-icon" class="material-symbols-outlined text-2xl">notifications</span>
+        </div>
+        <div>
+          <h3 id="modal-title" class="text-base font-black text-on-surface">Titre Notification</h3>
+          <p id="modal-time" class="text-xs text-on-surface-variant">Date</p>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-surface-container-low/60 border border-outline-variant/60 flex flex-col gap-2.5 text-xs">
+        <p id="modal-description" class="text-gray-700 leading-relaxed font-medium">
+          Détails complets...
+        </p>
+        <div id="modal-extra-details" class="flex flex-col gap-1.5 pt-2 border-t border-outline-variant/40">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <a id="modal-action-btn" href="#" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-xs sm:text-sm no-underline text-center cursor-pointer">
+        <span id="modal-action-label">Accéder à l'Action</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Logic -->
+  <script>
+    const agentNotifsData = {
+      1: {
+        title: "Commissions cumulées créditées",
+        time: "Aujourd'hui à 15:30 • Trésorerie Agent",
+        icon: "payments",
+        iconClass: "bg-emerald-50 text-emerald-600",
+        description: "Votre solde de commissions retirables a été augmenté de +1 450 FCFA suite à 4 opérations de caisse (3 dépôts et 1 retrait servis).",
+        extras: `
+          <div class="flex justify-between"><span>Commissions créditées :</span><b class="text-emerald-700 font-mono">+1 450 FCFA</b></div>
+          <div class="flex justify-between"><span>Nouveau Solde Retirable :</span><b class="font-mono text-primary font-bold">48 750 FCFA</b></div>
+          <div class="flex justify-between"><span>Guichetier :</span><b>Adèle K. (AGT-4092)</b></div>
+        `,
+        actionLabel: "Voir mon Solde Commissions",
+        actionUrl: "../tableau_de_bord_agent/code.html"
+      },
+      2: {
+        title: "Réapprovisionnement Float Validé",
+        time: "Aujourd'hui à 15:00 • Trésorerie Switch",
+        icon: "account_balance_wallet",
+        iconClass: "bg-purple-100 text-primary",
+        description: "Votre demande de réapprovisionnement par virement bancaire a été validée avec succès par la Trésorerie Centrale Switch Bénin.",
+        extras: `
+          <div class="flex justify-between"><span>Montant Float crédité :</span><b class="text-primary font-mono font-bold">+500 000 FCFA</b></div>
+          <div class="flex justify-between"><span>Solde Float actuel :</span><b class="font-mono">1 500 000 FCFA</b></div>
+          <div class="flex justify-between"><span>Réf. Virement :</span><b class="font-mono">#FLOAT-REQ-84920</b></div>
+        `,
+        actionLabel: "Gérer la Trésorerie Float",
+        actionUrl: "../demande_de_r_approvisionnement_float/code.html"
+      },
+      3: {
+        title: "Alerte Sécurité Session Guichet",
+        time: "Aujourd'hui à 13:30 • Cotonou, Bénin",
+        icon: "security",
+        iconClass: "bg-rose-100 text-rose-600",
+        description: "Ouverture de session de caisse enregistrée avec succès sur le terminal POS-COTONOU-04 après validation du code PIN Agent et empreinte.",
+        extras: `
+          <div class="flex justify-between"><span>Terminal :</span><b>POS-COTONOU-04</b></div>
+          <div class="flex justify-between"><span>Statut Guichet :</span><b class="text-emerald-700">Ouvert • Actif</b></div>
+          <div class="flex justify-between"><span>Localisation :</span><b>Cadjehoun, Cotonou 🇧🇯</b></div>
+        `,
+        actionLabel: "Gérer le Profil Guichet",
+        actionUrl: "../param_tres_et_profil_agent/code.html"
+      },
+      4: {
+        title: "Bonus Volume Cash-In & Cash-Out",
+        time: "Hier à 10:00 • Challenge Réseau",
+        icon: "campaign",
+        iconClass: "bg-amber-50 text-amber-600",
+        description: "Participez au challenge hebdomadaire des agents Switch Bénin ! Atteignez 2 000 000 FCFA d'opérations et empochez une prime de +15 000 FCFA.",
+        extras: `
+          <div class="flex justify-between"><span>Objectif Semaine :</span><b class="font-mono">2 000 000 FCFA</b></div>
+          <div class="flex justify-between"><span>Prime Cash :</span><b class="text-emerald-700 font-mono font-bold">+15 000 FCFA</b></div>
+        `,
+        actionLabel: "Voir l'Historique de mes Opérations",
+        actionUrl: "../historique_des_op_rations_agent/code.html"
+      }
+    };
+
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../tableau_de_bord_agent/code.html';
+      }
+    }
+
+    function markAllRead() {
+      document.querySelectorAll('.unread-dot').forEach(dot => dot.remove());
+      const bAll = document.getElementById('badge-all');
+      const bComm = document.getElementById('badge-comm');
+      const bFloat = document.getElementById('badge-float');
+      const bSec = document.getElementById('badge-sec');
+      if (bAll) bAll.textContent = "0";
+      if (bComm) bComm.remove();
+      if (bFloat) bFloat.remove();
+      if (bSec) bSec.remove();
+    }
+
+    function clearAllNotifications() {
+      document.getElementById('notifs-list').innerHTML = "";
+      document.getElementById('empty-state').classList.remove('hidden');
+      const bAll = document.getElementById('badge-all');
+      if (bAll) bAll.textContent = "0";
+    }
+
+    function filterNotifs(category) {
+      const cards = document.querySelectorAll('#notifs-list .notif-card');
+      const tabs = ['all', 'comm', 'float', 'sec'];
+
+      tabs.forEach(t => {
+        const btn = document.getElementById('tab-' + t);
+        if (btn) {
+          if (t === category) {
+            btn.className = 'px-4 py-2 rounded-full text-xs font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap flex items-center gap-1.5';
+          } else {
+            btn.className = 'px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap flex items-center gap-1.5';
+          }
+        }
+      });
+
+      let visibleCount = 0;
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-cat') === category) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      const empty = document.getElementById('empty-state');
+      if (visibleCount === 0) {
+        empty.classList.remove('hidden');
+      } else {
+        empty.classList.add('hidden');
+      }
+    }
+
+    function openNotifDetail(id) {
+      const dot = document.getElementById(`dot-${id}`);
+      if (dot) dot.remove();
+
+      const data = agentNotifsData[id];
+      if (!data) return;
+
+      document.getElementById('modal-title').textContent = data.title;
+      document.getElementById('modal-time').textContent = data.time;
+      document.getElementById('modal-icon').textContent = data.icon;
+      document.getElementById('modal-icon-box').className = `w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${data.iconClass}`;
+      document.getElementById('modal-description').textContent = data.description;
+      document.getElementById('modal-extra-details').innerHTML = data.extras;
+      document.getElementById('modal-action-label').textContent = data.actionLabel;
+      document.getElementById('modal-action-btn').href = data.actionUrl;
+
+      document.getElementById('notif-detail-modal').classList.remove('hidden');
+    }
+
+    function closeNotifModal() {
+      document.getElementById('notif-detail-modal').classList.add('hidden');
+    }
+  </script>
+
+  <!-- Bottom Navigation Bar Agent -->
+  <nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+    <a href="../tableau_de_bord_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">dashboard</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+    </a>
+    <a href="../historique_des_op_rations_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">swap_horiz</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Opérations</span>
+    </a>
+    <a href="../valider_une_op_ration_client/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.3);position:relative;top:-6px;">
+        <span class="material-symbols-outlined" style="font-size:22px;">qr_code_scanner</span>
+      </div>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-4px;">Servir</span>
+    </a>
+    <a href="../demande_de_r_approvisionnement_float/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">account_balance_wallet</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Float</span>
+    </a>
+    <a href="../param_tres_et_profil_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">manage_accounts</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Guichet</span>
+    </a>
+  </nav>
+
+</body>
+</html>
