@@ -18,9 +18,12 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    .limit-hero {
-      background: linear-gradient(135deg, #5E3BDC 0%, #4323B0 50%, #2A1175 100%);
-      box-shadow: 0 16px 36px -10px rgba(94, 59, 220, 0.3);
+    .tier-card {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tier-card.active-tier {
+      border: 2px solid #5E3BDC;
+      box-shadow: 0 10px 25px -5px rgba(94, 59, 220, 0.15);
     }
   </style>
 </head>
@@ -34,153 +37,176 @@
       </button>
       <div>
         <h1 class="text-lg sm:text-xl font-extrabold text-on-surface">Plafonds & Limites</h1>
-        <p class="text-xs text-on-surface-variant">Sécurité et capacités de votre compte</p>
+        <p class="text-xs text-on-surface-variant">Paliers de conformité & capacités de compte</p>
       </div>
     </div>
-    <span class="text-xs font-black uppercase text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">Niveau 2</span>
+    <span id="header-tier-tag" class="text-xs font-black uppercase text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">Niveau 1</span>
   </header>
 
   <!-- Main Content Canvas -->
-  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-6 pt-1">
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-1">
 
-    <!-- 1. Hero KYC Status Card -->
-    <section class="limit-hero rounded-[32px] p-6 text-white relative overflow-hidden flex flex-col gap-3">
+    <!-- 1. Hero Dynamic Status Card -->
+    <section class="bg-gradient-to-br from-[#5E3BDC] to-[#2A1175] rounded-[32px] p-6 text-white relative overflow-hidden flex flex-col gap-3 shadow-lg">
       <div class="flex items-center justify-between">
         <div>
-          <span class="text-[11px] font-bold uppercase tracking-wider text-purple-200 block">Statut Actuel du Compte</span>
-          <h2 class="text-xl sm:text-2xl font-black mt-0.5">Niveau 2 : Vérifié ANIP</h2>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-purple-200 block">Capacité de votre compte</span>
+          <h2 id="hero-tier-title" class="text-xl sm:text-2xl font-black mt-0.5">Niveau 1 : Inscription Base</h2>
         </div>
-        <div class="w-11 h-11 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center text-emerald-300">
-          <span class="material-symbols-outlined text-2xl font-bold">verified</span>
-        </div>
-      </div>
-
-      <div class="bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/15 flex items-center justify-between text-xs">
-        <span>Plafond Quotidien Total :</span>
-        <span class="font-black font-mono text-sm text-emerald-300">2 000 000 FCFA / jour</span>
-      </div>
-    </section>
-
-    <!-- 2. Consumption Gauges (Envois, Retraits, Cartes) -->
-    <section class="flex flex-col gap-4">
-      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Utilisation en Temps Réel (Aujourd'hui)</h3>
-
-      <!-- Gauge 1: Transferts & Paiements -->
-      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold">
-              <span class="material-symbols-outlined text-lg">send</span>
-            </div>
-            <div>
-              <h4 class="font-extrabold text-xs sm:text-sm text-on-surface">Transferts & Envois</h4>
-              <p class="text-[10px] text-on-surface-variant">Switch, MoMo, Banques</p>
-            </div>
-          </div>
-          <span class="text-xs font-black font-mono text-primary">450 000 / 2 000 000 F</span>
-        </div>
-
-        <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
-          <div class="h-full bg-primary rounded-full" style="width: 22.5%;"></div>
-        </div>
-
-        <div class="flex items-center justify-between text-[11px] text-on-surface-variant font-medium">
-          <span>Consommé : 22.5%</span>
-          <span class="text-emerald-700 font-bold">Reste disponible : 1 550 000 FCFA</span>
+        <div class="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center text-amber-300">
+          <span class="material-symbols-outlined text-2xl font-bold" id="hero-tier-icon">shield</span>
         </div>
       </div>
 
-      <!-- Gauge 2: Retraits en Espèces (Agences & Kiosques) -->
-      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
-              <span class="material-symbols-outlined text-lg">storefront</span>
-            </div>
-            <div>
-              <h4 class="font-extrabold text-xs sm:text-sm text-on-surface">Retraits en Espèces</h4>
-              <p class="text-[10px] text-on-surface-variant">Kiosques & Agences Switch</p>
-            </div>
-          </div>
-          <span class="text-xs font-black font-mono text-emerald-700">100 000 / 1 000 000 F</span>
-        </div>
-
-        <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
-          <div class="h-full bg-emerald-500 rounded-full" style="width: 10%;"></div>
-        </div>
-
-        <div class="flex items-center justify-between text-[11px] text-on-surface-variant font-medium">
-          <span>Consommé : 10%</span>
-          <span class="text-emerald-700 font-bold">Reste disponible : 900 000 FCFA</span>
-        </div>
-      </div>
-
-      <!-- Gauge 3: Cartes Virtuelles Internationales -->
-      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold">
-              <span class="material-symbols-outlined text-lg">credit_card</span>
-            </div>
-            <div>
-              <h4 class="font-extrabold text-xs sm:text-sm text-on-surface">Achats Cartes Virtuelles</h4>
-              <p class="text-[10px] text-on-surface-variant">Paiements Visa en ligne</p>
-            </div>
-          </div>
-          <span class="text-xs font-black font-mono text-indigo-700">75 000 / 500 000 F</span>
-        </div>
-
-        <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
-          <div class="h-full bg-indigo-600 rounded-full" style="width: 15%;"></div>
-        </div>
-
-        <div class="flex items-center justify-between text-[11px] text-on-surface-variant font-medium">
-          <span>Consommé : 15%</span>
-          <span class="text-indigo-700 font-bold">Reste disponible : 425 000 FCFA</span>
-        </div>
+      <div class="bg-white/10 backdrop-blur-md p-3.5 rounded-2xl border border-white/15 flex items-center justify-between text-xs">
+        <span>Plafond Global de Fonds :</span>
+        <span id="hero-tier-limit" class="font-black font-mono text-base text-emerald-300">500 000 FCFA</span>
       </div>
     </section>
 
-    <!-- 3. Security Limiter Slider -->
-    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <h4 class="font-extrabold text-sm text-on-surface">Plafond Personnel Personnalisé</h4>
-          <p class="text-xs text-on-surface-variant">Ajustez vous-même votre limite de sécurité maximale</p>
+    <!-- 2. The 3 Official KYC Tiers Ladder -->
+    <section class="flex flex-col gap-3.5">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Les 3 Paliers Switch Bénin</h3>
+
+      <!-- TIER 1: Inscription Débutant (500 000 FCFA) -->
+      <div id="tier-1-card" class="tier-card bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3 relative">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-gray-100 text-gray-700 flex items-center justify-center font-black text-sm">
+              1
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-extrabold text-sm text-on-surface">Niveau 1 : Débutant</h4>
+                <span id="t1-badge" class="text-[10px] font-black uppercase bg-primary/10 text-primary px-2 py-0.5 rounded-full">Actuel</span>
+              </div>
+              <p class="text-xs text-on-surface-variant">Numéro de téléphone vérifié par OTP</p>
+            </div>
+          </div>
+          <span class="font-mono font-black text-sm text-on-surface">500 000 F</span>
         </div>
-        <span class="font-black font-mono text-primary text-base" id="slider-val">1 000 000 F</span>
+
+        <div class="text-xs text-on-surface-variant bg-surface-container/40 p-3 rounded-2xl flex items-center justify-between">
+          <span>Transferts & Dépôts de base</span>
+          <span class="font-bold text-on-surface">Retraits limités</span>
+        </div>
       </div>
 
-      <input type="range" min="100000" max="2000000" step="50000" value="1000000" oninput="updateCustomLimit(this.value)" class="w-full accent-primary cursor-pointer"/>
-      
-      <div class="flex justify-between text-[10px] text-on-surface-variant font-bold">
-        <span>100 000 F (Strict)</span>
-        <span>2 000 000 F (Maximum Niveau 2)</span>
+      <!-- TIER 2: Vérifié ANIP (2 000 000 FCFA) -->
+      <div id="tier-2-card" class="tier-card bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3 relative">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-black text-sm">
+              2
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-extrabold text-sm text-on-surface">Niveau 2 : Vérifié ANIP</h4>
+                <span id="t2-badge" class="text-[10px] font-black uppercase bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">Recommandé</span>
+              </div>
+              <p class="text-xs text-on-surface-variant">Pièce d'identité (CIP / CNI / Passeport)</p>
+            </div>
+          </div>
+          <span class="font-mono font-black text-sm text-emerald-700">2 000 000 F</span>
+        </div>
+
+        <div class="flex items-center justify-between text-xs pt-1">
+          <span class="text-on-surface-variant">Cartes virtuelles & Retraits agence activés</span>
+          <button onclick="window.switchNavigate ? window.switchNavigate('../kyc_verification_identite/code.html') : window.location.href='../kyc_verification_identite/code.html'" class="px-3 py-1.5 rounded-full bg-emerald-600 text-white font-bold text-xs shadow-sm hover:bg-emerald-700 cursor-pointer">
+            Passer au Niv. 2
+          </button>
+        </div>
+      </div>
+
+      <!-- TIER 3: VIP Entreprise & Grand Compte (10 000 000 FCFA) -->
+      <div id="tier-3-card" class="tier-card bg-white rounded-3xl p-5 border border-amber-300/60 shadow-sm flex flex-col gap-3 relative bg-gradient-to-r from-amber-500/5 to-transparent">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-amber-400 text-amber-950 flex items-center justify-center font-black text-sm">
+              3
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-extrabold text-sm text-on-surface">Niveau 3 : VIP Entreprise</h4>
+                <span id="t3-badge" class="text-[10px] font-black uppercase bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-full">VIP</span>
+              </div>
+              <p class="text-xs text-on-surface-variant">Numéro IFU + Justificatif de domicile SBEE</p>
+            </div>
+          </div>
+          <span class="font-mono font-black text-sm text-amber-900">10 000 000 F</span>
+        </div>
+
+        <div class="flex items-center justify-between text-xs pt-1">
+          <span class="text-on-surface-variant">Retraits illimités & Conseiller dédié</span>
+          <button onclick="window.switchNavigate ? window.switchNavigate('../verification_niveau_superieur/code.html') : window.location.href='../verification_niveau_superieur/code.html'" class="px-3.5 py-1.5 rounded-full bg-amber-500 text-white font-bold text-xs shadow-sm hover:bg-amber-600 cursor-pointer">
+            Débloquer 10M VIP
+          </button>
+        </div>
       </div>
     </section>
 
-    <!-- 4. Upgrade to Level 3 VIP Action -->
-    <div class="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-400/30 rounded-3xl p-5 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold">
-          <span class="material-symbols-outlined text-2xl">workspace_premium</span>
-        </div>
-        <div>
-          <h4 class="font-extrabold text-xs sm:text-sm text-amber-950">Débloquer le Niveau 3 VIP</h4>
-          <p class="text-[11px] text-amber-800">Plafond jusqu'à 10 000 000 FCFA / jour</p>
-        </div>
+    <!-- 3. Realtime Gauge -->
+    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+      <div class="flex items-center justify-between text-xs">
+        <span class="font-bold text-on-surface">Plafond consommé aujourd'hui</span>
+        <span class="font-mono font-extrabold text-primary" id="gauge-numbers">125 000 / 500 000 F</span>
       </div>
-      <button onclick="window.switchNavigate ? window.switchNavigate('../verification_niveau_superieur/code.html') : window.location.href='../verification_niveau_superieur/code.html'" class="px-3.5 py-2 rounded-full bg-amber-500 text-white font-bold text-xs shadow-sm hover:bg-amber-600 transition-colors cursor-pointer">
-        Augmenter
-      </button>
-    </div>
+
+      <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+        <div class="h-full bg-primary rounded-full" id="gauge-bar" style="width: 25%;"></div>
+      </div>
+
+      <div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+        <span>Consommé : 25%</span>
+        <span class="text-emerald-700 font-bold" id="gauge-remain">Reste disponible : 375 000 FCFA</span>
+      </div>
+    </section>
 
   </main>
 
   <script>
-    function updateCustomLimit(val) {
-      document.getElementById('slider-val').textContent = parseInt(val).toLocaleString() + ' F';
-    }
+    (function renderLimitsPage() {
+      const level = localStorage.getItem('switch_kyc_level') || '1';
+      const headerTag = document.getElementById('header-tier-tag');
+      const heroTitle = document.getElementById('hero-tier-title');
+      const heroLimit = document.getElementById('hero-tier-limit');
+      const heroIcon = document.getElementById('hero-tier-icon');
+      const gaugeNumbers = document.getElementById('gauge-numbers');
+      const gaugeRemain = document.getElementById('gauge-remain');
+
+      const card1 = document.getElementById('tier-1-card');
+      const card2 = document.getElementById('tier-2-card');
+      const card3 = document.getElementById('tier-3-card');
+      const badge1 = document.getElementById('t1-badge');
+      const badge2 = document.getElementById('t2-badge');
+      const badge3 = document.getElementById('t3-badge');
+
+      if (level === '3') {
+        if (headerTag) { headerTag.textContent = 'Niveau 3 VIP'; headerTag.className = 'text-xs font-black uppercase text-amber-900 bg-amber-100 px-3 py-1 rounded-full border border-amber-300'; }
+        if (heroTitle) heroTitle.textContent = 'Niveau 3 : VIP Entreprise';
+        if (heroLimit) heroLimit.textContent = '10 000 000 FCFA / jour';
+        if (heroIcon) heroIcon.textContent = 'workspace_premium';
+        if (gaugeNumbers) gaugeNumbers.textContent = '450 000 / 10 000 000 F';
+        if (gaugeRemain) gaugeRemain.textContent = 'Reste disponible : 9 550 000 FCFA';
+
+        if (card3) card3.classList.add('active-tier');
+        if (badge3) { badge3.textContent = 'Actif ✅'; badge3.className = 'text-[10px] font-black uppercase bg-amber-400 text-amber-950 px-2 py-0.5 rounded-full'; }
+      } else if (level === '2') {
+        if (headerTag) { headerTag.textContent = 'Niveau 2'; headerTag.className = 'text-xs font-black uppercase text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300'; }
+        if (heroTitle) heroTitle.textContent = 'Niveau 2 : Vérifié ANIP';
+        if (heroLimit) heroLimit.textContent = '2 000 000 FCFA / jour';
+        if (heroIcon) heroIcon.textContent = 'verified';
+        if (gaugeNumbers) gaugeNumbers.textContent = '450 000 / 2 000 000 F';
+        if (gaugeRemain) gaugeRemain.textContent = 'Reste disponible : 1 550 000 FCFA';
+
+        if (card2) card2.classList.add('active-tier');
+        if (badge2) { badge2.textContent = 'Actif ✅'; badge2.className = 'text-[10px] font-black uppercase bg-emerald-500 text-white px-2 py-0.5 rounded-full'; }
+      } else {
+        if (headerTag) { headerTag.textContent = 'Niveau 1'; }
+        if (card1) card1.classList.add('active-tier');
+        if (badge1) { badge1.textContent = 'Actif ✅'; badge1.className = 'text-[10px] font-black uppercase bg-primary text-white px-2 py-0.5 rounded-full'; }
+      }
+    })();
   </script>
 
   <script src="../assets/switch.router.js"></script>

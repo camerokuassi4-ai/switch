@@ -588,20 +588,44 @@
 
   function applyGlobalKycState() {
     try {
-      const level = localStorage.getItem("switch_kyc_level");
+      const level = localStorage.getItem("switch_kyc_level") || "1";
+      const kycBadge = document.getElementById("kyc-badge");
+      const heroCard = document.getElementById("hero-card");
+      const greetingSub = document.getElementById("time-greeting");
+
       if (level === "3") {
-        const kycBadge = document.getElementById("kyc-badge");
         if (kycBadge) {
           kycBadge.innerHTML = "👑 Niveau 3 VIP • 10M FCFA";
           kycBadge.className = "text-[10px] font-black uppercase bg-amber-400 text-amber-950 px-2.5 py-0.5 rounded-full border border-amber-300 shadow-sm";
         }
-        const heroCard = document.getElementById("hero-card");
         if (heroCard) {
           heroCard.className = "hero-gradient text-white rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[190px] ring-2 ring-amber-400/40 shadow-2xl";
         }
-        const greetingSub = document.getElementById("time-greeting");
         if (greetingSub) {
           greetingSub.textContent = "Membre VIP ⭐";
+        }
+      } else if (level === "2") {
+        if (kycBadge) {
+          kycBadge.innerHTML = "Niveau 2 Vérifié • 2M FCFA";
+          kycBadge.className = "text-[10px] font-black uppercase bg-emerald-400 text-emerald-950 px-2.5 py-0.5 rounded-full border border-emerald-300 shadow-sm";
+        }
+        if (heroCard) {
+          heroCard.className = "hero-gradient text-white rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[190px]";
+        }
+        if (greetingSub) {
+          greetingSub.textContent = "Compte Vérifié ANIP ✅";
+        }
+      } else {
+        // Niveau 1 par défaut (Nouveau compte limité à 500 000 FCFA)
+        if (kycBadge) {
+          kycBadge.innerHTML = "Niveau 1 • Plafond 500 000 FCFA";
+          kycBadge.className = "text-[10px] font-black uppercase bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-full text-white border border-white/20 shadow-sm";
+        }
+        if (heroCard) {
+          heroCard.className = "hero-gradient text-white rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[190px]";
+        }
+        if (greetingSub) {
+          greetingSub.textContent = "Nouveau Compte (Niv. 1)";
         }
       }
     } catch (e) {}

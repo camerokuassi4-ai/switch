@@ -133,6 +133,7 @@
     }
 
     function submitKyc() {
+      localStorage.setItem('switch_kyc_level', '2');
       if (window.switchNavigate) {
         window.switchNavigate('../bienvenue_succes_onboarding/code.html');
       } else {
