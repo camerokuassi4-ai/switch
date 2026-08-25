@@ -126,7 +126,7 @@
     },
     "transfert_mobile_money": {
       space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null,
-      actions: { "Transférer": ROOT + "confirmation_de_l_op_ration_code/code.html", "Continuer": ROOT + "confirmation_de_l_op_ration_code/code.html" }
+      actions: { "Transférer": ROOT + "confirmation_de_l_op_ration_code/code.html", "Continuer": ROOT + "confirmation_de_l_op_ration_code/code.html", "Suivant": ROOT + "confirmation_de_l_op_ration_code/code.html", "Envoyer": ROOT + "confirmation_de_l_op_ration_code/code.html" }
     },
     "d_p_t_de_fonds": {
       space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null,
@@ -213,7 +213,7 @@
 
     "conversion_de_devises": {
       space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null,
-      actions: { "Convertir": ROOT + "confirmation_de_l_op_ration_code/code.html", "Continuer": ROOT + "confirmation_de_l_op_ration_code/code.html" }
+      actions: { "Confirmer": ROOT + "confirmation_de_l_op_ration_code/code.html", "Convertir": ROOT + "confirmation_de_l_op_ration_code/code.html", "Continuer": ROOT + "confirmation_de_l_op_ration_code/code.html" }
     },
     "simulateur_de_frais": {
       space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null,
@@ -428,7 +428,7 @@
     "margin-left:auto", "margin-right:auto",
     "width:100%", "max-width:var(--app-max-width, 520px)",
     "height:64px",
-    "z-index:9999", "display:flex", "align-items:center",
+    "z-index:90", "display:flex", "align-items:center",
     "justify-content:space-around", "padding:6px 10px",
     "padding-bottom:max(8px, env(safe-area-inset-bottom, 8px))",
     "background:#ffffff",
