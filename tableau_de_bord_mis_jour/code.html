@@ -89,7 +89,7 @@
   <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-1">
 
     <!-- 1. Hero Balance Card (High-End Fintech) -->
-    <section class="hero-gradient text-white rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[190px]">
+    <section id="hero-card" class="hero-gradient text-white rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[190px]">
       <!-- Background Ambient Orbs -->
       <div class="absolute -top-12 -right-12 w-48 h-48 silk-orb-1 rounded-full pointer-events-none"></div>
       <div class="absolute -bottom-16 -left-12 w-48 h-48 silk-orb-2 rounded-full pointer-events-none"></div>
@@ -98,7 +98,7 @@
       <div class="relative z-10 flex items-center justify-between w-full">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold text-purple-200 uppercase tracking-wider">Solde Principal</span>
-          <span class="text-[10px] font-black uppercase bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full text-white border border-white/20">
+          <span id="kyc-badge" class="text-[10px] font-black uppercase bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full text-white border border-white/20">
             Niveau 2 Vérifié
           </span>
         </div>
@@ -379,17 +379,23 @@
       }
     }
 
-    // Dynamic greeting based on current local hour in Benin
-    (function setTimeGreeting() {
-      const hour = new Date().getHours();
-      const el = document.getElementById('time-greeting');
-      if (!el) return;
-      if (hour >= 5 && hour < 12) {
-        el.textContent = "Bonjour ☀️";
-      } else if (hour >= 12 && hour < 18) {
-        el.textContent = "Bon après-midi 🌴";
-      } else {
-        el.textContent = "Bonsoir 🌙";
+    // Dynamic KYC Level status (Level 2 vs Level 3 VIP)
+    (function applyKycLevel() {
+      const level = localStorage.getItem('switch_kyc_level');
+      const badge = document.getElementById('kyc-badge');
+      const card = document.getElementById('hero-card');
+      const greetingSub = document.getElementById('time-greeting');
+      if (level === '3') {
+        if (badge) {
+          badge.innerHTML = '👑 Niveau 3 VIP • 10M FCFA';
+          badge.className = 'text-[10px] font-black uppercase bg-amber-400 text-amber-950 px-2.5 py-0.5 rounded-full border border-amber-300 shadow-sm';
+        }
+        if (card) {
+          card.className = 'hero-gradient text-white rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[190px] ring-2 ring-amber-400/40 shadow-2xl';
+        }
+        if (greetingSub) {
+          greetingSub.textContent = 'Membre VIP ⭐';
+        }
       }
     })();
   </script>

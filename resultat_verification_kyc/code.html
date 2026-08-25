@@ -165,18 +165,23 @@
       const bRej = document.getElementById('toggle-rej');
 
       if (state === 'accepted') {
+        localStorage.setItem('switch_kyc_level', '3');
         sAcc.classList.remove('hidden');
         sRej.classList.add('hidden');
         bAcc.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-600 text-white shadow-sm cursor-pointer';
         bRej.className = 'px-3 py-1 rounded-full text-xs font-bold text-on-surface-variant hover:text-on-surface cursor-pointer';
         launchConfetti();
       } else {
+        localStorage.setItem('switch_kyc_level', '2');
         sAcc.classList.add('hidden');
         sRej.classList.remove('hidden');
         bAcc.className = 'px-3 py-1 rounded-full text-xs font-bold text-on-surface-variant hover:text-on-surface cursor-pointer';
         bRej.className = 'px-3 py-1 rounded-full text-xs font-bold bg-rose-600 text-white shadow-sm cursor-pointer';
       }
     }
+
+    // Set Level 3 by default on successful result arrival
+    localStorage.setItem('switch_kyc_level', '3');
 
     function contactVipSupport() {
       const msg = encodeURIComponent("Bonjour le Support Switch Bénin, j'ai une question concernant le refus de mon justificatif pour la mise à niveau Niveau 3 VIP.");
