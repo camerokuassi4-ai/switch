@@ -90,7 +90,7 @@
       }
     },
     "historique_des_transactions": {
-      space: "user", back: null, nav: "history",
+      space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: "history",
       actions: { "Voir tout": ROOT + "historique_des_transactions/code.html" }
     },
     "historique_vide": {
@@ -750,6 +750,9 @@
       document.querySelector("img[alt='User profile picture']") ||
       document.querySelector("header img");
     if (!avatarImg) return;
+    if (avatarImg.getAttribute("data-no-link") === "true" || avatarImg.closest("[data-no-link='true']")) {
+      return;
+    }
     const clickTarget = avatarImg.closest("div") || avatarImg;
     clickTarget.style.cursor = "pointer";
     clickTarget.addEventListener("click", function (e) {
@@ -757,7 +760,7 @@
       switchNavigate(ROOT + "profil_utilisateur/code.html");
     });
     const greeting = document.querySelector("[data-i18n='greeting']");
-    if (greeting) {
+    if (greeting && greeting.getAttribute("data-no-link") !== "true") {
       greeting.style.cursor = "pointer";
       greeting.addEventListener("click", function (e) {
         e.preventDefault();
