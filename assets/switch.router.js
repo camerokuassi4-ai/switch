@@ -466,11 +466,22 @@
     const htmlText = await resp.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlText, "text/html");
+
+    // Extract custom head styles
+    const headStyles = Array.from(doc.querySelectorAll("head style, head link[rel='stylesheet']")).map(function (el) {
+      if (el.tagName.toLowerCase() === "style") {
+        return { type: "style", content: el.textContent };
+      } else if (el.tagName.toLowerCase() === "link") {
+        return { type: "link", href: el.getAttribute("href") };
+      }
+    }).filter(Boolean);
+
     const pageData = {
       title: doc.title,
       bodyHTML: doc.body.innerHTML,
       bodyClass: doc.body.className,
       bodyStyle: doc.body.getAttribute("style") || "",
+      headStyles: headStyles,
       scripts: Array.from(doc.body.querySelectorAll("script")).map(function (s) {
         return { src: s.getAttribute("src"), content: s.textContent };
       })
@@ -518,6 +529,25 @@
       } else {
         document.body.removeAttribute("style");
       }
+
+      // Inject & synchronize dynamic page styles
+      let dynamicStyleEl = document.getElementById("switch-dynamic-styles");
+      if (!dynamicStyleEl) {
+        dynamicStyleEl = document.createElement("style");
+        dynamicStyleEl.id = "switch-dynamic-styles";
+        document.head.appendChild(dynamicStyleEl);
+      }
+      
+      let collectedCSS = "";
+      if (pageData.headStyles && pageData.headStyles.length > 0) {
+        pageData.headStyles.forEach(function(item) {
+          if (item.type === "style" && item.content) {
+            collectedCSS += "\n" + item.content;
+          }
+        });
+      }
+      dynamicStyleEl.textContent = collectedCSS;
+
       document.body.innerHTML = pageData.bodyHTML;
 
       if (pushState && window.location.href !== normalizedUrl) {
@@ -551,6 +581,20 @@
       window.location.href = normalizedUrl;
     }
   }
+
+  // Preload linked pages in background for instant zero-latency clicks
+  setTimeout(function preloadCommonPages() {
+    const links = Array.from(document.querySelectorAll("a[href]")).map(a => a.getAttribute("href")).filter(h => h && h.endsWith(".html") && !h.startsWith("http"));
+    links.forEach(function(href) {
+      try {
+        const resolved = resolveTarget(href);
+        const norm = new URL(resolved, window.location.href).href;
+        if (!pageCache.has(norm)) {
+          fetchPage(norm).catch(() => {});
+        }
+      } catch (e) {}
+    });
+  }, 1000);
 
   window.switchNavigate = switchNavigate;
   window.switchHandleBack = handleBack;
