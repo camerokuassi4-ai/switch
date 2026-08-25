@@ -3,66 +3,186 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Accueil - Switch</title>
+  <title>Accueil - Switch Bénin</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    
     body {
       font-family: 'Hanken Grotesk', sans-serif;
       min-height: max(884px, 100dvh);
-      background-color: #F8F9FD;
+      background-color: #0F0926;
       color: #1C1A24;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Glowing Orbs */
+    .glow-orb-1 {
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123, 92, 250, 0.45) 0%, rgba(94, 59, 220, 0) 70%);
+      top: -60px;
+      left: -80px;
+      filter: blur(50px);
+      pointer-events: none;
+      animation: pulseGlow 8s ease-in-out infinite alternate;
+    }
+
+    .glow-orb-2 {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 212, 170, 0.25) 0%, rgba(94, 59, 220, 0) 70%);
+      bottom: 40px;
+      right: -60px;
+      filter: blur(60px);
+      pointer-events: none;
+      animation: pulseGlow 6s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(1) translateY(0); opacity: 0.7; }
+      100% { transform: scale(1.15) translateY(20px); opacity: 1; }
+    }
+
+    /* Logo Floating Animation */
+    @keyframes floatSoft {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .animate-float {
+      animation: floatSoft 4.5s ease-in-out infinite;
+    }
+
+    /* Shimmer Effect on CTA */
+    .btn-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-shimmer::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(25deg);
+      animation: shimmer 3.8s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -60%; }
+      30%, 100% { left: 140%; }
+    }
+
+    /* Glassmorphic Sheet */
+    .glass-sheet {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      box-shadow: 0 24px 60px -12px rgba(31, 18, 77, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
     }
   </style>
 </head>
-<body class="bg-background text-on-background font-body-lg min-h-screen flex flex-col justify-between overflow-hidden relative selection:bg-primary selection:text-white">
+<body class="min-h-screen flex flex-col justify-between overflow-hidden relative selection:bg-[#5E3BDC] selection:text-white">
 
-  <!-- Original Background Image -->
-  <img src="../assets/images/img_002.jpg" alt="Background" class="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"/>
+  <!-- 1. Background Image with Rich Vignette Gradient Overlay -->
+  <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+    <img src="../assets/images/img_002.jpg" alt="Background" class="w-full h-full object-cover scale-105 filter saturate-[1.1] brightness-[0.9]"/>
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0F0926]/40 via-[#1C1242]/30 to-[#0F0926]/85"></div>
+    <div class="glow-orb-1"></div>
+    <div class="glow-orb-2"></div>
+  </div>
 
-  <!-- Main Container : 3 blocs répartis avec un espace vertical harmonieux -->
-  <main class="flex-grow flex flex-col justify-between items-center relative w-full h-full px-container-margin pt-12 pb-10 z-10 max-w-md mx-auto min-h-screen">
+  <!-- 2. Main Content Canvas -->
+  <main class="flex-grow flex flex-col justify-between items-center relative w-full h-full px-5 pt-12 pb-8 z-10 max-w-md mx-auto min-h-screen">
 
-    <!-- 1. Original Logo Box (En haut) -->
-    <div class="flex flex-col items-center justify-start w-full pt-4">
-      <div class="bg-white rounded-[28px] p-4 shadow-xl flex items-center justify-center w-24 h-24 border border-outline-variant/30">
-        <img alt="Logo Switch" class="w-full h-full object-contain" src="../assets/images/img_003.jpg"/>
+    <!-- Top Badge & Logo Section -->
+    <div class="flex flex-col items-center justify-start w-full pt-2">
+      
+      <!-- Top Benin Fintech Badge -->
+      <div class="mb-5 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/25 backdrop-blur-md border border-white/40 text-white text-[11px] font-bold shadow-lg">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span class="tracking-wide">🇧🇯 SWITCH BÉNIN • S.A.S</span>
       </div>
+
+      <!-- Floating Logo Box -->
+      <div class="animate-float relative group">
+        <div class="absolute -inset-1.5 rounded-[32px] bg-gradient-to-tr from-[#5E3BDC] to-[#00D4AA] opacity-40 blur-md group-hover:opacity-70 transition-opacity"></div>
+        <div class="relative bg-white/95 backdrop-blur-xl rounded-[28px] p-4 shadow-[0_20px_40px_rgba(94,59,220,0.28)] flex items-center justify-center w-24 h-24 border border-white">
+          <img alt="Logo Switch" class="w-full h-full object-contain drop-shadow-sm" src="../assets/images/img_003.jpg"/>
+        </div>
+      </div>
+
     </div>
 
-    <!-- 2. Original Text Content (Centré) -->
-    <div class="flex flex-col items-center text-center space-y-3 w-full px-4 my-auto">
-      <h1 class="text-3xl md:text-4xl font-extrabold text-black leading-tight tracking-tight">
-        Vos transferts,<br/><span class="text-[#5e3bdc]">simplifiés</span>
+    <!-- Centered Glassmorphic Presentation Card -->
+    <div class="glass-sheet rounded-[36px] p-6 sm:p-7 w-full my-auto flex flex-col items-center text-center space-y-3.5 shadow-2xl relative">
+      
+      <h1 class="text-3xl sm:text-4xl font-black text-[#1C1A24] leading-[1.15] tracking-tight">
+        Vos transferts,<br/>
+        <span class="bg-gradient-to-r from-[#5E3BDC] via-[#7B5CFA] to-[#4323B0] bg-clip-text text-transparent">simplifiés</span>
       </h1>
-      <p class="text-black font-semibold text-sm md:text-base max-w-xs mx-auto leading-relaxed">
+
+      <p class="text-[#4A4557] font-semibold text-xs sm:text-sm max-w-xs mx-auto leading-relaxed">
         La façon la plus rapide et sécurisée de gérer votre argent au Bénin et au-delà.
       </p>
+
+      <!-- Trust Indicator Pills -->
+      <div class="pt-2 flex items-center justify-center gap-2 border-t border-gray-100/80 w-full text-[10px] font-bold text-gray-500">
+        <span class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-xs text-[#5E3BDC]">verified_user</span>
+          Agrément BCEAO
+        </span>
+        <span>•</span>
+        <span class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-xs text-emerald-600">bolt</span>
+          0F sans frais
+        </span>
+      </div>
+
     </div>
 
-    <!-- 3. Bottom CTA Actions (En bas) -->
-    <div class="w-full pb-4">
-      <button onclick="startNewAccount()" class="w-full bg-[#5e3bdc] text-white py-4 px-6 rounded-full font-bold text-base shadow-[0_10px_20px_rgba(94,59,220,0.35)] hover:scale-[0.99] active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
+    <!-- Bottom Actions Section -->
+    <div class="w-full pb-2 flex flex-col gap-3.5">
+      
+      <!-- Primary Action CTA Button -->
+      <button onclick="startNewAccount()" class="btn-shimmer w-full bg-gradient-to-r from-[#5E3BDC] via-[#6F47E8] to-[#7B5CFA] text-white py-4 px-6 rounded-full font-extrabold text-sm sm:text-base shadow-[0_14px_32px_rgba(94,59,220,0.45)] hover:shadow-[0_18px_40px_rgba(94,59,220,0.55)] hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer group">
         <span>Commencer</span>
-        <span class="material-symbols-outlined text-xl">arrow_forward</span>
+        <span class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
       </button>
 
-      <div class="mt-4 text-center">
-        <p class="text-sm text-black font-semibold">
+      <!-- Login Link Card -->
+      <div class="text-center py-2 px-4 rounded-full bg-white/20 backdrop-blur-md border border-white/30">
+        <p class="text-xs sm:text-sm text-white font-medium">
           Vous avez déjà un compte ?
-          <button onclick="goToLogin()" class="text-[#5e3bdc] font-bold hover:underline ml-1 cursor-pointer">
+          <button onclick="goToLogin()" class="text-white font-black underline underline-offset-4 hover:text-[#00D4AA] ml-1 transition-colors cursor-pointer">
             Se connecter
           </button>
         </p>
       </div>
+
     </div>
 
   </main>
 
+  <!-- Navigation & Lifecycle Scripts -->
   <script>
     function startNewAccount() {
       localStorage.setItem('switch_kyc_level', '1');
