@@ -294,10 +294,11 @@
         card2.className = 'w-full glass-card rounded-3xl p-4 border-2 border-green-500 bg-green-50/50 transition-all flex flex-col gap-2 relative success-pulse shadow-md';
 
         setTimeout(() => {
+          localStorage.setItem('switch_kyc_level', '1');
           if (window.switchNavigate) {
-            window.switchNavigate('../kyc_verification_identite/code.html');
+            window.switchNavigate('../bienvenue_succes_onboarding/code.html');
           } else {
-            window.location.href = '../kyc_verification_identite/code.html';
+            window.location.href = '../bienvenue_succes_onboarding/code.html';
           }
         }, 500);
 
