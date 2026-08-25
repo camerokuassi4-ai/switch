@@ -703,11 +703,42 @@
   }
 
   function getCurrentScreen() {
-    const path = window.location.pathname;
-    const parts = path.split("/");
+    let path = window.location.pathname || "";
+    try { path = decodeURIComponent(path); } catch (e) {}
+
+    const parts = path.split("/").map(function (p) {
+      return p.trim();
+    }).filter(function (p) {
+      return p && p !== "code.html" && p !== "code" && p !== "index.html";
+    });
+
+    // 1. Direct match on pathname segment
     for (let i = parts.length - 1; i >= 0; i--) {
-      if (parts[i] && parts[i] !== "code.html") return parts[i];
+      const part = parts[i];
+      if (SCREENS[part]) return part;
     }
+
+    // 2. Normalized match (without accents or special chars)
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const part = parts[i].toLowerCase();
+      for (const key of Object.keys(SCREENS)) {
+        if (key.toLowerCase() === part) return key;
+        const normKey = key.replace(/[^a-z0-9]/gi, "");
+        const normPart = part.replace(/[^a-z0-9]/gi, "");
+        if (normKey && normPart && (normKey === normPart || normPart.includes(normKey) || normKey.includes(normPart))) {
+          return key;
+        }
+      }
+    }
+
+    // 3. Fallback to title matching
+    const title = (document.title || "").toLowerCase();
+    if (title.includes("tableau de bord") || title.includes("accueil")) {
+      if (title.includes("agent")) return "tableau_de_bord_agent";
+      if (title.includes("marchand")) return "tableau_de_bord_marchand";
+      return "tableau_de_bord_mis_jour";
+    }
+
     return null;
   }
 
