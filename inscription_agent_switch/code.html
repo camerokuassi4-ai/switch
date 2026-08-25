@@ -9,7 +9,7 @@
   <script src="../assets/switch.config.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
     
     body {
       font-family: 'Hanken Grotesk', sans-serif;
@@ -54,6 +54,17 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* Radar pulse animation for GPS */
+    @keyframes radarPulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    .animate-radar {
+      animation: radarPulse 2s infinite ease-in-out;
+    }
   </style>
 </head>
 <body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
@@ -97,7 +108,7 @@
           <div id="step-dot-2" class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition">
             2
           </div>
-          <span id="step-label-2" class="text-[10px] font-medium text-gray-400">Localisation</span>
+          <span id="step-label-2" class="text-[10px] font-medium text-gray-400">Localisation & GPS</span>
         </div>
 
         <!-- Step 3 Indicator -->
@@ -105,7 +116,7 @@
           <div id="step-dot-3" class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition">
             3
           </div>
-          <span id="step-label-3" class="text-[10px] font-medium text-gray-400">Contact & IFU</span>
+          <span id="step-label-3" class="text-[10px] font-medium text-gray-400">Documents & IFU</span>
         </div>
       </div>
     </div>
@@ -262,27 +273,48 @@
             <span class="material-symbols-outlined text-primary text-lg">location_on</span>
             <div>
               <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">Emplacement & Coordonnées GPS</h2>
-              <p class="text-[11px] text-on-surface-variant">Permettez aux clients de repérer votre guichet sur la carte</p>
+              <p class="text-[11px] text-on-surface-variant">Permettez aux clients de repérer votre guichet sur la carte Switch</p>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <!-- Ville / Commune au Bénin -->
+            <!-- Département / Ville au Bénin -->
             <div class="flex flex-col gap-1">
-              <label for="city" class="text-[11px] font-bold text-on-surface-variant">Commune / Ville (Bénin) *</label>
+              <label for="city" class="text-[11px] font-bold text-on-surface-variant">Département & Commune (Bénin) *</label>
               <div class="relative flex items-center">
                 <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">location_city</span>
                 <select id="city" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-8 text-xs sm:text-sm font-semibold text-on-surface cursor-pointer">
-                  <option value="Cotonou" selected>Cotonou (Littoral)</option>
-                  <option value="Abomey-Calavi">Abomey-Calavi (Atlantique)</option>
-                  <option value="Porto-Novo">Porto-Novo (Ouémé)</option>
-                  <option value="Parakou">Parakou (Borgou)</option>
-                  <option value="Ouidah">Ouidah (Atlantique)</option>
-                  <option value="Bohicon">Bohicon (Zou)</option>
-                  <option value="Natitingou">Natitingou (Atacora)</option>
-                  <option value="Kandi">Kandi (Alibori)</option>
-                  <option value="Djougou">Djougou (Donga)</option>
-                  <option value="Lokossa">Lokossa (Mono)</option>
+                  <optgroup label="Littoral">
+                    <option value="Cotonou" selected>Cotonou (Littoral)</option>
+                  </optgroup>
+                  <optgroup label="Atlantique">
+                    <option value="Abomey-Calavi">Abomey-Calavi</option>
+                    <option value="Ouidah">Ouidah</option>
+                    <option value="Allada">Allada</option>
+                    <option value="Kpomassè">Kpomassè</option>
+                  </optgroup>
+                  <optgroup label="Ouémé">
+                    <option value="Porto-Novo">Porto-Novo</option>
+                    <option value="Sèmè-Kpodji">Sèmè-Kpodji</option>
+                    <option value="Adjarra">Adjarra</option>
+                  </optgroup>
+                  <optgroup label="Borgou & Nord">
+                    <option value="Parakou">Parakou (Borgou)</option>
+                    <option value="Natitingou">Natitingou (Atacora)</option>
+                    <option value="Kandi">Kandi (Alibori)</option>
+                    <option value="Djougou">Djougou (Donga)</option>
+                  </optgroup>
+                  <optgroup label="Zou & Collines">
+                    <option value="Bohicon">Bohicon (Zou)</option>
+                    <option value="Abomey">Abomey (Zou)</option>
+                    <option value="Dassa-Zoumè">Dassa-Zoumè (Collines)</option>
+                    <option value="Savè">Savè (Collines)</option>
+                  </optgroup>
+                  <optgroup label="Mono & Couffo">
+                    <option value="Lokossa">Lokossa (Mono)</option>
+                    <option value="Aplahoué">Aplahoué (Couffo)</option>
+                    <option value="Grand-Popo">Grand-Popo (Mono)</option>
+                  </optgroup>
                 </select>
               </div>
             </div>
@@ -292,28 +324,30 @@
               <label for="neighborhood" class="text-[11px] font-bold text-on-surface-variant">Quartier & Rue *</label>
               <div class="relative flex items-center">
                 <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">map</span>
-                <input type="text" id="neighborhood" required placeholder="Ex: Haie Vive, Saint-Jean, Akpakpa" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+                <input type="text" id="neighborhood" required value="Haie Vive" placeholder="Ex: Haie Vive, Saint-Jean, Akpakpa" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
               </div>
             </div>
           </div>
 
-          <!-- Repère visuel -->
+          <!-- Repère visuel précis -->
           <div class="flex flex-col gap-1">
-            <label for="landmark" class="text-[11px] font-bold text-on-surface-variant">Indication / Repère précis</label>
+            <label for="landmark" class="text-[11px] font-bold text-on-surface-variant">Indication & Repère d'accès précis</label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">explore</span>
-              <input type="text" id="landmark" placeholder="Ex: Face à la pharmacie, à 50m du carrefour" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+              <input type="text" id="landmark" value="Face à la pharmacie, à 50m du grand carrefour" placeholder="Ex: Face à la pharmacie, en face de la station" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
             </div>
           </div>
 
-          <!-- Module Capture GPS Interactif -->
+          <!-- Module Capture GPS Interactif & Carte Visuelle -->
           <div class="p-4 rounded-2xl bg-purple-50/70 border border-purple-200/80 flex flex-col gap-3">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <span class="material-symbols-outlined text-primary text-xl">satellite_alt</span>
+                <div class="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center">
+                  <span class="material-symbols-outlined text-lg">satellite_alt</span>
+                </div>
                 <div>
-                  <h4 class="text-xs font-black text-on-surface">Positionnement Géographique</h4>
-                  <p class="text-[10px] text-on-surface-variant">Indispensable pour l'orientation des clients de proximité</p>
+                  <h4 class="text-xs font-black text-on-surface">Positionnement Géographique Réel</h4>
+                  <p class="text-[10px] text-on-surface-variant">Indispensable pour l'orientation et la recherche de guichets</p>
                 </div>
               </div>
               <span id="gps-status-badge" class="text-[10px] font-bold bg-white text-gray-500 border border-gray-200 px-2 py-0.5 rounded-full">
@@ -321,10 +355,16 @@
               </span>
             </div>
 
-            <!-- Coordonnées affichées -->
-            <div id="gps-coords-display" class="hidden bg-white p-3 rounded-xl border border-purple-200 text-xs font-mono font-bold text-primary flex items-center justify-between">
-              <span id="gps-coords-text">LAT: 6.3654° N • LNG: 2.4183° E</span>
-              <span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-sans">Précision < 5m</span>
+            <!-- Mini Carte / Coordonnées affichées -->
+            <div id="gps-coords-display" class="hidden bg-white p-3.5 rounded-2xl border border-purple-200 flex flex-col gap-2 shadow-xs">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                  <span id="gps-coords-text" class="text-xs font-mono font-extrabold text-primary">LAT: 6.3654° N • LNG: 2.4183° E</span>
+                </div>
+                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Précision &lt; 5m</span>
+              </div>
+              <p id="gps-address-detected" class="text-[11px] text-gray-600 font-medium">📍 Repéré à proximité de Cotonou, Littoral, République du Bénin</p>
             </div>
 
             <!-- Bouton Capture GPS -->
@@ -332,6 +372,19 @@
               <span class="material-symbols-outlined text-base">my_location</span>
               <span id="gps-btn-text">📍 Capturer les coordonnées GPS actuelles</span>
             </button>
+          </div>
+
+          <!-- Photo de la devanture / Point de vente (Optionnel) -->
+          <div class="flex flex-col gap-1.5 pt-1">
+            <label class="text-[11px] font-bold text-on-surface-variant">Photo de la devanture / Kiosque (Optionnel)</label>
+            <div onclick="document.getElementById('storefront-file').click()" class="border-2 border-dashed border-outline-variant/70 rounded-2xl p-4 bg-surface-container-low/30 hover:bg-purple-50/40 hover:border-primary/60 transition-all cursor-pointer flex flex-col items-center justify-center text-center gap-1.5 group">
+              <div class="w-10 h-10 rounded-2xl bg-purple-50 text-primary flex items-center justify-center group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-xl">add_a_photo</span>
+              </div>
+              <span id="storefront-filename" class="text-xs font-bold text-primary">Ajouter une photo de votre devanture</span>
+              <span class="text-[10px] text-on-surface-variant">Permet aux clients de reconnaître facilement votre guichet</span>
+            </div>
+            <input type="file" id="storefront-file" accept="image/*" class="hidden" onchange="handleStorefrontUpload(event)"/>
           </div>
 
         </div>
@@ -361,6 +414,7 @@
               </div>
               <input type="tel" id="agentPhone" required value="97 12 34 56" placeholder="97 00 00 00" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-22 pr-3 text-xs sm:text-sm font-mono font-bold text-on-surface"/>
             </div>
+            <p class="text-[10px] text-on-surface-variant ml-1">Ce numéro servira à recevoir les notifications de dépôts/retraits et les commissions.</p>
           </div>
 
           <!-- Email Professionnel -->
@@ -376,12 +430,35 @@
           <div class="flex flex-col gap-1">
             <div class="flex items-center justify-between">
               <label for="ifuNumber" class="text-[11px] font-bold text-on-surface-variant">Numéro IFU (Identifiant Fiscal Unique)</label>
-              <span class="text-[10px] text-gray-400 font-medium">13 chiffres</span>
+              <span class="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">13 chiffres</span>
             </div>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">receipt_long</span>
-              <input type="text" id="ifuNumber" maxlength="13" placeholder="3202 0123 4567 8" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-mono font-semibold text-on-surface"/>
+              <input type="text" id="ifuNumber" maxlength="13" value="3202 0123 4567 8" placeholder="3202 0123 4567 8" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-mono font-semibold text-on-surface"/>
             </div>
+          </div>
+
+          <!-- Pièce d'identité / Document RCCM -->
+          <div class="flex flex-col gap-1.5 pt-1">
+            <label class="text-[11px] font-bold text-on-surface-variant">Pièce d'Identité ou RCCM du Gérant</label>
+            <div onclick="document.getElementById('doc-file').click()" class="border border-outline-variant/60 rounded-2xl p-3 bg-surface-container-low/40 hover:bg-purple-50/30 transition-all cursor-pointer flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-primary text-xl">upload_file</span>
+                <span id="doc-filename" class="text-xs font-semibold text-on-surface">CIP_Adele_Doe_ANIP.pdf (Attaché)</span>
+              </div>
+              <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">Validé</span>
+            </div>
+            <input type="file" id="doc-file" class="hidden" onchange="handleDocUpload(event)"/>
+          </div>
+
+          <!-- Récapitulatif Express avant Étape Finale -->
+          <div class="p-3.5 rounded-2xl bg-gradient-to-br from-purple-50 to-white border border-purple-200/80 flex flex-col gap-2">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-purple-900">Étape suivante : Cautionnement & Activation</span>
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-gray-600 font-medium">Fonds de roulement initial :</span>
+              <b class="text-primary font-bold">100 000 F à 1 000 000 F</b>
+            </div>
+            <p class="text-[10px] text-gray-500">Votre caution reste votre propriété intégrale et alimente directement votre caisse de retrait.</p>
           </div>
 
           <!-- Engagement Déontologique -->
@@ -389,7 +466,7 @@
             <label class="flex items-start gap-2.5 p-3 rounded-2xl bg-gray-50 border border-gray-200 cursor-pointer">
               <input type="checkbox" id="agent-terms" checked class="mt-0.5 rounded text-primary focus:ring-primary w-4 h-4"/>
               <span class="text-[11px] text-on-surface font-medium leading-tight">
-                Je certifie l'exactitude des informations du guichet et m'engage à respecter les tarifs et commissions officielles Switch Bénin.
+                Je certifie l'exactitude des informations du guichet et m'engage à respecter la charte déontologique et les commissions officielles Switch Bénin.
               </span>
             </label>
           </div>
@@ -480,7 +557,7 @@
       const btnText = document.getElementById('next-btn-text');
       const btnIcon = document.getElementById('next-btn-icon');
       if (currentStep === totalSteps) {
-        btnText.textContent = "Finaliser l'Agrément";
+        btnText.textContent = "Passer au Cautionnement";
         btnIcon.textContent = "verified";
       } else {
         btnText.textContent = "Continuer";
@@ -565,6 +642,7 @@
       const statusBadge = document.getElementById('gps-status-badge');
       const coordsDisplay = document.getElementById('gps-coords-display');
       const coordsText = document.getElementById('gps-coords-text');
+      const addressDetected = document.getElementById('gps-address-detected');
 
       btn.disabled = true;
       btnText.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-primary border-t-transparent rounded-full mr-1"></span> Recherche du signal satellite GPS...`;
@@ -596,7 +674,22 @@
 
         coordsDisplay.classList.remove('hidden');
         coordsText.textContent = `LAT: ${lat}° N • LNG: ${lng}° E`;
+        addressDetected.textContent = `📍 Guichet repéré avec succès à Cotonou (Littoral, Bénin)`;
         localStorage.setItem('switch_agent_gps', `${lat},${lng}`);
+      }
+    }
+
+    function handleStorefrontUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        document.getElementById('storefront-filename').textContent = `📷 ${file.name} (Prêt à l'envoi)`;
+      }
+    }
+
+    function handleDocUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        document.getElementById('doc-filename').textContent = `📄 ${file.name}`;
       }
     }
   </script>
