@@ -235,7 +235,7 @@
     },
 
     "modifier_le_profil": {
-      space: "user", back: ROOT + "profil_utilisateur/code.html", nav: null,
+      space: "user", back: ROOT + "param_tres_g_n_raux/code.html", nav: null,
       actions: {}
     },
     "param_tres_g_n_raux": {

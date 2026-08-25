@@ -55,19 +55,19 @@
         <div class="flex items-center gap-4">
           <div class="relative">
             <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white/40 shadow-md">
-              <img alt="Adele Doe" class="w-full h-full object-cover" src="../assets/images/img_046.jpg"/>
+              <img id="settings-avatar-img" alt="Adele Doe" class="w-full h-full object-cover" src="../assets/images/img_046.jpg"/>
             </div>
             <span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-green-400 border-2 border-white"></span>
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <h2 class="text-lg sm:text-xl font-extrabold">Adele Doe</h2>
+              <h2 id="settings-user-name" class="text-lg sm:text-xl font-extrabold">Adele Doe</h2>
               <span class="text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full">
                 Vérifié
               </span>
             </div>
             <p class="text-xs text-purple-200 mt-0.5 font-mono">+229 97 12 34 56</p>
-            <p class="text-[11px] text-purple-300 mt-0.5">adele.doe@gmail.com</p>
+            <p id="settings-user-email" class="text-[11px] text-purple-300 mt-0.5">adele.doe@gmail.com</p>
           </div>
         </div>
 
@@ -243,6 +243,25 @@
   </main>
 
   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedName = localStorage.getItem('switch_user_fullname');
+      const savedEmail = localStorage.getItem('switch_user_email');
+      const savedAvatar = localStorage.getItem('switch_user_avatar');
+
+      if (savedName) {
+        const nameEl = document.getElementById('settings-user-name');
+        if (nameEl) nameEl.textContent = savedName;
+      }
+      if (savedEmail) {
+        const emailEl = document.getElementById('settings-user-email');
+        if (emailEl) emailEl.textContent = savedEmail;
+      }
+      if (savedAvatar) {
+        const avatarEl = document.getElementById('settings-avatar-img');
+        if (avatarEl) avatarEl.src = savedAvatar;
+      }
+    });
+
     function copyUserRib() {
       navigator.clipboard.writeText("BJ061 01001 09876543210 44");
       alert("RIB Switch UEMOA copié : BJ061 01001 09876543210 44");

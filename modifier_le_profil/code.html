@@ -97,7 +97,7 @@
 
   <!-- Top App Bar Navigation -->
   <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
-    <button onclick="window.history.length > 1 ? window.history.back() : window.location.href='../profil_utilisateur/code.html'" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer" aria-label="Retour au profil">
+    <button onclick="window.history.length > 1 ? window.history.back() : window.location.href='../param_tres_g_n_raux/code.html'" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer" aria-label="Retour aux paramètres">
       <span class="material-symbols-outlined text-xl">arrow_back</span>
     </button>
     
@@ -552,9 +552,9 @@
           toast.classList.add('toast-animate');
         }
 
-        // Redirection vers le profil
+        // Redirection vers Paramètres & Profil
         setTimeout(() => {
-          window.location.href = '../profil_utilisateur/code.html';
+          window.location.href = '../param_tres_g_n_raux/code.html';
         }, 1000);
       }, 500);
     }
