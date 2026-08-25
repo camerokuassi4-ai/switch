@@ -120,14 +120,13 @@
         </button>
       </div>
 
-      <!-- Channel Filters (MTN, Moov, Celtiis, Visa) -->
+      <!-- Channel Filters (QR Switch, POS, Liens) -->
       <div class="flex items-center gap-1.5 pt-2 border-t border-gray-100 overflow-x-auto no-scrollbar text-[11px] font-semibold">
         <span class="text-gray-400 font-bold uppercase text-[9px] mr-1 shrink-0">Canal:</span>
         <button onclick="setChannel('all', this)" class="chan-pill bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-lg border border-emerald-300 shrink-0 font-bold">Tous</button>
-        <button onclick="setChannel('momo', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">MTN MoMo</button>
-        <button onclick="setChannel('moov', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">Moov</button>
-        <button onclick="setChannel('celtiis', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">Celtiis</button>
-        <button onclick="setChannel('card', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">Carte Visa</button>
+        <button onclick="setChannel('qr', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">QR Code Switch</button>
+        <button onclick="setChannel('pos', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">Caisse POS</button>
+        <button onclick="setChannel('link', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">Liens Web</button>
       </div>
     </div>
 
@@ -143,16 +142,16 @@
 
         <div class="bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-soft flex flex-col divide-y divide-gray-100">
           
-          <!-- Item 1: MTN MoMo QR -->
-          <a href="../d_tail_d_une_vente/code.html" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors no-underline group" data-channel="momo" data-title="Dossou Christian" data-ref="#TRX-8821">
+          <!-- Item 1: Switch QR -->
+          <a href="../d_tail_d_une_vente/code.html" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors no-underline group" data-channel="qr" data-title="Dossou Christian" data-ref="#TRX-8821">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
+              <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
                 <span class="material-symbols-outlined text-lg">qr_code_2</span>
               </div>
               <div>
                 <h4 class="text-xs font-bold text-on-surface">Dossou Christian</h4>
                 <div class="flex items-center gap-1.5 text-[10px] text-on-surface-variant">
-                  <span class="font-semibold text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded">MTN MoMo</span>
+                  <span class="font-semibold text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded">QR Compte Switch</span>
                   <span>•</span>
                   <span>14:32</span>
                   <span>•</span>
@@ -166,16 +165,16 @@
             </div>
           </a>
 
-          <!-- Item 2: POS Moov -->
-          <a href="../d_tail_d_une_vente/code.html" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors no-underline group" data-channel="moov" data-title="Jeanne Agbo" data-ref="#TRX-8820">
+          <!-- Item 2: POS Compte Switch -->
+          <a href="../d_tail_d_une_vente/code.html" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors no-underline group" data-channel="pos" data-title="Jeanne Agbo" data-ref="#TRX-8820">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-blue-100 text-blue-900 flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
+              <div class="w-10 h-10 rounded-2xl bg-teal-100 text-teal-900 flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
                 <span class="material-symbols-outlined text-lg">point_of_sale</span>
               </div>
               <div>
                 <h4 class="text-xs font-bold text-on-surface">Jeanne Agbo</h4>
                 <div class="flex items-center gap-1.5 text-[10px] text-on-surface-variant">
-                  <span class="font-semibold text-blue-800 bg-blue-50 px-1.5 py-0.2 rounded">Moov Money</span>
+                  <span class="font-semibold text-teal-800 bg-teal-50 px-1.5 py-0.2 rounded">POS Compte Switch</span>
                   <span>•</span>
                   <span>13:15</span>
                   <span>•</span>
@@ -189,16 +188,16 @@
             </div>
           </a>
 
-          <!-- Item 3: Visa Pay Link -->
-          <a href="../d_tail_d_une_vente/code.html" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors no-underline group" data-channel="card" data-title="Sarah K." data-ref="#TRX-8819">
+          <!-- Item 3: Link Pay Compte Switch -->
+          <a href="../d_tail_d_une_vente/code.html" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors no-underline group" data-channel="link" data-title="Sarah K." data-ref="#TRX-8819">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-900 flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
+              <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-900 flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
                 <span class="material-symbols-outlined text-lg">link</span>
               </div>
               <div>
                 <h4 class="text-xs font-bold text-on-surface">Sarah K. (Lien Web)</h4>
                 <div class="flex items-center gap-1.5 text-[10px] text-on-surface-variant">
-                  <span class="font-semibold text-purple-800 bg-purple-50 px-1.5 py-0.2 rounded">Carte Visa</span>
+                  <span class="font-semibold text-indigo-800 bg-indigo-50 px-1.5 py-0.2 rounded">Lien Pay Switch</span>
                   <span>•</span>
                   <span>11:40</span>
                   <span>•</span>
@@ -210,18 +209,16 @@
               <span class="text-xs font-black font-mono text-emerald-700 block">+35 000 F</span>
               <span class="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-full">Encaissé</span>
             </div>
-          </a>
-
-          <!-- Item 4: Celtiis Pay QR -->
-          <a href="../d_tail_d_une_vente/code.html" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors no-underline group" data-channel="celtiis" data-title="Koffi Mensah" data-ref="#TRX-8818">
+          <!-- Item 4: Switch QR -->
+          <a href="../d_tail_d_une_vente/code.html" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors no-underline group" data-channel="qr" data-title="Koffi Mensah" data-ref="#TRX-8818">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-sky-100 text-sky-900 flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
+              <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
                 <span class="material-symbols-outlined text-lg">qr_code_scanner</span>
               </div>
               <div>
                 <h4 class="text-xs font-bold text-on-surface">Koffi Mensah</h4>
                 <div class="flex items-center gap-1.5 text-[10px] text-on-surface-variant">
-                  <span class="font-semibold text-sky-800 bg-sky-50 px-1.5 py-0.2 rounded">Celtiis Pay</span>
+                  <span class="font-semibold text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded">QR Compte Switch</span>
                   <span>•</span>
                   <span>09:20</span>
                   <span>•</span>
