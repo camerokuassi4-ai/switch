@@ -145,19 +145,94 @@
             </div>
           </div>
 
-          <!-- Type d'activité -->
-          <div class="flex flex-col gap-1">
-            <label for="businessType" class="text-[11px] font-bold text-on-surface-variant">Type d'établissement *</label>
-            <div class="relative flex items-center">
-              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">category</span>
-              <select id="businessType" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-8 text-xs sm:text-sm font-semibold text-on-surface cursor-pointer">
-                <option value="kiosk" selected>Kiosque Mobile Money dédié</option>
-                <option value="shop">Boutique / Alimentation générale</option>
-                <option value="pharmacy">Pharmacie / Dépôt pharmaceutique</option>
-                <option value="hardware">Quincaillerie / Matériaux</option>
-                <option value="cyber">Cybercafé / Secrétariat bureautique</option>
-                <option value="other">Autre commerce de proximité</option>
-              </select>
+          <!-- Modèle d'activité de l'Agent -->
+          <div class="flex flex-col gap-2">
+            <label class="text-[11px] font-bold text-on-surface-variant">Modèle d'activité de votre guichet *</label>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              
+              <!-- Option 1: Pur Guichet Financier -->
+              <div onclick="selectAgentModel('pure_agent')" id="model-card-pure_agent" class="p-3.5 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer transition-all flex flex-col justify-between gap-2 shadow-xs">
+                <div class="flex items-center justify-between">
+                  <div class="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center">
+                    <span class="material-symbols-outlined text-lg">account_balance_wallet</span>
+                  </div>
+                  <span class="text-[9px] font-bold bg-primary text-white px-2 py-0.5 rounded-full">Dédié</span>
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold text-on-surface">Guichet Financier Pur</h3>
+                  <p class="text-[10px] text-on-surface-variant mt-0.5 leading-tight">Dépôts, retraits cash et paiements de factures exclusifs</p>
+                </div>
+              </div>
+
+              <!-- Option 2: Agent Mixte (Commerce + Guichet) -->
+              <div onclick="selectAgentModel('hybrid_merchant')" id="model-card-hybrid_merchant" class="p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 hover:border-primary/50 cursor-pointer transition-all flex flex-col justify-between gap-2 shadow-xs">
+                <div class="flex items-center justify-between">
+                  <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-700 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-lg">storefront</span>
+                  </div>
+                  <span class="text-[9px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">Mixte</span>
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold text-on-surface">Commerce + Guichet</h3>
+                  <p class="text-[10px] text-on-surface-variant mt-0.5 leading-tight">Vente de vos produits + Retraits et dépôts cash quartier</p>
+                </div>
+              </div>
+
+              <!-- Option 3: Agent Itinérant -->
+              <div onclick="selectAgentModel('mobile_agent')" id="model-card-mobile_agent" class="p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 hover:border-primary/50 cursor-pointer transition-all flex flex-col justify-between gap-2 shadow-xs">
+                <div class="flex items-center justify-between">
+                  <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-lg">directions_walk</span>
+                  </div>
+                  <span class="text-[9px] font-bold bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full">Mobile</span>
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold text-on-surface">Agent Itinérant</h3>
+                  <p class="text-[10px] text-on-surface-variant mt-0.5 leading-tight">Marchés, foires et opérations de proximité sur le terrain</p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Hidden real input value -->
+            <input type="hidden" id="selectedAgentModel" value="pure_agent"/>
+          </div>
+
+          <!-- Sous-section dynamique : Type de commerce / Produits vendus (visible si Mixte) -->
+          <div id="merchant-products-section" class="hidden p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex flex-col gap-2 transition-all">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-amber-700 text-base">shopping_bag</span>
+              <label for="productCategory" class="text-[11px] font-bold text-amber-900">Type de marchandises & produits vendus dans votre boutique *</label>
+            </div>
+            <select id="productCategory" class="input-focus w-full bg-white border border-amber-300 rounded-xl py-2.5 pl-3 pr-8 text-xs font-semibold text-on-surface cursor-pointer">
+              <option value="alimentation" selected>Alimentation générale / Épicerie / Boissons</option>
+              <option value="pharmacie">Pharmacie / Dépôt de médicaments / Santé</option>
+              <option value="mode">Prêt-à-porter / Cosmétiques / Chaussures</option>
+              <option value="quincaillerie">Quincaillerie / Bâtiment / Matériaux</option>
+              <option value="telephonie">Téléphonie / Accessoires électroniques / Recharges</option>
+              <option value="bureautique">Secrétariat bureautique / Cybercafé / Librairie</option>
+              <option value="autre_commerce">Autre commerce de détail</option>
+            </select>
+            <p class="text-[10px] text-amber-800/80">Vous pourrez aussi encaisser vos clients pour vos articles via QR Code Switch.</p>
+          </div>
+
+          <!-- Services Financiers Actifs sur votre Guichet -->
+          <div class="p-3 rounded-2xl bg-purple-50/60 border border-purple-200/60 flex flex-col gap-2">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-purple-900">Opérations financières incluses sur votre terminal :</span>
+            <div class="flex flex-wrap gap-1.5 text-[10px] font-bold">
+              <span class="bg-white border border-purple-200 text-primary px-2.5 py-1 rounded-full flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-xs">arrow_downward</span> Dépôt Cash-In
+              </span>
+              <span class="bg-white border border-purple-200 text-primary px-2.5 py-1 rounded-full flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-xs">arrow_upward</span> Retrait Cash-Out
+              </span>
+              <span class="bg-white border border-purple-200 text-primary px-2.5 py-1 rounded-full flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-xs">bolt</span> Recharges SBEE / SONEB
+              </span>
+              <span class="bg-white border border-purple-200 text-primary px-2.5 py-1 rounded-full flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-xs">swap_horiz</span> Transferts MoMo / Moov
+              </span>
             </div>
           </div>
 
@@ -346,6 +421,32 @@
     let currentStep = 1;
     const totalSteps = 3;
 
+    function selectAgentModel(modelKey) {
+      document.getElementById('selectedAgentModel').value = modelKey;
+      
+      const cards = ['pure_agent', 'hybrid_merchant', 'mobile_agent'];
+      cards.forEach(c => {
+        const cardEl = document.getElementById(`model-card-${c}`);
+        if (cardEl) {
+          if (c === modelKey) {
+            cardEl.className = "p-3.5 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer transition-all flex flex-col justify-between gap-2 shadow-xs";
+          } else {
+            cardEl.className = "p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 hover:border-primary/50 cursor-pointer transition-all flex flex-col justify-between gap-2 shadow-xs";
+          }
+        }
+      });
+
+      // Afficher le sélecteur de produits si l'agent vend des marchandises (Mixte)
+      const productsSection = document.getElementById('merchant-products-section');
+      if (productsSection) {
+        if (modelKey === 'hybrid_merchant') {
+          productsSection.classList.remove('hidden');
+        } else {
+          productsSection.classList.add('hidden');
+        }
+      }
+    }
+
     function updateUI() {
       // 1. Visibilité des étapes
       for (let i = 1; i <= totalSteps; i++) {
@@ -416,13 +517,15 @@
           return;
         }
 
-        // Sauvegarde des données Agent
+        // Sauvegarde des données Agent complètes
         const agentData = {
           businessName: document.getElementById('businessName').value.trim(),
           managerName: document.getElementById('managerName').value.trim(),
-          businessType: document.getElementById('businessType').value,
+          agentModel: document.getElementById('selectedAgentModel').value,
+          productCategory: document.getElementById('productCategory') ? document.getElementById('productCategory').value : '',
           city: document.getElementById('city').value,
           neighborhood: document.getElementById('neighborhood').value.trim(),
+          landmark: document.getElementById('landmark') ? document.getElementById('landmark').value.trim() : '',
           phone: document.getElementById('agentPhone').value.trim(),
           email: document.getElementById('agentEmail').value.trim(),
           ifu: document.getElementById('ifuNumber').value.trim()
