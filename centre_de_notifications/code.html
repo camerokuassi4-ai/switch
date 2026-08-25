@@ -9,7 +9,8 @@
   <script src="../assets/switch.config.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
     body {
       font-family: 'Hanken Grotesk', sans-serif;
       min-height: max(884px, 100dvh);
@@ -18,51 +19,73 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
     .notif-card {
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .notif-card:hover {
       transform: translateY(-2px);
     }
+
+    /* Modal Animation */
+    .modal-enter {
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
   </style>
 </head>
 <body class="min-h-screen pb-32 flex flex-col justify-between antialiased selection:bg-primary-fixed">
 
   <!-- Top App Bar -->
-  <header class="w-full max-w-lg mx-auto px-container-margin pt-6 pb-2 flex items-center justify-between z-30">
+  <header class="w-full max-w-lg mx-auto px-container-margin pt-6 pb-2 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
     <div class="flex items-center gap-3">
-      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
+      <button aria-label="Retour" onclick="goBack()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
         <span class="material-symbols-outlined text-xl">arrow_back</span>
       </button>
       <div>
         <h1 class="text-xl font-extrabold text-on-surface">Notifications</h1>
-        <p class="text-xs text-on-surface-variant font-medium">Restez informé de vos activités</p>
+        <p class="text-xs text-on-surface-variant font-medium">Restez informé de toutes vos activités</p>
       </div>
     </div>
 
-    <!-- Mark All as Read Action -->
-    <button onclick="markAllRead()" class="px-3 py-1.5 rounded-full bg-white border border-outline-variant/40 hover:bg-surface-container text-primary font-bold text-xs shadow-sm transition-colors cursor-pointer flex items-center gap-1">
-      <span class="material-symbols-outlined text-sm">done_all</span>
-      <span>Tout lire</span>
-    </button>
+    <!-- Actions: Mark all read & Clear -->
+    <div class="flex items-center gap-1.5">
+      <button onclick="markAllRead()" class="px-3 py-1.5 rounded-full bg-white border border-outline-variant/40 hover:bg-purple-50 text-primary font-bold text-xs shadow-sm transition-colors cursor-pointer flex items-center gap-1" title="Tout marquer comme lu">
+        <span class="material-symbols-outlined text-base">done_all</span>
+        <span class="hidden sm:inline">Tout lire</span>
+      </button>
+      <button onclick="clearAllNotifications()" class="w-9 h-9 rounded-full bg-white border border-outline-variant/40 hover:bg-rose-50 hover:text-rose-600 text-gray-400 flex items-center justify-center transition-colors cursor-pointer" title="Effacer tout">
+        <span class="material-symbols-outlined text-base">delete_sweep</span>
+      </button>
+    </div>
   </header>
 
   <!-- Main Content Canvas -->
-  <main class="w-full max-w-lg mx-auto px-container-margin flex flex-col gap-5 pt-2 flex-1">
+  <main class="w-full max-w-lg mx-auto px-container-margin flex flex-col gap-4 pt-2 flex-1">
     
     <!-- Filter Tabs (Toutes, Transactions, Sécurité, Offres) -->
     <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-      <button type="button" onclick="filterNotifs('all')" id="tab-all" class="px-4 py-2 rounded-full text-xs font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap">
-        Toutes (3)
+      <button type="button" onclick="filterNotifs('all')" id="tab-all" class="px-4 py-2 rounded-full text-xs font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap flex items-center gap-1.5">
+        <span>Toutes</span>
+        <span id="badge-all" class="bg-white/20 px-1.5 py-0.2 rounded-full text-[10px]">2</span>
       </button>
-      <button type="button" onclick="filterNotifs('trans')" id="tab-trans" class="px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap">
-        Transactions 💸
+      <button type="button" onclick="filterNotifs('trans')" id="tab-trans" class="px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap flex items-center gap-1.5">
+        <span>Transactions 💸</span>
+        <span id="badge-trans" class="bg-purple-100 text-primary px-1.5 py-0.2 rounded-full text-[10px]">1</span>
       </button>
-      <button type="button" onclick="filterNotifs('sec')" id="tab-sec" class="px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap">
-        Sécurité 🛡️
+      <button type="button" onclick="filterNotifs('sec')" id="tab-sec" class="px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap flex items-center gap-1.5">
+        <span>Sécurité 🛡️</span>
+        <span id="badge-sec" class="bg-rose-100 text-rose-700 px-1.5 py-0.2 rounded-full text-[10px]">1</span>
       </button>
       <button type="button" onclick="filterNotifs('promo')" id="tab-promo" class="px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap">
-        Offres 🎉
+        <span>Offres & Actualités 🎉</span>
       </button>
     </div>
 
@@ -70,7 +93,7 @@
     <div class="flex flex-col gap-3" id="notifs-list">
 
       <!-- 1. Transfert reçu (Transaction) -->
-      <div data-cat="trans" class="notif-card bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md">
+      <div id="notif-item-1" data-cat="trans" onclick="openNotifDetail(1)" class="notif-card bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md">
         <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shrink-0">
           <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">arrow_downward</span>
         </div>
@@ -83,11 +106,11 @@
             Vous avez reçu <b class="text-emerald-700 font-mono">+50 000 FCFA</b> de <b>Jean Doe</b> via MTN MoMo Bénin.
           </p>
         </div>
-        <span class="w-2.5 h-2.5 rounded-full bg-primary shrink-0 mt-1.5 unread-dot"></span>
+        <span id="dot-1" class="w-2.5 h-2.5 rounded-full bg-primary shrink-0 mt-1.5 unread-dot"></span>
       </div>
 
       <!-- 2. Alerte Sécurité Connexion (Sécurité) -->
-      <div data-cat="sec" class="notif-card bg-white rounded-3xl p-4.5 border border-rose-100 bg-rose-50/20 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md">
+      <div id="notif-item-2" data-cat="sec" onclick="openNotifDetail(2)" class="notif-card bg-white rounded-3xl p-4.5 border border-rose-100 bg-rose-50/20 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md">
         <div class="w-11 h-11 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold shrink-0">
           <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">gpp_maybe</span>
         </div>
@@ -100,11 +123,11 @@
             Nouvelle connexion réussie depuis un appareil mobile à <b>Cotonou (Cadjehoun)</b>.
           </p>
         </div>
-        <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0 mt-1.5 unread-dot"></span>
+        <span id="dot-2" class="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0 mt-1.5 unread-dot"></span>
       </div>
 
       <!-- 3. Promotion & Dépôts 0% (Offres) -->
-      <div data-cat="promo" class="notif-card bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md">
+      <div id="notif-item-3" data-cat="promo" onclick="openNotifDetail(3)" class="notif-card bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md">
         <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold shrink-0">
           <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">campaign</span>
         </div>
@@ -120,7 +143,7 @@
       </div>
 
       <!-- 4. Déblocage Plafond Niveau 2 (Transaction) -->
-      <div data-cat="trans" class="notif-card bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md">
+      <div id="notif-item-4" data-cat="trans" onclick="openNotifDetail(4)" class="notif-card bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md">
         <div class="w-11 h-11 rounded-2xl bg-purple-50 text-primary flex items-center justify-center font-bold shrink-0">
           <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">verified_user</span>
         </div>
@@ -135,6 +158,20 @@
         </div>
       </div>
 
+    </div>
+
+    <!-- Empty State (Hidden by default) -->
+    <div id="empty-state" class="hidden bg-white rounded-3xl p-8 border border-outline-variant/40 shadow-sm flex flex-col items-center justify-center text-center gap-3 my-4">
+      <div class="w-16 h-16 rounded-full bg-purple-50 text-primary flex items-center justify-center">
+        <span class="material-symbols-outlined text-3xl">notifications_off</span>
+      </div>
+      <h3 class="text-base font-extrabold text-on-surface">Vous êtes à jour !</h3>
+      <p class="text-xs text-on-surface-variant max-w-xs">
+        Aucune notification dans cette catégorie pour le moment.
+      </p>
+      <button onclick="filterNotifs('all')" class="mt-2 px-4 py-2 rounded-full bg-purple-50 text-primary text-xs font-bold hover:bg-purple-100 transition-colors cursor-pointer">
+        Voir toutes les alertes
+      </button>
     </div>
 
     <!-- Notification Preferences Card -->
@@ -175,15 +212,150 @@
           </div>
           <input type="checkbox" checked class="w-5 h-5 text-primary rounded-md focus:ring-primary cursor-pointer"/>
         </div>
+
+        <!-- WhatsApp Proof -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
+              <span class="material-symbols-outlined text-base">chat</span>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-on-surface">Reçus Automatiques WhatsApp</h4>
+              <p class="text-[10px] text-on-surface-variant">Preuve PDF envoyée après chaque opération</p>
+            </div>
+          </div>
+          <input type="checkbox" checked class="w-5 h-5 text-primary rounded-md focus:ring-primary cursor-pointer"/>
+        </div>
       </div>
     </div>
 
   </main>
 
+  <!-- ============================================================ -->
+  <!-- MODAL : Détail d'une Notification -->
+  <!-- ============================================================ -->
+  <div id="notif-detail-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm hidden flex items-end justify-center">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-10 shadow-2xl modal-enter flex flex-col gap-4">
+      
+      <div class="w-full flex items-center justify-between">
+        <span class="w-12 h-1 bg-outline-variant rounded-full mx-auto -mr-6"></span>
+        <button onclick="closeNotifModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div id="modal-icon-box" class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center shrink-0">
+          <span id="modal-icon" class="material-symbols-outlined text-2xl">notifications</span>
+        </div>
+        <div>
+          <h3 id="modal-title" class="text-base font-black text-on-surface">Titre Notification</h3>
+          <p id="modal-time" class="text-xs text-on-surface-variant">Date</p>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-surface-container-low/60 border border-outline-variant/60 flex flex-col gap-2.5 text-xs">
+        <p id="modal-description" class="text-gray-700 leading-relaxed font-medium">
+          Détails complets...
+        </p>
+        <div id="modal-extra-details" class="flex flex-col gap-1.5 pt-2 border-t border-outline-variant/40">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <a id="modal-action-btn" href="#" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-xs sm:text-sm no-underline text-center cursor-pointer">
+        <span id="modal-action-label">Voir le Reçu de Transaction</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Logic -->
   <script>
+    const notifsData = {
+      1: {
+        title: "Transfert reçu avec succès",
+        time: "Aujourd'hui à 15:28 • Réseau MTN MoMo",
+        icon: "arrow_downward",
+        iconClass: "bg-emerald-50 text-emerald-600",
+        description: "Vous avez reçu un virement entrant de +50 000 FCFA en provenance de Jean Doe (+229 97 45 67 89). Les fonds sont immédiatement disponibles sur votre solde Switch.",
+        extras: `
+          <div class="flex justify-between"><span>Montant crédité :</span><b class="text-emerald-700 font-mono">+50 000 FCFA</b></div>
+          <div class="flex justify-between"><span>Émetteur :</span><b>Jean Doe (MTN MoMo)</b></div>
+          <div class="flex justify-between"><span>Réf. Transaction :</span><b class="font-mono">#TRX-89421-BJ</b></div>
+        `,
+        actionLabel: "Voir le Reçu Détaillé",
+        actionUrl: "../d_tail_de_transaction/code.html"
+      },
+      2: {
+        title: "Alerte Sécurité Compte",
+        time: "Aujourd'hui à 15:18 • Cotonou, Bénin",
+        icon: "gpp_maybe",
+        iconClass: "bg-rose-100 text-rose-600",
+        description: "Une nouvelle connexion a été effectuée sur votre compte Switch depuis un appareil iPhone 14 Pro à Cotonou (Cadjehoun). Si ce n'était pas vous, sécurisez immédiatement votre compte.",
+        extras: `
+          <div class="flex justify-between"><span>Appareil :</span><b>iPhone 14 Pro (iOS 18)</b></div>
+          <div class="flex justify-between"><span>Localisation :</span><b>Cotonou, Cadjehoun 🇧🇯</b></div>
+          <div class="flex justify-between"><span>Adresse IP :</span><b class="font-mono">154.68.21.14</b></div>
+        `,
+        actionLabel: "Sécuriser mon Compte",
+        actionUrl: "../s_curit/code.html"
+      },
+      3: {
+        title: "Dépôts 0% en Kiosques Switch",
+        time: "Hier à 10:00 • Offre Réseau National",
+        icon: "campaign",
+        iconClass: "bg-amber-50 text-amber-600",
+        description: "Profitez de 0% de frais sur tous vos dépôts d'espèces dans les plus de 500 points relais et agents agréés Switch à Cotonou, Calavi, Porto-Novo et Parakou.",
+        extras: `
+          <div class="flex justify-between"><span>Frais de dépôt :</span><b class="text-primary font-bold">0 FCFA Gratuit</b></div>
+          <div class="flex justify-between"><span>Points disponibles :</span><b>+500 Kiosques Partenaires</b></div>
+        `,
+        actionLabel: "Localiser un Guichet Proche",
+        actionUrl: "../carte_agents_guichets/code.html"
+      },
+      4: {
+        title: "Identité ANIP Validée (Niveau 2)",
+        time: "Il y a 2 jours • Conformité BCEAO",
+        icon: "verified_user",
+        iconClass: "bg-purple-50 text-primary",
+        description: "Votre document d'identité a été validé avec succès par les services ANIP Bénin. Votre plafond de compte est désormais augmenté à 2 000 000 FCFA.",
+        extras: `
+          <div class="flex justify-between"><span>Nouveau Niveau :</span><b class="text-emerald-700">Niveau 2 Vérifié</b></div>
+          <div class="flex justify-between"><span>Plafond Mensuel :</span><b class="font-mono">2 000 000 FCFA</b></div>
+        `,
+        actionLabel: "Voir mes Plafonds & Limites",
+        actionUrl: "../plafonds_et_limites_de_transactions/code.html"
+      }
+    };
+
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../tableau_de_bord_mis_jour/code.html';
+      }
+    }
+
     function markAllRead() {
       document.querySelectorAll('.unread-dot').forEach(dot => dot.remove());
-      alert("✅ Toutes vos notifications ont été marquées comme lues !");
+      const bAll = document.getElementById('badge-all');
+      const bTrans = document.getElementById('badge-trans');
+      const bSec = document.getElementById('badge-sec');
+      if (bAll) bAll.textContent = "0";
+      if (bTrans) bTrans.remove();
+      if (bSec) bSec.remove();
+    }
+
+    function clearAllNotifications() {
+      document.getElementById('notifs-list').innerHTML = "";
+      document.getElementById('empty-state').classList.remove('hidden');
+      const bAll = document.getElementById('badge-all');
+      if (bAll) bAll.textContent = "0";
     }
 
     function filterNotifs(category) {
@@ -194,23 +366,55 @@
         const btn = document.getElementById('tab-' + t);
         if (btn) {
           if (t === category) {
-            btn.className = 'px-4 py-2 rounded-full text-xs font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap';
+            btn.className = 'px-4 py-2 rounded-full text-xs font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap flex items-center gap-1.5';
           } else {
-            btn.className = 'px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap';
+            btn.className = 'px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap flex items-center gap-1.5';
           }
         }
       });
 
+      let visibleCount = 0;
       cards.forEach(card => {
         if (category === 'all' || card.getAttribute('data-cat') === category) {
           card.classList.remove('hidden');
+          visibleCount++;
         } else {
           card.classList.add('hidden');
         }
       });
+
+      const empty = document.getElementById('empty-state');
+      if (visibleCount === 0) {
+        empty.classList.remove('hidden');
+      } else {
+        empty.classList.add('hidden');
+      }
+    }
+
+    function openNotifDetail(id) {
+      // Mark as read
+      const dot = document.getElementById(`dot-${id}`);
+      if (dot) dot.remove();
+
+      const data = notifsData[id];
+      if (!data) return;
+
+      document.getElementById('modal-title').textContent = data.title;
+      document.getElementById('modal-time').textContent = data.time;
+      document.getElementById('modal-icon').textContent = data.icon;
+      document.getElementById('modal-icon-box').className = `w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${data.iconClass}`;
+      document.getElementById('modal-description').textContent = data.description;
+      document.getElementById('modal-extra-details').innerHTML = data.extras;
+      document.getElementById('modal-action-label').textContent = data.actionLabel;
+      document.getElementById('modal-action-btn').href = data.actionUrl;
+
+      document.getElementById('notif-detail-modal').classList.remove('hidden');
+    }
+
+    function closeNotifModal() {
+      document.getElementById('notif-detail-modal').classList.add('hidden');
     }
   </script>
 
-  <script src="../assets/switch.router.js"></script>
 </body>
 </html>
