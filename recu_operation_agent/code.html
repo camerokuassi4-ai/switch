@@ -76,8 +76,8 @@
 
     <!-- Celebration Title -->
     <div class="text-center">
-      <h1 class="text-xl sm:text-2xl font-black text-on-surface tracking-tight">Dépôt Exécuté avec Succès !</h1>
-      <p class="text-xs text-on-surface-variant mt-0.5 font-medium">Le compte du client a été immédiatement crédité</p>
+      <h1 id="ticket-main-title" class="text-xl sm:text-2xl font-black text-on-surface tracking-tight">Dépôt Exécuté avec Succès !</h1>
+      <p id="ticket-sub-title" class="text-xs text-on-surface-variant mt-0.5 font-medium">Le compte du client a été immédiatement crédité</p>
     </div>
 
     <!-- Official Agent POS Ticket Card -->
@@ -86,7 +86,7 @@
       <!-- Ticket Header -->
       <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
         <div>
-          <span class="text-[10px] font-black uppercase tracking-wider text-on-surface-variant">Montant Encaissé (Espèces)</span>
+          <span id="ticket-amount-label" class="text-[10px] font-black uppercase tracking-wider text-on-surface-variant">Montant Encaissé (Espèces)</span>
           <h2 class="text-2xl font-black text-primary font-mono mt-0.5">
             <span id="ticket-amount">25 000</span> <span class="text-sm font-sans font-bold text-primary">FCFA</span>
           </h2>
@@ -155,10 +155,10 @@
 
     <!-- Agent Primary Flow Buttons -->
     <div class="w-full flex flex-col gap-2 pt-1 no-print">
-      <!-- Nouveau Dépôt -->
-      <a href="../d_p_t_de_fonds_mis_jour_agent/code.html" class="w-full bg-primary text-white py-4 rounded-full font-bold text-xs sm:text-sm shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 no-underline text-center cursor-pointer">
+      <!-- Nouveau Dépôt / Action Principale -->
+      <a id="ticket-primary-action-btn" href="../d_p_t_de_fonds_mis_jour_agent/code.html" class="w-full bg-primary text-white py-4 rounded-full font-bold text-xs sm:text-sm shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 no-underline text-center cursor-pointer">
         <span class="material-symbols-outlined text-lg">add_circle</span>
-        <span>Effectuer un Nouveau Dépôt Client</span>
+        <span id="ticket-primary-action-label">Effectuer un Nouveau Dépôt Client</span>
       </a>
 
       <!-- Retour Tableau de Bord Agent -->
@@ -183,6 +183,12 @@
       if (savedData) {
         try {
           const trx = JSON.parse(savedData);
+          const titleEl = document.getElementById('ticket-main-title') || document.querySelector('h1');
+          const subTitleEl = document.getElementById('ticket-sub-title') || document.querySelector('main p');
+          const amountLabelEl = document.getElementById('ticket-amount-label') || document.querySelector('#printable-ticket span');
+          const primaryBtn = document.getElementById('ticket-primary-action-btn');
+          const primaryBtnLabel = document.getElementById('ticket-primary-action-label');
+
           if (trx.amount) document.getElementById('ticket-amount').textContent = parseInt(trx.amount).toLocaleString('fr-FR');
           if (trx.beneficiary) document.getElementById('ticket-client').textContent = trx.beneficiary;
           if (trx.network) document.getElementById('ticket-network').textContent = trx.network;
@@ -190,8 +196,33 @@
           if (trx.date) document.getElementById('ticket-date').textContent = trx.date;
           if (trx.commission) document.getElementById('ticket-commission').textContent = trx.commission;
 
-          const remainingFloat = Math.max(0, 1500000 - (parseInt(trx.amount) || 25000));
-          document.getElementById('ticket-float').textContent = `${remainingFloat.toLocaleString('fr-FR')} FCFA`;
+          // Float Request Customization
+          if (trx.title && trx.title.includes("Float")) {
+            if (titleEl) titleEl.textContent = "Demande de Float Transmise !";
+            if (subTitleEl) subTitleEl.textContent = "Votre compte de caisse sera crédité dès confirmation du virement";
+            if (amountLabelEl) amountLabelEl.textContent = "Montant de la Recharge Demandée";
+            if (primaryBtn) primaryBtn.href = "../demande_de_r_approvisionnement_float/code.html";
+            if (primaryBtnLabel) primaryBtnLabel.textContent = "Nouvelle Demande de Float";
+
+            const newFloat = 1500000 + (parseInt(trx.amount) || 500000);
+            document.getElementById('ticket-float').textContent = `${newFloat.toLocaleString('fr-FR')} FCFA (En attente)`;
+          }
+          // Cash-Out Withdrawal Customization
+          else if (trx.title && trx.title.includes("Retrait")) {
+            if (titleEl) titleEl.textContent = "Retrait Validé & Espèces Décaissées !";
+            if (subTitleEl) subTitleEl.textContent = "Les espèces ont été remises au client avec succès";
+            if (amountLabelEl) amountLabelEl.textContent = "Montant Espèces Décaissé";
+            if (primaryBtn) primaryBtn.href = "../retrait_de_fonds_mis_jour_agent/code.html";
+            if (primaryBtnLabel) primaryBtnLabel.textContent = "Servir un Autre Retrait Client";
+
+            const newFloat = 1500000 + (parseInt(trx.amount) || 25000);
+            document.getElementById('ticket-float').textContent = `${newFloat.toLocaleString('fr-FR')} FCFA`;
+          }
+          // Default Cash-In Deposit
+          else {
+            const remainingFloat = Math.max(0, 1500000 - (parseInt(trx.amount) || 25000));
+            document.getElementById('ticket-float').textContent = `${remainingFloat.toLocaleString('fr-FR')} FCFA`;
+          }
         } catch (e) {
           console.error("Error loading agent transaction data", e);
         }
