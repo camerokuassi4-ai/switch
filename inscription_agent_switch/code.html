@@ -1,232 +1,502 @@
 <!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Inscription Agent Agréé - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
 
-<html class="light" lang="fr"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Inscription Agent - Espace Agent</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="../assets/switch.css">
-<script src="../assets/switch.config.js"></script>
-
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .step-transition {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .form-step {
-            display: none;
-            opacity: 0;
-            transform: translateX(20px);
-        }
-        .form-step.active {
-            display: block;
-            opacity: 1;
-            transform: translateX(0);
-        }
-    </style>
-<style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
+    
     body {
+      font-family: 'Hanken Grotesk', sans-serif;
       min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .input-focus {
+      transition: all 0.2s ease;
+    }
+
+    .input-focus:focus {
+      border-color: #5E3BDC;
+      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.12);
+      outline: none;
+    }
+
+    /* Step animations */
+    .step-transition {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .form-step {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    .form-step.active {
+      display: flex;
+      flex-direction: column;
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
-  </head>
-<body class="bg-surface text-on-surface font-body-lg min-h-screen flex flex-col antialiased">
-<!-- Top Navigation (Contextual: Form Flow, so just a back button and title, no global nav shell) -->
-<header class="w-full top-0 sticky bg-surface flat no shadows z-40">
-<div class="flex items-center justify-between px-gutter py-4 w-full max-w-2xl mx-auto">
-<button aria-label="Retour" class="p-2 rounded-full hover:bg-surface-variant transition-colors text-on-surface-variant" onclick="previousStep()">
-<span class="material-symbols-outlined">arrow_back</span>
-</button>
-<h1 class="font-headline-md text-headline-md font-bold text-primary">Inscription Agent</h1>
-<div class="w-10"></div> <!-- Spacer for centering -->
-</div>
-</header>
-<!-- Main Content Area -->
-<main class="flex-grow w-full max-w-2xl mx-auto px-gutter py-8 flex flex-col">
-<!-- Progress Indicator -->
-<div class="mb-stack-lg">
-<div class="flex justify-between items-center relative">
-<!-- Line -->
-<div class="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-surface-variant rounded-full z-0"></div>
-<div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary rounded-full z-0 step-transition" id="progress-bar" style="width: 0%;"></div>
-<!-- Steps -->
-<div class="relative z-10 flex flex-col items-center step-indicator active" data-step="1">
-<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline-sm text-headline-sm mb-1 step-transition">1</div>
-<span class="font-label-caps text-label-caps text-on-surface-variant">Identité</span>
-</div>
-<div class="relative z-10 flex flex-col items-center step-indicator" data-step="2">
-<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-headline-sm text-headline-sm mb-1 step-transition">2</div>
-<span class="font-label-caps text-label-caps text-on-surface-variant">Lieu</span>
-</div>
-<div class="relative z-10 flex flex-col items-center step-indicator" data-step="3">
-<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-headline-sm text-headline-sm mb-1 step-transition">3</div>
-<span class="font-label-caps text-label-caps text-on-surface-variant">Contact</span>
-</div>
-</div>
-</div>
-<!-- Form Container -->
-<div class="bg-surface-container-lowest rounded-xl shadow-lg shadow-black/5 p-card-padding flex-grow relative overflow-hidden">
-<!-- Step 1: Identity -->
-<div class="form-step active step-transition" id="step1">
-<h2 class="font-headline-md text-headline-md mb-stack-md text-on-surface">Informations de base</h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-lg">Veuillez renseigner les détails de votre point de service.</p>
-<div class="space-y-stack-md">
-<div>
-<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="businessName">NOM COMMERCIAL</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">storefront</span>
-<input class="w-full bg-surface border border-outline-variant rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-lg text-body-lg placeholder:text-outline" id="businessName" placeholder="Ex: Boutique La Grâce" type="text"/>
-</div>
-</div>
-<div>
-<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="managerName">NOM DU GÉRANT</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">person</span>
-<input class="w-full bg-surface border border-outline-variant rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-lg text-body-lg placeholder:text-outline" id="managerName" placeholder="Prénom et Nom" type="text"/>
-</div>
-</div>
-</div>
-</div>
-<!-- Step 2: Location -->
-<div class="form-step step-transition" id="step2">
-<h2 class="font-headline-md text-headline-md mb-stack-md text-on-surface">Localisation précise</h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-lg">Où se trouve votre point de service ?</p>
-<div class="space-y-stack-md">
-<div>
-<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="city">VILLE</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">location_city</span>
-<select class="w-full bg-surface border border-outline-variant rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-lg text-body-lg appearance-none" id="city">
-<option disabled="" selected="" value="">Sélectionnez une ville</option>
-<option value="cotonou">Cotonou</option>
-<option value="porto_novo">Porto-Novo</option>
-<option value="parakou">Parakou</option>
-</select>
-<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
-</div>
-</div>
-<div>
-<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="neighborhood">QUARTIER</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">map</span>
-<input class="w-full bg-surface border border-outline-variant rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-lg text-body-lg placeholder:text-outline" id="neighborhood" placeholder="Ex: Haie Vive" type="text"/>
-</div>
-</div>
-<div class="pt-2">
-<button class="w-full flex items-center justify-center gap-2 bg-surface-container py-3 rounded-full text-primary font-headline-sm text-headline-sm hover:bg-surface-variant transition-colors border border-primary-fixed-dim">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">my_location</span>
-                            Capturer les coordonnées GPS
-                        </button>
-</div>
-</div>
-</div>
-<!-- Step 3: Contact -->
-<div class="form-step step-transition" id="step3">
-<h2 class="font-headline-md text-headline-md mb-stack-md text-on-surface">Informations de contact</h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-lg">Comment pouvons-nous vous joindre ?</p>
-<div class="space-y-stack-md">
-<div>
-<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="phone">NUMÉRO DE TÉLÉPHONE</label>
-<div class="relative flex">
-<div class="flex-shrink-0 flex items-center justify-center bg-surface-variant border border-r-0 border-outline-variant rounded-l-full px-4 text-on-surface-variant font-body-lg text-body-lg">
-                                +229
-                            </div>
-<input class="w-full bg-surface border border-outline-variant rounded-r-full py-3 px-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-lg text-body-lg placeholder:text-outline" id="phone" placeholder="00 00 00 00" type="tel"/>
-</div>
-</div>
-<div>
-<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="email">EMAIL (OPTIONNEL)</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">mail</span>
-<input class="w-full bg-surface border border-outline-variant rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-lg text-body-lg placeholder:text-outline" id="email" placeholder="agent@exemple.com" type="email"/>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Action Button Bottom Fixed Area -->
-<div class="mt-stack-lg pt-4 pb-8 flex justify-end">
-<button class="bg-primary text-on-primary font-headline-sm text-headline-sm py-3 px-8 rounded-full hover:opacity-90 active:scale-95 transition-all w-full md:w-auto shadow-md" id="nextBtn" onclick="nextStep()">
-                Continuer
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <button aria-label="Retour" onclick="previousStep()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Inscription Agent Agréé</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Rejoignez le réseau de guichets Switch</p>
+    </div>
+
+    <span class="text-[10px] font-bold text-amber-800 bg-amber-100 border border-amber-300 px-2.5 py-1 rounded-full">
+      Agent
+    </span>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-2 flex-grow">
+
+    <!-- Stepper Progress Bar -->
+    <div class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft">
+      <div class="flex items-center justify-between relative px-2">
+        <!-- Connecting Line -->
+        <div class="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-1 bg-gray-100 rounded-full z-0"></div>
+        <div id="progress-bar-fill" class="absolute left-6 top-1/2 -translate-y-1/2 h-1 bg-primary rounded-full z-0 step-transition" style="width: 0%;"></div>
+
+        <!-- Step 1 Indicator -->
+        <div class="relative z-10 flex flex-col items-center gap-1">
+          <div id="step-dot-1" class="w-8 h-8 rounded-full bg-primary text-white font-bold text-xs flex items-center justify-center shadow-md step-transition">
+            1
+          </div>
+          <span id="step-label-1" class="text-[10px] font-bold text-primary">Établissement</span>
+        </div>
+
+        <!-- Step 2 Indicator -->
+        <div class="relative z-10 flex flex-col items-center gap-1">
+          <div id="step-dot-2" class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition">
+            2
+          </div>
+          <span id="step-label-2" class="text-[10px] font-medium text-gray-400">Localisation</span>
+        </div>
+
+        <!-- Step 3 Indicator -->
+        <div class="relative z-10 flex flex-col items-center gap-1">
+          <div id="step-dot-3" class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition">
+            3
+          </div>
+          <span id="step-label-3" class="text-[10px] font-medium text-gray-400">Contact & IFU</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Body -->
+    <form id="agent-form" onsubmit="event.preventDefault(); nextStep();" class="flex flex-col gap-4">
+
+      <!-- ========================================== -->
+      <!-- STEP 1 : Informations de base & Établissement -->
+      <!-- ========================================== -->
+      <div id="step1" class="form-step active gap-4">
+        
+        <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-4">
+          <div class="flex items-center gap-2 border-b border-outline-variant/30 pb-2.5">
+            <span class="material-symbols-outlined text-primary text-lg">storefront</span>
+            <div>
+              <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">Point de Service & Gérant</h2>
+              <p class="text-[11px] text-on-surface-variant">Renseignez l'identité de votre guichet commercial</p>
+            </div>
+          </div>
+
+          <!-- Nom commercial -->
+          <div class="flex flex-col gap-1">
+            <label for="businessName" class="text-[11px] font-bold text-on-surface-variant">Nom commercial du point de service *</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">store</span>
+              <input type="text" id="businessName" required placeholder="Ex: Kiosque Saint-Michel, Boutique La Grâce" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+            </div>
+          </div>
+
+          <!-- Nom du gérant -->
+          <div class="flex flex-col gap-1">
+            <label for="managerName" class="text-[11px] font-bold text-on-surface-variant">Nom complet du gérant / propriétaire *</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">person</span>
+              <input type="text" id="managerName" required value="Adele Doe" placeholder="Prénom et Nom" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+            </div>
+          </div>
+
+          <!-- Type d'activité -->
+          <div class="flex flex-col gap-1">
+            <label for="businessType" class="text-[11px] font-bold text-on-surface-variant">Type d'établissement *</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">category</span>
+              <select id="businessType" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-8 text-xs sm:text-sm font-semibold text-on-surface cursor-pointer">
+                <option value="kiosk" selected>Kiosque Mobile Money dédié</option>
+                <option value="shop">Boutique / Alimentation générale</option>
+                <option value="pharmacy">Pharmacie / Dépôt pharmaceutique</option>
+                <option value="hardware">Quincaillerie / Matériaux</option>
+                <option value="cyber">Cybercafé / Secrétariat bureautique</option>
+                <option value="other">Autre commerce de proximité</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- NPI ANIP du gérant -->
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center justify-between">
+              <label for="managerNpi" class="text-[11px] font-bold text-on-surface-variant">NPI du Gérant (Registre ANIP Bénin)</label>
+              <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Requis BCEAO</span>
+            </div>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">badge</span>
+              <input type="text" id="managerNpi" value="1996 0814 1234 56" placeholder="Numéro Personnel d'Identification" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-mono font-semibold text-on-surface"/>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ========================================== -->
+      <!-- STEP 2 : Localisation & Géolocalisation GPS -->
+      <!-- ========================================== -->
+      <div id="step2" class="form-step gap-4">
+        
+        <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-4">
+          <div class="flex items-center gap-2 border-b border-outline-variant/30 pb-2.5">
+            <span class="material-symbols-outlined text-primary text-lg">location_on</span>
+            <div>
+              <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">Emplacement & Coordonnées GPS</h2>
+              <p class="text-[11px] text-on-surface-variant">Permettez aux clients de repérer votre guichet sur la carte</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Ville / Commune au Bénin -->
+            <div class="flex flex-col gap-1">
+              <label for="city" class="text-[11px] font-bold text-on-surface-variant">Commune / Ville (Bénin) *</label>
+              <div class="relative flex items-center">
+                <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">location_city</span>
+                <select id="city" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-8 text-xs sm:text-sm font-semibold text-on-surface cursor-pointer">
+                  <option value="Cotonou" selected>Cotonou (Littoral)</option>
+                  <option value="Abomey-Calavi">Abomey-Calavi (Atlantique)</option>
+                  <option value="Porto-Novo">Porto-Novo (Ouémé)</option>
+                  <option value="Parakou">Parakou (Borgou)</option>
+                  <option value="Ouidah">Ouidah (Atlantique)</option>
+                  <option value="Bohicon">Bohicon (Zou)</option>
+                  <option value="Natitingou">Natitingou (Atacora)</option>
+                  <option value="Kandi">Kandi (Alibori)</option>
+                  <option value="Djougou">Djougou (Donga)</option>
+                  <option value="Lokossa">Lokossa (Mono)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Quartier -->
+            <div class="flex flex-col gap-1">
+              <label for="neighborhood" class="text-[11px] font-bold text-on-surface-variant">Quartier & Rue *</label>
+              <div class="relative flex items-center">
+                <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">map</span>
+                <input type="text" id="neighborhood" required placeholder="Ex: Haie Vive, Saint-Jean, Akpakpa" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Repère visuel -->
+          <div class="flex flex-col gap-1">
+            <label for="landmark" class="text-[11px] font-bold text-on-surface-variant">Indication / Repère précis</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">explore</span>
+              <input type="text" id="landmark" placeholder="Ex: Face à la pharmacie, à 50m du carrefour" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+            </div>
+          </div>
+
+          <!-- Module Capture GPS Interactif -->
+          <div class="p-4 rounded-2xl bg-purple-50/70 border border-purple-200/80 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-xl">satellite_alt</span>
+                <div>
+                  <h4 class="text-xs font-black text-on-surface">Positionnement Géographique</h4>
+                  <p class="text-[10px] text-on-surface-variant">Indispensable pour l'orientation des clients de proximité</p>
+                </div>
+              </div>
+              <span id="gps-status-badge" class="text-[10px] font-bold bg-white text-gray-500 border border-gray-200 px-2 py-0.5 rounded-full">
+                Non capturé
+              </span>
+            </div>
+
+            <!-- Coordonnées affichées -->
+            <div id="gps-coords-display" class="hidden bg-white p-3 rounded-xl border border-purple-200 text-xs font-mono font-bold text-primary flex items-center justify-between">
+              <span id="gps-coords-text">LAT: 6.3654° N • LNG: 2.4183° E</span>
+              <span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-sans">Précision < 5m</span>
+            </div>
+
+            <!-- Bouton Capture GPS -->
+            <button type="button" id="gps-capture-btn" onclick="captureGpsLocation()" class="w-full bg-white border border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all flex items-center justify-center gap-2 text-xs cursor-pointer shadow-sm">
+              <span class="material-symbols-outlined text-base">my_location</span>
+              <span id="gps-btn-text">📍 Capturer les coordonnées GPS actuelles</span>
             </button>
-</div>
-</main>
-<script>
-        let currentStep = 1;
-        const totalSteps = 3;
+          </div>
 
-        function updateUI() {
-            // Update steps visibility
-            document.querySelectorAll('.form-step').forEach((el, index) => {
-                if (index + 1 === currentStep) {
-                    el.classList.add('active');
-                    // Small delay to trigger animation after display:block
-                    setTimeout(() => {
-                        el.style.opacity = '1';
-                        el.style.transform = 'translateX(0)';
-                    }, 50);
-                } else {
-                    el.classList.remove('active');
-                    el.style.opacity = '0';
-                    el.style.transform = index + 1 < currentStep ? 'translateX(-20px)' : 'translateX(20px)';
-                }
-            });
+        </div>
 
-            // Update Progress Bar
-            const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
+      </div>
 
-            // Update Indicators
-            document.querySelectorAll('.step-indicator').forEach((el, index) => {
-                const stepNum = index + 1;
-                const circle = el.querySelector('div');
-                
-                if (stepNum <= currentStep) {
-                    circle.classList.remove('bg-surface-variant', 'text-on-surface-variant');
-                    circle.classList.add('bg-primary', 'text-on-primary');
-                } else {
-                    circle.classList.remove('bg-primary', 'text-on-primary');
-                    circle.classList.add('bg-surface-variant', 'text-on-surface-variant');
-                }
-            });
+      <!-- ========================================== -->
+      <!-- STEP 3 : Contact & IFU Professionnel -->
+      <!-- ========================================== -->
+      <div id="step3" class="form-step gap-4">
+        
+        <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-4">
+          <div class="flex items-center gap-2 border-b border-outline-variant/30 pb-2.5">
+            <span class="material-symbols-outlined text-primary text-lg">contact_phone</span>
+            <div>
+              <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">Contact & Numéro Fiscal (IFU)</h2>
+              <p class="text-[11px] text-on-surface-variant">Canaux de communication et conformité fiscale</p>
+            </div>
+          </div>
 
-            // Update Button Text
-            const nextBtn = document.getElementById('nextBtn');
-            if (currentStep === totalSteps) {
-                nextBtn.textContent = 'Terminer';
-            } else {
-                nextBtn.textContent = 'Continuer';
-            }
+          <!-- Numéro Téléphone Terminal Agent -->
+          <div class="flex flex-col gap-1">
+            <label for="agentPhone" class="text-[11px] font-bold text-on-surface-variant">Numéro de téléphone du terminal Agent (+229) *</label>
+            <div class="relative flex items-center">
+              <div class="absolute left-3.5 flex items-center gap-1 text-on-surface-variant font-bold text-xs border-r border-gray-200 pr-2">
+                <span>🇧🇯 +229</span>
+              </div>
+              <input type="tel" id="agentPhone" required value="97 12 34 56" placeholder="97 00 00 00" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-22 pr-3 text-xs sm:text-sm font-mono font-bold text-on-surface"/>
+            </div>
+          </div>
+
+          <!-- Email Professionnel -->
+          <div class="flex flex-col gap-1">
+            <label for="agentEmail" class="text-[11px] font-bold text-on-surface-variant">Email professionnel de gestion</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">mail</span>
+              <input type="email" id="agentEmail" value="adele.doe@gmail.com" placeholder="agent@votreboutique.bj" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+            </div>
+          </div>
+
+          <!-- Numéro IFU Bénin (Optionnel mais recommandé) -->
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center justify-between">
+              <label for="ifuNumber" class="text-[11px] font-bold text-on-surface-variant">Numéro IFU (Identifiant Fiscal Unique)</label>
+              <span class="text-[10px] text-gray-400 font-medium">13 chiffres</span>
+            </div>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">receipt_long</span>
+              <input type="text" id="ifuNumber" maxlength="13" placeholder="3202 0123 4567 8" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-mono font-semibold text-on-surface"/>
+            </div>
+          </div>
+
+          <!-- Engagement Déontologique -->
+          <div class="pt-1">
+            <label class="flex items-start gap-2.5 p-3 rounded-2xl bg-gray-50 border border-gray-200 cursor-pointer">
+              <input type="checkbox" id="agent-terms" checked class="mt-0.5 rounded text-primary focus:ring-primary w-4 h-4"/>
+              <span class="text-[11px] text-on-surface font-medium leading-tight">
+                Je certifie l'exactitude des informations du guichet et m'engage à respecter les tarifs et commissions officielles Switch Bénin.
+              </span>
+            </label>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Action Buttons Footer -->
+      <div class="pt-2 flex items-center gap-3">
+        <button type="button" onclick="previousStep()" class="w-1/3 py-4 rounded-full bg-white border border-outline-variant/60 text-on-surface font-bold text-xs sm:text-sm hover:bg-gray-50 transition-all cursor-pointer">
+          Précédent
+        </button>
+        <button type="submit" id="next-btn" class="w-2/3 py-4 rounded-full bg-primary text-white font-bold text-xs sm:text-sm shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer">
+          <span id="next-btn-text">Continuer</span>
+          <span id="next-btn-icon" class="material-symbols-outlined text-lg">arrow_forward</span>
+        </button>
+      </div>
+
+    </form>
+
+  </main>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Stepper & GPS Logic -->
+  <script>
+    let currentStep = 1;
+    const totalSteps = 3;
+
+    function updateUI() {
+      // 1. Visibilité des étapes
+      for (let i = 1; i <= totalSteps; i++) {
+        const stepEl = document.getElementById(`step${i}`);
+        const dot = document.getElementById(`step-dot-${i}`);
+        const label = document.getElementById(`step-label-${i}`);
+
+        if (i === currentStep) {
+          stepEl.classList.add('active');
+          dot.className = "w-8 h-8 rounded-full bg-primary text-white font-bold text-xs flex items-center justify-center shadow-md step-transition";
+          label.className = "text-[10px] font-bold text-primary";
+        } else if (i < currentStep) {
+          stepEl.classList.remove('active');
+          dot.className = "w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shadow-sm step-transition";
+          dot.innerHTML = `<span class="material-symbols-outlined text-base">check</span>`;
+          label.className = "text-[10px] font-bold text-emerald-700";
+        } else {
+          stepEl.classList.remove('active');
+          dot.className = "w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition";
+          dot.textContent = i;
+          label.className = "text-[10px] font-medium text-gray-400";
+        }
+      }
+
+      // 2. Barre de progression
+      const progressFill = document.getElementById('progress-bar-fill');
+      const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+      progressFill.style.width = `${percentage}%`;
+
+      // 3. Textes du bouton
+      const btnText = document.getElementById('next-btn-text');
+      const btnIcon = document.getElementById('next-btn-icon');
+      if (currentStep === totalSteps) {
+        btnText.textContent = "Finaliser l'Agrément";
+        btnIcon.textContent = "verified";
+      } else {
+        btnText.textContent = "Continuer";
+        btnIcon.textContent = "arrow_forward";
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextStep() {
+      // Validation de l'étape courante
+      if (currentStep === 1) {
+        const bName = document.getElementById('businessName').value.trim();
+        const mName = document.getElementById('managerName').value.trim();
+        if (!bName || !mName) {
+          alert("Veuillez renseigner le nom commercial et le nom du gérant.");
+          return;
+        }
+      } else if (currentStep === 2) {
+        const neighborhood = document.getElementById('neighborhood').value.trim();
+        if (!neighborhood) {
+          alert("Veuillez indiquer le quartier de votre point de service.");
+          return;
+        }
+      } else if (currentStep === 3) {
+        const phone = document.getElementById('agentPhone').value.trim();
+        const terms = document.getElementById('agent-terms').checked;
+        if (!phone) {
+          alert("Veuillez renseigner le numéro de téléphone de l'agent.");
+          return;
+        }
+        if (!terms) {
+          alert("Veuillez accepter l'engagement déontologique.");
+          return;
         }
 
-        function nextStep() {
-            if (currentStep < totalSteps) {
-                currentStep++;
-                updateUI();
-            } else {
-                if (window.switchNavigate) {
-                    window.switchNavigate('../agent_verification_caution/code.html');
-                } else {
-                    window.location.href = '../agent_verification_caution/code.html';
-                }
-            }
-        }
+        // Sauvegarde des données Agent
+        const agentData = {
+          businessName: document.getElementById('businessName').value.trim(),
+          managerName: document.getElementById('managerName').value.trim(),
+          businessType: document.getElementById('businessType').value,
+          city: document.getElementById('city').value,
+          neighborhood: document.getElementById('neighborhood').value.trim(),
+          phone: document.getElementById('agentPhone').value.trim(),
+          email: document.getElementById('agentEmail').value.trim(),
+          ifu: document.getElementById('ifuNumber').value.trim()
+        };
+        localStorage.setItem('switch_agent_application', JSON.stringify(agentData));
 
-        function previousStep() {
-            if (currentStep > 1) {
-                currentStep--;
-                updateUI();
-            } else {
-                // Handle actual back navigation (e.g. to previous page)
-                console.log("Navigating away from form");
-            }
+        // Redirection vers l'étape de cautionnement
+        if (window.switchNavigate) {
+          window.switchNavigate('../agent_verification_caution/code.html');
+        } else {
+          window.location.href = '../agent_verification_caution/code.html';
         }
+        return;
+      }
 
-        // Initialize UI
+      currentStep++;
+      updateUI();
+    }
+
+    function previousStep() {
+      if (currentStep > 1) {
+        currentStep--;
         updateUI();
-    </script>
-<script src="../assets/switch.forms.js"></script>
-<script src="../assets/switch.router.js"></script>
-</body></html>
+      } else {
+        if (window.history.length > 1) {
+          window.history.back();
+        } else {
+          window.location.href = '../accueil_espace_agent/code.html';
+        }
+      }
+    }
+
+    // Capture GPS en temps réel ou simulée haute précision
+    function captureGpsLocation() {
+      const btn = document.getElementById('gps-capture-btn');
+      const btnText = document.getElementById('gps-btn-text');
+      const statusBadge = document.getElementById('gps-status-badge');
+      const coordsDisplay = document.getElementById('gps-coords-display');
+      const coordsText = document.getElementById('gps-coords-text');
+
+      btn.disabled = true;
+      btnText.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-primary border-t-transparent rounded-full mr-1"></span> Recherche du signal satellite GPS...`;
+
+      setTimeout(() => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              const lat = pos.coords.latitude.toFixed(4);
+              const lng = pos.coords.longitude.toFixed(4);
+              applyGpsSuccess(lat, lng);
+            },
+            () => {
+              // Fallback de coordonnées précises pour Cotonou / Bénin
+              applyGpsSuccess("6.3654", "2.4183");
+            },
+            { timeout: 4000 }
+          );
+        } else {
+          applyGpsSuccess("6.3654", "2.4183");
+        }
+      }, 800);
+
+      function applyGpsSuccess(lat, lng) {
+        btn.disabled = false;
+        btnText.textContent = "📍 Coordonnées GPS actualisées";
+        statusBadge.className = "text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1";
+        statusBadge.innerHTML = `<span class="material-symbols-outlined text-xs">verified</span> Fixé`;
+
+        coordsDisplay.classList.remove('hidden');
+        coordsText.textContent = `LAT: ${lat}° N • LNG: ${lng}° E`;
+        localStorage.setItem('switch_agent_gps', `${lat},${lng}`);
+      }
+    }
+  </script>
+
+</body>
+</html>
