@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Création du code PIN - Switch Bénin</title>
+  <title>Création du Code PIN - Switch Bénin</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
@@ -13,310 +13,219 @@
     body {
       font-family: 'Hanken Grotesk', sans-serif;
       min-height: max(884px, 100dvh);
-      background: radial-gradient(circle at 50% 0%, #F5F1FD 0%, #FDF8FF 100%);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .glass-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 10px 30px -5px rgba(94, 59, 220, 0.07), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
-    }
-
-    .pin-box {
+    .pin-input {
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
-    .pin-box.active-field {
+    .pin-input:focus {
       border-color: #5E3BDC;
-      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.15);
-      background-color: #FBF9FF;
-    }
-
-    .keypad-btn {
-      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .keypad-btn:active {
-      transform: scale(0.92);
-      background-color: #EBE6F3;
-    }
-
-    @keyframes pulse-success {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-    }
-
-    .success-pulse {
-      animation: pulse-success 0.4s ease-in-out;
+      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.18);
+      background-color: #FFFFFF;
+      outline: none;
     }
   </style>
 </head>
-<body class="text-on-surface min-h-screen flex flex-col justify-between antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<body class="min-h-screen pb-24 flex flex-col justify-between antialiased selection:bg-primary-fixed">
 
-  <!-- Header -->
-  <header class="w-full max-w-md mx-auto px-container-margin pt-5 flex items-center justify-between">
-    <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer text-on-surface">
+  <!-- Top App Bar -->
+  <header class="w-full max-w-lg mx-auto px-container-margin pt-6 pb-2 flex items-center justify-between z-30">
+    <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
       <span class="material-symbols-outlined text-xl">arrow_back</span>
     </button>
-    <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-extrabold tracking-wide uppercase">
-      <span class="material-symbols-outlined text-sm">lock</span>
-      <span>Sécurité Compte</span>
+    
+    <!-- Step 4/4 Progression Indicator (Complete) -->
+    <div class="flex items-center gap-1">
+      <span class="w-2 h-1.5 rounded-full bg-primary"></span>
+      <span class="w-2 h-1.5 rounded-full bg-primary"></span>
+      <span class="w-2 h-1.5 rounded-full bg-primary"></span>
+      <span class="w-6 h-1.5 rounded-full bg-primary"></span>
     </div>
     <div class="w-10"></div>
   </header>
 
-  <!-- Main Container -->
-  <main class="w-full max-w-md mx-auto px-container-margin flex flex-col items-center flex-1 justify-center py-2 gap-4">
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-lg mx-auto px-container-margin flex flex-col items-center text-center gap-6 pt-2 flex-1 justify-center">
+    
+    <!-- Glowing Lock Icon Header -->
+    <div class="relative w-20 h-20 flex items-center justify-center">
+      <div class="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse"></div>
+      <div class="w-16 h-16 rounded-2xl bg-white border border-primary/20 shadow-md flex items-center justify-center text-primary relative z-10">
+        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">lock</span>
+      </div>
+    </div>
 
-    <!-- Title & Subtitle -->
-    <div class="text-center space-y-1 max-w-sm">
-      <h1 class="text-2xl font-extrabold text-on-surface tracking-tight">Créez votre Code PIN</h1>
-      <p class="text-xs text-on-surface-variant leading-relaxed">
-        Définissez vos 4 chiffres secrets puis confirmez-les ci-dessous.
+    <!-- Title & Description -->
+    <div class="space-y-1 max-w-xs">
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight">Code Secret PIN</h1>
+      <p class="text-xs sm:text-sm text-on-surface-variant font-medium">
+        Définissez votre code secret à 4 chiffres pour valider vos paiements et transferts.
       </p>
     </div>
 
-    <!-- Section 1 : Haut (Création Nouveau PIN) -->
-    <div id="card-pin1" onclick="setActiveSection(1)" class="w-full glass-card rounded-3xl p-4 border-2 border-primary transition-all cursor-pointer flex flex-col gap-2 relative shadow-sm">
-      <div class="flex items-center justify-between w-full">
-        <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-primary animate-pulse" id="dot-indicator1"></span>
-          <span class="text-xs font-black uppercase tracking-wider text-primary" id="title-pin1">1. Nouveau Code PIN</span>
+    <!-- Form Container -->
+    <form class="w-full max-w-sm flex flex-col gap-4 mt-1" onsubmit="event.preventDefault(); validatePins();">
+      
+      <!-- Card 1 : Saisir le nouveau Code PIN -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-black uppercase tracking-wider text-primary flex items-center gap-1.5">
+            <span class="w-4 h-4 rounded-full bg-primary text-white text-[9px] flex items-center justify-center font-bold">1</span>
+            <span>Nouveau Code PIN</span>
+          </label>
+          <button type="button" onclick="togglePinVisibility(1)" class="text-[11px] font-bold text-on-surface-variant hover:text-primary flex items-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm" id="eye-icon-1">visibility</span>
+            <span id="eye-text-1">Afficher</span>
+          </button>
         </div>
-        
-        <!-- Toggle Afficher / Masquer Haut -->
-        <button type="button" onclick="event.stopPropagation(); togglePinVisibility(1)" class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container hover:bg-surface-container-high border border-outline-variant/50 text-on-surface-variant hover:text-primary transition-colors text-[11px] font-bold cursor-pointer">
-          <span class="material-symbols-outlined text-sm" id="vis-icon-1">visibility</span>
-          <span id="vis-label-1">Afficher</span>
-        </button>
-      </div>
 
-      <!-- 4 Cases PIN 1 -->
-      <div class="flex justify-center gap-3 my-1">
-        <div class="pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border border-outline-variant bg-surface flex items-center justify-center text-xl font-black text-primary" id="p1-0"></div>
-        <div class="pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border border-outline-variant bg-surface flex items-center justify-center text-xl font-black text-primary" id="p1-1"></div>
-        <div class="pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border border-outline-variant bg-surface flex items-center justify-center text-xl font-black text-primary" id="p1-2"></div>
-        <div class="pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border border-outline-variant bg-surface flex items-center justify-center text-xl font-black text-primary" id="p1-3"></div>
-      </div>
-    </div>
-
-    <!-- Section 2 : Bas (Confirmation PIN) -->
-    <div id="card-pin2" onclick="setActiveSection(2)" class="w-full glass-card rounded-3xl p-4 border-2 border-outline-variant/40 transition-all cursor-pointer flex flex-col gap-2 relative opacity-75 hover:opacity-100 shadow-sm">
-      <div class="flex items-center justify-between w-full">
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-sm text-on-surface-variant" id="icon-indicator2">lock_reset</span>
-          <span class="text-xs font-black uppercase tracking-wider text-on-surface-variant" id="title-pin2">2. Confirmer le Code PIN</span>
+        <div class="flex justify-center gap-3">
+          <input aria-label="PIN 1 - Chiffre 1" class="pin-input w-12 h-14 sm:w-14 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="p1-0" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password" autofocus/>
+          <input aria-label="PIN 1 - Chiffre 2" class="pin-input w-12 h-14 sm:w-14 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="p1-1" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="PIN 1 - Chiffre 3" class="pin-input w-12 h-14 sm:w-14 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="p1-2" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="PIN 1 - Chiffre 4" class="pin-input w-12 h-14 sm:w-14 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="p1-3" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
         </div>
-        
-        <!-- Toggle Afficher / Masquer Bas -->
-        <button type="button" onclick="event.stopPropagation(); togglePinVisibility(2)" class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container hover:bg-surface-container-high border border-outline-variant/50 text-on-surface-variant hover:text-primary transition-colors text-[11px] font-bold cursor-pointer">
-          <span class="material-symbols-outlined text-sm" id="vis-icon-2">visibility</span>
-          <span id="vis-label-2">Afficher</span>
-        </button>
       </div>
 
-      <!-- 4 Cases PIN 2 -->
-      <div class="flex justify-center gap-3 my-1">
-        <div class="pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border border-outline-variant bg-surface flex items-center justify-center text-xl font-black text-primary" id="p2-0"></div>
-        <div class="pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border border-outline-variant bg-surface flex items-center justify-center text-xl font-black text-primary" id="p2-1"></div>
-        <div class="pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border border-outline-variant bg-surface flex items-center justify-center text-xl font-black text-primary" id="p2-2"></div>
-        <div class="pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border border-outline-variant bg-surface flex items-center justify-center text-xl font-black text-primary" id="p2-3"></div>
+      <!-- Card 2 : Confirmer le Code PIN -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-black uppercase tracking-wider text-on-surface-variant flex items-center gap-1.5" id="label-confirm">
+            <span class="w-4 h-4 rounded-full bg-surface-container text-on-surface-variant text-[9px] flex items-center justify-center font-bold" id="badge-confirm">2</span>
+            <span>Confirmer le Code PIN</span>
+          </label>
+          <button type="button" onclick="togglePinVisibility(2)" class="text-[11px] font-bold text-on-surface-variant hover:text-primary flex items-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm" id="eye-icon-2">visibility</span>
+            <span id="eye-text-2">Afficher</span>
+          </button>
+        </div>
+
+        <div class="flex justify-center gap-3">
+          <input aria-label="PIN 2 - Chiffre 1" class="pin-input w-12 h-14 sm:w-14 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="p2-0" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="PIN 2 - Chiffre 2" class="pin-input w-12 h-14 sm:w-14 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="p2-1" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="PIN 2 - Chiffre 3" class="pin-input w-12 h-14 sm:w-14 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="p2-2" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="PIN 2 - Chiffre 4" class="pin-input w-12 h-14 sm:w-14 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="p2-3" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+        </div>
       </div>
-    </div>
 
-    <!-- Status Message -->
-    <div id="status-box" class="h-5 flex items-center justify-center text-center">
-      <p id="status-text" class="text-xs font-bold text-on-surface-variant transition-all">Saisissez les 4 chiffres en haut</p>
-    </div>
-
-    <!-- Numeric Keypad -->
-    <div class="w-full max-w-sm mt-auto pb-3">
-      <div class="grid grid-cols-3 gap-2 sm:gap-2.5">
-        <button type="button" onclick="enterDigit('1')" class="keypad-btn h-13 sm:h-15 rounded-2xl bg-white shadow-sm border border-outline-variant/30 text-xl font-bold text-on-surface flex items-center justify-center cursor-pointer">1</button>
-        <button type="button" onclick="enterDigit('2')" class="keypad-btn h-13 sm:h-15 rounded-2xl bg-white shadow-sm border border-outline-variant/30 text-xl font-bold text-on-surface flex items-center justify-center cursor-pointer">2</button>
-        <button type="button" onclick="enterDigit('3')" class="keypad-btn h-13 sm:h-15 rounded-2xl bg-white shadow-sm border border-outline-variant/30 text-xl font-bold text-on-surface flex items-center justify-center cursor-pointer">3</button>
-
-        <button type="button" onclick="enterDigit('4')" class="keypad-btn h-13 sm:h-15 rounded-2xl bg-white shadow-sm border border-outline-variant/30 text-xl font-bold text-on-surface flex items-center justify-center cursor-pointer">4</button>
-        <button type="button" onclick="enterDigit('5')" class="keypad-btn h-13 sm:h-15 rounded-2xl bg-white shadow-sm border border-outline-variant/30 text-xl font-bold text-on-surface flex items-center justify-center cursor-pointer">5</button>
-        <button type="button" onclick="enterDigit('6')" class="keypad-btn h-13 sm:h-15 rounded-2xl bg-white shadow-sm border border-outline-variant/30 text-xl font-bold text-on-surface flex items-center justify-center cursor-pointer">6</button>
-
-        <button type="button" onclick="enterDigit('7')" class="keypad-btn h-13 sm:h-15 rounded-2xl bg-white shadow-sm border border-outline-variant/30 text-xl font-bold text-on-surface flex items-center justify-center cursor-pointer">7</button>
-        <button type="button" onclick="enterDigit('8')" class="keypad-btn h-13 sm:h-15 rounded-2xl bg-white shadow-sm border border-outline-variant/30 text-xl font-bold text-on-surface flex items-center justify-center cursor-pointer">8</button>
-        <button type="button" onclick="enterDigit('9')" class="keypad-btn h-13 sm:h-15 rounded-2xl bg-white shadow-sm border border-outline-variant/30 text-xl font-bold text-on-surface flex items-center justify-center cursor-pointer">9</button>
-
-        <button type="button" onclick="clearCurrentSection()" class="keypad-btn h-13 sm:h-15 rounded-2xl bg-surface-container text-xs font-black uppercase tracking-wider text-on-surface-variant flex items-center justify-center cursor-pointer hover:bg-surface-container-high">Effacer</button>
-        <button type="button" onclick="enterDigit('0')" class="keypad-btn h-13 sm:h-15 rounded-2xl bg-white shadow-sm border border-outline-variant/30 text-xl font-bold text-on-surface flex items-center justify-center cursor-pointer">0</button>
-        <button type="button" onclick="deleteDigit()" class="keypad-btn h-13 sm:h-15 rounded-2xl bg-surface-container text-on-surface flex items-center justify-center cursor-pointer hover:bg-surface-container-high">
-          <span class="material-symbols-outlined text-2xl">backspace</span>
-        </button>
+      <!-- Live Match Feedback -->
+      <div id="feedback-box" class="h-6 flex items-center justify-center">
+        <p class="text-xs font-bold text-on-surface-variant" id="feedback-text">Saisissez les 4 chiffres de votre code secret</p>
       </div>
-    </div>
+
+      <!-- Action Button -->
+      <button type="submit" class="w-full bg-primary text-white py-4 px-6 rounded-full font-extrabold text-base shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1">
+        <span class="material-symbols-outlined text-xl">check_circle</span>
+        <span>Valider mon code PIN</span>
+      </button>
+    </form>
 
   </main>
 
   <script>
-    let pin1 = '';
-    let pin2 = '';
-    let activeSection = 1; // 1 (Haut) ou 2 (Bas)
-    let showDigits1 = false;
-    let showDigits2 = false;
+    const p1 = [document.getElementById('p1-0'), document.getElementById('p1-1'), document.getElementById('p1-2'), document.getElementById('p1-3')];
+    const p2 = [document.getElementById('p2-0'), document.getElementById('p2-1'), document.getElementById('p2-2'), document.getElementById('p2-3')];
 
-    function togglePinVisibility(section) {
-      if (section === 1) {
-        showDigits1 = !showDigits1;
-        document.getElementById('vis-icon-1').textContent = showDigits1 ? 'visibility_off' : 'visibility';
-        document.getElementById('vis-label-1').textContent = showDigits1 ? 'Masquer' : 'Afficher';
-      } else {
-        showDigits2 = !showDigits2;
-        document.getElementById('vis-icon-2').textContent = showDigits2 ? 'visibility_off' : 'visibility';
-        document.getElementById('vis-label-2').textContent = showDigits2 ? 'Masquer' : 'Afficher';
-      }
-      renderDisplays();
-    }
-
-    function setActiveSection(sec) {
-      activeSection = sec;
-      const card1 = document.getElementById('card-pin1');
-      const card2 = document.getElementById('card-pin2');
-      const title1 = document.getElementById('title-pin1');
-      const title2 = document.getElementById('title-pin2');
-
-      if (sec === 1) {
-        card1.className = 'w-full glass-card rounded-3xl p-4 border-2 border-primary transition-all cursor-pointer flex flex-col gap-2 relative shadow-sm';
-        card2.className = 'w-full glass-card rounded-3xl p-4 border-2 border-outline-variant/40 transition-all cursor-pointer flex flex-col gap-2 relative opacity-75 hover:opacity-100 shadow-sm';
-        title1.className = 'text-xs font-black uppercase tracking-wider text-primary';
-        title2.className = 'text-xs font-black uppercase tracking-wider text-on-surface-variant';
-      } else {
-        card1.className = 'w-full glass-card rounded-3xl p-4 border-2 border-outline-variant/40 transition-all cursor-pointer flex flex-col gap-2 relative opacity-75 hover:opacity-100 shadow-sm';
-        card2.className = 'w-full glass-card rounded-3xl p-4 border-2 border-primary transition-all cursor-pointer flex flex-col gap-2 relative shadow-sm';
-        title1.className = 'text-xs font-black uppercase tracking-wider text-green-700';
-        title2.className = 'text-xs font-black uppercase tracking-wider text-primary';
-      }
-      renderDisplays();
-    }
-
-    function enterDigit(digit) {
-      if (activeSection === 1) {
-        if (pin1.length < 4) {
-          pin1 += digit;
-          renderDisplays();
-          if (navigator.vibrate) navigator.vibrate(10);
-
-          if (pin1.length === 4) {
-            setTimeout(() => {
-              setActiveSection(2);
-              document.getElementById('status-text').innerHTML = '<span class="text-primary font-bold">Ressaisissez le même code en bas pour confirmer</span>';
-            }, 180);
+    function setupInputRow(inputs, nextTarget) {
+      inputs.forEach((inp, idx) => {
+        inp.addEventListener('input', (e) => {
+          e.target.value = e.target.value.replace(/[^0-9]/g, '');
+          if (e.target.value.length === 1) {
+            if (idx < inputs.length - 1) {
+              inputs[idx + 1].focus();
+            } else if (nextTarget) {
+              nextTarget.focus();
+            } else {
+              inp.blur();
+              validatePins();
+            }
           }
-        }
-      } else {
-        if (pin2.length < 4) {
-          pin2 += digit;
-          renderDisplays();
-          if (navigator.vibrate) navigator.vibrate(10);
+          checkPinsLive();
+        });
 
-          if (pin2.length === 4) {
-            checkPinsMatch();
+        inp.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && e.target.value.length === 0 && idx > 0) {
+            inputs[idx - 1].focus();
+            inputs[idx - 1].value = '';
+            checkPinsLive();
           }
-        }
-      }
+        });
+      });
     }
 
-    function deleteDigit() {
-      if (activeSection === 1) {
-        if (pin1.length > 0) {
-          pin1 = pin1.slice(0, -1);
-          renderDisplays();
-          if (navigator.vibrate) navigator.vibrate(10);
-        }
+    setupInputRow(p1, p2[0]);
+    setupInputRow(p2, null);
+
+    let vis1 = false;
+    let vis2 = false;
+
+    function togglePinVisibility(group) {
+      if (group === 1) {
+        vis1 = !vis1;
+        p1.forEach(inp => inp.type = vis1 ? 'text' : 'password');
+        document.getElementById('eye-icon-1').textContent = vis1 ? 'visibility_off' : 'visibility';
+        document.getElementById('eye-text-1').textContent = vis1 ? 'Masquer' : 'Afficher';
       } else {
-        if (pin2.length > 0) {
-          pin2 = pin2.slice(0, -1);
-          renderDisplays();
-          if (navigator.vibrate) navigator.vibrate(10);
+        vis2 = !vis2;
+        p2.forEach(inp => inp.type = vis2 ? 'text' : 'password');
+        document.getElementById('eye-icon-2').textContent = vis2 ? 'visibility_off' : 'visibility';
+        document.getElementById('eye-text-2').textContent = vis2 ? 'Masquer' : 'Afficher';
+      }
+    }
+
+    function getPin(inputs) {
+      return inputs.map(i => i.value).join('');
+    }
+
+    function checkPinsLive() {
+      const code1 = getPin(p1);
+      const code2 = getPin(p2);
+      const fb = document.getElementById('feedback-text');
+
+      if (code1.length === 4 && code2.length === 4) {
+        if (code1 === code2) {
+          fb.innerHTML = '<span class="text-green-600 font-extrabold flex items-center gap-1 justify-center"><span class="material-symbols-outlined text-sm">verified</span> Les deux codes correspondent parfaitement !</span>';
         } else {
-          setActiveSection(1);
+          fb.innerHTML = '<span class="text-rose-500 font-extrabold flex items-center gap-1 justify-center"><span class="material-symbols-outlined text-sm">error</span> Les codes ne correspondent pas.</span>';
         }
       }
     }
 
-    function clearCurrentSection() {
-      if (activeSection === 1) {
-        pin1 = '';
+    function validatePins() {
+      const code1 = getPin(p1);
+      const code2 = getPin(p2);
+
+      if (code1.length < 4) {
+        alert("Veuillez saisir votre code PIN à 4 chiffres.");
+        p1[0].focus();
+        return;
+      }
+      if (code2.length < 4) {
+        alert("Veuillez confirmer votre code PIN.");
+        p2[0].focus();
+        return;
+      }
+      if (code1 !== code2) {
+        alert("Les deux codes PIN ne correspondent pas. Veuillez les ressaisir.");
+        p2.forEach(i => i.value = '');
+        p2[0].focus();
+        checkPinsLive();
+        return;
+      }
+
+      // Initialisation explicite du Niveau 1 (Plafond 500 000 FCFA)
+      localStorage.setItem('switch_kyc_level', '1');
+
+      // Navigation directe vers l'écran d'accueil d'onboarding
+      if (window.switchNavigate) {
+        window.switchNavigate('../bienvenue_succes_onboarding/code.html');
       } else {
-        pin2 = '';
-      }
-      renderDisplays();
-    }
-
-    function renderDisplays() {
-      // Rendu PIN 1 (Haut)
-      for (let i = 0; i < 4; i++) {
-        const box = document.getElementById('p1-' + i);
-        if (i < pin1.length) {
-          box.textContent = showDigits1 ? pin1[i] : '●';
-          box.className = 'pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border-2 border-primary bg-primary/10 flex items-center justify-center text-2xl font-black text-primary';
-        } else if (i === pin1.length && activeSection === 1) {
-          box.textContent = '';
-          box.className = 'pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border-2 border-primary/50 bg-primary/5 flex items-center justify-center text-xl font-black text-primary active-field';
-        } else {
-          box.textContent = '';
-          box.className = 'pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border border-outline-variant bg-surface flex items-center justify-center text-xl font-black text-primary';
-        }
-      }
-
-      // Rendu PIN 2 (Bas)
-      for (let i = 0; i < 4; i++) {
-        const box = document.getElementById('p2-' + i);
-        if (i < pin2.length) {
-          box.textContent = showDigits2 ? pin2[i] : '●';
-          box.className = 'pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border-2 border-primary bg-primary/10 flex items-center justify-center text-2xl font-black text-primary';
-        } else if (i === pin2.length && activeSection === 2) {
-          box.textContent = '';
-          box.className = 'pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border-2 border-primary/50 bg-primary/5 flex items-center justify-center text-xl font-black text-primary active-field';
-        } else {
-          box.textContent = '';
-          box.className = 'pin-box w-12 h-13 sm:w-13 sm:h-14 rounded-2xl border border-outline-variant bg-surface flex items-center justify-center text-xl font-black text-primary';
-        }
+        window.location.href = '../bienvenue_succes_onboarding/code.html';
       }
     }
-
-    function checkPinsMatch() {
-      const statusText = document.getElementById('status-text');
-      const card1 = document.getElementById('card-pin1');
-      const card2 = document.getElementById('card-pin2');
-
-      if (pin1 === pin2) {
-        statusText.innerHTML = '<span class="text-green-600 font-extrabold flex items-center gap-1 justify-center"><span class="material-symbols-outlined text-base">check_circle</span> Code PIN validé avec succès !</span>';
-        card1.className = 'w-full glass-card rounded-3xl p-4 border-2 border-green-500 bg-green-50/50 transition-all flex flex-col gap-2 relative success-pulse shadow-md';
-        card2.className = 'w-full glass-card rounded-3xl p-4 border-2 border-green-500 bg-green-50/50 transition-all flex flex-col gap-2 relative success-pulse shadow-md';
-
-        setTimeout(() => {
-          localStorage.setItem('switch_kyc_level', '1');
-          if (window.switchNavigate) {
-            window.switchNavigate('../bienvenue_succes_onboarding/code.html');
-          } else {
-            window.location.href = '../bienvenue_succes_onboarding/code.html';
-          }
-        }, 500);
-
-      } else {
-        statusText.innerHTML = '<span class="text-red-500 font-extrabold flex items-center gap-1 justify-center"><span class="material-symbols-outlined text-base">error</span> Les codes ne correspondent pas. Ressaisissez en bas.</span>';
-        card2.className = 'w-full glass-card rounded-3xl p-4 border-2 border-red-400 bg-red-50/50 transition-all flex flex-col gap-2 relative shadow-sm';
-        if (navigator.vibrate) navigator.vibrate([60, 60, 60]);
-
-        setTimeout(() => {
-          pin2 = '';
-          setActiveSection(2);
-          statusText.textContent = 'Ressaisissez le même code PIN à 4 chiffres';
-        }, 1200);
-      }
-    }
-
-    // Initialisation
-    setActiveSection(1);
   </script>
 
   <script src="../assets/switch.router.js"></script>
