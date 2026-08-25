@@ -643,11 +643,11 @@
         localStorage.setItem('switch_merchant_business_name', merchantData.businessName);
         localStorage.setItem('switch_merchant_sectors', JSON.stringify(selectedSectors));
 
-        // Navigation vers la vérification
+        // Navigation vers la génération et configuration du QR Marchand
         if (window.switchNavigate) {
-          window.switchNavigate('../v_rification_marchand/code.html');
+          window.switchNavigate('../setup_point_de_vente_marchand/code.html');
         } else {
-          window.location.href = '../v_rification_marchand/code.html';
+          window.location.href = '../setup_point_de_vente_marchand/code.html';
         }
         return;
       }

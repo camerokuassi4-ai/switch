@@ -45,8 +45,8 @@
         <div class="w-36 h-36 bg-gray-100 p-2 rounded-xl flex items-center justify-center border border-gray-200">
           <span class="material-symbols-outlined text-8xl text-black">qr_code_2</span>
         </div>
-        <span class="text-sm font-black font-mono tracking-wider text-primary">BOUTIQUE ADELE</span>
-        <span class="text-[10px] text-gray-400 font-mono">ID: SW-MCH-99201</span>
+        <span id="merchant-qr-name" class="text-sm font-black font-mono tracking-wider text-primary text-center">BOUTIQUE LA PLAGE</span>
+        <span id="merchant-qr-id" class="text-[10px] text-gray-400 font-mono">ID: SW-MCH-99201</span>
       </div>
 
       <p class="text-xs text-purple-200 mt-4">Accepte instantanément MTN MoMo, Moov Money, Celtiis et Cartes Visa/Mastercard.</p>
@@ -93,12 +93,22 @@
   </main>
 
   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const bName = localStorage.getItem('switch_merchant_business_name') || "BOUTIQUE LA PLAGE";
+      const nameEl = document.getElementById('merchant-qr-name');
+      if (nameEl) {
+        nameEl.textContent = bName.toUpperCase();
+      }
+    });
+
     function downloadQrKit() {
-      alert("Kit de comptoir PDF haute définition prêt pour impression (Switch_Kit_Marchand_Adele.pdf) !");
+      const bName = localStorage.getItem('switch_merchant_business_name') || "Mon_Commerce";
+      alert("Kit de comptoir PDF haute définition prêt pour impression (Switch_Kit_Marchand_" + bName.replace(/[^a-zA-Z0-9]/g, '_') + ".pdf) !");
     }
 
     function shareQrKitWhatsApp() {
-      const msg = encodeURIComponent("🏪 Scannez ce code QR Switch pour régler directement vos achats chez Boutique Adele !");
+      const bName = localStorage.getItem('switch_merchant_business_name') || "notre établissement";
+      const msg = encodeURIComponent("🏪 Scannez ce code QR Switch pour régler directement vos achats chez " + bName + " !");
       window.open("https://wa.me/?text=" + msg, "_blank");
     }
   </script>
