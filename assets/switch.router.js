@@ -113,7 +113,7 @@
         "Limites": ROOT + "limites_de_transaction/code.html",
         "Moyens de Paiement": ROOT + "moyens_de_paiement_li_s/code.html",
         "Espace Marchand": ROOT + "accueil_marchand/code.html",
-        "Espace Agent": ROOT + "accueil_espace_agent/code.html",
+        "Espace Agent": ROOT + "tableau_de_bord_agent/code.html",
         "Aide & Support": ROOT + "support_aide/code.html",
         "Support": ROOT + "support_aide/code.html",
         "Déconnexion": ROOT + "accueil_splash_mis_jour/code.html",
@@ -378,12 +378,8 @@
     },
     "support_marchand": { space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: "m-support", actions: {} },
 
-    "accueil_espace_agent": {
-      space: "agent", back: ROOT + "profil_utilisateur/code.html", nav: null,
-      actions: { "Commencer": ROOT + "inscription_agent_switch/code.html", "Créer un compte": ROOT + "inscription_agent_switch/code.html", "Se connecter": ROOT + "tableau_de_bord_agent/code.html" }
-    },
     "inscription_agent_switch": {
-      space: "agent", back: ROOT + "accueil_espace_agent/code.html", nav: null,
+      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
       actions: { "Soumettre": ROOT + "agent_verification_caution/code.html", "Continuer": ROOT + "agent_verification_caution/code.html", "S'inscrire": ROOT + "agent_verification_caution/code.html", "Terminer": ROOT + "agent_verification_caution/code.html" }
     },
     "tableau_de_bord_agent": {
