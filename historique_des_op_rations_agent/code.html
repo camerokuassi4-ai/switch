@@ -1,185 +1,384 @@
 <!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Journal des Opérations - Terminal Agent Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
 
-<html class="light" lang="fr"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Historique Agent</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="../assets/switch.css">
-<script src="../assets/switch.config.js"></script>
-
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .material-symbols-outlined[data-weight="fill"] {
-            font-variation-settings: 'FILL' 1;
-        }
-    </style>
-<style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
     body {
+      font-family: 'Hanken Grotesk', sans-serif;
       min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .modal-enter {
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
   </style>
-  </head>
-<body class="bg-surface text-on-surface font-body-lg min-h-screen pb-32">
-<!-- TopAppBar -->
-<header class="w-full top-0 sticky bg-surface/90 backdrop-blur-md flex items-center justify-between px-gutter py-4 w-full max-w-7xl mx-auto z-40">
-<div class="flex items-center gap-3">
-<a href="../tableau_de_bord_agent/code.html" class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined text-xl">arrow_back</span>
-</a>
-<h1 class="font-headline-md text-headline-md font-bold text-primary">Historique Agent</h1>
-</div>
-<div class="flex items-center gap-2">
-<a href="../releve_operations_agent/code.html" class="px-3 py-1.5 rounded-full bg-purple-50 hover:bg-purple-100 text-primary font-bold text-xs flex items-center gap-1 transition-colors no-underline">
-<span class="material-symbols-outlined text-base">picture_as_pdf</span>
-<span class="hidden sm:inline">Relevé & Export</span>
-</a>
-<a href="../centre_de_notifications_agent/code.html" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:opacity-80 transition-opacity active:scale-95 duration-150 relative">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-<span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-rose-500"></span>
-</a>
-</div>
-</header>
-<main class="max-w-3xl mx-auto px-gutter mt-6">
-<!-- Header & Filters -->
-<div class="mb-stack-lg">
-<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-4 text-on-surface">Historique Agent</h2>
-<div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-<button class="whitespace-nowrap px-4 py-2 rounded-full bg-primary text-on-primary font-label-caps text-label-caps shadow-sm">
-                    Tous
-                </button>
-<button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-caps text-label-caps border border-outline-variant hover:bg-surface-container-high transition-colors">
-                    Dépôts
-                </button>
-<button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-caps text-label-caps border border-outline-variant hover:bg-surface-container-high transition-colors">
-                    Retraits
-                </button>
-<button class="whitespace-nowrap px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-caps text-label-caps border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px]" data-icon="calendar_month">calendar_month</span>
-                    Date
-                </button>
-</div>
-</div>
-<!-- Transactions List -->
-<div class="space-y-stack-lg">
-<!-- Day Group 1 -->
-<div>
-<h3 class="font-headline-sm text-headline-sm text-on-surface-variant mb-stack-sm ml-2">Aujourd'hui, 24 Oct</h3>
-<div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] overflow-hidden border border-surface-variant">
-<!-- Transaction Item 1 -->
-<div class="p-card-padding border-b border-surface-variant flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer active:scale-[0.99]">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-full bg-liquidity-high/10 flex items-center justify-center text-liquidity-high">
-<span class="material-symbols-outlined" data-icon="arrow_downward" data-weight="fill">arrow_downward</span>
-</div>
-<div>
-<div class="flex items-center gap-2">
-<h4 class="font-headline-sm text-headline-sm text-on-surface">Dépôt Client</h4>
-<span class="material-symbols-outlined text-[14px] text-liquidity-high" data-icon="verified" data-weight="fill">verified</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant">09:42 • K. Amadou</p>
-</div>
-</div>
-<div class="text-right">
-<p class="font-headline-sm text-headline-sm text-on-surface">50 000 F</p>
-<div class="inline-flex items-center gap-1 bg-commission-accent/10 text-commission-accent px-2 py-0.5 rounded-full mt-1">
-<span class="material-symbols-outlined text-[12px]" data-icon="percent">percent</span>
-<span class="font-label-caps text-label-caps">+250 F</span>
-</div>
-</div>
-</div>
-<!-- Transaction Item 2 -->
-<div class="p-card-padding flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer active:scale-[0.99]">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-full bg-liquidity-low/10 flex items-center justify-center text-liquidity-low">
-<span class="material-symbols-outlined" data-icon="arrow_upward" data-weight="fill">arrow_upward</span>
-</div>
-<div>
-<div class="flex items-center gap-2">
-<h4 class="font-headline-sm text-headline-sm text-on-surface">Retrait Client</h4>
-<span class="material-symbols-outlined text-[14px] text-liquidity-high" data-icon="verified" data-weight="fill">verified</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant">08:15 • M. Dossou</p>
-</div>
-</div>
-<div class="text-right">
-<p class="font-headline-sm text-headline-sm text-on-surface">15 000 F</p>
-<div class="inline-flex items-center gap-1 bg-commission-accent/10 text-commission-accent px-2 py-0.5 rounded-full mt-1">
-<span class="material-symbols-outlined text-[12px]" data-icon="percent">percent</span>
-<span class="font-label-caps text-label-caps">+100 F</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Day Group 2 -->
-<div>
-<h3 class="font-headline-sm text-headline-sm text-on-surface-variant mb-stack-sm ml-2">Hier, 23 Oct</h3>
-<div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] overflow-hidden border border-surface-variant">
-<!-- Transaction Item 3 -->
-<div class="p-card-padding flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer active:scale-[0.99]">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-full bg-liquidity-high/10 flex items-center justify-center text-liquidity-high">
-<span class="material-symbols-outlined" data-icon="arrow_downward" data-weight="fill">arrow_downward</span>
-</div>
-<div>
-<div class="flex items-center gap-2">
-<h4 class="font-headline-sm text-headline-sm text-on-surface">Dépôt Client</h4>
-<span class="material-symbols-outlined text-[14px] text-liquidity-high" data-icon="verified" data-weight="fill">verified</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant">16:30 • A. Bio</p>
-</div>
-</div>
-<div class="text-right">
-<p class="font-headline-sm text-headline-sm text-on-surface">100 000 F</p>
-<div class="inline-flex items-center gap-1 bg-commission-accent/10 text-commission-accent px-2 py-0.5 rounded-full mt-1">
-<span class="material-symbols-outlined text-[12px]" data-icon="percent">percent</span>
-<span class="font-label-caps text-label-caps">+500 F</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</main>
-<!-- BottomNavBar -->
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
 
-<style>
-        @media (max-width: 767px) {
-            nav { display: flex !important; }
-        }
-    </style>
-<script src="../assets/switch.router.js"></script>
-
-<nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
-  <!-- 1. Accueil -->
-  <a href="../tableau_de_bord_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">dashboard</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
-  </a>
-  <!-- 2. Services -->
-  <a href="../services_factures_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">apps</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Services</span>
-  </a>
-  <!-- 3. Servir (Centre en relief) -->
-  <a href="../valider_une_op_ration_client/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.3);position:relative;top:-6px;">
-      <span class="material-symbols-outlined" style="font-size:22px;">qr_code_scanner</span>
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <button aria-label="Retour" onclick="window.location.href='../tableau_de_bord_agent/code.html'" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Journal des Opérations</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Historique guichet & commissions acquises</p>
     </div>
-    <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-4px;">Servir</span>
-  </a>
-  <!-- 4. Caisse -->
-  <a href="../cloture_de_caisse_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">point_of_sale</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Caisse</span>
-  </a>
-  <!-- 5. Profil -->
-  <a href="../param_tres_et_profil_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">manage_accounts</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Profil</span>
-  </a>
-</nav>
-</body></html>
+
+    <!-- Relevé Comptable Link -->
+    <a href="../releve_operations_agent/code.html" class="px-2.5 py-1.5 rounded-full bg-purple-50 text-primary border border-primary/20 flex items-center gap-1 font-bold text-xs no-underline hover:bg-purple-100 transition-colors">
+      <span class="material-symbols-outlined text-sm">receipt_long</span>
+      <span class="hidden sm:inline">Export</span>
+    </a>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Stats Sommaire du Jour -->
+    <div class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft flex items-center justify-between">
+      <div class="flex flex-col">
+        <span class="text-[10px] uppercase font-bold text-gray-500">Volume Total Encaissé</span>
+        <b class="text-lg font-mono font-black text-on-surface">505 000 FCFA</b>
+      </div>
+      <div class="h-8 w-px bg-outline-variant/40"></div>
+      <div class="flex flex-col items-end">
+        <span class="text-[10px] uppercase font-bold text-emerald-700">Commissions Acquises</span>
+        <b class="text-lg font-mono font-black text-emerald-700">+8 750 FCFA</b>
+      </div>
+    </div>
+
+    <!-- 2. Recherche & Filtres Catégories -->
+    <section class="flex flex-col gap-3">
+      <!-- Search Input -->
+      <div class="relative w-full">
+        <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg">search</span>
+        <input type="text" id="trx-search" oninput="filterTransactions()" placeholder="Rechercher client, n° tél ou référence..." class="w-full bg-white border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs font-medium text-on-surface placeholder:text-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-xs"/>
+      </div>
+
+      <!-- Filter Badges -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none text-xs">
+        <button type="button" onclick="setCategory('all')" id="tab-all" class="px-4 py-2 rounded-full font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap">
+          Tous (24)
+        </button>
+        <button type="button" onclick="setCategory('depot')" id="tab-depot" class="px-4 py-2 rounded-full font-bold bg-white border border-outline-variant/40 text-gray-600 hover:text-on-surface cursor-pointer whitespace-nowrap">
+          Dépôts Cash-In
+        </button>
+        <button type="button" onclick="setCategory('retrait')" id="tab-retrait" class="px-4 py-2 rounded-full font-bold bg-white border border-outline-variant/40 text-gray-600 hover:text-on-surface cursor-pointer whitespace-nowrap">
+          Retraits Cash-Out
+        </button>
+        <button type="button" onclick="setCategory('service')" id="tab-service" class="px-4 py-2 rounded-full font-bold bg-white border border-outline-variant/40 text-gray-600 hover:text-on-surface cursor-pointer whitespace-nowrap">
+          Services SBEE/KYC
+        </button>
+      </div>
+    </section>
+
+    <!-- 3. Liste des Transactions -->
+    <section class="flex flex-col gap-4">
+      
+      <!-- Groupe 1 : Aujourd'hui -->
+      <div class="flex flex-col gap-2" id="group-today">
+        <span class="text-[11px] font-black uppercase text-gray-500 tracking-wider px-1">Aujourd'hui • 25 Août 2026</span>
+
+        <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-soft divide-y divide-outline-variant/30 overflow-hidden">
+          
+          <!-- Item 1: Dépôt Cash-In -->
+          <div onclick="openTrxDetail('Dépôt Cash-In Client', '50 000', '+350 F', 'Koffi MENSAH (+229 97 00 11 22)', 'Switch Bénin', 'TRX-DEP-84920', 'Aujourd hui • 15:30', '0 FCFA', 'Trésorerie Float')" data-cat="depot" data-text="koffi mensah 97001122 trx-dep-84920 depot 50000" class="trx-card p-4 flex items-center justify-between hover:bg-purple-50/30 cursor-pointer transition-colors">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-purple-50 text-primary flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-xl">arrow_downward</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <b class="text-xs font-bold text-on-surface">Dépôt Cash-In</b>
+                  <span class="text-[9px] font-black text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded-md">+350 F com.</span>
+                </div>
+                <span class="text-[11px] text-gray-500 block mt-0.5">Koffi MENSAH • 15:30</span>
+                <span class="text-[9px] font-mono text-gray-400">#TRX-DEP-84920</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="font-mono font-black text-xs text-on-surface block">50 000 F</span>
+              <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-full">Succès</span>
+            </div>
+          </div>
+
+          <!-- Item 2: Retrait Cash-Out -->
+          <div onclick="openTrxDetail('Retrait Cash-Out Client', '25 000', '+200 F', 'Mariam SANNI (+229 96 44 33 22)', 'Switch Bénin', 'TRX-RET-91204', 'Aujourd hui • 14:15', '0 FCFA', 'Caisse Espèces Guichet')" data-cat="retrait" data-text="mariam sanni 96443322 trx-ret-91204 retrait 25000" class="trx-card p-4 flex items-center justify-between hover:bg-purple-50/30 cursor-pointer transition-colors">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-xl">arrow_upward</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <b class="text-xs font-bold text-on-surface">Retrait Cash-Out (OTP)</b>
+                  <span class="text-[9px] font-black text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded-md">+200 F com.</span>
+                </div>
+                <span class="text-[11px] text-gray-500 block mt-0.5">Mariam SANNI • 14:15</span>
+                <span class="text-[9px] font-mono text-gray-400">#TRX-RET-91204</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="font-mono font-black text-xs text-on-surface block">25 000 F</span>
+              <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-full">Espèces Remises</span>
+            </div>
+          </div>
+
+          <!-- Item 3: Enrôlement KYC Client ANIP -->
+          <div onclick="openTrxDetail('Enrôlement Client KYC ANIP', '0', '+500 F', 'Jean DOSSOU (NPI: 1098234871239)', 'ANIP Bénin / Switch', 'KYC-ENR-40291', 'Aujourd hui • 12:40', '0 FCFA', 'Prime Directe')" data-cat="service" data-text="jean dossou anip kyc enrolement 1098234871239" class="trx-card p-4 flex items-center justify-between hover:bg-purple-50/30 cursor-pointer transition-colors">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-xl">how_to_reg</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <b class="text-xs font-bold text-on-surface">Enrôlement Client ANIP</b>
+                  <span class="text-[9px] font-black text-purple-800 bg-purple-100 px-1.5 py-0.2 rounded-md">+500 F Prime</span>
+                </div>
+                <span class="text-[11px] text-gray-500 block mt-0.5">Jean DOSSOU • 12:40</span>
+                <span class="text-[9px] font-mono text-gray-400">#KYC-ENR-40291</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="font-mono font-black text-xs text-emerald-700 block">+500 F</span>
+              <span class="text-[9px] text-purple-800 font-bold bg-purple-50 px-1.5 py-0.2 rounded-full">Compte Activé</span>
+            </div>
+          </div>
+
+          <!-- Item 4: SBEE Électricité Recharge -->
+          <div onclick="openTrxDetail('Recharge SBEE Compteur Prépayé', '10 000', '+150 F', 'Compteur N° 14283920192', 'SBEE Bénin', 'SRV-SBE-11029', 'Aujourd hui • 10:20', '0 FCFA', 'Caisse Guichet')" data-cat="service" data-text="sbee electricite compteur 14283920192 10000" class="trx-card p-4 flex items-center justify-between hover:bg-purple-50/30 cursor-pointer transition-colors">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-xl">electric_bolt</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <b class="text-xs font-bold text-on-surface">Recharge SBEE</b>
+                  <span class="text-[9px] font-black text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded-md">+150 F com.</span>
+                </div>
+                <span class="text-[11px] text-gray-500 block mt-0.5">Compteur 1428... • 10:20</span>
+                <span class="text-[9px] font-mono text-gray-400">#SRV-SBE-11029</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="font-mono font-black text-xs text-on-surface block">10 000 F</span>
+              <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-full">Code Émis</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : Détail d'Opération & Action Reçu -->
+  <!-- ============================================================ -->
+  <div id="trx-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm hidden flex items-end justify-center">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-10 shadow-2xl modal-enter flex flex-col gap-4">
+      
+      <div class="w-full flex items-center justify-between">
+        <span class="w-12 h-1 bg-outline-variant rounded-full mx-auto -mr-6"></span>
+        <button onclick="closeTrxModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-2xl">receipt</span>
+        </div>
+        <div>
+          <h3 id="modal-title" class="text-base font-black text-on-surface">Dépôt Cash-In</h3>
+          <p id="modal-ref" class="text-xs font-mono text-gray-500">Réf: #TRX-DEP-84920</p>
+        </div>
+      </div>
+
+      <!-- Recap Box -->
+      <div class="p-4 rounded-3xl bg-surface-container-low/60 border border-outline-variant/60 flex flex-col gap-2.5 text-xs">
+        <div class="flex items-center justify-between">
+          <span class="text-gray-500 font-medium">Bénéficiaire / Client :</span>
+          <b id="modal-client" class="text-on-surface font-bold">Koffi MENSAH</b>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-gray-500 font-medium">Réseau :</span>
+          <b id="modal-network" class="text-primary font-bold">Switch Bénin</b>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-gray-500 font-medium">Date & Heure :</span>
+          <span id="modal-date" class="font-mono text-gray-700 font-medium">Aujourd'hui • 15:30</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-gray-500 font-medium">Commission Agent acquise :</span>
+          <b id="modal-comm" class="text-emerald-700 font-mono font-bold">+350 FCFA</b>
+        </div>
+        <div class="flex items-center justify-between pt-2 border-t border-outline-variant/40">
+          <span class="text-gray-700 font-bold">Montant Total :</span>
+          <b id="modal-amount" class="text-base font-black font-mono text-primary">50 000 FCFA</b>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex flex-col gap-2 pt-1">
+        <button onclick="goToReceipt()" class="w-full bg-primary text-white font-bold py-3.5 rounded-full flex items-center justify-center gap-2 text-xs shadow-md hover:bg-primary-container hover:text-on-primary-container transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-lg">print</span>
+          <span>Consulter & Réimprimer le Reçu Officiel</span>
+        </button>
+
+        <button onclick="shareWhatsApp()" class="w-full bg-[#25D366] text-white font-bold py-3.5 rounded-full flex items-center justify-center gap-2 text-xs shadow-md hover:opacity-90 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-lg">share</span>
+          <span>Envoyer la Preuve WhatsApp au Client</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Logic -->
+  <script>
+    let activeTrxData = null;
+
+    function setCategory(cat) {
+      const tabs = ['all', 'depot', 'retrait', 'service'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-${t}`);
+        if (btn) {
+          if (t === cat) {
+            btn.className = "px-4 py-2 rounded-full font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap";
+          } else {
+            btn.className = "px-4 py-2 rounded-full font-bold bg-white border border-outline-variant/40 text-gray-600 hover:text-on-surface cursor-pointer whitespace-nowrap";
+          }
+        }
+      });
+
+      const cards = document.querySelectorAll('.trx-card');
+      cards.forEach(c => {
+        const itemCat = c.getAttribute('data-cat');
+        if (cat === 'all' || itemCat === cat) {
+          c.classList.remove('hidden');
+        } else {
+          c.classList.add('hidden');
+        }
+      });
+    }
+
+    function filterTransactions() {
+      const q = document.getElementById('trx-search').value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.trx-card');
+      cards.forEach(c => {
+        const text = c.getAttribute('data-text') || '';
+        if (text.includes(q)) {
+          c.classList.remove('hidden');
+        } else {
+          c.classList.add('hidden');
+        }
+      });
+    }
+
+    function openTrxDetail(title, amount, comm, client, net, ref, date, fee, source) {
+      activeTrxData = {
+        title: title,
+        amount: parseInt(amount.replace(/\s/g, '')) || 25000,
+        fee: fee || "0 FCFA",
+        beneficiary: client,
+        network: net,
+        commission: comm,
+        source: source || "Trésorerie Guichet",
+        ref: ref,
+        date: date,
+        returnUrl: "../historique_des_op_rations_agent/code.html",
+        returnLabel: "Retour à l'Historique des Opérations"
+      };
+
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-ref').textContent = `Réf: #${ref}`;
+      document.getElementById('modal-client').textContent = client;
+      document.getElementById('modal-network').textContent = net;
+      document.getElementById('modal-date').textContent = date;
+      document.getElementById('modal-comm').textContent = comm;
+      document.getElementById('modal-amount').textContent = `${amount} FCFA`;
+
+      document.getElementById('trx-modal').classList.remove('hidden');
+    }
+
+    function closeTrxModal() {
+      document.getElementById('trx-modal').classList.add('hidden');
+    }
+
+    function goToReceipt() {
+      if (activeTrxData) {
+        localStorage.setItem('switch_last_transaction', JSON.stringify(activeTrxData));
+        window.location.href = '../recu_operation_agent/code.html';
+      }
+    }
+
+    function shareWhatsApp() {
+      if (activeTrxData) {
+        const msg = encodeURIComponent(`📄 Reçu Guichet Switch Bénin (Agent AGT-4092) :\nOpération : ${activeTrxData.title}\nMontant : ${activeTrxData.amount.toLocaleString('fr-FR')} FCFA\nBénéficiaire : ${activeTrxData.beneficiary}\nRéf : #${activeTrxData.ref}\nMerci de votre fidélité !`);
+        window.open("https://wa.me/?text=" + msg, "_blank");
+      }
+    }
+  </script>
+
+  <!-- Bottom Navigation Bar Agent (5 Piliers Opérationnels) -->
+  <nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+    <!-- 1. Accueil -->
+    <a href="../tableau_de_bord_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">dashboard</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+    </a>
+    <!-- 2. Services -->
+    <a href="../services_factures_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">apps</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Services</span>
+    </a>
+    <!-- 3. Servir (Centre en relief) -->
+    <a href="../valider_une_op_ration_client/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.3);position:relative;top:-6px;">
+        <span class="material-symbols-outlined" style="font-size:22px;">qr_code_scanner</span>
+      </div>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-4px;">Servir</span>
+    </a>
+    <!-- 4. Caisse -->
+    <a href="../cloture_de_caisse_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">point_of_sale</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Caisse</span>
+    </a>
+    <!-- 5. Profil -->
+    <a href="../param_tres_et_profil_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">manage_accounts</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Profil</span>
+    </a>
+  </nav>
+
+</body>
+</html>
