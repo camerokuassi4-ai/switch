@@ -275,6 +275,7 @@
     "code_retrait_especes_agent": { space: "user", back: ROOT + "retrait_de_fonds/code.html", nav: null, actions: {} },
     "code_depot_especes_agent": { space: "user", back: ROOT + "d_p_t_de_fonds/code.html", nav: null, actions: {} },
     "verification_niveau_superieur": { space: "user", back: ROOT + "limites_de_transaction/code.html", nav: null, actions: {} },
+    "resultat_verification_kyc": { space: "user", back: ROOT + "verification_niveau_superieur/code.html", nav: null, actions: {} },
 
     "kyc_verification_identite": {
       space: "user", back: ROOT + "cr_ation_code_pin/code.html", nav: null,

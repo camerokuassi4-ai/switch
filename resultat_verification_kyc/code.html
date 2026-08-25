@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Résultat de la Vérification - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+    .vip-gold-gradient {
+      background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 50%, #5B4002 100%);
+      box-shadow: 0 16px 36px -10px rgba(170, 124, 17, 0.4);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-24 flex flex-col justify-between antialiased selection:bg-primary selection:text-white">
+
+  <!-- Top Simple Header -->
+  <header class="w-full max-w-md mx-auto px-container-margin pt-5 flex items-center justify-between z-30">
+    <div class="w-10"></div>
+    <div class="flex items-center bg-surface-container p-1 rounded-full border border-outline-variant/40">
+      <button type="button" onclick="showResult('accepted')" id="toggle-acc" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-600 text-white shadow-sm cursor-pointer">
+        Accepté ✅
+      </button>
+      <button type="button" onclick="showResult('rejected')" id="toggle-rej" class="px-3 py-1 rounded-full text-xs font-bold text-on-surface-variant hover:text-on-surface cursor-pointer">
+        Refusé ❌
+      </button>
+    </div>
+    <button onclick="window.switchNavigate ? window.switchNavigate('../tableau_de_bord_mis_jour/code.html') : window.location.href='../tableau_de_bord_mis_jour/code.html'" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors cursor-pointer" title="Fermer">
+      <span class="material-symbols-outlined text-xl">close</span>
+    </button>
+  </header>
+
+  <!-- CAS 1 : ACCEPTATION & VALIDATION NIVEAU 3 VIP -->
+  <main id="state-accepted" class="w-full max-w-md mx-auto px-container-margin flex flex-col items-center gap-5 pt-2 flex-1 justify-center">
+    
+    <!-- VIP Gold Icon Badge -->
+    <div class="relative w-24 h-24 flex items-center justify-center my-1">
+      <div class="absolute inset-0 bg-amber-400 rounded-full blur-xl opacity-60"></div>
+      <div class="vip-gold-gradient rounded-full w-full h-full flex items-center justify-center text-white shadow-xl relative z-10">
+        <span class="material-symbols-outlined text-5xl font-black">workspace_premium</span>
+      </div>
+    </div>
+
+    <!-- Title & Subtitle -->
+    <div class="text-center">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black uppercase mb-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        <span>Dossier Accepté & Validé</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-black text-on-surface tracking-tight">Félicitations Adele !</h1>
+      <p class="text-xs text-on-surface-variant mt-1 font-medium">Votre compte est désormais certifié <b>Niveau 3 VIP</b></p>
+    </div>
+
+    <!-- Unlocked VIP Limits Bento Card -->
+    <div class="w-full bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3.5 relative overflow-hidden">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-amber-800">Nouveau Plafond Débloqué</span>
+          <h2 class="text-2xl font-black text-amber-900 font-mono mt-0.5">10 000 000 <span class="text-sm font-sans font-bold text-amber-800">FCFA / jour</span></h2>
+        </div>
+        <span class="material-symbols-outlined text-3xl text-amber-600">verified</span>
+      </div>
+
+      <div class="flex flex-col gap-2 text-xs">
+        <div class="flex items-center justify-between">
+          <span class="text-on-surface-variant">Statut ANIP & IFU :</span>
+          <span class="font-bold text-emerald-700">Conforme & Certifié</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-on-surface-variant">Retraits en Agence :</span>
+          <span class="font-bold text-on-surface">Illimités sans restriction</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-on-surface-variant">Carte Virtuelle Visa Gold :</span>
+          <span class="font-bold text-on-surface">Activée avec 3D-Secure</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="w-full flex flex-col gap-2.5 mt-2">
+      <button onclick="window.switchNavigate ? window.switchNavigate('../tableau_de_bord_mis_jour/code.html') : window.location.href='../tableau_de_bord_mis_jour/code.html'" class="w-full bg-primary text-white py-4 rounded-full font-bold text-sm shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+        <span class="material-symbols-outlined text-lg">home</span>
+        <span>Accéder à mon tableau de bord VIP</span>
+      </button>
+
+      <button onclick="window.switchNavigate ? window.switchNavigate('../limites_de_transaction/code.html') : window.location.href='../limites_de_transaction/code.html'" class="w-full bg-white border border-outline-variant/40 text-on-surface py-3.5 rounded-full font-bold text-xs hover:bg-surface-container transition-all cursor-pointer">
+        Voir mes nouveaux plafonds
+      </button>
+    </div>
+  </main>
+
+  <!-- CAS 2 : REFUS DU DOSSIER AVEC MOTIF & RECTIFICATION -->
+  <main id="state-rejected" class="w-full max-w-md mx-auto px-container-margin flex flex-col items-center gap-5 pt-2 flex-1 justify-center hidden">
+    
+    <!-- Red Alert Icon Badge -->
+    <div class="relative w-24 h-24 flex items-center justify-center my-1">
+      <div class="absolute inset-0 bg-rose-400 rounded-full blur-xl opacity-40"></div>
+      <div class="bg-rose-500 rounded-full w-full h-full flex items-center justify-center text-white shadow-xl relative z-10">
+        <span class="material-symbols-outlined text-5xl font-black">gpp_bad</span>
+      </div>
+    </div>
+
+    <!-- Title & Subtitle -->
+    <div class="text-center">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-800 text-xs font-black uppercase mb-2">
+        <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+        <span>Dossier Non Validé</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-black text-on-surface tracking-tight">Vérification Incomplète</h1>
+      <p class="text-xs text-on-surface-variant mt-1 font-medium">Certains éléments n'ont pas pu être vérifiés par nos équipes.</p>
+    </div>
+
+    <!-- Rejection Reasons Bento Card -->
+    <div class="w-full bg-white rounded-3xl p-5 border border-rose-200 shadow-sm flex flex-col gap-3.5">
+      <h3 class="text-xs font-black text-rose-700 uppercase tracking-wider flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-base">error_outline</span>
+        <span>Motif du refus :</span>
+      </h3>
+
+      <div class="bg-rose-50/70 p-3.5 rounded-2xl border border-rose-100 text-xs text-rose-900 leading-relaxed font-medium">
+        ⚠️ <b>Justificatif de domicile non conforme :</b> La facture SBEE importée date de plus de 3 mois (ou n'est pas lisible). Veuillez fournir une facture récente ou une attestation de résidence officielle de votre mairie/arrondissement.
+      </div>
+
+      <div class="space-y-1 text-xs text-on-surface-variant">
+        <p class="font-bold text-on-surface">💡 Que devez-vous faire ?</p>
+        <p>1. Prenez une photo nette de votre facture SBEE/SONEB de moins de 3 mois.</p>
+        <p>2. Vérifiez que votre nom ou adresse correspond à votre compte.</p>
+      </div>
+    </div>
+
+    <!-- Re-upload & Support Actions -->
+    <div class="w-full flex flex-col gap-2.5 mt-2">
+      <button onclick="window.switchNavigate ? window.switchNavigate('../verification_niveau_superieur/code.html') : window.location.href='../verification_niveau_superieur/code.html'" class="w-full bg-primary text-white py-4 rounded-full font-bold text-sm shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+        <span class="material-symbols-outlined text-lg">refresh</span>
+        <span>Corriger et renvoyer le document</span>
+      </button>
+
+      <button onclick="contactVipSupport()" class="w-full bg-[#25D366] text-white py-3.5 rounded-full font-bold text-xs shadow-sm hover:opacity-90 transition-all flex items-center justify-center gap-2 cursor-pointer">
+        <span class="material-symbols-outlined text-base">chat</span>
+        <span>Aide Conformité WhatsApp 24/7</span>
+      </button>
+    </div>
+  </main>
+
+  <!-- Confetti Canvas for Acceptance -->
+  <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+  <script>
+    function showResult(state) {
+      const sAcc = document.getElementById('state-accepted');
+      const sRej = document.getElementById('state-rejected');
+      const bAcc = document.getElementById('toggle-acc');
+      const bRej = document.getElementById('toggle-rej');
+
+      if (state === 'accepted') {
+        sAcc.classList.remove('hidden');
+        sRej.classList.add('hidden');
+        bAcc.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-600 text-white shadow-sm cursor-pointer';
+        bRej.className = 'px-3 py-1 rounded-full text-xs font-bold text-on-surface-variant hover:text-on-surface cursor-pointer';
+        launchConfetti();
+      } else {
+        sAcc.classList.add('hidden');
+        sRej.classList.remove('hidden');
+        bAcc.className = 'px-3 py-1 rounded-full text-xs font-bold text-on-surface-variant hover:text-on-surface cursor-pointer';
+        bRej.className = 'px-3 py-1 rounded-full text-xs font-bold bg-rose-600 text-white shadow-sm cursor-pointer';
+      }
+    }
+
+    function contactVipSupport() {
+      const msg = encodeURIComponent("Bonjour le Support Switch Bénin, j'ai une question concernant le refus de mon justificatif pour la mise à niveau Niveau 3 VIP.");
+      window.open("https://wa.me/?text=" + msg, "_blank");
+    }
+
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const particles = [];
+      const colors = ['#D4AF37', '#10B981', '#7B5CFA', '#F59E0B'];
+
+      for (let i = 0; i < 45; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 3,
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 0.8) * 14,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          size: Math.random() * 8 + 4,
+          opacity: 1
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.35;
+          p.opacity -= 0.012;
+          if (p.opacity > 0) {
+            alive = true;
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.opacity;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        });
+        if (alive) requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    launchConfetti();
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>
