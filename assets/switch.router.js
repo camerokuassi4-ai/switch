@@ -628,6 +628,9 @@
           greetingSub.textContent = "Nouveau Compte (Niv. 1)";
         }
       }
+      if (typeof window.renderLimitsPage === "function") {
+        window.renderLimitsPage();
+      }
     } catch (e) {}
   }
   window.applyGlobalKycState = applyGlobalKycState;
