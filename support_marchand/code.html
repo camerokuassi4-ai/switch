@@ -1,171 +1,303 @@
 <!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Support & Assistance Marchand Pro - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
 
-<html class="light" lang="fr"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Support Marchand</title>
-<!-- Material Symbols Outlined -->
-
-<style>
-        .material-symbols-outlined {
-            font-family: 'Material Symbols Outlined';
-            font-weight: normal;
-            font-style: normal;
-            font-size: 24px;
-            line-height: 1;
-            letter-spacing: normal;
-            text-transform: none;
-            display: inline-block;
-            white-space: nowrap;
-            word-wrap: normal;
-            direction: ltr;
-            -webkit-font-feature-settings: 'liga';
-            font-feature-settings: 'liga';
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        /* Fluid Silk Gradient for accents */
-        .bg-fluid-silk {
-            background: radial-gradient(circle at 10% 20%, rgba(123, 92, 250, 0.1) 0%, transparent 40%),
-                        radial-gradient(circle at 90% 80%, rgba(97, 62, 222, 0.08) 0%, transparent 40%);
-            background-color: #fdf8ff; /* surface-bright fallback */
-        }
-
-        /* Level 1 Shadow */
-        .shadow-level-1 {
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
-        }
-    </style>
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="../assets/switch.css">
-<script src="../assets/switch.config.js"></script>
-<!-- Tailwind Configuration -->
-
-<style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
     body {
-      min-height: max(884px, 100dvh);
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .support-hero-gradient {
+      background: linear-gradient(135deg, #064E3B 0%, #047857 50%, #059669 100%);
+      box-shadow: 0 16px 36px -10px rgba(5, 150, 105, 0.35);
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(5, 150, 105, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
     }
   </style>
-  </head>
-<body class="bg-background text-on-background min-h-screen pb-32">
-<!-- TopAppBar (from JSON) -->
-<header class="flex justify-between items-center px-gutter py-4 w-full bg-background dark:bg-on-surface docked full-width top-0 z-40 relative">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant flex items-center justify-center">
-<span class="material-symbols-outlined text-on-surface-variant">store</span>
-</div>
-</div>
-<h1 class="font-headline-md text-headline-md-mobile font-bold text-on-surface dark:text-surface-bright">Business Dashboard</h1>
-<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container-low transition-colors text-primary dark:text-primary-fixed">
-<span class="material-symbols-outlined">notifications</span>
-</button>
-</header>
-<!-- Main Content Canvas -->
-<main class="px-container-margin pt-stack-md flex flex-col gap-stack-lg max-w-2xl mx-auto">
-<!-- Hero Section -->
-<section class="text-center py-stack-md bg-fluid-silk rounded-xl">
-<h2 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-2">Comment pouvons-nous vous aider ?</h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-6 px-4">Trouvez des réponses rapides ou contactez notre équipe dédiée aux marchands.</p>
-<div class="relative max-w-md mx-auto px-4">
-<span class="material-symbols-outlined absolute left-8 top-1/2 -translate-y-1/2 text-outline">search</span>
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-full py-3 pl-12 pr-4 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm" placeholder="Rechercher une solution..." type="text"/>
-</div>
-</section>
-<!-- Contact Bento Grid -->
-<section>
-<h3 class="font-headline-md text-headline-md-mobile text-on-surface mb-stack-md">Contact Direct</h3>
-<div class="grid grid-cols-2 gap-stack-sm md:gap-stack-md">
-<!-- Chat Action (Primary) -->
-<button class="col-span-2 bg-primary-container text-on-primary-container rounded-xl p-card-padding shadow-level-1 flex items-center justify-between hover:opacity-90 transition-opacity">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-sm">
-<span class="material-symbols-outlined text-primary">chat</span>
-</div>
-<div class="text-left">
-<h4 class="font-body-lg text-body-lg font-bold">Chat en direct</h4>
-<p class="font-body-sm text-body-sm opacity-80">Réponse en moins de 2 min</p>
-</div>
-</div>
-<span class="material-symbols-outlined">chevron_right</span>
-</button>
-<!-- Phone Action -->
-<button class="bg-surface-container-lowest border border-surface-variant rounded-xl p-card-padding shadow-level-1 flex flex-col items-center justify-center gap-3 hover:bg-surface-container-low transition-colors">
-<div class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">call</span>
-</div>
-<span class="font-body-sm text-body-sm font-bold text-on-surface">Appeler</span>
-</button>
-<!-- Email Action -->
-<button class="bg-surface-container-lowest border border-surface-variant rounded-xl p-card-padding shadow-level-1 flex flex-col items-center justify-center gap-3 hover:bg-surface-container-low transition-colors">
-<div class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">mail</span>
-</div>
-<span class="font-body-sm text-body-sm font-bold text-on-surface">Email</span>
-</button>
-</div>
-</section>
-<!-- FAQ Section -->
-<section class="mb-stack-lg">
-<h3 class="font-headline-md text-headline-md-mobile text-on-surface mb-stack-md">Questions Fréquentes (FAQ)</h3>
-<div class="flex flex-col gap-stack-sm">
-<!-- FAQ Item 1 -->
-<div class="bg-surface-container-lowest border border-surface-variant rounded-xl shadow-level-1 overflow-hidden">
-<button class="w-full p-4 flex justify-between items-center text-left hover:bg-surface-container-low transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.icon').textContent = this.querySelector('.icon').textContent === 'expand_more' ? 'expand_less' : 'expand_more';">
-<span class="font-body-sm text-body-sm font-bold text-on-surface">Comment annuler une transaction MoMo ?</span>
-<span class="material-symbols-outlined text-outline icon">expand_more</span>
-</button>
-<div class="hidden p-4 pt-0 text-on-surface-variant font-body-sm text-body-sm bg-surface-container-lowest">
-                        Pour annuler une transaction, rendez-vous dans l'historique des transactions, sélectionnez la transaction concernée et appuyez sur "Demander une annulation". Notez que cela n'est possible que dans les 24 heures suivant la transaction.
-                    </div>
-</div>
-<!-- FAQ Item 2 -->
-<div class="bg-surface-container-lowest border border-surface-variant rounded-xl shadow-level-1 overflow-hidden">
-<button class="w-full p-4 flex justify-between items-center text-left hover:bg-surface-container-low transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.icon').textContent = this.querySelector('.icon').textContent === 'expand_more' ? 'expand_less' : 'expand_more';">
-<span class="font-body-sm text-body-sm font-bold text-on-surface">Quels sont les frais de retrait marchand ?</span>
-<span class="material-symbols-outlined text-outline icon">expand_more</span>
-</button>
-<div class="hidden p-4 pt-0 text-on-surface-variant font-body-sm text-body-sm bg-surface-container-lowest">
-                        Les frais de retrait vers votre compte bancaire principal sont actuellement fixés à 1% du montant total pour les comptes marchands vérifiés.
-                    </div>
-</div>
-<!-- FAQ Item 3 -->
-<div class="bg-surface-container-lowest border border-surface-variant rounded-xl shadow-level-1 overflow-hidden">
-<button class="w-full p-4 flex justify-between items-center text-left hover:bg-surface-container-low transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.icon').textContent = this.querySelector('.icon').textContent === 'expand_more' ? 'expand_less' : 'expand_more';">
-<span class="font-body-sm text-body-sm font-bold text-on-surface">Comment mettre à jour mes documents d'entreprise ?</span>
-<span class="material-symbols-outlined text-outline icon">expand_more</span>
-</button>
-<div class="hidden p-4 pt-0 text-on-surface-variant font-body-sm text-body-sm bg-surface-container-lowest">
-                        Allez dans Profil > Paramètres de l'entreprise > Documents légaux. Vous pourrez y télécharger vos nouveaux documents (RCCM, IFU).
-                    </div>
-</div>
-</div>
-</section>
-</main>
-<!-- BottomNavBar (from JSON) - Floating style -->
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased">
 
-<script src="../assets/switch.router.js"></script>
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-emerald-700 hover:bg-emerald-50 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-base sm:text-lg font-black text-on-surface tracking-tight">Support Marchand</h1>
+        <p id="support-store-name" class="text-[11px] text-on-surface-variant font-medium">Boutique La Plage • Assistance 24/7</p>
+      </div>
+    </div>
 
-<nav id="switch-nav" role="navigation" aria-label="Navigation Marchand" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
-  <a href="../tableau_de_bord_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">store</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
-  </a>
-  <a href="../historique_des_ventes/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">receipt_long</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Ventes</span>
-  </a>
-  <a href="../g_n_rer_qr_code_de_r_ception/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">qr_code_2</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">QR</span>
-  </a>
-  <a href="../profil_de_l_entreprise/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">business</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Entreprise</span>
-  </a>
-  <a href="../support_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">help</span>
-    <span class="nav-label" style="font-size:10px;font-weight:700;">Support</span>
-  </a>
-</nav>
-</body></html>
+    <!-- Live Status Badge -->
+    <span class="text-[10px] font-black uppercase text-emerald-800 bg-emerald-100 border border-emerald-300 px-2.5 py-1 rounded-full flex items-center gap-1">
+      <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+      <span>En Ligne</span>
+    </span>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Hero Card Search & Priority Support -->
+    <div class="support-hero-gradient rounded-[28px] p-5 text-white shadow-soft flex flex-col gap-3.5 relative overflow-hidden">
+      <div class="flex justify-between items-start z-10">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-emerald-200 block">Ligne Dédiée Commerçants</span>
+          <h2 class="text-xl sm:text-2xl font-black text-white mt-0.5">Assistance Pro Bénin</h2>
+          <p class="text-xs text-emerald-100 mt-0.5">Nos conseillers techniques sont à votre écoute 7j/7.</p>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shrink-0">
+          <span class="material-symbols-outlined text-2xl">support_agent</span>
+        </div>
+      </div>
+
+      <!-- Quick Search Bar -->
+      <div class="relative flex items-center z-10 mt-1">
+        <span class="material-symbols-outlined absolute left-3.5 text-emerald-800 text-lg">search</span>
+        <input type="text" id="faq-search-input" oninput="filterFaq()" placeholder="Rechercher une aide (reçu, virement, litige...)" class="w-full bg-white text-on-surface placeholder:text-gray-400 rounded-2xl py-3 pl-10 pr-4 text-xs font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-emerald-300"/>
+      </div>
+
+      <!-- Glow Orb -->
+      <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+    </div>
+
+    <!-- 2. Direct Channels (WhatsApp, Appel, Ticket) -->
+    <section class="flex flex-col gap-2.5">
+      <h3 class="text-xs font-black uppercase tracking-wider text-on-surface-variant px-1">Canaux de Contact Directs</h3>
+      
+      <div class="grid grid-cols-2 gap-3">
+        <!-- WhatsApp Pro -->
+        <a href="https://wa.me/22997000000?text=Bonjour%20Support%20Switch%20Marchand%2C%20j%27ai%20besoin%20d%27aide%20pour%20mon%20commerce." target="_blank" class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft flex flex-col gap-2 hover:border-[#25D366] transition-all no-underline group">
+          <div class="w-10 h-10 rounded-2xl bg-[#25D366]/15 text-[#25D366] flex items-center justify-center group-hover:scale-105 transition-transform">
+            <span class="material-symbols-outlined text-2xl">chat</span>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-on-surface">WhatsApp Pro</h4>
+            <p class="text-[10px] text-emerald-700 font-bold">Réponse &lt; 2 min</p>
+          </div>
+        </a>
+
+        <!-- Appel Téléphonique -->
+        <a href="tel:+22921000000" class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft flex flex-col gap-2 hover:border-emerald-600 transition-all no-underline group">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <span class="material-symbols-outlined text-2xl">call</span>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-on-surface">Appel Gratuit</h4>
+            <p class="text-[10px] text-on-surface-variant font-mono font-semibold">+229 21 00 00 00</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Signaler un incident / Demande de Matériel -->
+      <button onclick="openTicketModal()" class="w-full bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft flex items-center justify-between hover:bg-gray-50/70 transition-colors cursor-pointer text-left">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-2xl">flag</span>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-on-surface">Signaler un Incident ou Commander du Matériel</h4>
+            <p class="text-[10px] text-on-surface-variant">Chevalet de comptoir QR physique, autocollants vitrine</p>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-gray-400 text-sm">chevron_right</span>
+      </button>
+    </section>
+
+    <!-- 3. Réseaux & Passerelles Live Status -->
+    <section class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft flex flex-col gap-2.5">
+      <div class="flex justify-between items-center">
+        <h3 class="text-xs font-black uppercase tracking-wider text-on-surface flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-emerald-600 text-base">signal_cellular_alt</span>
+          <span>Disponibilité Réseaux Bénin</span>
+        </h3>
+        <span class="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">100% Opérationnel</span>
+      </div>
+
+      <div class="grid grid-cols-4 gap-2 text-center text-xs">
+        <div class="p-2 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="font-bold text-[10px] text-on-surface">MTN MoMo</span>
+        </div>
+        <div class="p-2 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="font-bold text-[10px] text-on-surface">Moov Money</span>
+        </div>
+        <div class="p-2 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="font-bold text-[10px] text-on-surface">Celtiis Pay</span>
+        </div>
+        <div class="p-2 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="font-bold text-[10px] text-on-surface">Cartes Visa</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. FAQ Accordéon Interactive -->
+    <section class="flex flex-col gap-2.5">
+      <h3 class="text-xs font-black uppercase tracking-wider text-on-surface-variant px-1">Questions Fréquentes (FAQ Marchands)</h3>
+
+      <div class="flex flex-col gap-2.5" id="faq-container">
+        
+        <!-- FAQ 1 -->
+        <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-soft overflow-hidden faq-item">
+          <button onclick="toggleFaq(this)" class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors cursor-pointer">
+            <span class="text-xs font-bold text-on-surface faq-question">Comment s'effectue le virement de mes encaissements ?</span>
+            <span class="material-symbols-outlined text-gray-400 text-sm transition-transform duration-200">expand_more</span>
+          </button>
+          <div class="hidden px-4 pb-4 text-xs text-on-surface-variant leading-relaxed border-t border-gray-100 pt-2">
+            Chaque paiement client par QR Code ou POS est crédité <b>instantanément et sans délai</b> sur votre solde Switch Marchand. Vous pouvez à tout moment virer vos fonds vers votre numéro Mobile Money (+229) avec 0% de frais.
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-soft overflow-hidden faq-item">
+          <button onclick="toggleFaq(this)" class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors cursor-pointer">
+            <span class="text-xs font-bold text-on-surface faq-question">Comment obtenir un chevalet de comptoir physique QR ?</span>
+            <span class="material-symbols-outlined text-gray-400 text-sm transition-transform duration-200">expand_more</span>
+          </button>
+          <div class="hidden px-4 pb-4 text-xs text-on-surface-variant leading-relaxed border-t border-gray-100 pt-2">
+            Vous pouvez télécharger et imprimer gratuitement le kit PDF haute définition depuis la page <b>Kit QR</b>, ou utiliser le bouton <i>"Signaler un incident / Commander du matériel"</i> pour recevoir un standee acrylique rigide livré à votre magasin par un agent Switch sous 48h.
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-soft overflow-hidden faq-item">
+          <button onclick="toggleFaq(this)" class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors cursor-pointer">
+            <span class="text-xs font-bold text-on-surface faq-question">Que faire en cas de double débit d'un client ?</span>
+            <span class="material-symbols-outlined text-gray-400 text-sm transition-transform duration-200">expand_more</span>
+          </button>
+          <div class="hidden px-4 pb-4 text-xs text-on-surface-variant leading-relaxed border-t border-gray-100 pt-2">
+            Rendez-vous dans votre <b>Journal des Ventes</b>, sélectionnez la transaction concernée et cliquez sur <i>"Effectuer un remboursement"</i>. Le compte du client sera recrédité automatiquement sous 60 secondes.
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-soft overflow-hidden faq-item">
+          <button onclick="toggleFaq(this)" class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors cursor-pointer">
+            <span class="text-xs font-bold text-on-surface faq-question">Les caissiers peuvent-ils voir mon solde ou faire des retraits ?</span>
+            <span class="material-symbols-outlined text-gray-400 text-sm transition-transform duration-200">expand_more</span>
+          </button>
+          <div class="hidden px-4 pb-4 text-xs text-on-surface-variant leading-relaxed border-t border-gray-100 pt-2">
+            <b>Non.</b> Les profils caissiers ont un accès strictement restreint à la caisse pour enregistrer les ventes. Seul le promoteur titulaire du compte a accès aux retraits et aux relevés financiers.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Incident / Support Ticket Modal -->
+  <div id="ticket-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 flex flex-col gap-4 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-bold text-on-surface">Demande d'Assistance / Matériel</h3>
+        <button onclick="closeTicketModal()" class="p-1.5 rounded-full hover:bg-gray-100 text-on-surface-variant cursor-pointer">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="handleSendTicket(event)" class="flex flex-col gap-3.5">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-bold text-on-surface-variant">Type de demande *</label>
+          <select id="ticket-type" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2.5 text-xs font-semibold focus:outline-none focus:border-emerald-600">
+            <option value="hardware">Commande de Chevalet QR rigide & Autocollants</option>
+            <option value="payment">Problème de paiement ou virement MoMo</option>
+            <option value="pos">Assistance sur la Caisse POS</option>
+            <option value="other">Autre demande</option>
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-bold text-on-surface-variant">Message / Détails *</label>
+          <textarea id="ticket-msg" required rows="3" placeholder="Expliquez brièvement votre demande..." class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-600"></textarea>
+        </div>
+
+        <div class="p-3 bg-emerald-50 rounded-xl text-xs text-emerald-900 border border-emerald-200">
+          📍 Un conseiller de l'équipe Marchand Switch Cotonou vous répondra sous 30 minutes.
+        </div>
+
+        <div class="flex gap-2.5 mt-2">
+          <button type="button" onclick="closeTicketModal()" class="flex-1 py-3 rounded-full border border-outline-variant font-semibold text-xs hover:bg-surface-container cursor-pointer">Annuler</button>
+          <button type="submit" class="flex-1 py-3 rounded-full bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 active:scale-95 transition-all shadow-md cursor-pointer">Envoyer la demande</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../assets/switch.router.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const bName = localStorage.getItem('switch_merchant_business_name') || "Boutique La Plage";
+      const storeEl = document.getElementById('support-store-name');
+      if (storeEl) storeEl.textContent = bName + " • Assistance 24/7";
+    });
+
+    function toggleFaq(btn) {
+      const content = btn.nextElementSibling;
+      const icon = btn.querySelector('.material-symbols-outlined');
+      const isHidden = content.classList.contains('hidden');
+
+      if (isHidden) {
+        content.classList.remove('hidden');
+        icon.textContent = 'expand_less';
+      } else {
+        content.classList.add('hidden');
+        icon.textContent = 'expand_more';
+      }
+    }
+
+    function filterFaq() {
+      const query = document.getElementById('faq-search-input').value.toLowerCase().trim();
+      const items = document.querySelectorAll('.faq-item');
+
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (!query || text.includes(query)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    function openTicketModal() {
+      document.getElementById('ticket-modal').classList.remove('hidden');
+    }
+
+    function closeTicketModal() {
+      document.getElementById('ticket-modal').classList.add('hidden');
+    }
+
+    function handleSendTicket(e) {
+      e.preventDefault();
+      const type = document.getElementById('ticket-type').value;
+      const msg = document.getElementById('ticket-msg').value.trim();
+      closeTicketModal();
+      alert("✅ Votre demande a été transmise avec succès à l'équipe Switch Support Marchand ! Un agent vous contactera immédiatement.");
+    }
+  </script>
+
+</body>
+</html>
