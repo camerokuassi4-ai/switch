@@ -264,8 +264,9 @@
     "micro_credit_express": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "parrainage_recompenses": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "recu_transaction_partage": { space: "user", back: "javascript:history.back()", nav: null, actions: {} },
-    "liens_de_paiement_marchand": { space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: null, actions: {} },
     "caisse_marchand_pos": { space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: null, actions: {} },
+    "inscription_agent_switch": { space: "agent", back: ROOT + "accueil_espace_agent/code.html", nav: null, actions: {} },
+    "agent_verification_caution": { space: "agent", back: ROOT + "inscription_agent_switch/code.html", nav: null, actions: {} },
 
     "carte_agents_guichets": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "budget_analyse_depenses": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
