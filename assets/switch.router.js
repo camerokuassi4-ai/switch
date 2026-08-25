@@ -108,7 +108,7 @@
       space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: null, actions: {}
     },
     "operations_caisse_marchand": {
-      space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: null, actions: {}
+      space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: "m-ops", actions: {}
     },
     "notifications_vides": {
       space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: "notifs", actions: {}
@@ -487,9 +487,9 @@
 <nav id="switch-nav" role="navigation" aria-label="Navigation Marchand" style="${NAV_BAR_STYLE}">
   ${navItemHTML(ROOT + "tableau_de_bord_marchand/code.html", "store", "Accueil", activeTab === "m-home")}
   ${navItemHTML(ROOT + "historique_des_ventes/code.html", "receipt_long", "Ventes", activeTab === "m-history")}
-  ${navCenterItemHTML(ROOT + "g_n_rer_qr_code_de_r_ception/code.html", "qr_code_2", "QR", activeTab === "m-qr")}
+  ${navCenterItemHTML(ROOT + "g_n_rer_qr_code_de_r_ception/code.html", "qr_code_2", "QR Caisse", activeTab === "m-qr")}
   ${navItemHTML(ROOT + "profil_de_l_entreprise/code.html", "business", "Entreprise", activeTab === "m-profile")}
-  ${navItemHTML(ROOT + "support_marchand/code.html", "help", "Support", activeTab === "m-support")}
+  ${navItemHTML(ROOT + "operations_caisse_marchand/code.html", "account_balance", "Opérations", activeTab === "m-ops")}
 </nav>`;
     }
     if (space === "agent") {
