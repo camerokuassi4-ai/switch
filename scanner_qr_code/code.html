@@ -203,20 +203,20 @@
   </footer>
 
   <script>
-    let currentStream = null;
-    let currentFacingMode = 'environment';
-    let torchOn = false;
-    let currentMode = 'scan';
+    window.currentStream = window.currentStream || null;
+    window.currentFacingMode = window.currentFacingMode || 'environment';
+    window.torchOn = false;
+    window.currentMode = 'scan';
 
     // Initialize Camera on load
-    async function initCamera(facing = 'environment') {
-      currentFacingMode = facing;
+    window.initCamera = async function(facing = 'environment') {
+      window.currentFacingMode = facing;
       const videoEl = document.getElementById('camera-video');
       const fallbackEl = document.getElementById('camera-fallback');
       const statusBanner = document.getElementById('camera-status-banner');
 
-      if (currentStream) {
-        currentStream.getTracks().forEach(t => t.stop());
+      if (window.currentStream) {
+        window.currentStream.getTracks().forEach(t => t.stop());
       }
 
       try {
@@ -226,16 +226,16 @@
 
         const constraints = {
           video: {
-            facingMode: facing,
+            facingMode: { ideal: facing },
             width: { ideal: 1280 },
             height: { ideal: 720 }
           },
           audio: false
         };
 
-        currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+        window.currentStream = await navigator.mediaDevices.getUserMedia(constraints);
         if (videoEl) {
-          videoEl.srcObject = currentStream;
+          videoEl.srcObject = window.currentStream;
           videoEl.classList.remove('hidden');
           if (fallbackEl) fallbackEl.classList.add('hidden');
           if (statusBanner) statusBanner.classList.add('hidden');
@@ -246,22 +246,22 @@
         if (fallbackEl) fallbackEl.classList.remove('hidden');
         if (statusBanner) statusBanner.classList.remove('hidden');
       }
-    }
+    };
 
-    function flipCamera() {
-      const nextFacing = currentFacingMode === 'environment' ? 'user' : 'environment';
-      initCamera(nextFacing);
-    }
+    window.flipCamera = function() {
+      const nextFacing = window.currentFacingMode === 'environment' ? 'user' : 'environment';
+      window.initCamera(nextFacing);
+    };
 
-    function stopCameraAndBack() {
-      if (currentStream) {
-        currentStream.getTracks().forEach(t => t.stop());
+    window.stopCameraAndBack = function() {
+      if (window.currentStream) {
+        window.currentStream.getTracks().forEach(t => t.stop());
       }
       window.history.back();
-    }
+    };
 
-    function setMode(mode) {
-      currentMode = mode;
+    window.setMode = function(mode) {
+      window.currentMode = mode;
       const tabScan = document.getElementById('tab-scan');
       const tabMyQr = document.getElementById('tab-myqr');
       const viewScan = document.getElementById('view-scan');
@@ -269,84 +269,84 @@
       const cameraBg = document.getElementById('camera-bg');
 
       if (mode === 'scan') {
-        tabScan.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold bg-primary text-white shadow-md transition-all cursor-pointer';
-        tabMyQr.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold text-white/70 hover:text-white transition-all cursor-pointer';
-        viewScan.classList.remove('hidden');
-        viewMyQr.classList.add('hidden');
-        cameraBg.style.opacity = '1';
-        initCamera(currentFacingMode);
+        if (tabScan) tabScan.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold bg-primary text-white shadow-md transition-all cursor-pointer';
+        if (tabMyQr) tabMyQr.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold text-white/70 hover:text-white transition-all cursor-pointer';
+        if (viewScan) viewScan.classList.remove('hidden');
+        if (viewMyQr) viewMyQr.classList.add('hidden');
+        if (cameraBg) cameraBg.style.opacity = '1';
+        window.initCamera(window.currentFacingMode);
       } else {
-        tabScan.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold text-white/70 hover:text-white transition-all cursor-pointer';
-        tabMyQr.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold bg-primary text-white shadow-md transition-all cursor-pointer';
-        viewScan.classList.add('hidden');
-        viewMyQr.classList.remove('hidden');
-        cameraBg.style.opacity = '0.3';
-        if (currentStream) {
-          currentStream.getTracks().forEach(t => t.stop());
+        if (tabScan) tabScan.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold text-white/70 hover:text-white transition-all cursor-pointer';
+        if (tabMyQr) tabMyQr.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold bg-primary text-white shadow-md transition-all cursor-pointer';
+        if (viewScan) viewScan.classList.add('hidden');
+        if (viewMyQr) viewMyQr.classList.remove('hidden');
+        if (cameraBg) cameraBg.style.opacity = '0.3';
+        if (window.currentStream) {
+          window.currentStream.getTracks().forEach(t => t.stop());
         }
       }
-    }
+    };
 
-    async function toggleTorch() {
-      torchOn = !torchOn;
+    window.toggleTorch = async function() {
+      window.torchOn = !window.torchOn;
       const btn = document.getElementById('torch-btn');
       const icon = document.getElementById('torch-icon');
 
-      if (currentStream) {
-        const track = currentStream.getVideoTracks()[0];
+      if (window.currentStream) {
+        const track = window.currentStream.getVideoTracks()[0];
         if (track && track.getCapabilities && track.getCapabilities().torch) {
           try {
-            await track.applyConstraints({ advanced: [{ torch: torchOn }] });
+            await track.applyConstraints({ advanced: [{ torch: window.torchOn }] });
           } catch (e) {
             console.warn("Torch non supportée :", e);
           }
         }
       }
 
-      if (torchOn) {
-        btn.className = 'w-11 h-11 rounded-full bg-amber-400 text-black flex items-center justify-center transition-all cursor-pointer shadow-lg';
-        icon.textContent = 'flashlight_off';
+      if (window.torchOn) {
+        if (btn) btn.className = 'w-11 h-11 rounded-full bg-amber-400 text-black flex items-center justify-center transition-all cursor-pointer shadow-lg';
+        if (icon) icon.textContent = 'flashlight_off';
       } else {
-        btn.className = 'w-11 h-11 rounded-full glass-dark flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer';
-        icon.textContent = 'flashlight_on';
+        if (btn) btn.className = 'w-11 h-11 rounded-full glass-dark flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer';
+        if (icon) icon.textContent = 'flashlight_on';
       }
-    }
+    };
 
-    function simulateGalleryImport() {
+    window.simulateGalleryImport = function() {
       alert("Image sélectionnée depuis votre galerie ! Détection du QR Code Switch...");
-      simulateScanSuccess();
-    }
+      window.simulateScanSuccess();
+    };
 
-    function promptManualId() {
+    window.promptManualId = function() {
       const code = prompt("Saisissez l'Identifiant Marchand ou Numéro Switch :", "SW-MCH-8820");
       if (code) {
-        simulateScanSuccess();
+        window.simulateScanSuccess();
       }
-    }
+    };
 
-    function shareMyQrWhatsApp() {
+    window.shareMyQrWhatsApp = function() {
       const msg = encodeURIComponent("📲 Scannez mon QR Code Switch (+229 97 12 34 56) pour m'envoyer de l'argent instantanément et sans frais !");
       window.open("https://wa.me/?text=" + msg, "_blank");
-    }
+    };
 
-    function downloadMyQr() {
+    window.downloadMyQr = function() {
       alert("Votre QR Code Switch personnel a été enregistré dans votre galerie photo !");
-    }
+    };
 
-    function simulateScanSuccess() {
+    window.simulateScanSuccess = function() {
       if (navigator.vibrate) navigator.vibrate(100);
-      if (currentStream) {
-        currentStream.getTracks().forEach(t => t.stop());
+      if (window.currentStream) {
+        window.currentStream.getTracks().forEach(t => t.stop());
       }
       if (window.switchNavigate) {
         window.switchNavigate('../confirmation_paiement_qr/code.html');
       } else {
         window.location.href = '../confirmation_paiement_qr/code.html';
       }
-    }
+    };
 
     // Auto-launch camera when screen is shown
-    initCamera('environment');
+    window.initCamera('environment');
   </script>
 
   <script src="../assets/switch.router.js"></script>
