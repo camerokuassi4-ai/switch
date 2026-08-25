@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Modifier mon Code PIN - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .pin-input {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .pin-input:focus {
+      border-color: #5E3BDC;
+      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.18);
+      background-color: #FFFFFF;
+      outline: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-24 flex flex-col justify-between antialiased selection:bg-primary-fixed">
+
+  <!-- Top App Bar -->
+  <header class="w-full max-w-lg mx-auto px-container-margin pt-6 pb-2 flex items-center justify-between z-30">
+    <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    <div class="text-center">
+      <h1 class="text-base sm:text-lg font-black text-on-surface">Modifier mon Code PIN</h1>
+      <p class="text-[10px] text-on-surface-variant font-bold">Sécurité du Compte</p>
+    </div>
+    <div class="w-10"></div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-lg mx-auto px-container-margin flex flex-col items-center text-center gap-5 pt-2 flex-1 justify-center">
+    
+    <!-- Glowing Lock Icon Header -->
+    <div class="relative w-18 h-18 flex items-center justify-center">
+      <div class="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse"></div>
+      <div class="w-14 h-14 rounded-2xl bg-white border border-primary/20 shadow-md flex items-center justify-center text-primary relative z-10">
+        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">lock_reset</span>
+      </div>
+    </div>
+
+    <!-- Title & Description -->
+    <div class="space-y-1 max-w-xs">
+      <h2 class="text-xl sm:text-2xl font-extrabold text-on-surface tracking-tight">Changement de Code PIN</h2>
+      <p class="text-xs text-on-surface-variant font-medium">
+        Saisissez votre code actuel puis définissez vos 4 nouveaux chiffres secrets.
+      </p>
+    </div>
+
+    <!-- Form Container -->
+    <form class="w-full max-w-sm flex flex-col gap-3.5 mt-1" onsubmit="event.preventDefault(); submitPinChange();">
+      
+      <!-- Card 1 : Ancien Code PIN -->
+      <div class="bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex flex-col gap-2.5">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-black uppercase tracking-wider text-on-surface-variant flex items-center gap-1.5">
+            <span class="w-4 h-4 rounded-full bg-surface-container text-on-surface-variant text-[9px] flex items-center justify-center font-bold">1</span>
+            <span>Ancien Code PIN</span>
+          </label>
+          <button type="button" onclick="togglePinGroup(0)" class="text-[11px] font-bold text-on-surface-variant hover:text-primary flex items-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm" id="eye-icon-0">visibility</span>
+            <span id="eye-text-0">Afficher</span>
+          </button>
+        </div>
+
+        <div class="flex justify-center gap-2.5">
+          <input aria-label="Ancien PIN - Chiffre 1" class="pin-input w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="old-0" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password" autofocus/>
+          <input aria-label="Ancien PIN - Chiffre 2" class="pin-input w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="old-1" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Ancien PIN - Chiffre 3" class="pin-input w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="old-2" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Ancien PIN - Chiffre 4" class="pin-input w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="old-3" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+        </div>
+      </div>
+
+      <!-- Card 2 : Nouveau Code PIN -->
+      <div class="bg-white rounded-3xl p-4.5 border border-primary/40 shadow-sm flex flex-col gap-2.5">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-black uppercase tracking-wider text-primary flex items-center gap-1.5">
+            <span class="w-4 h-4 rounded-full bg-primary text-white text-[9px] flex items-center justify-center font-bold">2</span>
+            <span>Nouveau Code PIN</span>
+          </label>
+          <button type="button" onclick="togglePinGroup(1)" class="text-[11px] font-bold text-on-surface-variant hover:text-primary flex items-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm" id="eye-icon-1">visibility</span>
+            <span id="eye-text-1">Afficher</span>
+          </button>
+        </div>
+
+        <div class="flex justify-center gap-2.5">
+          <input aria-label="Nouveau PIN - Chiffre 1" class="pin-input w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="new-0" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Nouveau PIN - Chiffre 2" class="pin-input w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="new-1" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Nouveau PIN - Chiffre 3" class="pin-input w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="new-2" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Nouveau PIN - Chiffre 4" class="pin-input w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="new-3" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+        </div>
+      </div>
+
+      <!-- Card 3 : Confirmer Nouveau Code PIN -->
+      <div class="bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex flex-col gap-2.5">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-black uppercase tracking-wider text-on-surface-variant flex items-center gap-1.5">
+            <span class="w-4 h-4 rounded-full bg-surface-container text-on-surface-variant text-[9px] flex items-center justify-center font-bold">3</span>
+            <span>Confirmer le Nouveau Code</span>
+          </label>
+          <button type="button" onclick="togglePinGroup(2)" class="text-[11px] font-bold text-on-surface-variant hover:text-primary flex items-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm" id="eye-icon-2">visibility</span>
+            <span id="eye-text-2">Afficher</span>
+          </button>
+        </div>
+
+        <div class="flex justify-center gap-2.5">
+          <input aria-label="Confirmer PIN - Chiffre 1" class="pin-input w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="conf-0" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Confirmer PIN - Chiffre 2" class="pin-input w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="conf-1" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Confirmer PIN - Chiffre 3" class="pin-input w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="conf-2" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Confirmer PIN - Chiffre 4" class="pin-input w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="conf-3" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+        </div>
+      </div>
+
+      <!-- Real-time Feedback -->
+      <div id="feedback-box" class="h-5 flex items-center justify-center">
+        <p class="text-[11px] font-bold text-on-surface-variant" id="feedback-text">Remplissez les 3 étapes ci-dessus</p>
+      </div>
+
+      <!-- Action Button -->
+      <button type="submit" class="w-full bg-primary text-white py-4 px-6 rounded-full font-extrabold text-sm shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1">
+        <span class="material-symbols-outlined text-lg">check_circle</span>
+        <span>Enregistrer mon nouveau code PIN</span>
+      </button>
+
+      <!-- Forgot PIN Link -->
+      <button type="button" onclick="forgotPinReset()" class="text-xs text-primary font-bold hover:underline mt-1 cursor-pointer">
+        Ancien code PIN oublié ? Réinitialiser par SMS
+      </button>
+    </form>
+
+  </main>
+
+  <script>
+    const g0 = [document.getElementById('old-0'), document.getElementById('old-1'), document.getElementById('old-2'), document.getElementById('old-3')];
+    const g1 = [document.getElementById('new-0'), document.getElementById('new-1'), document.getElementById('new-2'), document.getElementById('new-3')];
+    const g2 = [document.getElementById('conf-0'), document.getElementById('conf-1'), document.getElementById('conf-2'), document.getElementById('conf-3')];
+
+    function setupRow(inputs, nextRow) {
+      inputs.forEach((inp, idx) => {
+        inp.addEventListener('input', (e) => {
+          e.target.value = e.target.value.replace(/[^0-9]/g, '');
+          if (e.target.value.length === 1) {
+            if (idx < inputs.length - 1) {
+              inputs[idx + 1].focus();
+            } else if (nextRow) {
+              nextRow[0].focus();
+            } else {
+              inp.blur();
+              checkMatching();
+            }
+          }
+          checkMatching();
+        });
+
+        inp.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && e.target.value.length === 0 && idx > 0) {
+            inputs[idx - 1].focus();
+            inputs[idx - 1].value = '';
+            checkMatching();
+          }
+        });
+      });
+    }
+
+    setupRow(g0, g1);
+    setupRow(g1, g2);
+    setupRow(g2, null);
+
+    const vis = [false, false, false];
+    const groups = [g0, g1, g2];
+
+    function togglePinGroup(idx) {
+      vis[idx] = !vis[idx];
+      groups[idx].forEach(inp => inp.type = vis[idx] ? 'text' : 'password');
+      document.getElementById('eye-icon-' + idx).textContent = vis[idx] ? 'visibility_off' : 'visibility';
+      document.getElementById('eye-text-' + idx).textContent = vis[idx] ? 'Masquer' : 'Afficher';
+    }
+
+    function getCode(inputs) {
+      return inputs.map(i => i.value).join('');
+    }
+
+    function checkMatching() {
+      const n1 = getCode(g1);
+      const n2 = getCode(g2);
+      const fb = document.getElementById('feedback-text');
+
+      if (n1.length === 4 && n2.length === 4) {
+        if (n1 === n2) {
+          fb.innerHTML = '<span class="text-green-600 font-extrabold flex items-center gap-1 justify-center"><span class="material-symbols-outlined text-sm">verified</span> Nouveau code confirmé avec succès !</span>';
+        } else {
+          fb.innerHTML = '<span class="text-rose-500 font-extrabold flex items-center gap-1 justify-center"><span class="material-symbols-outlined text-sm">error</span> Les deux nouveaux codes ne correspondent pas.</span>';
+        }
+      }
+    }
+
+    function submitPinChange() {
+      const oldCode = getCode(g0);
+      const newCode = getCode(g1);
+      const confCode = getCode(g2);
+
+      if (oldCode.length < 4) {
+        alert("Veuillez saisir votre ancien code PIN à 4 chiffres.");
+        g0[0].focus();
+        return;
+      }
+      if (newCode.length < 4) {
+        alert("Veuillez saisir votre nouveau code PIN à 4 chiffres.");
+        g1[0].focus();
+        return;
+      }
+      if (confCode.length < 4) {
+        alert("Veuillez confirmer votre nouveau code PIN.");
+        g2[0].focus();
+        return;
+      }
+      if (newCode !== confCode) {
+        alert("Les deux nouveaux codes PIN ne correspondent pas.");
+        g2.forEach(i => i.value = '');
+        g2[0].focus();
+        return;
+      }
+
+      alert("🎉 Votre code PIN a été mis à jour avec succès !");
+      if (window.switchNavigate) {
+        window.switchNavigate('../s_curit/code.html');
+      } else {
+        window.location.href = '../s_curit/code.html';
+      }
+    }
+
+    function forgotPinReset() {
+      if (confirm("Voulez-vous réinitialiser votre code PIN en recevant un code de sécurité SMS sur votre numéro ?")) {
+        if (window.switchNavigate) {
+          window.switchNavigate('../v_rification_otp/code.html');
+        } else {
+          window.location.href = '../v_rification_otp/code.html';
+        }
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>
