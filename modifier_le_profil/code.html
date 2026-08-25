@@ -305,10 +305,10 @@
   </main>
 
   <!-- ============================================================ -->
-  <!-- MODAL DE CONFIRMATION DE SÉCURITÉ PAR CODE PIN -->
+  <!-- MODAL DE CONFIRMATION DE SÉCURITÉ PAR CODE PIN / OTP -->
   <!-- ============================================================ -->
   <div id="pin-security-modal" class="fixed inset-0 z-[1000] bg-black/70 backdrop-blur-sm hidden flex items-end justify-center">
-    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-10 shadow-2xl modal-enter flex flex-col items-center gap-5">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-8 shadow-2xl modal-enter flex flex-col items-center gap-4">
       
       <!-- Top Handle & Close -->
       <div class="w-full flex items-center justify-between">
@@ -318,17 +318,19 @@
         </button>
       </div>
 
-      <!-- Shield Header -->
+      <!-- Shield & OTP Header -->
       <div class="text-center flex flex-col items-center gap-1.5">
         <div class="w-14 h-14 rounded-2xl bg-purple-50 text-primary border border-purple-200 flex items-center justify-center shadow-sm">
-          <span class="material-symbols-outlined text-3xl">lock</span>
+          <span class="material-symbols-outlined text-3xl">verified_user</span>
         </div>
         <h3 class="text-base sm:text-lg font-black text-on-surface mt-1">Confirmation de Sécurité</h3>
-        <p class="text-xs text-on-surface-variant max-w-xs">Entrez votre code PIN secret à 4 chiffres pour valider la mise à jour de vos informations.</p>
+        <p class="text-xs text-on-surface-variant max-w-xs leading-relaxed">
+          Entrez votre code secret ou le code de validation envoyé au <b class="text-on-surface font-mono">+229 97 12 34 56</b>
+        </p>
       </div>
 
       <!-- PIN Indicator Dots -->
-      <div id="pin-dots-container" class="flex items-center gap-4 my-2">
+      <div id="pin-dots-container" class="flex items-center gap-4 my-1">
         <div id="pin-dot-1" class="w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent transition-all duration-150"></div>
         <div id="pin-dot-2" class="w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent transition-all duration-150"></div>
         <div id="pin-dot-3" class="w-4 h-4 rounded-full border-2 border-outline-variant bg-transparent transition-all duration-150"></div>
@@ -336,26 +338,46 @@
       </div>
 
       <!-- Error / Loading Feedback -->
-      <div id="pin-status-msg" class="text-xs font-bold text-purple-700 min-h-[18px]"></div>
+      <div id="pin-status-msg" class="text-xs font-bold text-purple-700 min-h-[18px] text-center"></div>
 
       <!-- Numeric Virtual Keypad -->
-      <div class="grid grid-cols-3 gap-3 w-full max-w-xs select-none">
-        <button type="button" onclick="handlePinKey('1')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">1</button>
-        <button type="button" onclick="handlePinKey('2')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">2</button>
-        <button type="button" onclick="handlePinKey('3')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">3</button>
-        <button type="button" onclick="handlePinKey('4')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">4</button>
-        <button type="button" onclick="handlePinKey('5')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">5</button>
-        <button type="button" onclick="handlePinKey('6')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">6</button>
-        <button type="button" onclick="handlePinKey('7')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">7</button>
-        <button type="button" onclick="handlePinKey('8')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">8</button>
-        <button type="button" onclick="handlePinKey('9')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">9</button>
-        <button type="button" onclick="handleBiometricAuth()" class="key-btn h-14 rounded-2xl bg-purple-50 text-primary font-bold flex items-center justify-center cursor-pointer shadow-xs" title="Empreinte / Face ID">
+      <div class="grid grid-cols-3 gap-2.5 w-full max-w-xs select-none">
+        <button type="button" onclick="handlePinKey('1')" class="key-btn h-13 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">1</button>
+        <button type="button" onclick="handlePinKey('2')" class="key-btn h-13 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">2</button>
+        <button type="button" onclick="handlePinKey('3')" class="key-btn h-13 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">3</button>
+        <button type="button" onclick="handlePinKey('4')" class="key-btn h-13 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">4</button>
+        <button type="button" onclick="handlePinKey('5')" class="key-btn h-13 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">5</button>
+        <button type="button" onclick="handlePinKey('6')" class="key-btn h-13 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">6</button>
+        <button type="button" onclick="handlePinKey('7')" class="key-btn h-13 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">7</button>
+        <button type="button" onclick="handlePinKey('8')" class="key-btn h-13 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">8</button>
+        <button type="button" onclick="handlePinKey('9')" class="key-btn h-13 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">9</button>
+        <button type="button" onclick="handleBiometricAuth()" class="key-btn h-13 rounded-2xl bg-purple-50 text-primary font-bold flex items-center justify-center cursor-pointer shadow-xs" title="Empreinte / Face ID">
           <span class="material-symbols-outlined text-2xl">fingerprint</span>
         </button>
-        <button type="button" onclick="handlePinKey('0')" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">0</button>
-        <button type="button" onclick="handlePinDelete()" class="key-btn h-14 rounded-2xl bg-surface-container text-on-surface-variant flex items-center justify-center cursor-pointer shadow-xs" title="Effacer">
+        <button type="button" onclick="handlePinKey('0')" class="key-btn h-13 rounded-2xl bg-surface-container text-on-surface font-extrabold text-xl flex items-center justify-center cursor-pointer shadow-xs">0</button>
+        <button type="button" onclick="handlePinDelete()" class="key-btn h-13 rounded-2xl bg-surface-container text-on-surface-variant flex items-center justify-center cursor-pointer shadow-xs" title="Effacer">
           <span class="material-symbols-outlined text-2xl">backspace</span>
         </button>
+      </div>
+
+      <!-- Resend Code Section -->
+      <div class="flex flex-col items-center gap-1.5 pt-1 w-full text-center border-t border-outline-variant/30 mt-1">
+        <p class="text-[11px] text-on-surface-variant font-medium">Vous n'avez pas reçu le code de sécurité ?</p>
+        <div class="flex items-center justify-center gap-3">
+          <!-- Resend via SMS Button with Countdown -->
+          <button id="resend-sms-btn" type="button" onclick="resendCode('sms')" disabled class="text-xs font-bold text-gray-400 flex items-center gap-1 cursor-not-allowed transition-colors">
+            <span class="material-symbols-outlined text-sm">sms</span>
+            <span id="resend-sms-text">Renvoyer par SMS (30s)</span>
+          </button>
+          
+          <span class="text-gray-300">•</span>
+          
+          <!-- Resend via WhatsApp Button -->
+          <button id="resend-wa-btn" type="button" onclick="resendCode('whatsapp')" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 hover:underline flex items-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">chat</span>
+            <span>Renvoyer par WhatsApp</span>
+          </button>
+        </div>
       </div>
 
     </div>
@@ -367,6 +389,8 @@
   <!-- Interactive Logic -->
   <script>
     let currentEnteredPin = "";
+    let resendTimerInterval = null;
+    let resendSecondsRemaining = 30;
 
     // 1. Charger les valeurs sauvegardées au chargement
     document.addEventListener('DOMContentLoaded', () => {
@@ -405,22 +429,60 @@
       }
     }
 
-    // 3. Déclenchement de la soumission du formulaire -> Ouvre la modale PIN
+    // 3. Déclenchement de la soumission du formulaire -> Ouvre la modale PIN & lance le timer
     function handleInitialSubmit(e) {
-      e.preventDefault();
+      if (e) e.preventDefault();
       currentEnteredPin = "";
       updatePinDots();
       document.getElementById('pin-status-msg').textContent = "";
       document.getElementById('pin-security-modal').classList.remove('hidden');
+      startResendCountdown(30);
     }
 
     function closePinModal() {
       document.getElementById('pin-security-modal').classList.add('hidden');
       currentEnteredPin = "";
       updatePinDots();
+      if (resendTimerInterval) clearInterval(resendTimerInterval);
     }
 
-    // 4. Gestion du Clavier Virtuel PIN
+    // 4. Timer pour le renvoi du code
+    function startResendCountdown(seconds) {
+      if (resendTimerInterval) clearInterval(resendTimerInterval);
+      resendSecondsRemaining = seconds;
+      
+      const btn = document.getElementById('resend-sms-btn');
+      const text = document.getElementById('resend-sms-text');
+      
+      btn.disabled = true;
+      btn.className = "text-xs font-bold text-gray-400 flex items-center gap-1 cursor-not-allowed transition-colors";
+      text.textContent = `Renvoyer par SMS (${resendSecondsRemaining}s)`;
+
+      resendTimerInterval = setInterval(() => {
+        resendSecondsRemaining--;
+        if (resendSecondsRemaining > 0) {
+          text.textContent = `Renvoyer par SMS (${resendSecondsRemaining}s)`;
+        } else {
+          clearInterval(resendTimerInterval);
+          btn.disabled = false;
+          btn.className = "text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer transition-colors";
+          text.textContent = "Renvoyer par SMS";
+        }
+      }, 1000);
+    }
+
+    // 5. Action Renvoyer le code (SMS ou WhatsApp)
+    function resendCode(channel) {
+      const statusEl = document.getElementById('pin-status-msg');
+      if (channel === 'sms') {
+        statusEl.innerHTML = `<span class="text-emerald-700 font-bold">📨 Nouveau code SMS envoyé au +229 97 12 34 56</span>`;
+        startResendCountdown(45);
+      } else if (channel === 'whatsapp') {
+        statusEl.innerHTML = `<span class="text-emerald-700 font-bold">💬 Code sécurisé envoyé sur votre WhatsApp (+229 97 12 34 56)</span>`;
+      }
+    }
+
+    // 6. Gestion du Clavier Virtuel PIN
     function handlePinKey(digit) {
       if (currentEnteredPin.length < 4) {
         currentEnteredPin += digit;
@@ -451,17 +513,17 @@
       }
     }
 
-    // 5. Authentification Biométrique (Face ID / Empreinte)
+    // 7. Authentification Biométrique (Face ID / Empreinte)
     function handleBiometricAuth() {
       const statusEl = document.getElementById('pin-status-msg');
-      statusEl.textContent = "Authentification Biométrique réussie ✅";
+      statusEl.innerHTML = `<span class="text-emerald-700 font-bold">Authentification Biométrique réussie ✅</span>`;
       setTimeout(verifyAndSaveProfile, 400);
     }
 
-    // 6. Validation Finale et Sauvegarde Sécurisée
+    // 8. Validation Finale et Sauvegarde Sécurisée
     function verifyAndSaveProfile() {
       const statusEl = document.getElementById('pin-status-msg');
-      statusEl.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-primary border-t-transparent rounded-full mr-1"></span> Validation du PIN...`;
+      statusEl.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-primary border-t-transparent rounded-full mr-1"></span> Validation du code...`;
 
       setTimeout(() => {
         // Sauvegarde des champs dans localStorage
