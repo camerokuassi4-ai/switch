@@ -408,11 +408,12 @@
           <!-- Numéro Téléphone Terminal Agent -->
           <div class="flex flex-col gap-1">
             <label for="agentPhone" class="text-[11px] font-bold text-on-surface-variant">Numéro de téléphone du terminal Agent (+229) *</label>
-            <div class="relative flex items-center">
-              <div class="absolute left-3.5 flex items-center gap-1 text-on-surface-variant font-bold text-xs border-r border-gray-200 pr-2">
-                <span>🇧🇯 +229</span>
+            <div class="flex items-center rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+              <div class="flex items-center gap-1.5 px-3.5 py-3 bg-gray-100/80 border-r border-outline-variant/50 text-xs font-bold text-on-surface select-none shrink-0">
+                <span class="text-base leading-none">🇧🇯</span>
+                <span class="font-mono text-gray-700 font-bold">+229</span>
               </div>
-              <input type="tel" id="agentPhone" value="97 12 34 56" placeholder="97 00 00 00" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-22 pr-3 text-xs sm:text-sm font-mono font-bold text-on-surface"/>
+              <input type="tel" id="agentPhone" value="97 12 34 56" placeholder="97 00 00 00" maxlength="12" class="w-full bg-transparent border-0 py-3 px-3.5 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none"/>
             </div>
             <p class="text-[10px] text-on-surface-variant ml-1">Ce numéro servira à recevoir les notifications de dépôts/retraits et les commissions.</p>
           </div>
