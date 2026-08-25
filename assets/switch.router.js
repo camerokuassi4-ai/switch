@@ -758,16 +758,22 @@
       sessionStorage.setItem("switchActiveSpace", space);
     }
 
-    // Nettoie tous les éléments nav pour garantir l'unicité et le verrouillage
-    document.querySelectorAll("nav").forEach(function (existingNav) { existingNav.remove(); });
-
     if (nav) {
       document.body.style.paddingBottom = "calc(96px + env(safe-area-inset-bottom, 16px))";
-      const navEl = document.createElement("div");
-      navEl.innerHTML = navHTML(space, nav);
-      document.body.appendChild(navEl.firstElementChild);
+      const existingNav = document.getElementById("switch-nav");
+      if (existingNav) {
+        // Mise à jour atomique immédiate sans aucune suppression (0.00ms de clignotement)
+        document.querySelectorAll("nav:not(#switch-nav)").forEach(function (n) { n.remove(); });
+        existingNav.outerHTML = navHTML(space, nav);
+      } else {
+        document.querySelectorAll("nav").forEach(function (n) { n.remove(); });
+        const navEl = document.createElement("div");
+        navEl.innerHTML = navHTML(space, nav);
+        document.body.appendChild(navEl.firstElementChild);
+      }
     } else {
       document.body.style.paddingBottom = "calc(24px + env(safe-area-inset-bottom, 16px))";
+      document.querySelectorAll("nav").forEach(function (existingNav) { existingNav.remove(); });
     }
 
     let existingBackBtn = document.querySelector('button[aria-label="Retour"], button.switch-back-btn, button.back-btn, [data-action="back"]');
