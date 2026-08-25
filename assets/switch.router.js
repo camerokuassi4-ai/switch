@@ -822,12 +822,14 @@
     document.querySelectorAll("nav:not(#switch-nav)").forEach(function (existingNav) { existingNav.remove(); });
 
     if (nav) {
-      document.body.style.paddingBottom = "calc(76px + env(safe-area-inset-bottom, 12px))";
+      document.body.style.paddingBottom = "calc(100px + env(safe-area-inset-bottom, 16px))";
       if (!document.getElementById("switch-nav")) {
         const navEl = document.createElement("div");
         navEl.innerHTML = navHTML(space, nav);
         document.body.appendChild(navEl.firstElementChild);
       }
+    } else {
+      document.body.style.paddingBottom = "calc(24px + env(safe-area-inset-bottom, 16px))";
     }
 
     let existingBackBtn = document.querySelector('button[aria-label="Retour"], button.switch-back-btn, button.back-btn, [data-action="back"]');

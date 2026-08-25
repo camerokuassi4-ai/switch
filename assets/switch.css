@@ -2,11 +2,11 @@
  * switch.css
  * ─────────────────────────────────────────────────────────────
  * Feuille de styles globale et adaptative — App Switch (Bénin)
- * Compatible 100% avec tous écrans :
- *   • Smartphones Android (Samsung, Xiaomi, Pixel, Transsion...)
- *   • iPhones (SE, 11, 12, 13, 14, 15, 16 Pro / Max)
+ * Garantit un affichage 100% complet et non coupé sur :
+ *   • Smartphones Android (toutes résolutions, de 320px à 540px)
+ *   • iPhones (SE, 11, 12, 13, 14, 15, 16 Pro / Max avec encoche / Dynamic Island)
  *   • Tablettes & iPads (iPad Mini, Air, Pro, Galaxy Tab)
- *   • Pliables & Écrans Larges / Bureau
+ *   • Ordinateurs portables et de bureau
  * ─────────────────────────────────────────────────────────────
  */
 
@@ -15,21 +15,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 
 :root {
-  /* Safe area insets pour encoches iPhone / Dynamic Island & Home indicator */
+  /* Safe area insets pour encoches iPhone / Dynamic Island & barre tactile */
   --sat: env(safe-area-inset-top, 0px);
   --sar: env(safe-area-inset-right, 0px);
   --sab: env(safe-area-inset-bottom, 0px);
   --sal: env(safe-area-inset-left, 0px);
 
-  /* Largeur max adaptative du conteneur de l'application */
+  /* Largeur adaptative de l'application */
   --app-max-width: 520px;
-  --nav-height: 64px;
 }
 
-/* ── 2. RESET, BASE & VIEWPORT UNIVERSEL ────────────────────── */
+/* ── 2. RESET & BASE UNIVERSELLE SANS COUPURE ────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  min-width: 0; /* Empêche le débordement des éléments flex/grid */
 }
 
 html {
@@ -37,46 +37,58 @@ html {
   -moz-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-behavior: smooth;
-  height: 100%;
-  background-color: #0d0b14;
+  min-height: 100%;
+  background-color: #120f1e;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #fdf8ff;
-  color: #1c1a24;
+  font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+  background-color: #fdf8ff !important;
+  color: #1c1a24 !important;
   min-height: 100vh !important;
   min-height: 100dvh !important;
-  margin: 0 auto;
+  height: auto !important; /* Permet un défilement naturel infini sans coupure */
+  margin: 0 auto !important;
   padding: 0;
-  padding-top: var(--sat);
-  padding-left: var(--sal);
-  padding-right: var(--sar);
+  padding-top: var(--sat) !important;
+  padding-left: var(--sal) !important;
+  padding-right: var(--sar) !important;
+  padding-bottom: calc(100px + var(--sab)) !important; /* Dégage toujours le bas pour la nav */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   touch-action: manipulation;
-  width: 100%;
-  max-width: var(--app-max-width);
+  width: 100% !important;
+  max-width: var(--app-max-width) !important;
   position: relative;
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-/* Optimisation universelle pour images et médias */
+main {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 1 0 auto !important;
+  box-sizing: border-box !important;
+}
+
+/* Optimisation images et vidéos */
 img, svg, video, canvas {
   max-width: 100%;
   height: auto;
 }
 
-/* Empêche le zoom automatique indésirable sur iOS Safari lors du focus */
+/* Empêche le zoom indésirable sur iOS Safari lors du focus sur un champ */
 input, select, textarea {
   font-size: 16px !important;
 }
 
-/* ── 3. MEDIA QUERIES RESPONSIVES (SMARTPHONES, IPADS, TABLETTES) ── */
+/* ── 3. MEDIA QUERIES : RESPONSIVE TOUT APPAREIL ─────────────── */
 
-/* ── A. Petits & Moyens Smartphones (Android & iPhone <= 580px) ── */
+/* ── A. Smartphones Android & iPhones (jusqu'à 580px) ── */
 @media (max-width: 580px) {
   :root {
     --app-max-width: 100%;
@@ -87,11 +99,11 @@ input, select, textarea {
   }
 
   body {
-    max-width: 100%;
-    margin: 0;
-    box-shadow: none;
-    border-radius: 0;
-    border: none;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    border: none !important;
     min-height: 100vh !important;
     min-height: 100dvh !important;
   }
@@ -105,25 +117,19 @@ input, select, textarea {
 
   html {
     background: linear-gradient(145deg, #1b172a 0%, #261f3d 50%, #3d227a 100%);
-    min-height: 100vh;
-    min-height: 100dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 16px 0;
   }
 
   body {
-    max-width: var(--app-max-width);
-    margin: auto;
-    border-radius: 32px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(202, 190, 255, 0.25);
-    min-height: min(94vh, 960px) !important;
-    min-height: min(94dvh, 960px) !important;
+    max-width: var(--app-max-width) !important;
+    margin: 0 auto !important;
+    border-radius: 28px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(202, 190, 255, 0.25) !important;
+    min-height: calc(100vh - 32px) !important;
   }
 }
 
-/* ── C. Écrans Larges, Ordinateurs & Grand Format (> 1024px) ── */
+/* ── C. Ordinateurs & Écrans Larges (> 1024px) ── */
 @media (min-width: 1025px) {
   :root {
     --app-max-width: 480px;
@@ -131,21 +137,15 @@ input, select, textarea {
 
   html {
     background: radial-gradient(circle at 50% 20%, #2d1c59 0%, #151122 60%, #0c0a14 100%);
-    min-height: 100vh;
-    min-height: 100dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 24px 0;
   }
 
   body {
-    max-width: var(--app-max-width);
-    margin: auto;
-    border-radius: 36px;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5), 0 0 0 1.5px rgba(202, 190, 255, 0.2);
-    min-height: min(92vh, 920px) !important;
-    min-height: min(92dvh, 920px) !important;
+    max-width: var(--app-max-width) !important;
+    margin: 0 auto !important;
+    border-radius: 32px !important;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5), 0 0 0 1.5px rgba(202, 190, 255, 0.2) !important;
+    min-height: calc(100vh - 48px) !important;
   }
 }
 
@@ -160,7 +160,7 @@ input, select, textarea {
 
 /* ── 5. COMPOSANTS PARTAGÉS & ADAPTATIFS ─────────────────────── */
 
-/* --- Carte de solde "Fluid Silk" (hero card) --- */
+/* --- Carte de solde hero --- */
 .switch-balance-card {
   background: linear-gradient(135deg, #5e3bdc 0%, #7758f6 50%, #cabeff 100%);
   border-radius: 24px;
@@ -177,7 +177,7 @@ input, select, textarea {
   pointer-events: none;
 }
 
-/* --- Fond "Fluid Mesh" (splash, onboarding) --- */
+/* --- Fond mesh splash --- */
 .fluid-mesh-bg {
   background:
     radial-gradient(circle at top left,    #7758f6 0%, transparent 50%),
@@ -187,39 +187,16 @@ input, select, textarea {
   overflow: hidden;
 }
 
-.fluid-mesh-bg::before {
-  content: '';
-  position: absolute;
-  top: -50%; left: -50%;
-  width: 200%; height: 200%;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-  opacity: 0.4;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* --- Orbes décoratifs (splash) --- */
-.glass-orb {
-  position: absolute;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.05) 100%);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.2);
-  box-shadow: 0 8px 32px rgba(94,59,220,0.1);
-  animation: float 10s infinite ease-in-out alternate;
-}
-
-/* --- Bouton primaire universel --- */
+/* --- Boutons universels --- */
 .btn-primary {
   background-color: #5e3bdc;
   color: #ffffff;
   border-radius: 9999px;
-  padding: 16px 24px;
+  padding: 15px 20px;
   font-family: 'Hanken Grotesk', sans-serif;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
-  line-height: 26px;
+  line-height: 24px;
   box-shadow: 0 10px 20px rgba(94,59,220,0.3);
   border: none;
   cursor: pointer;
@@ -241,17 +218,16 @@ input, select, textarea {
   transform: scale(0.96);
 }
 
-/* --- Bouton secondaire universel --- */
 .btn-secondary {
   background-color: #ffffff;
   color: #5e3bdc;
   border: 1px solid #c9c4d7;
   border-radius: 9999px;
-  padding: 14px 24px;
+  padding: 13px 20px;
   font-family: 'Hanken Grotesk', sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  line-height: 24px;
+  line-height: 22px;
   cursor: pointer;
   width: 100%;
   display: flex;
@@ -267,24 +243,23 @@ input, select, textarea {
   border-color: #5e3bdc;
 }
 
-/* --- Cartes standard --- */
+/* --- Cartes & Conteneurs --- */
 .switch-card {
   background: #ffffff;
   border-radius: 20px;
-  padding: 18px;
+  padding: 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.04);
 }
 
-/* --- Champs de saisie --- */
 .switch-input {
   width: 100%;
   background: #ffffff;
   border: 1px solid #e6e0ee;
   border-radius: 14px;
-  padding: 14px 16px;
+  padding: 13px 16px;
   font-family: 'Hanken Grotesk', sans-serif;
   font-size: 16px;
-  line-height: 24px;
+  line-height: 22px;
   color: #1c1a24;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -295,11 +270,7 @@ input, select, textarea {
   box-shadow: 0 0 0 3px rgba(94,59,220,0.12);
 }
 
-.switch-input::placeholder {
-  color: #797586;
-}
-
-/* --- Badges de statut --- */
+/* --- Badges --- */
 .badge-success { background: #dcfce7; color: #16a34a; }
 .badge-error   { background: #ffdad6; color: #93000a; }
 .badge-warning { background: #fef3c7; color: #b45309; }
@@ -314,112 +285,21 @@ input, select, textarea {
   font-size: 12px;
   font-weight: 700;
   line-height: 16px;
-  letter-spacing: 0.02em;
 }
 
-/* --- Liste transactions & items --- */
-.tx-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid #f1ebf9;
-}
-
-.tx-item:last-child { border-bottom: none; }
-
-.tx-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: #f7f1ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-/* --- En-tête d'écran avec support safe-area --- */
+/* --- En-tête d'écran avec safe-area --- */
 .screen-header {
   display: flex;
   align-items: center;
-  padding: max(16px, var(--sat)) 16px 12px;
+  padding: max(14px, var(--sat)) 16px 10px;
   gap: 12px;
   position: sticky;
   top: 0;
   background: #fdf8ff;
-  z-index: 50;
+  z-index: 40;
 }
 
-/* --- Indicateur de chargement --- */
-.switch-spinner {
-  width: 24px;
-  height: 24px;
-  border: 3px solid #e6e0ee;
-  border-top-color: #5e3bdc;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-/* ── 6. ANIMATIONS ──────────────────────────────────────────── */
-@keyframes float {
-  0%   { transform: translateY(0)    scale(1); }
-  50%  { transform: translateY(-16px) scale(1.03); }
-  100% { transform: translateY(0)    scale(1); }
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.animate-fade-in-up,
-.animate-fade-in,
-.animate-slide-right,
-.animate-scale-in {
-  animation: none !important;
-  opacity: 1 !important;
-  transform: none !important;
-}
-
-.animate-float      { animation: float 6s ease-in-out infinite alternate; }
-
-/* ── 7. UTILITAIRES DE LAYOUT & ADAPTABILITÉ ─────────────────── */
-
-.switch-container {
-  width: 100%;
-  max-width: var(--app-max-width);
-  margin: 0 auto;
-  padding: 0 16px;
-}
-
-/* Padding bottom pour contenu sans chevauchement avec la barre de navigation */
-.pb-nav {
-  padding-bottom: calc(76px + var(--sab)) !important;
-}
-
-.gradient-primary {
-  background: linear-gradient(135deg, #5e3bdc, #7758f6);
-}
-
-.amount-credit { color: #16a34a; }
-.amount-debit  { color: #1c1a24; }
-
-.switch-divider {
-  height: 1px;
-  background: #e6e0ee;
-  margin: 14px 0;
-}
-
-.switch-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(28,26,36,0.5);
-  z-index: 200;
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-}
-
-/* ── 8. BARRE DE NAVIGATION ADAPTATIVE (#switch-nav) ────────── */
+/* ── 6. BARRE DE NAVIGATION ADAPTATIVE (#switch-nav) ────────── */
 #switch-nav {
   position: fixed !important;
   bottom: 0 !important;
@@ -432,29 +312,56 @@ input, select, textarea {
   align-items: center !important;
   justify-content: space-around !important;
   padding: 8px 12px !important;
-  padding-bottom: max(10px, var(--sab)) !important;
-  background: rgba(255, 255, 255, 0.96) !important;
+  padding-bottom: max(12px, var(--sab)) !important;
+  background: rgba(255, 255, 255, 0.98) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   backdrop-filter: blur(20px) !important;
   border-top: 1px solid #ECE6F0 !important;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.06) !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08) !important;
 }
 
-@media (min-width: 581px) {
+@media (min-width: 581px) and (max-width: 1024px) {
   #switch-nav {
-    border-bottom-left-radius: 32px !important;
-    border-bottom-right-radius: 32px !important;
+    bottom: 0 !important;
+    border-bottom-left-radius: 28px !important;
+    border-bottom-right-radius: 28px !important;
   }
 }
 
 @media (min-width: 1025px) {
   #switch-nav {
-    border-bottom-left-radius: 36px !important;
-    border-bottom-right-radius: 36px !important;
+    bottom: 0 !important;
+    border-bottom-left-radius: 32px !important;
+    border-bottom-right-radius: 32px !important;
   }
 }
 
-/* Cache toute barre de navigation superflue */
+/* Barres de boutons fixes au bas de l'écran */
+footer.fixed, div.fixed.bottom-0, .fixed.bottom-0:not(#switch-nav) {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 100% !important;
+  max-width: var(--app-max-width) !important;
+  box-sizing: border-box !important;
+  padding-bottom: max(14px, var(--sab)) !important;
+  z-index: 80 !important;
+}
+
+@media (min-width: 581px) and (max-width: 1024px) {
+  footer.fixed, div.fixed.bottom-0, .fixed.bottom-0:not(#switch-nav) {
+    border-bottom-left-radius: 28px !important;
+    border-bottom-right-radius: 28px !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  footer.fixed, div.fixed.bottom-0, .fixed.bottom-0:not(#switch-nav) {
+    border-bottom-left-radius: 32px !important;
+    border-bottom-right-radius: 32px !important;
+  }
+}
+
+/* Cache les barres de navigation natives obsolètes */
 nav:not(#switch-nav) {
   display: none !important;
 }
@@ -462,13 +369,13 @@ nav:not(#switch-nav) {
 /* Bouton de retour universel */
 .switch-back-btn {
   position: fixed !important;
-  top: max(16px, var(--sat)) !important;
-  left: max(16px, calc((100vw - var(--app-max-width)) / 2 + 16px)) !important;
+  top: max(14px, var(--sat)) !important;
+  left: max(14px, calc((100vw - var(--app-max-width)) / 2 + 14px)) !important;
   z-index: 150 !important;
 }
 
 @media (max-width: 580px) {
   .switch-back-btn {
-    left: 16px !important;
+    left: 14px !important;
   }
 }
