@@ -495,42 +495,6 @@
     return "";
   }
 
-  const pageCache = new Map();
-
-  async function fetchPage(targetUrl) {
-    const normalizedUrl = new URL(targetUrl, window.location.href).href;
-    if (pageCache.has(normalizedUrl)) {
-      return pageCache.get(normalizedUrl);
-    }
-    const resp = await fetch(normalizedUrl);
-    if (!resp.ok) throw new Error("HTTP error " + resp.status + " fetching " + normalizedUrl);
-    const htmlText = await resp.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlText, "text/html");
-
-    // Extract custom head styles
-    const headStyles = Array.from(doc.querySelectorAll("head style, head link[rel='stylesheet']")).map(function (el) {
-      if (el.tagName.toLowerCase() === "style") {
-        return { type: "style", content: el.textContent };
-      } else if (el.tagName.toLowerCase() === "link") {
-        return { type: "link", href: el.getAttribute("href") };
-      }
-    }).filter(Boolean);
-
-    const pageData = {
-      title: doc.title,
-      bodyHTML: doc.body.innerHTML,
-      bodyClass: doc.body.className,
-      bodyStyle: doc.body.getAttribute("style") || "",
-      headStyles: headStyles,
-      scripts: Array.from(doc.body.querySelectorAll("script")).map(function (s) {
-        return { src: s.getAttribute("src"), content: s.textContent };
-      })
-    };
-    pageCache.set(normalizedUrl, pageData);
-    return pageData;
-  }
-
   function handleBack(e) {
     if (e && typeof e.preventDefault === "function") {
       e.preventDefault();
@@ -539,12 +503,11 @@
     if (window.history.length > 1) {
       window.history.back();
     } else {
-      switchNavigate(getActiveDashboard());
+      window.location.href = getActiveDashboard();
     }
   }
 
-  async function switchNavigate(targetUrl, pushState) {
-    if (pushState === undefined) pushState = true;
+  function switchNavigate(targetUrl) {
     if (!targetUrl) return;
 
     if (targetUrl === "javascript:history.back()") {
@@ -559,69 +522,7 @@
     if (targetUrl.startsWith("javascript:")) return;
 
     const resolved = resolveTarget(targetUrl);
-    const normalizedUrl = new URL(resolved, window.location.href).href;
-
-    try {
-      const pageData = await fetchPage(normalizedUrl);
-      if (pageData.title) document.title = pageData.title;
-      document.body.className = pageData.bodyClass;
-      if (pageData.bodyStyle) {
-        document.body.setAttribute("style", pageData.bodyStyle);
-      } else {
-        document.body.removeAttribute("style");
-      }
-
-      // Inject & synchronize dynamic page styles
-      let dynamicStyleEl = document.getElementById("switch-dynamic-styles");
-      if (!dynamicStyleEl) {
-        dynamicStyleEl = document.createElement("style");
-        dynamicStyleEl.id = "switch-dynamic-styles";
-        document.head.appendChild(dynamicStyleEl);
-      }
-      
-      let collectedCSS = "";
-      if (pageData.headStyles && pageData.headStyles.length > 0) {
-        pageData.headStyles.forEach(function(item) {
-          if (item.type === "style" && item.content) {
-            collectedCSS += "\n" + item.content;
-          }
-        });
-      }
-      dynamicStyleEl.textContent = collectedCSS;
-
-      document.body.innerHTML = pageData.bodyHTML;
-
-      if (pushState && window.location.href !== normalizedUrl) {
-        window.history.pushState({ url: normalizedUrl }, "", normalizedUrl);
-      }
-
-      pageData.scripts.forEach(function (scriptObj) {
-        if (scriptObj.src && (
-          scriptObj.src.includes("switch.router.js") ||
-          scriptObj.src.includes("switch.config.js") ||
-          scriptObj.src.includes("tailwindcss")
-        )) {
-          return;
-        }
-        const s = document.createElement("script");
-        if (scriptObj.src) {
-          s.src = scriptObj.src;
-        } else {
-          s.textContent = scriptObj.content;
-        }
-        document.body.appendChild(s);
-      });
-
-      init();
-      applyGlobalKycState();
-      if (typeof window.switchInitForms === "function") {
-        window.switchInitForms();
-      }
-      window.scrollTo(0, 0);
-    } catch (err) {
-      console.warn("[Switch Router] Navigation SPA fallback:", err);
-      window.location.href = normalizedUrl;
-    }
+    window.location.href = resolved;
   }
 
   function applyGlobalKycState() {
@@ -860,7 +761,7 @@
     wireAvatarToProfile(space);
   }
 
-  // Interception globale des clics sur les liens internes et boutons de retour
+  // Interception globale des boutons de retour
   document.addEventListener("click", function (e) {
     const backBtn = e.target.closest('button[aria-label="Retour"], button.switch-back-btn, button.back-btn, #back-btn, .btn-back, [data-action="back"]');
     if (backBtn) {
@@ -873,41 +774,7 @@
       handleBack(e);
       return;
     }
-
-    const anchor = e.target.closest("a");
-    if (anchor) {
-      const href = anchor.getAttribute("href");
-      if (!href || href === "#" || href.startsWith("javascript:") || href.startsWith("mailto:") || href.startsWith("tel:")) {
-        return;
-      }
-      if (href.startsWith("http://") || href.startsWith("https://")) {
-        return;
-      }
-      e.preventDefault();
-      e.stopPropagation();
-      switchNavigate(href);
-    }
-  }, true);
-
-  // Gestion de l'historique navigateur (flèche précédent/suivant)
-  window.addEventListener("popstate", function () {
-    switchNavigate(window.location.href, false);
   });
-
-  // Pré-chargement en arrière-plan de tous les écrans pour un affichage instantané (0.00ms)
-  function preloadAllScreens() {
-    const currentBase = window.location.href;
-    Object.keys(SCREENS).forEach(function (screenKey) {
-      const screenUrl = new URL(ROOT + screenKey + "/code.html", currentBase).href;
-      fetchPage(screenUrl).catch(function () {});
-    });
-  }
-
-  if ("requestIdleCallback" in window) {
-    window.requestIdleCallback(preloadAllScreens);
-  } else {
-    setTimeout(preloadAllScreens, 150);
-  }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
