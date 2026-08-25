@@ -575,6 +575,7 @@
       });
 
       init();
+      applyGlobalKycState();
       if (typeof window.switchInitForms === "function") {
         window.switchInitForms();
       }
@@ -584,6 +585,28 @@
       window.location.href = normalizedUrl;
     }
   }
+
+  function applyGlobalKycState() {
+    try {
+      const level = localStorage.getItem("switch_kyc_level");
+      if (level === "3") {
+        const kycBadge = document.getElementById("kyc-badge");
+        if (kycBadge) {
+          kycBadge.innerHTML = "👑 Niveau 3 VIP • 10M FCFA";
+          kycBadge.className = "text-[10px] font-black uppercase bg-amber-400 text-amber-950 px-2.5 py-0.5 rounded-full border border-amber-300 shadow-sm";
+        }
+        const heroCard = document.getElementById("hero-card");
+        if (heroCard) {
+          heroCard.className = "hero-gradient text-white rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[190px] ring-2 ring-amber-400/40 shadow-2xl";
+        }
+        const greetingSub = document.getElementById("time-greeting");
+        if (greetingSub) {
+          greetingSub.textContent = "Membre VIP ⭐";
+        }
+      }
+    } catch (e) {}
+  }
+  window.applyGlobalKycState = applyGlobalKycState;
 
   // Preload linked pages in background for instant zero-latency clicks
   setTimeout(function preloadCommonPages() {
@@ -718,6 +741,7 @@
   }
 
   function init() {
+    applyGlobalKycState();
     const screenKey = getCurrentScreen();
     const config = SCREENS[screenKey];
 

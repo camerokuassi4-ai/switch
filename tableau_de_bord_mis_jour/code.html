@@ -380,7 +380,7 @@
     }
 
     // Dynamic KYC Level status (Level 2 vs Level 3 VIP)
-    (function applyKycLevel() {
+    window.applyKycLevel = function applyKycLevel() {
       const level = localStorage.getItem('switch_kyc_level');
       const badge = document.getElementById('kyc-badge');
       const card = document.getElementById('hero-card');
@@ -397,7 +397,8 @@
           greetingSub.textContent = 'Membre VIP ⭐';
         }
       }
-    })();
+    };
+    window.applyKycLevel();
   </script>
 
   <script src="../assets/switch.router.js"></script>
