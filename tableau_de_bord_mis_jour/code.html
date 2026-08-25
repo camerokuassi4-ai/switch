@@ -379,12 +379,14 @@
       }
     }
 
-    // Dynamic KYC Level status (Level 2 vs Level 3 VIP)
+    // Dynamic KYC Level status (Level 1: 500K, Level 2: 2M, Level 3: 10M VIP)
     window.applyKycLevel = function applyKycLevel() {
-      const level = localStorage.getItem('switch_kyc_level');
+      const level = localStorage.getItem('switch_kyc_level') || '1';
       const badge = document.getElementById('kyc-badge');
       const card = document.getElementById('hero-card');
       const greetingSub = document.getElementById('time-greeting');
+      const balanceEl = document.getElementById('main-balance-text');
+
       if (level === '3') {
         if (badge) {
           badge.innerHTML = '👑 Niveau 3 VIP • 10M FCFA';
@@ -395,6 +397,38 @@
         }
         if (greetingSub) {
           greetingSub.textContent = 'Membre VIP ⭐';
+        }
+        if (balanceEl && !isBalanceHidden) {
+          balanceEl.innerHTML = '1 845 000 <span class="text-lg sm:text-xl font-bold font-sans text-purple-200">FCFA</span>';
+        }
+      } else if (level === '2') {
+        if (badge) {
+          badge.innerHTML = 'Niveau 2 Vérifié • 2M FCFA';
+          badge.className = 'text-[10px] font-black uppercase bg-emerald-400 text-emerald-950 px-2.5 py-0.5 rounded-full border border-emerald-300 shadow-sm';
+        }
+        if (card) {
+          card.className = 'hero-gradient text-white rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[190px]';
+        }
+        if (greetingSub) {
+          greetingSub.textContent = 'Compte Vérifié ANIP ✅';
+        }
+        if (balanceEl && !isBalanceHidden) {
+          balanceEl.innerHTML = '234 980 <span class="text-lg sm:text-xl font-bold font-sans text-purple-200">FCFA</span>';
+        }
+      } else {
+        // Niveau 1 Nouveau Compte (Plafond 500 000 FCFA)
+        if (badge) {
+          badge.innerHTML = 'Niveau 1 • Plafond 500 000 FCFA';
+          badge.className = 'text-[10px] font-black uppercase bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-full text-white border border-white/20 shadow-sm';
+        }
+        if (card) {
+          card.className = 'hero-gradient text-white rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[190px]';
+        }
+        if (greetingSub) {
+          greetingSub.textContent = 'Nouveau Compte (Niv. 1)';
+        }
+        if (balanceEl && !isBalanceHidden) {
+          balanceEl.innerHTML = '25 000 <span class="text-lg sm:text-xl font-bold font-sans text-purple-200">FCFA</span>';
         }
       }
     };
