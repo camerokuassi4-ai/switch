@@ -101,6 +101,9 @@
     "centre_de_notifications": {
       space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: "notifs", actions: {}
     },
+    "marketplace_boutiques_switch": {
+      space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {}
+    },
     "centre_de_notifications_marchand": {
       space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: null, actions: {}
     },

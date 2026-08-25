@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Boutiques & Marketplace Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .market-hero-gradient {
+      background: linear-gradient(135deg, #5E3BDC 0%, #4323B0 50%, #2A1175 100%);
+      box-shadow: 0 16px 36px -10px rgba(94, 59, 220, 0.35);
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .cat-pill-active {
+      background-color: #5E3BDC;
+      color: #ffffff;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-purple-50 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-base sm:text-lg font-black text-on-surface tracking-tight">Shopping & Boutiques</h1>
+        <p class="text-[11px] text-on-surface-variant font-medium">Commandez directement avec votre compte Switch</p>
+      </div>
+    </div>
+
+    <!-- User Switch Balance Pill -->
+    <div class="bg-white border border-primary/30 px-3 py-1.5 rounded-full shadow-xs flex items-center gap-1.5">
+      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+      <span class="text-xs font-mono font-extrabold text-primary">125 000 F</span>
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Hero Promo Banner (Marketplace Switch) -->
+    <div class="market-hero-gradient rounded-[32px] p-6 text-white shadow-soft flex flex-col gap-3 relative overflow-hidden">
+      <div class="flex justify-between items-start z-10">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-purple-200 block">Marketplace Partenaires Bénin</span>
+          <h2 class="text-xl sm:text-2xl font-black text-white mt-0.5">Achetez en 1 Clic</h2>
+          <p class="text-xs text-purple-200 mt-0.5">Livraison express ou retrait en magasin • 0% Frais</p>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shrink-0">
+          <span class="material-symbols-outlined text-2xl">shopping_bag</span>
+        </div>
+      </div>
+
+      <!-- Quick Search Bar -->
+      <div class="relative flex items-center z-10 mt-1">
+        <span class="material-symbols-outlined absolute left-3.5 text-primary text-lg">search</span>
+        <input type="text" id="market-search-input" oninput="filterMarketplace()" placeholder="Rechercher un produit, café, vêtement, boutique..." class="w-full bg-white text-on-surface placeholder:text-gray-400 rounded-2xl py-3 pl-10 pr-4 text-xs font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-purple-400"/>
+      </div>
+
+      <!-- Glow Orb -->
+      <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+    </div>
+
+    <!-- 2. Category Filter Chips -->
+    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 text-xs font-bold">
+      <button type="button" onclick="setMarketCategory('all', this)" class="mcat-pill cat-pill-active px-3 py-1.5 rounded-xl transition-colors cursor-pointer shrink-0">
+        Tous les Produits
+      </button>
+      <button type="button" onclick="setMarketCategory('food', this)" class="mcat-pill px-3 py-1.5 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer shrink-0">
+        Restauration & Bar 🍔
+      </button>
+      <button type="button" onclick="setMarketCategory('retail', this)" class="mcat-pill px-3 py-1.5 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer shrink-0">
+        Boutique & Mode 👗
+      </button>
+      <button type="button" onclick="setMarketCategory('service', this)" class="mcat-pill px-3 py-1.5 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer shrink-0">
+        Prestations & Services 💼
+      </button>
+    </div>
+
+    <!-- 3. Dynamic Products Grid (Loaded from localStorage) -->
+    <div class="grid grid-cols-2 gap-3" id="marketplace-grid">
+      <!-- Injected via JavaScript from switch_marketplace_products -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="market-empty-state" class="hidden bg-white rounded-3xl p-8 border border-outline-variant/40 shadow-soft flex flex-col items-center justify-center text-center gap-3 my-4">
+      <div class="w-16 h-16 rounded-full bg-purple-50 text-primary flex items-center justify-center">
+        <span class="material-symbols-outlined text-3xl">shopping_cart_off</span>
+      </div>
+      <h3 class="text-base font-extrabold text-on-surface">Aucun article trouvé</h3>
+      <p class="text-xs text-on-surface-variant max-w-xs">
+        Aucun produit ne correspond à votre recherche pour le moment.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Order / Checkout Modal Bottom Sheet -->
+  <div id="order-modal" class="fixed inset-0 bg-black/70 z-50 backdrop-blur-sm hidden flex items-end justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md rounded-t-[36px] sm:rounded-3xl p-6 flex flex-col gap-4 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-base font-black text-on-surface">Commander l'Article</h3>
+          <p id="modal-store-name" class="text-xs text-primary font-bold">Boutique & Restaurant La Plage</p>
+        </div>
+        <button onclick="closeOrderModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-on-surface hover:bg-gray-200 cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <!-- Item Info Box -->
+      <div class="p-3.5 bg-surface-container-low/60 rounded-2xl border border-outline-variant/50 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div id="modal-item-img-box" class="w-12 h-12 rounded-xl bg-purple-100 text-primary flex items-center justify-center font-bold text-lg shrink-0 overflow-hidden">
+            <span class="material-symbols-outlined">shopping_bag</span>
+          </div>
+          <div>
+            <h4 id="modal-item-title" class="text-xs font-bold text-on-surface">Nom Produit</h4>
+            <span id="modal-item-unit-price" class="text-xs font-black font-mono text-primary">0 FCFA</span>
+          </div>
+        </div>
+
+        <!-- Quantity Selector -->
+        <div class="flex items-center gap-2 bg-white border border-outline-variant/60 rounded-xl p-1">
+          <button onclick="changeQty(-1)" class="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center font-bold text-xs hover:bg-gray-200 cursor-pointer">-</button>
+          <span id="modal-item-qty" class="text-xs font-bold font-mono px-1">1</span>
+          <button onclick="changeQty(1)" class="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center font-bold text-xs hover:bg-gray-200 cursor-pointer">+</button>
+        </div>
+      </div>
+
+      <!-- Delivery Method -->
+      <div class="flex flex-col gap-2">
+        <label class="text-xs font-bold text-on-surface-variant">Mode de Réception</label>
+        <div class="grid grid-cols-2 gap-2">
+          <label class="p-3 rounded-2xl border-2 border-primary bg-purple-50/50 flex flex-col gap-0.5 cursor-pointer">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-primary">Retrait Boutique</span>
+              <input type="radio" name="delivery-mode" value="pickup" checked onchange="updateTotal()" class="text-primary"/>
+            </div>
+            <span class="text-[10px] text-gray-500">Gratuit (Click & Collect)</span>
+          </label>
+
+          <label class="p-3 rounded-2xl border border-outline-variant/60 bg-white flex flex-col gap-0.5 cursor-pointer">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-on-surface">Livraison Cotonou</span>
+              <input type="radio" name="delivery-mode" value="delivery" onchange="updateTotal()" class="text-primary"/>
+            </div>
+            <span class="text-[10px] text-emerald-700 font-bold">+1 000 FCFA</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Payment Breakdown (Débit Direct Compte Switch) -->
+      <div class="bg-emerald-50 rounded-2xl p-3.5 border border-emerald-200 text-xs flex flex-col gap-1.5 text-emerald-950">
+        <div class="flex justify-between">
+          <span>Source de paiement :</span>
+          <b class="text-emerald-900">Solde Compte Switch (125 000 F dispo)</b>
+        </div>
+        <div class="flex justify-between">
+          <span>Frais de transaction :</span>
+          <b class="text-emerald-700">0 FCFA (Gratuit)</b>
+        </div>
+        <div class="h-px bg-emerald-200 my-0.5"></div>
+        <div class="flex justify-between text-sm font-black">
+          <span>Total à payer :</span>
+          <span id="modal-total-price" class="font-mono text-emerald-800">0 FCFA</span>
+        </div>
+      </div>
+
+      <!-- Confirm Button -->
+      <button onclick="confirmOrder()" class="w-full py-4 rounded-full bg-primary hover:bg-primary-container text-white font-extrabold text-xs sm:text-sm shadow-xl active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer">
+        <span class="material-symbols-outlined text-lg">lock</span>
+        <span>Payer avec mon Compte Switch</span>
+      </button>
+    </div>
+  </div>
+
+  <script src="../assets/switch.router.js"></script>
+
+  <script>
+    let activeMarketCategory = 'all';
+    let currentSelectedProduct = null;
+    let currentQty = 1;
+
+    const defaultMarketProducts = [
+      {
+        id: "prod-1",
+        title: "Café Espresso Premium",
+        price: 1500,
+        stock: 28,
+        category: "food",
+        image: "../assets/images/img_005.jpg",
+        icon: "coffee",
+        store: "Boutique & Restaurant La Plage"
+      },
+      {
+        id: "prod-2",
+        title: "Croissant Beurre Artisanal",
+        price: 800,
+        stock: 5,
+        category: "food",
+        image: "../assets/images/img_006.jpg",
+        icon: "bakery_dining",
+        store: "Boutique & Restaurant La Plage"
+      },
+      {
+        id: "prod-3",
+        title: "Robe Wax Soie Africaine",
+        price: 25000,
+        stock: 12,
+        category: "retail",
+        image: "",
+        icon: "checkroom",
+        store: "Boutique & Restaurant La Plage"
+      },
+      {
+        id: "prod-4",
+        title: "Consultation & Expertise (1h)",
+        price: 15000,
+        stock: 99,
+        category: "service",
+        image: "../assets/images/img_007.jpg",
+        icon: "support_agent",
+        store: "Boutique & Restaurant La Plage"
+      }
+    ];
+
+    document.addEventListener("DOMContentLoaded", function () {
+      loadMarketplaceProducts();
+    });
+
+    function getProducts() {
+      const raw = localStorage.getItem('switch_marketplace_products');
+      if (!raw) {
+        localStorage.setItem('switch_marketplace_products', JSON.stringify(defaultMarketProducts));
+        return defaultMarketProducts;
+      }
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        return defaultMarketProducts;
+      }
+    }
+
+    function loadMarketplaceProducts() {
+      const products = getProducts();
+      const grid = document.getElementById('marketplace-grid');
+      grid.innerHTML = "";
+
+      const storeName = localStorage.getItem('switch_merchant_business_name') || "Boutique Partenaire Switch";
+
+      products.forEach(p => {
+        const pStore = p.store || storeName;
+        const card = document.createElement('div');
+        card.className = "market-product-card bg-white rounded-3xl p-3.5 border border-outline-variant/40 shadow-soft flex flex-col justify-between gap-2.5 relative group hover:border-primary/50 transition-all";
+        card.setAttribute('data-category', p.category);
+        card.setAttribute('data-title', p.title);
+        card.setAttribute('data-price', p.price);
+
+        const imgHtml = p.image 
+          ? `<img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>`
+          : `<div class="w-full h-full bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white"><span class="material-symbols-outlined text-4xl">${p.icon || 'inventory_2'}</span></div>`;
+
+        card.innerHTML = `
+          <div class="w-full h-28 rounded-2xl bg-gray-50 relative overflow-hidden flex items-center justify-center">
+            ${imgHtml}
+            <span class="absolute top-2 right-2 text-[9px] font-black uppercase bg-primary text-white px-2 py-0.5 rounded-full shadow-xs">
+              ${p.stock > 0 ? p.stock + ' dispo' : 'Rupture'}
+            </span>
+          </div>
+
+          <div>
+            <span class="text-[9px] font-bold text-primary block truncate">${pStore}</span>
+            <h4 class="text-xs font-bold text-on-surface line-clamp-1 mt-0.5">${p.title}</h4>
+            <span class="text-sm font-black font-mono text-primary block mt-0.5">${p.price.toLocaleString('fr-FR')} FCFA</span>
+          </div>
+
+          <button onclick="openOrderModal('${p.id}')" class="w-full py-2.5 rounded-xl bg-primary hover:bg-primary-container text-white font-bold text-xs shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">shopping_cart</span>
+            <span>Commander</span>
+          </button>
+        `;
+        grid.appendChild(card);
+      });
+
+      filterMarketplace();
+    }
+
+    function setMarketCategory(cat, btn) {
+      activeMarketCategory = cat;
+      document.querySelectorAll('.mcat-pill').forEach(b => {
+        b.className = "mcat-pill px-3 py-1.5 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer shrink-0";
+      });
+      btn.className = "mcat-pill cat-pill-active px-3 py-1.5 rounded-xl transition-colors cursor-pointer shrink-0";
+      filterMarketplace();
+    }
+
+    function filterMarketplace() {
+      const query = document.getElementById('market-search-input').value.toLowerCase().trim();
+      const items = document.querySelectorAll('.market-product-card');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const title = (item.getAttribute('data-title') || '').toLowerCase();
+        const price = (item.getAttribute('data-price') || '');
+        const cat = item.getAttribute('data-category');
+
+        const matchQuery = !query || title.includes(query) || price.includes(query);
+        const matchCategory = (activeMarketCategory === 'all') || (cat === activeMarketCategory);
+
+        if (matchQuery && matchCategory) {
+          item.style.display = 'flex';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      const emptyEl = document.getElementById('market-empty-state');
+      if (visibleCount === 0) {
+        emptyEl.classList.remove('hidden');
+      } else {
+        emptyEl.classList.add('hidden');
+      }
+    }
+
+    function openOrderModal(prodId) {
+      const products = getProducts();
+      currentSelectedProduct = products.find(p => p.id === prodId) || products[0];
+      currentQty = 1;
+
+      const storeName = currentSelectedProduct.store || localStorage.getItem('switch_merchant_business_name') || "Boutique Partenaire Switch";
+      document.getElementById('modal-store-name').textContent = storeName;
+      document.getElementById('modal-item-title').textContent = currentSelectedProduct.title;
+      document.getElementById('modal-item-unit-price').textContent = currentSelectedProduct.price.toLocaleString('fr-FR') + " FCFA / unité";
+      document.getElementById('modal-item-qty').textContent = currentQty;
+
+      updateTotal();
+      document.getElementById('order-modal').classList.remove('hidden');
+    }
+
+    function closeOrderModal() {
+      document.getElementById('order-modal').classList.add('hidden');
+    }
+
+    function changeQty(delta) {
+      currentQty += delta;
+      if (currentQty < 1) currentQty = 1;
+      document.getElementById('modal-item-qty').textContent = currentQty;
+      updateTotal();
+    }
+
+    function updateTotal() {
+      if (!currentSelectedProduct) return;
+      const isDelivery = document.querySelector('input[name="delivery-mode"]:checked').value === 'delivery';
+      const deliveryFee = isDelivery ? 1000 : 0;
+      const total = (currentSelectedProduct.price * currentQty) + deliveryFee;
+      document.getElementById('modal-total-price').textContent = total.toLocaleString('fr-FR') + " FCFA";
+    }
+
+    function confirmOrder() {
+      const pin = prompt("🔐 Entrez votre code secret PIN Switch (4 chiffres) pour confirmer la commande :");
+      if (pin && pin.length >= 4) {
+        const isDelivery = document.querySelector('input[name="delivery-mode"]:checked').value === 'delivery';
+        const deliveryFee = isDelivery ? 1000 : 0;
+        const total = (currentSelectedProduct.price * currentQty) + deliveryFee;
+        const storeName = currentSelectedProduct.store || "Boutique Partenaire";
+
+        closeOrderModal();
+        alert("🎉 Félicitations ! Votre commande de " + currentQty + "x " + currentSelectedProduct.title + " (" + total.toLocaleString('fr-FR') + " FCFA) a été payée avec succès depuis votre compte Switch et transmise à " + storeName + " !");
+      }
+    }
+  </script>
+
+</body>
+</html>
