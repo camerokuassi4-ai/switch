@@ -270,6 +270,7 @@
     "d_p_t_de_fonds_mis_jour_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
     "recu_operation_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
     "centre_de_notifications_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
+    "succes_reapprovisionnement_float": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
 
     "carte_agents_guichets": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "budget_analyse_depenses": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
