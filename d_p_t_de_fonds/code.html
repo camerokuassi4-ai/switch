@@ -1,124 +1,194 @@
-﻿<!DOCTYPE html><html lang="fr"><head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Déposer des fonds</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="../assets/switch.css">
-<script src="../assets/switch.config.js"></script>
+<!DOCTYPE html>
+<html lang="fr" class="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Déposer des fonds - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
 
-<style>
-        body {
-            background-color: #fdf8ff; /* background */
-            color: #1c1a24; /* on-surface */
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        .shadow-30px-y-15px-opacity-15 {
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .ambient-shadow-level-1 {
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
-        }
-
-        /* Custom styles for the input focus state */
-        .input-focus-ring:focus-within {
-            border-color: #5e3bdc; /* primary */
-            box-shadow: 0 0 0 4px rgba(94, 59, 220, 0.1);
-        }
-        
-        /* Grid layout for sources */
-        .source-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-    </style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
 </head>
-<body class="min-h-screen pb-40">
-<!-- Top Navigation (Contextual, Back button implied for 'Top-up' flow but keeping simple header) -->
-<header class="flex justify-between items-center px-container-margin py-stack-md w-full bg-transparent top-0 sticky z-10">
-<button aria-label="Retour" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high hover:bg-surface-variant transition-colors">
-<span class="material-symbols-outlined text-on-surface">arrow_back</span>
-</button>
-<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Déposer des fonds</h1>
-<div class="w-10 h-10"></div> <!-- Spacer for centering -->
-</header>
-<main class="px-container-margin pt-stack-md flex flex-col gap-stack-lg max-w-lg mx-auto">
-<!-- Source Selection Section -->
-<section>
-<h2 class="font-body-lg text-body-lg font-semibold text-on-surface mb-stack-md">Sélectionner la source</h2>
-<div class="source-grid">
-<!-- MTN MoMo Option (Selected State) -->
-<button class="relative bg-surface-container-lowest ambient-shadow-level-1 rounded-xl p-card-padding flex flex-col items-center justify-center gap-3 border-2 border-primary transition-transform active:scale-95">
-<div class="absolute top-3 right-3 text-primary">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-</div>
-<!-- Placeholder for MTN MoMo Logo -->
-<div class="w-16 h-16 rounded-full bg-yellow-400 flex items-center justify-center mb-2 overflow-hidden">
-<span class="font-headline-md text-black font-bold">MTN</span>
-</div>
-<span class="font-body-sm text-body-sm text-on-surface font-semibold text-center">MTN MoMo</span>
-</button>
-<!-- Moov Money Option -->
-<button class="bg-surface-container-lowest ambient-shadow-level-1 rounded-xl p-card-padding flex flex-col items-center justify-center gap-3 border-2 border-transparent hover:border-surface-variant transition-transform active:scale-95">
-<!-- Placeholder for Moov Money Logo -->
-<div class="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center mb-2 overflow-hidden">
-<span class="font-headline-md text-white font-bold">Moov</span>
-</div>
-<span class="font-body-sm text-body-sm text-on-surface font-semibold text-center">Moov Money</span>
-</button>
-<!-- Celtiis Cash Option -->
-<button class="bg-surface-container-lowest ambient-shadow-level-1 rounded-xl p-card-padding flex flex-col items-center justify-center gap-3 border-2 border-transparent hover:border-surface-variant transition-transform active:scale-95">
-<!-- Placeholder for Celtiis Cash Logo -->
-<div class="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center mb-2 overflow-hidden">
-<span class="font-headline-md text-white font-bold">Celtiis</span>
-</div>
-<span class="font-body-sm text-body-sm text-on-surface font-semibold text-center">Celtiis Cash</span>
-</button>
-<!-- Bank Card Option -->
-<button class="bg-surface-container-lowest ambient-shadow-level-1 rounded-xl p-card-padding flex flex-col items-center justify-center gap-3 border-2 border-transparent hover:border-surface-variant transition-transform active:scale-95">
-<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-2">
-<span class="material-symbols-outlined text-primary" style="font-size: 32px;">credit_card</span>
-</div>
-<span class="font-body-sm text-body-sm text-on-surface font-semibold text-center">Carte bancaire</span>
-</button>
-</div>
-</section>
-<!-- Amount Input Section -->
-<section class="mt-stack-sm">
-<h2 class="font-body-lg text-body-lg font-semibold text-on-surface mb-stack-sm">Montant à déposer</h2>
-<div class="input-focus-ring bg-surface-container-lowest ambient-shadow-level-1 rounded-xl border border-outline-variant flex items-center p-4 transition-all duration-200">
-<span class="font-headline-md text-headline-md text-on-surface-variant mr-2">FCFA</span>
-<input class="flex-1 bg-transparent border-none outline-none font-display-lg-mobile text-display-lg-mobile text-on-surface p-0 placeholder:text-surface-variant appearance-none" placeholder="0" style="-moz-appearance: textfield;" type="number">
-</div>
-<div class="flex justify-between items-center mt-2 px-1">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Min: 500 FCFA</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">Max: 1 000 000 FCFA</span>
-</div>
-</section>
-<!-- Action Button -->
-<section class="mt-auto pt-stack-lg pb-stack-md">
-<button class="w-full bg-primary hover:bg-surface-tint text-on-primary rounded-xl py-4 flex items-center justify-center font-body-lg text-body-lg font-bold transition-transform active:scale-95 shadow-md">
-                Continuer
-                <span class="material-symbols-outlined ml-2">arrow_forward</span>
-</button>
-</section>
-</main>
-<!-- Suppressed BottomNavBar - Transactional Screen -->
-<!-- The BottomNavBar is intentionally excluded here because this is a transactional flow (Top-up/Deposit), 
-         which represents a linear, focused task where a 'Close' or 'Back' action implies temporary departure 
-         from the main navigation flow. -->
-<script>
-        // Simple input formatting script (optional UX enhancement)
-        document.querySelector('input[type="number"]').addEventListener('input', function (e) {
-            // This is a basic example. In a real app, you'd want more robust formatting for currency.
-            if(this.value.length > 10) {
-                this.value = this.value.slice(0, 10);
-            }
-        });
-    </script>
+<body class="min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
 
-<script src="../assets/switch.forms.js"></script>
-<script src="../assets/switch.router.js"></script>
-</body></html>
+  <!-- Top Navigation Header -->
+  <header class="flex justify-between items-center px-container-margin py-stack-md w-full max-w-lg mx-auto sticky top-0 z-10 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-lg sm:text-xl font-extrabold text-on-surface">Déposer des fonds</h1>
+        <p class="text-xs text-on-surface-variant">Recharger votre solde principal Switch</p>
+      </div>
+    </div>
+    <span class="text-xs font-black uppercase text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">0% en Agence</span>
+  </header>
+
+  <!-- Main Content -->
+  <main class="px-container-margin pt-stack-sm flex flex-col gap-5 max-w-lg mx-auto w-full">
+    
+    <!-- Source Selection Section -->
+    <section class="flex flex-col gap-3">
+      <h2 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Méthode de rechargement</h2>
+      
+      <div class="grid grid-cols-2 gap-3">
+        <!-- 1. Agence / Kiosque Switch (0% GRATUIT) -->
+        <button type="button" onclick="selectDepositSource('agent')" id="btn-dep-agent" class="relative bg-white rounded-3xl p-4.5 flex flex-col items-center justify-center gap-2 border-2 border-primary transition-all shadow-sm focus:outline-none cursor-pointer">
+          <div class="absolute top-2.5 right-2.5 w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white" id="check-agent">
+            <span class="material-symbols-outlined text-[13px] font-bold">check</span>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined text-2xl">storefront</span>
+          </div>
+          <span class="text-xs font-bold text-primary">Agence Switch</span>
+          <span class="text-[10px] text-emerald-700 font-extrabold bg-emerald-100 px-2 py-0.5 rounded-full">0% Frais (Gratuit)</span>
+        </button>
+
+        <!-- 2. MTN MoMo -->
+        <button type="button" onclick="selectDepositSource('mtn')" id="btn-dep-mtn" class="relative bg-white rounded-3xl p-4.5 flex flex-col items-center justify-center gap-2 border border-outline-variant/40 hover:border-primary transition-all shadow-sm focus:outline-none cursor-pointer opacity-75">
+          <div class="w-12 h-12 rounded-2xl bg-[#FFCC00] flex items-center justify-center font-black text-black text-sm">
+            MTN
+          </div>
+          <span class="text-xs font-bold text-on-surface">MTN MoMo</span>
+          <span class="text-[10px] text-on-surface-variant font-medium">Instantané</span>
+        </button>
+
+        <!-- 3. Moov Money -->
+        <button type="button" onclick="selectDepositSource('moov')" id="btn-dep-moov" class="relative bg-white rounded-3xl p-4.5 flex flex-col items-center justify-center gap-2 border border-outline-variant/40 hover:border-primary transition-all shadow-sm focus:outline-none cursor-pointer opacity-75">
+          <div class="w-12 h-12 rounded-2xl bg-[#005A9C] flex items-center justify-center font-black text-white text-sm">
+            Moov
+          </div>
+          <span class="text-xs font-bold text-on-surface">Moov Money</span>
+          <span class="text-[10px] text-on-surface-variant font-medium">Instantané</span>
+        </button>
+
+        <!-- 4. Celtiis / Carte Bancaire -->
+        <button type="button" onclick="selectDepositSource('celtiis')" id="btn-dep-celtiis" class="relative bg-white rounded-3xl p-4.5 flex flex-col items-center justify-center gap-2 border border-outline-variant/40 hover:border-primary transition-all shadow-sm focus:outline-none cursor-pointer opacity-75">
+          <div class="w-12 h-12 rounded-2xl bg-black text-white flex items-center justify-center font-black text-xs">
+            Celtiis
+          </div>
+          <span class="text-xs font-bold text-on-surface">Celtiis / Carte</span>
+          <span class="text-[10px] text-on-surface-variant font-medium">Instantané</span>
+        </button>
+      </div>
+
+      <!-- Nearest Agent Locator Box -->
+      <div id="dep-agent-box" class="mt-1 p-4 rounded-3xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-emerald-700 text-2xl">location_on</span>
+          <div>
+            <h4 class="font-bold text-xs text-emerald-900">Kiosque le plus proche : Haie Vive (250m)</h4>
+            <p class="text-[11px] text-emerald-700">Dépôt en espèces sans file d'attente • Ouvert 7j/7</p>
+          </div>
+        </div>
+        <button type="button" onclick="window.switchNavigate ? window.switchNavigate('../carte_agents_guichets/code.html') : window.location.href='../carte_agents_guichets/code.html'" class="text-xs text-emerald-800 font-extrabold underline cursor-pointer">
+          Carte GPS
+        </button>
+      </div>
+
+      <!-- Phone Number Field (Appears when mobile money is selected) -->
+      <div id="dep-phone-box" class="mt-2 flex flex-col gap-1 hidden">
+        <label class="text-xs font-bold text-on-surface-variant" for="dep-phone">Numéro Mobile Money (+229)</label>
+        <div class="relative flex items-center">
+          <span class="absolute left-4 font-mono font-bold text-sm text-on-surface-variant">+229</span>
+          <input type="tel" id="dep-phone" value="97 12 34 56" class="w-full bg-white border border-outline-variant rounded-2xl py-3 pl-16 pr-4 font-mono font-bold text-sm text-on-surface focus:outline-none focus:border-primary"/>
+        </div>
+      </div>
+    </section>
+
+    <!-- Amount Input Section -->
+    <section class="flex flex-col gap-3">
+      <h2 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Montant à déposer</h2>
+      <div class="bg-white rounded-3xl border border-outline-variant/40 p-6 flex flex-col items-center justify-center shadow-sm">
+        <div class="flex items-baseline justify-center gap-2">
+          <input type="text" id="dep-amount" value="50 000" class="bg-transparent border-none text-center font-black text-3xl sm:text-4xl text-on-surface w-36 focus:ring-0 p-0 outline-none"/>
+          <span class="font-bold text-lg text-on-surface-variant">FCFA</span>
+        </div>
+        <p class="text-xs text-emerald-700 font-bold mt-2" id="dep-fee-text">Frais de dépôt en Agence Switch : 0 FCFA (GRATUIT)</p>
+      </div>
+
+      <!-- Quick Chips -->
+      <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+        <button type="button" onclick="setDepAmount('10 000')" class="px-4 py-2 rounded-full bg-white border border-outline-variant/40 text-xs font-bold text-on-surface hover:bg-primary/5 cursor-pointer">10 000</button>
+        <button type="button" onclick="setDepAmount('25 000')" class="px-4 py-2 rounded-full bg-white border border-outline-variant/40 text-xs font-bold text-on-surface hover:bg-primary/5 cursor-pointer">25 000</button>
+        <button type="button" onclick="setDepAmount('50 000')" class="px-4 py-2 rounded-full bg-primary text-white text-xs font-bold shadow-sm cursor-pointer">50 000</button>
+        <button type="button" onclick="setDepAmount('100 000')" class="px-4 py-2 rounded-full bg-white border border-outline-variant/40 text-xs font-bold text-on-surface hover:bg-primary/5 cursor-pointer">100 000</button>
+      </div>
+    </section>
+
+    <!-- Action Button -->
+    <div class="pt-4">
+      <button type="button" onclick="submitDepositFlow()" class="w-full bg-primary text-white py-4 rounded-3xl font-bold text-base shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+        <span id="dep-submit-label">Générer le code de dépôt gratuit en agence</span>
+        <span class="material-symbols-outlined text-xl">arrow_forward</span>
+      </button>
+    </div>
+  </main>
+
+  <script>
+    let selectedDepositSource = 'agent';
+
+    function selectDepositSource(src) {
+      selectedDepositSource = src;
+      const sources = ['agent', 'mtn', 'moov', 'celtiis'];
+      sources.forEach(s => {
+        const btn = document.getElementById('btn-dep-' + s);
+        if (btn) btn.className = 'relative bg-white rounded-3xl p-4.5 flex flex-col items-center justify-center gap-2 border border-outline-variant/40 hover:border-primary transition-all shadow-sm focus:outline-none cursor-pointer opacity-75';
+      });
+
+      const activeBtn = document.getElementById('btn-dep-' + src);
+      if (activeBtn) activeBtn.className = 'relative bg-white rounded-3xl p-4.5 flex flex-col items-center justify-center gap-2 border-2 border-primary transition-all shadow-sm focus:outline-none cursor-pointer';
+
+      const agentBox = document.getElementById('dep-agent-box');
+      const phoneBox = document.getElementById('dep-phone-box');
+      const feeText = document.getElementById('dep-fee-text');
+      const submitLabel = document.getElementById('dep-submit-label');
+
+      if (src === 'agent') {
+        if (agentBox) agentBox.classList.remove('hidden');
+        if (phoneBox) phoneBox.classList.add('hidden');
+        if (feeText) feeText.textContent = 'Frais de dépôt en Agence Switch : 0 FCFA (GRATUIT)';
+        if (submitLabel) submitLabel.textContent = 'Générer le code de dépôt gratuit en agence';
+      } else {
+        if (agentBox) agentBox.classList.add('hidden');
+        if (phoneBox) phoneBox.classList.remove('hidden');
+        if (feeText) feeText.textContent = 'Frais Mobile Money : Sans frais de réseau';
+        if (submitLabel) submitLabel.textContent = 'Confirmer la recharge Mobile Money';
+      }
+    }
+
+    function setDepAmount(amt) {
+      document.getElementById('dep-amount').value = amt;
+    }
+
+    function submitDepositFlow() {
+      if (selectedDepositSource === 'agent') {
+        if (window.switchNavigate) {
+          window.switchNavigate('../code_depot_especes_agent/code.html');
+        } else {
+          window.location.href = '../code_depot_especes_agent/code.html';
+        }
+      } else {
+        if (window.switchNavigate) {
+          window.switchNavigate('../confirmation_de_l_op_ration_code/code.html');
+        } else {
+          window.location.href = '../confirmation_de_l_op_ration_code/code.html';
+        }
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>
