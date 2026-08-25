@@ -134,11 +134,10 @@
 
     function submitKyc() {
       localStorage.setItem('switch_kyc_level', '2');
-      alert("🎉 Félicitations ! Votre pièce d'identité ANIP a été validée avec succès. Votre compte est désormais certifié Niveau 2 avec un plafond de 2 000 000 FCFA / jour !");
       if (window.switchNavigate) {
-        window.switchNavigate('../limites_de_transaction/code.html');
+        window.switchNavigate('../succes_verification_niveau2/code.html');
       } else {
-        window.location.href = '../limites_de_transaction/code.html';
+        window.location.href = '../succes_verification_niveau2/code.html';
       }
     }
   </script>

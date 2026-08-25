@@ -276,10 +276,11 @@
     "code_depot_especes_agent": { space: "user", back: ROOT + "d_p_t_de_fonds/code.html", nav: null, actions: {} },
     "verification_niveau_superieur": { space: "user", back: ROOT + "limites_de_transaction/code.html", nav: null, actions: {} },
     "resultat_verification_kyc": { space: "user", back: ROOT + "verification_niveau_superieur/code.html", nav: null, actions: {} },
+    "succes_verification_niveau2": { space: "user", back: ROOT + "limites_de_transaction/code.html", nav: null, actions: {} },
 
     "kyc_verification_identite": {
-      space: "user", back: ROOT + "cr_ation_code_pin/code.html", nav: null,
-      actions: { "Valider": ROOT + "bienvenue_succes_onboarding/code.html", "Activer": ROOT + "bienvenue_succes_onboarding/code.html", "Continuer": ROOT + "bienvenue_succes_onboarding/code.html" }
+      space: "user", back: ROOT + "limites_de_transaction/code.html", nav: null,
+      actions: { "Valider": ROOT + "succes_verification_niveau2/code.html", "Activer": ROOT + "succes_verification_niveau2/code.html", "Continuer": ROOT + "succes_verification_niveau2/code.html" }
     },
     "bienvenue_succes_onboarding": {
       space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null,
