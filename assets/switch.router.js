@@ -279,6 +279,7 @@
     "succes_verification_niveau2": { space: "user", back: ROOT + "limites_de_transaction/code.html", nav: null, actions: {} },
     "conditions_utilisation": { space: "user", back: ROOT + "inscription/code.html", nav: null, actions: {} },
     "politique_confidentialite": { space: "user", back: ROOT + "inscription/code.html", nav: null, actions: {} },
+    "centre_de_notifications": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
 
     "kyc_verification_identite": {
       space: "user", back: ROOT + "limites_de_transaction/code.html", nav: null,
