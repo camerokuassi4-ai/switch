@@ -108,20 +108,87 @@
                     </button>
 </div>
 </div>
-<!-- Item 4 -->
-<div class="bg-surface rounded-xl p-card-padding card-shadow flex flex-col relative group border border-dashed border-outline-variant hover:border-primary transition-colors cursor-pointer justify-center items-center h-full min-h-[280px]">
-<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-4 text-primary">
+<!-- Item 4 (Add Card) -->
+<div onclick="openAddProductModal()" class="bg-surface rounded-xl p-card-padding card-shadow flex flex-col relative group border-2 border-dashed border-outline-variant hover:border-primary transition-colors cursor-pointer justify-center items-center h-full min-h-[280px]">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-4 text-primary group-hover:scale-110 transition-transform">
 <span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
 </div>
-<span class="font-headline-md text-headline-md-mobile text-on-surface">Nouveau produit</span>
+<span class="font-headline-md text-headline-md-mobile text-on-surface font-bold">Nouveau produit</span>
+<p class="text-xs text-secondary mt-1">Ajouter au catalogue</p>
 </div>
 </div>
 </main>
-<!-- BottomNavBar -->
 
 <!-- Floating Action Button (FAB) Mobile only -->
-<button class="md:hidden fixed bottom-28 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-xl flex items-center justify-center hover:opacity-90 transition-opacity z-40">
-<span class="material-symbols-outlined" data-icon="add">add</span>
+<button onclick="openAddProductModal()" class="md:hidden fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-xl flex items-center justify-center hover:opacity-90 transition-opacity z-40 cursor-pointer">
+<span class="material-symbols-outlined text-2xl" data-icon="add">add</span>
 </button>
+
+<!-- Add Product Modal -->
+<div id="product-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+  <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 flex flex-col gap-4 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
+    <div class="flex justify-between items-center">
+      <h3 class="text-base font-bold text-on-surface">Ajouter un Produit / Service</h3>
+      <button onclick="closeAddProductModal()" class="p-1.5 rounded-full hover:bg-gray-100 text-on-surface-variant cursor-pointer">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <form onsubmit="handleAddProduct(event)" class="flex flex-col gap-3">
+      <div class="flex flex-col gap-1">
+        <label class="text-xs font-bold text-on-surface-variant">Nom de l'article *</label>
+        <input type="text" id="prod-name" required placeholder="Ex: Robe Wax Soie Africaine" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-semibold focus:outline-none focus:border-primary"/>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-bold text-on-surface-variant">Prix (FCFA) *</label>
+          <input type="number" id="prod-price" required min="100" placeholder="12500" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2.5 text-sm font-bold font-mono focus:outline-none focus:border-primary"/>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-bold text-on-surface-variant">Stock dispo</label>
+          <input type="number" id="prod-stock" min="1" placeholder="25" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-primary"/>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs font-bold text-on-surface-variant">Catégorie</label>
+        <select id="prod-cat" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2.5 text-xs font-semibold focus:outline-none focus:border-primary">
+          <option value="Boutique & Mode">Boutique & Mode</option>
+          <option value="Restauration & Bar">Restauration & Bar</option>
+          <option value="Supermarché & Vivres">Supermarché & Vivres</option>
+          <option value="Prestation & Service">Prestation & Service</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs font-bold text-on-surface-variant">Description courte</label>
+        <textarea id="prod-desc" rows="2" placeholder="Description de l'article..." class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-primary"></textarea>
+      </div>
+
+      <div class="flex gap-2.5 mt-2">
+        <button type="button" onclick="closeAddProductModal()" class="flex-1 py-3 rounded-full border border-outline-variant font-semibold text-xs hover:bg-surface-container cursor-pointer">Annuler</button>
+        <button type="submit" class="flex-1 py-3 rounded-full bg-primary text-white font-bold text-xs hover:opacity-90 active:scale-95 transition-all shadow-md cursor-pointer">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function openAddProductModal() {
+    document.getElementById('product-modal').classList.remove('hidden');
+  }
+  function closeAddProductModal() {
+    document.getElementById('product-modal').classList.add('hidden');
+  }
+  function handleAddProduct(e) {
+    e.preventDefault();
+    const name = document.getElementById('prod-name').value.trim();
+    const price = document.getElementById('prod-price').value.trim();
+    closeAddProductModal();
+    alert('Article "' + name + '" (' + parseInt(price).toLocaleString('fr-FR') + ' FCFA) ajouté au catalogue avec succès !');
+  }
+</script>
+
 <script src="../assets/switch.router.js"></script>
 </body></html>

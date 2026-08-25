@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="fr">
 
 <head>
@@ -63,10 +63,16 @@
     <!-- CORRECTION ICI : Passage en flex-col pour forcer l'empilement vertical -->
     <section class="flex flex-col gap-4">
 
-      <!-- Main Search/Date -->
+      <!-- Main Search/Date & Export -->
       <div
         class="bg-surface-container-lowest rounded-xl p-card-padding smooth-shadow border border-outline-variant/30 flex flex-col gap-4">
-        <h2 class="font-body-lg text-body-lg text-on-surface-variant font-semibold">Période &amp; Recherche</h2>
+        <div class="flex justify-between items-center">
+          <h2 class="font-body-lg text-body-lg text-on-surface-variant font-semibold">Période &amp; Recherche</h2>
+          <button onclick="exportAccountingReport()" class="text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-colors cursor-pointer">
+            <span class="material-symbols-outlined text-sm">download</span>
+            <span>Export Relevé PDF</span>
+          </button>
+        </div>
         <div class="relative w-full group">
           <span
             class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors"
@@ -229,6 +235,12 @@
       </div>
     </section>
   </main>
+  <script>
+    function exportAccountingReport() {
+      const bName = localStorage.getItem('switch_merchant_business_name') || "Mon_Commerce";
+      alert("Génération et téléchargement du Relevé Comptable Certifié Switch (Releve_Ventes_" + bName.replace(/[^a-zA-Z0-9]/g, '_') + "_Aout_2026.pdf) !");
+    }
+  </script>
   <script src="../assets/switch.router.js"></script>
 
 <nav id="switch-nav" role="navigation" aria-label="Navigation Marchand" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
