@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -105,21 +105,24 @@
 
 <body class="bg-surface-container-lowest min-h-screen text-on-surface pb-32">
     <!-- Header Section (Hero) -->
-    <header class="relative px-container-margin pt-12 pb-8 rounded-b-3xl bg-surface-container-lowest mesh-bg shadow-sm">
-        <div class="absolute top-4 right-4 z-10">
+    <header class="relative px-container-margin pt-6 pb-8 rounded-b-3xl bg-surface-container-lowest mesh-bg shadow-sm">
+        <div class="flex items-center justify-between w-full max-w-2xl mx-auto mb-4">
+            <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white/90 border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
+                <span class="material-symbols-outlined text-xl">arrow_back</span>
+            </button>
             <select
-                class="bg-white/80 backdrop-blur-sm border-surface-variant text-on-surface rounded-lg px-2 py-1 text-sm focus:ring-primary focus:border-primary"
+                class="bg-white/90 backdrop-blur-sm border-surface-variant text-on-surface rounded-xl px-2.5 py-1 text-xs font-bold focus:ring-primary focus:border-primary shadow-sm"
                 onchange="changeLanguage(this.value)">
-                <option value="fr">Français</option>
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="de">Deutsch</option>
+                <option value="fr">🇫🇷 Français</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="de">🇩🇪 Deutsch</option>
             </select>
         </div>
         <div class="flex flex-col items-center">
-            <div class="relative mb-4 mt-4">
+            <div class="relative mb-4 mt-2">
                 <img class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
-                    data-alt="A high-quality, professional headshot of a confident young Beninese woman with natural hair styled neatly. She is smiling softly, wearing a modern, tailored business casual outfit in subtle neutral tones. The lighting is soft and flattering, creating a premium corporate aesthetic against a bright, airy white background. The image is cropped in a perfect circle, representing a user avatar in a modern fintech app."
+                    data-alt="Avatar Adele K."
                     src="../assets/images/img_040.jpg">
                 <button
                     class="absolute bottom-0 right-0 bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center shadow-md hover:bg-primary-container hover:text-on-primary-container transition-colors">
@@ -127,68 +130,68 @@
                 </button>
             </div>
             <h1
-                class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface text-center mb-1">
+                class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface text-center mb-1 font-bold">
                 Adele K.</h1>
-            <p class="font-body-lg text-body-lg text-on-surface-variant mb-3">+229 97 00 00 00</p>
+            <p class="font-body-lg text-body-lg text-on-surface-variant mb-3 font-mono font-bold">+229 97 12 34 56</p>
             <div
-                class="flex items-center gap-2 bg-primary-container text-on-primary-container px-3 py-1.5 rounded-full shadow-sm">
-                <span class="material-symbols-outlined text-[16px]" data-icon="verified" data-weight="fill"
+                class="flex items-center gap-2 bg-emerald-50 text-emerald-800 border border-emerald-300 px-3 py-1 rounded-full shadow-sm">
+                <span class="material-symbols-outlined text-[16px]" data-icon="verified"
                     style="font-variation-settings: 'FILL' 1;">verified</span>
-                <span class="font-label-caps text-label-caps" data-i18n="verified">Vérifié</span>
+                <span class="font-label-caps text-label-caps font-bold" data-i18n="verified">Compte Vérifié ANIP</span>
             </div>
         </div>
     </header>
     <!-- Main Content -->
-    <main class="px-container-margin mt-8 flex flex-col gap-stack-md max-w-2xl mx-auto">
+    <main class="px-container-margin mt-6 flex flex-col gap-stack-md max-w-2xl mx-auto">
         <!-- Options List -->
         <div
-            class="bg-white rounded-xl shadow-[0_10px_20px_rgba(0,0,0,0.04)] overflow-hidden border border-surface-variant">
-            <!-- Item: Mes informations -->
-            <a class="flex items-center p-card-padding hover:bg-surface-container-low transition-colors border-b border-surface-variant group min-h-[80px]"
-                href="#">
+            class="bg-white rounded-3xl shadow-sm overflow-hidden border border-surface-variant divide-y divide-surface-variant">
+            <!-- Item: Mes informations & Paramètres -->
+            <a class="flex items-center p-card-padding hover:bg-surface-container-low transition-colors group min-h-[70px] no-underline text-on-surface"
+                href="../param_tres_g_n_raux/code.html">
                 <div
-                    class="w-10 h-10 shrink-0 rounded-full bg-surface-container flex items-center justify-center text-primary mr-4 group-hover:scale-105 transition-transform">
+                    class="w-10 h-10 shrink-0 rounded-2xl bg-purple-50 flex items-center justify-center text-primary mr-4 group-hover:scale-105 transition-transform">
                     <span class="material-symbols-outlined" data-icon="person">person</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h3 class="font-headline-md text-headline-md text-on-surface truncate break-words whitespace-normal leading-tight"
+                    <h3 class="font-bold text-sm text-on-surface"
                         data-i18n="my_info">Mes informations</h3>
-                    <p class="font-body-sm text-body-sm text-on-surface-variant truncate break-words whitespace-normal mt-1 leading-tight"
-                        data-i18n="my_info_desc">Détails personnels et contact</p>
+                    <p class="text-xs text-on-surface-variant mt-0.5"
+                        data-i18n="my_info_desc">Détails personnels, RIB et coordonnées</p>
                 </div>
                 <span
                     class="material-symbols-outlined text-outline group-hover:text-primary transition-colors ml-2 shrink-0"
                     data-icon="chevron_right">chevron_right</span>
             </a>
             <!-- Item: Paramètres de sécurité -->
-            <a class="flex items-center p-card-padding hover:bg-surface-container-low transition-colors border-b border-surface-variant group min-h-[80px]"
-                href="#">
+            <a class="flex items-center p-card-padding hover:bg-surface-container-low transition-colors group min-h-[70px] no-underline text-on-surface"
+                href="../s_curit/code.html">
                 <div
-                    class="w-10 h-10 shrink-0 rounded-full bg-surface-container flex items-center justify-center text-primary mr-4 group-hover:scale-105 transition-transform">
+                    class="w-10 h-10 shrink-0 rounded-2xl bg-purple-50 flex items-center justify-center text-primary mr-4 group-hover:scale-105 transition-transform">
                     <span class="material-symbols-outlined" data-icon="lock">lock</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h3 class="font-headline-md text-headline-md text-on-surface truncate break-words whitespace-normal leading-tight"
-                        data-i18n="security">Sécurité</h3>
-                    <p class="font-body-sm text-body-sm text-on-surface-variant truncate break-words whitespace-normal mt-1 leading-tight"
-                        data-i18n="security_desc">Code PIN, biométrie</p>
+                    <h3 class="font-bold text-sm text-on-surface"
+                        data-i18n="security">Sécurité & Confidentialité</h3>
+                    <p class="text-xs text-on-surface-variant mt-0.5"
+                        data-i18n="security_desc">Code PIN, Face ID, biométrie</p>
                 </div>
                 <span
                     class="material-symbols-outlined text-outline group-hover:text-primary transition-colors ml-2 shrink-0"
                     data-icon="chevron_right">chevron_right</span>
             </a>
             <!-- Item: Support -->
-            <a class="flex items-center p-card-padding hover:bg-surface-container-low transition-colors group min-h-[80px]"
-                href="#">
+            <a class="flex items-center p-card-padding hover:bg-surface-container-low transition-colors group min-h-[70px] no-underline text-on-surface"
+                href="../support_aide/code.html">
                 <div
-                    class="w-10 h-10 shrink-0 rounded-full bg-surface-container flex items-center justify-center text-primary mr-4 group-hover:scale-105 transition-transform">
+                    class="w-10 h-10 shrink-0 rounded-2xl bg-purple-50 flex items-center justify-center text-primary mr-4 group-hover:scale-105 transition-transform">
                     <span class="material-symbols-outlined" data-icon="help">help</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h3 class="font-headline-md text-headline-md text-on-surface truncate break-words whitespace-normal leading-tight"
+                    <h3 class="font-bold text-sm text-on-surface"
                         data-i18n="support">Aide &amp; Support</h3>
-                    <p class="font-body-sm text-body-sm text-on-surface-variant truncate break-words whitespace-normal mt-1 leading-tight"
-                        data-i18n="support_desc">FAQ, contacter le service client</p>
+                    <p class="text-xs text-on-surface-variant mt-0.5"
+                        data-i18n="support_desc">FAQ, WhatsApp 24/7, contacter Switch</p>
                 </div>
                 <span
                     class="material-symbols-outlined text-outline group-hover:text-primary transition-colors ml-2 shrink-0"
@@ -197,21 +200,21 @@
         </div>
 
         <!-- Espaces professionnels : bascule Marchand / Agent -->
-        <p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider ml-1 mt-2">Espaces
+        <p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider ml-1 mt-2 font-bold">Espaces
             professionnels</p>
         <div
-            class="bg-white rounded-xl shadow-[0_10px_20px_rgba(0,0,0,0.04)] overflow-hidden border border-surface-variant">
+            class="bg-white rounded-3xl shadow-sm overflow-hidden border border-surface-variant divide-y divide-surface-variant">
             <!-- Item: Espace Marchand -->
-            <a class="flex items-center p-card-padding hover:bg-surface-container-low transition-colors border-b border-surface-variant group min-h-[80px]"
-                href="#">
+            <a class="flex items-center p-card-padding hover:bg-surface-container-low transition-colors group min-h-[70px] no-underline text-on-surface"
+                href="../tableau_de_bord_marchand/code.html">
                 <div
-                    class="w-10 h-10 shrink-0 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container mr-4 group-hover:scale-105 transition-transform">
+                    class="w-10 h-10 shrink-0 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-700 mr-4 group-hover:scale-105 transition-transform">
                     <span class="material-symbols-outlined" data-icon="storefront">storefront</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h3 class="font-headline-md text-headline-md text-on-surface truncate break-words whitespace-normal leading-tight"
+                    <h3 class="font-bold text-sm text-on-surface"
                         data-i18n="merchant_space">Espace Marchand</h3>
-                    <p class="font-body-sm text-body-sm text-on-surface-variant truncate break-words whitespace-normal mt-1 leading-tight"
+                    <p class="text-xs text-on-surface-variant mt-0.5"
                         data-i18n="merchant_space_desc">Encaisser des paiements, gérer vos ventes</p>
                 </div>
                 <span
@@ -219,16 +222,16 @@
                     data-icon="chevron_right">chevron_right</span>
             </a>
             <!-- Item: Espace Agent -->
-            <a class="flex items-center p-card-padding hover:bg-surface-container-low transition-colors group min-h-[80px]"
-                href="#">
+            <a class="flex items-center p-card-padding hover:bg-surface-container-low transition-colors group min-h-[70px] no-underline text-on-surface"
+                href="../tableau_de_bord_agent/code.html">
                 <div
-                    class="w-10 h-10 shrink-0 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container mr-4 group-hover:scale-105 transition-transform">
+                    class="w-10 h-10 shrink-0 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-700 mr-4 group-hover:scale-105 transition-transform">
                     <span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h3 class="font-headline-md text-headline-md text-on-surface truncate break-words whitespace-normal leading-tight"
+                    <h3 class="font-bold text-sm text-on-surface"
                         data-i18n="agent_space">Espace Agent</h3>
-                    <p class="font-body-sm text-body-sm text-on-surface-variant truncate break-words whitespace-normal mt-1 leading-tight"
+                    <p class="text-xs text-on-surface-variant mt-0.5"
                         data-i18n="agent_space_desc">Gérer les dépôts et retraits cash</p>
                 </div>
                 <span
@@ -237,11 +240,12 @@
             </a>
         </div>
 
-        <button
-            class="mt-4 w-full py-4 rounded-xl text-error font-headline-md text-headline-md bg-error-container bg-opacity-20 hover:bg-opacity-40 transition-colors border border-error-container flex items-center justify-center gap-2">
+        <!-- Déconnexion -->
+        <a href="../accueil_splash_mis_jour/code.html"
+            class="mt-2 w-full py-4 rounded-3xl text-rose-600 font-bold bg-rose-50 hover:bg-rose-100 transition-colors border border-rose-200 flex items-center justify-center gap-2 no-underline cursor-pointer text-sm">
             <span class="material-symbols-outlined" data-icon="logout">logout</span>
-            <span data-i18n="logout" class="">Déconnexion</span>
-        </button>
+            <span data-i18n="logout">Se déconnecter</span>
+        </a>
     </main>
 
     <script src="../assets/switch.router.js"></script>
