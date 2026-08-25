@@ -271,7 +271,7 @@
     "recu_operation_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
     "centre_de_notifications_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
     "succes_reapprovisionnement_float": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
-    "cloture_de_caisse_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
+    "cloture_de_caisse_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: "a-caisse", actions: {} },
     "retrait_commissions_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
     "gestion_caissiers_agent": { space: "agent", back: ROOT + "param_tres_et_profil_agent/code.html", nav: null, actions: {} },
     "releve_operations_agent": { space: "agent", back: ROOT + "historique_des_op_rations_agent/code.html", nav: null, actions: {} },
@@ -406,7 +406,7 @@
       actions: {}
     },
     "valider_une_op_ration_client": {
-      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
+      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: "a-serve",
       actions: { "Valider": ROOT + "recu_operation_agent/code.html", "Approuver": ROOT + "recu_operation_agent/code.html", "Confirmer": ROOT + "recu_operation_agent/code.html" }
     },
     "demande_de_r_approvisionnement_float": {
@@ -424,15 +424,22 @@
   };
 
   const NAV_BAR_STYLE = [
-    "position:fixed", "bottom:0", "left:50%", "transform:translateX(-50%)",
+    "position:fixed", "bottom:0", "left:0", "right:0",
+    "margin-left:auto", "margin-right:auto",
     "width:100%", "max-width:var(--app-max-width, 520px)",
-    "z-index:90", "display:flex", "align-items:center",
-    "justify-content:space-around", "padding:8px 12px",
-    "padding-bottom:max(10px, env(safe-area-inset-bottom, 10px))",
-    "background:rgba(255, 255, 255, 0.96)",
-    "-webkit-backdrop-filter:blur(20px)", "backdrop-filter:blur(20px)",
+    "height:64px",
+    "z-index:9999", "display:flex", "align-items:center",
+    "justify-content:space-around", "padding:6px 10px",
+    "padding-bottom:max(8px, env(safe-area-inset-bottom, 8px))",
+    "background:#ffffff",
     "border-top:1px solid #ECE6F0",
-    "box-shadow:0 -4px 20px rgba(0,0,0,0.06)",
+    "box-shadow:0 -2px 16px rgba(0,0,0,0.08)",
+    "-webkit-transform:translate3d(0,0,0)",
+    "transform:translate3d(0,0,0)",
+    "-webkit-backface-visibility:hidden",
+    "backface-visibility:hidden",
+    "will-change:transform",
+    "contain:layout paint",
   ].join(";");
 
   function navItemHTML(href, icon, label, active) {
@@ -440,17 +447,17 @@
     return `
   <a href="${href}" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:${color};text-decoration:none;flex:1;">
     <span class="material-symbols-outlined" style="font-size:22px;${active ? "font-variation-settings:'FILL' 1;" : ""}">${icon}</span>
-    <span class="nav-label" style="font-size:10px;font-weight:${active ? "700" : "500"};">${label}</span>
+    <span class="nav-label" style="font-size:10px;font-weight:${active ? "700" : "500"};color:${color};">${label}</span>
   </a>`;
   }
 
   function navCenterItemHTML(href, icon, label, active) {
     return `
-  <a href="${href}" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;text-decoration:none;position:relative;top:-12px;margin:0 2px;flex:1;">
-    <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(94,59,220,0.35);transition:transform 0.15s ease;">
-      <span class="material-symbols-outlined" style="font-size:24px;font-variation-settings:'FILL' 1;">${icon}</span>
+  <a href="${href}" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;text-decoration:none;position:relative;top:-10px;margin:0 2px;flex:1;">
+    <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.35);transition:transform 0.15s ease;">
+      <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">${icon}</span>
     </div>
-    <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:2px;">${label}</span>
+    <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:1px;">${label}</span>
   </a>`;
   }
 
@@ -470,7 +477,7 @@
 <nav id="switch-nav" role="navigation" aria-label="Navigation Marchand" style="${NAV_BAR_STYLE}">
   ${navItemHTML(ROOT + "tableau_de_bord_marchand/code.html", "store", "Accueil", activeTab === "m-home")}
   ${navItemHTML(ROOT + "historique_des_ventes/code.html", "receipt_long", "Ventes", activeTab === "m-history")}
-  ${navItemHTML(ROOT + "g_n_rer_qr_code_de_r_ception/code.html", "qr_code_2", "QR", activeTab === "m-qr")}
+  ${navCenterItemHTML(ROOT + "g_n_rer_qr_code_de_r_ception/code.html", "qr_code_2", "QR", activeTab === "m-qr")}
   ${navItemHTML(ROOT + "profil_de_l_entreprise/code.html", "business", "Entreprise", activeTab === "m-profile")}
   ${navItemHTML(ROOT + "support_marchand/code.html", "help", "Support", activeTab === "m-support")}
 </nav>`;
@@ -479,9 +486,9 @@
       return `
 <nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="${NAV_BAR_STYLE}">
   ${navItemHTML(ROOT + "tableau_de_bord_agent/code.html", "dashboard", "Accueil", activeTab === "a-home")}
-  ${navItemHTML(ROOT + "historique_des_op_rations_agent/code.html", "swap_horiz", "Opérations", activeTab === "a-history")}
-  ${navItemHTML(ROOT + "valider_une_op_ration_client/code.html", "check_circle", "Valider", activeTab === "a-validate")}
-  ${navItemHTML(ROOT + "demande_de_r_approvisionnement_float/code.html", "account_balance_wallet", "Float", activeTab === "a-float")}
+  ${navItemHTML(ROOT + "services_factures_agent/code.html", "apps", "Services", activeTab === "a-services")}
+  ${navCenterItemHTML(ROOT + "valider_une_op_ration_client/code.html", "qr_code_scanner", "Servir", activeTab === "a-serve")}
+  ${navItemHTML(ROOT + "cloture_de_caisse_agent/code.html", "point_of_sale", "Caisse", activeTab === "a-caisse")}
   ${navItemHTML(ROOT + "param_tres_et_profil_agent/code.html", "manage_accounts", "Profil", activeTab === "a-profile")}
 </nav>`;
     }
@@ -819,15 +826,14 @@
       sessionStorage.setItem("switchActiveSpace", space);
     }
 
-    document.querySelectorAll("nav:not(#switch-nav)").forEach(function (existingNav) { existingNav.remove(); });
+    // Nettoie tous les éléments nav pour garantir l'unicité et le verrouillage
+    document.querySelectorAll("nav").forEach(function (existingNav) { existingNav.remove(); });
 
     if (nav) {
-      document.body.style.paddingBottom = "calc(100px + env(safe-area-inset-bottom, 16px))";
-      if (!document.getElementById("switch-nav")) {
-        const navEl = document.createElement("div");
-        navEl.innerHTML = navHTML(space, nav);
-        document.body.appendChild(navEl.firstElementChild);
-      }
+      document.body.style.paddingBottom = "calc(96px + env(safe-area-inset-bottom, 16px))";
+      const navEl = document.createElement("div");
+      navEl.innerHTML = navHTML(space, nav);
+      document.body.appendChild(navEl.firstElementChild);
     } else {
       document.body.style.paddingBottom = "calc(24px + env(safe-area-inset-bottom, 16px))";
     }

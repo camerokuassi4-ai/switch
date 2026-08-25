@@ -299,30 +299,37 @@ input, select, textarea {
   z-index: 40;
 }
 
-/* ── 6. BARRE DE NAVIGATION ADAPTATIVE (#switch-nav) ────────── */
+/* ── 6. BARRE DE NAVIGATION FIGÉE (100% IMMOBILE SUR TOUS APPAREILS) ── */
 #switch-nav {
   position: fixed !important;
   bottom: 0 !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
   width: 100% !important;
   max-width: var(--app-max-width) !important;
-  z-index: 90 !important;
+  height: 64px !important;
+  z-index: 9999 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-around !important;
-  padding: 8px 12px !important;
-  padding-bottom: max(12px, var(--sab)) !important;
-  background: rgba(255, 255, 255, 0.98) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  backdrop-filter: blur(20px) !important;
+  padding: 6px 10px !important;
+  padding-bottom: max(8px, var(--sab)) !important;
+  background: #ffffff !important;
   border-top: 1px solid #ECE6F0 !important;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.08) !important;
+  /* Accélération GPU matérielle pour figer la barre sans aucun sautillement */
+  -webkit-transform: translate3d(0, 0, 0) !important;
+  transform: translate3d(0, 0, 0) !important;
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
+  will-change: transform !important;
+  contain: layout paint !important;
 }
 
 @media (min-width: 581px) and (max-width: 1024px) {
   #switch-nav {
-    bottom: 0 !important;
     border-bottom-left-radius: 28px !important;
     border-bottom-right-radius: 28px !important;
   }
@@ -330,7 +337,6 @@ input, select, textarea {
 
 @media (min-width: 1025px) {
   #switch-nav {
-    bottom: 0 !important;
     border-bottom-left-radius: 32px !important;
     border-bottom-right-radius: 32px !important;
   }
