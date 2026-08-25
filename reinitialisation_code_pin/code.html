@@ -272,11 +272,10 @@
         return;
       }
 
-      alert("🎉 Félicitations ! Votre code PIN a été réinitialisé avec succès. Vous pouvez maintenant accéder à votre compte.");
       if (window.switchNavigate) {
-        window.switchNavigate('../tableau_de_bord_mis_jour/code.html');
+        window.switchNavigate('../succes_reinitialisation_pin/code.html');
       } else {
-        window.location.href = '../tableau_de_bord_mis_jour/code.html';
+        window.location.href = '../succes_reinitialisation_pin/code.html';
       }
     }
   </script>
