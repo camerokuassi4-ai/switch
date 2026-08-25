@@ -1,270 +1,425 @@
 <!DOCTYPE html>
 <html class="light" lang="fr">
-
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Historique des Ventes - Dashboard Business</title>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Historique des Ventes & Encaissements - Switch Marchand</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
 
   <style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 1;
-    }
-
-    .smooth-shadow {
-      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.04);
-    }
-
-    .nav-shadow {
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-    }
-
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
     body {
-      min-height: max(884px, 100dvh);
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .sales-hero-gradient {
+      background: linear-gradient(135deg, #064E3B 0%, #047857 50%, #059669 100%);
+      box-shadow: 0 16px 36px -10px rgba(5, 150, 105, 0.35);
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(5, 150, 105, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .pill-active {
+      background-color: #059669;
+      color: #ffffff;
+      font-weight: 700;
     }
   </style>
 </head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased">
 
-<body
-  class="bg-background text-on-background font-body-sm text-body-sm min-h-screen pb-24 selection:bg-primary-container selection:text-on-primary-container">
-  <!-- Top App Bar -->
-  <header
-    class="hidden md:flex justify-between items-center px-gutter py-4 w-full bg-background dark:bg-on-surface full-width top-0 z-40 sticky">
-    <div class="flex items-center gap-4">
-      <div
-        class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border border-outline-variant">
-        <span class="material-symbols-outlined text-primary" data-icon="store">store</span>
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-emerald-700 hover:bg-emerald-50 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-base sm:text-lg font-black text-on-surface tracking-tight">Journal des Ventes</h1>
+        <p id="merchant-sub-name" class="text-[11px] text-on-surface-variant font-medium">Boutique La Plage • Historique certifié</p>
       </div>
-      <h1 class="font-headline-md text-headline-md font-bold text-on-surface dark:text-surface-bright tracking-tight">
-        Business Dashboard</h1>
     </div>
-    
-    <button
-      class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors">
-      <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+
+    <!-- Export Relevé Button -->
+    <button onclick="openExportModal()" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-xs transition-all cursor-pointer active:scale-95">
+      <span class="material-symbols-outlined text-sm">download</span>
+      <span>Export PDF</span>
     </button>
   </header>
 
-  <!-- Main Content -->
-  <main class="max-w-md mx-auto px-container-margin pt-stack-md flex flex-col gap-stack-lg">
-    <!-- Header Section for Mobile -->
-    <div
-      class="md:hidden flex justify-between items-center w-full sticky top-0 bg-background/80 backdrop-blur-md py-4 z-30">
-      <h1 class="font-headline-md text-headline-md-mobile font-bold text-on-surface tracking-tight">Historique</h1>
-      <button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
-        <span class="material-symbols-outlined" data-icon="search">search</span>
-      </button>
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. KPI Summary Card (Ventes & Volume) -->
+    <div class="sales-hero-gradient rounded-[28px] p-5 text-white shadow-soft flex flex-col gap-4 relative overflow-hidden">
+      <div class="flex justify-between items-start z-10">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-emerald-200 block">Total Encaissé (Période)</span>
+          <h2 id="total-revenue-kpi" class="text-2xl sm:text-3xl font-extrabold font-mono text-white mt-0.5">
+            145 000 <span class="text-lg font-bold font-sans">FCFA</span>
+          </h2>
+        </div>
+        <span class="text-[10px] font-bold bg-white/20 backdrop-blur-md text-emerald-100 px-2.5 py-1 rounded-full border border-white/25">
+          34 transactions
+        </span>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 text-xs pt-3 border-t border-white/20 z-10">
+        <div>
+          <span class="text-[10px] text-emerald-200 block">QR Code Caisse</span>
+          <span class="font-bold font-mono text-white">88 500 F</span>
+        </div>
+        <div>
+          <span class="text-[10px] text-emerald-200 block">POS Express</span>
+          <span class="font-bold font-mono text-white">35 500 F</span>
+        </div>
+        <div>
+          <span class="text-[10px] text-emerald-200 block">Liens WhatsApp</span>
+          <span class="font-bold font-mono text-white">21 000 F</span>
+        </div>
+      </div>
+
+      <!-- Glow Orb -->
+      <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
     </div>
 
-    <!-- Filters & Search (Bento Style Layout) -->
-    <!-- CORRECTION ICI : Passage en flex-col pour forcer l'empilement vertical -->
-    <section class="flex flex-col gap-4">
+    <!-- 2. Interactive Timeframe & Search Bar -->
+    <div class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+      
+      <!-- Search Input -->
+      <div class="relative flex items-center">
+        <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">search</span>
+        <input type="text" id="sales-search-input" oninput="filterSales()" placeholder="Rechercher par client, montant ou réf #TRX..." class="w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-4 text-xs font-semibold text-on-surface focus:outline-none focus:border-emerald-600"/>
+      </div>
 
-      <!-- Main Search/Date & Export -->
-      <div
-        class="bg-surface-container-lowest rounded-xl p-card-padding smooth-shadow border border-outline-variant/30 flex flex-col gap-4">
-        <div class="flex justify-between items-center">
-          <h2 class="font-body-lg text-body-lg text-on-surface-variant font-semibold">Période &amp; Recherche</h2>
-          <button onclick="exportAccountingReport()" class="text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-colors cursor-pointer">
-            <span class="material-symbols-outlined text-sm">download</span>
-            <span>Export Relevé PDF</span>
-          </button>
+      <!-- Timeframe Chips -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 text-xs font-bold">
+        <button type="button" onclick="setTimeframe('today', this)" class="time-pill pill-active px-3 py-1.5 rounded-xl border border-transparent transition-colors cursor-pointer shrink-0">
+          Aujourd'hui
+        </button>
+        <button type="button" onclick="setTimeframe('week', this)" class="time-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          7 Derniers Jours
+        </button>
+        <button type="button" onclick="setTimeframe('month', this)" class="time-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          Ce Mois (Août)
+        </button>
+        <button type="button" onclick="setTimeframe('all', this)" class="time-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          Tout
+        </button>
+      </div>
+
+      <!-- Channel Filters (MTN, Moov, Celtiis, Visa) -->
+      <div class="flex items-center gap-1.5 pt-2 border-t border-gray-100 overflow-x-auto no-scrollbar text-[11px] font-semibold">
+        <span class="text-gray-400 font-bold uppercase text-[9px] mr-1 shrink-0">Canal:</span>
+        <button onclick="setChannel('all', this)" class="chan-pill bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-lg border border-emerald-300 shrink-0 font-bold">Tous</button>
+        <button onclick="setChannel('momo', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">MTN MoMo</button>
+        <button onclick="setChannel('moov', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">Moov</button>
+        <button onclick="setChannel('celtiis', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">Celtiis</button>
+        <button onclick="setChannel('card', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">Carte Visa</button>
+      </div>
+    </div>
+
+    <!-- 3. Sales Feed (Grouped by Date) -->
+    <div class="flex flex-col gap-3" id="sales-feed-container">
+      
+      <!-- Group: Aujourd'hui -->
+      <div class="flex flex-col gap-2 sales-group" data-period="today">
+        <div class="flex justify-between items-center px-1">
+          <span class="text-xs font-black uppercase tracking-wider text-on-surface-variant">Aujourd'hui • 25 Août 2026</span>
+          <span class="text-[11px] font-bold font-mono text-emerald-700">145 000 FCFA</span>
         </div>
-        <div class="relative w-full group">
-          <span
-            class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors"
-            data-icon="search">search</span>
-          <input
-            class="w-full pl-12 pr-4 py-3 bg-surface rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-sm text-on-surface outline-none placeholder:text-outline/70"
-            placeholder="Rechercher un client, réf..." type="text" />
-        </div>
-        <div class="flex gap-2">
-          <button
-            class="flex-1 py-2 px-4 rounded-lg bg-surface-container-highest text-on-surface font-body-sm text-body-sm flex justify-between items-center border border-transparent hover:border-outline-variant transition-colors">
-            <span>Aujourd'hui</span>
-            <span class="material-symbols-outlined text-outline" data-icon="calendar_today"
-              style="font-size: 18px;">calendar_today</span>
-          </button>
-          <button
-            class="flex-1 py-2 px-4 rounded-lg bg-surface text-on-surface font-body-sm text-body-sm flex justify-between items-center border border-outline-variant hover:border-primary/50 transition-colors">
-            <span>Mois en cours</span>
-          </button>
+
+        <div class="bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-soft flex flex-col divide-y divide-gray-100">
+          
+          <!-- Item 1: MTN MoMo QR -->
+          <a href="../d_tail_d_une_vente/code.html" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors no-underline group" data-channel="momo" data-title="Dossou Christian" data-ref="#TRX-8821">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-lg">qr_code_2</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-on-surface">Dossou Christian</h4>
+                <div class="flex items-center gap-1.5 text-[10px] text-on-surface-variant">
+                  <span class="font-semibold text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded">MTN MoMo</span>
+                  <span>•</span>
+                  <span>14:32</span>
+                  <span>•</span>
+                  <span class="font-mono text-gray-400">#TRX-8821</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-xs font-black font-mono text-emerald-700 block">+18 500 F</span>
+              <span class="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-full">Encaissé</span>
+            </div>
+          </a>
+
+          <!-- Item 2: POS Moov -->
+          <a href="../d_tail_d_une_vente/code.html" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors no-underline group" data-channel="moov" data-title="Jeanne Agbo" data-ref="#TRX-8820">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-blue-100 text-blue-900 flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-lg">point_of_sale</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-on-surface">Jeanne Agbo</h4>
+                <div class="flex items-center gap-1.5 text-[10px] text-on-surface-variant">
+                  <span class="font-semibold text-blue-800 bg-blue-50 px-1.5 py-0.2 rounded">Moov Money</span>
+                  <span>•</span>
+                  <span>13:15</span>
+                  <span>•</span>
+                  <span class="font-mono text-gray-400">#TRX-8820</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-xs font-black font-mono text-emerald-700 block">+4 200 F</span>
+              <span class="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-full">Encaissé</span>
+            </div>
+          </a>
+
+          <!-- Item 3: Visa Pay Link -->
+          <a href="../d_tail_d_une_vente/code.html" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors no-underline group" data-channel="card" data-title="Sarah K." data-ref="#TRX-8819">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-900 flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-lg">link</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-on-surface">Sarah K. (Lien Web)</h4>
+                <div class="flex items-center gap-1.5 text-[10px] text-on-surface-variant">
+                  <span class="font-semibold text-purple-800 bg-purple-50 px-1.5 py-0.2 rounded">Carte Visa</span>
+                  <span>•</span>
+                  <span>11:40</span>
+                  <span>•</span>
+                  <span class="font-mono text-gray-400">#TRX-8819</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-xs font-black font-mono text-emerald-700 block">+35 000 F</span>
+              <span class="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-full">Encaissé</span>
+            </div>
+          </a>
+
+          <!-- Item 4: Celtiis Pay QR -->
+          <a href="../d_tail_d_une_vente/code.html" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors no-underline group" data-channel="celtiis" data-title="Koffi Mensah" data-ref="#TRX-8818">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-sky-100 text-sky-900 flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-lg">qr_code_scanner</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-on-surface">Koffi Mensah</h4>
+                <div class="flex items-center gap-1.5 text-[10px] text-on-surface-variant">
+                  <span class="font-semibold text-sky-800 bg-sky-50 px-1.5 py-0.2 rounded">Celtiis Pay</span>
+                  <span>•</span>
+                  <span>09:20</span>
+                  <span>•</span>
+                  <span class="font-mono text-gray-400">#TRX-8818</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-xs font-black font-mono text-emerald-700 block">+12 800 F</span>
+              <span class="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-full">Encaissé</span>
+            </div>
+          </a>
+
         </div>
       </div>
 
-      <!-- Amount Filter -->
-      <div
-        class="bg-surface-container-lowest rounded-xl p-card-padding smooth-shadow border border-outline-variant/30 flex flex-col justify-between">
-        <div>
-          <h2 class="font-body-lg text-body-lg text-on-surface-variant font-semibold mb-2">Montant</h2>
-          <p class="font-label-caps text-label-caps text-outline mb-4">Filtrer par volume</p>
+      <!-- Group: Hier -->
+      <div class="flex flex-col gap-2 sales-group" data-period="week">
+        <div class="flex justify-between items-center px-1">
+          <span class="text-xs font-black uppercase tracking-wider text-on-surface-variant">Hier • 24 Août 2026</span>
+          <span class="text-[11px] font-bold font-mono text-emerald-700">128 000 FCFA</span>
         </div>
-        <div class="space-y-2">
-          <label class="flex items-center gap-3 cursor-pointer group">
-            <input class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox" />
-            <span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">&gt; 10
-              000 FCFA</span>
-          </label>
-          <label class="flex items-center gap-3 cursor-pointer group">
-            <input class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox" />
-            <span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">&lt; 10
-              000 FCFA</span>
-          </label>
-        </div>
-      </div>
 
-      <!-- Status Filter -->
-      <div
-        class="bg-surface-container-lowest rounded-xl p-card-padding smooth-shadow border border-outline-variant/30 flex flex-col justify-between">
-        <div>
-          <h2 class="font-body-lg text-body-lg text-on-surface-variant font-semibold mb-2">Statut</h2>
-          <p class="font-label-caps text-label-caps text-outline mb-4">État des paiements</p>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <span
-            class="px-3 py-1 rounded-full bg-surface-container text-on-surface font-label-caps text-label-caps cursor-pointer hover:bg-surface-container-high border border-transparent">Tous</span>
-          <span
-            class="px-3 py-1 rounded-full bg-primary/10 text-primary font-label-caps text-label-caps cursor-pointer border border-primary/30 font-bold">Réussi</span>
-          <span
-            class="px-3 py-1 rounded-full bg-surface text-outline font-label-caps text-label-caps cursor-pointer border border-outline-variant hover:bg-surface-container">Échoué</span>
-        </div>
-      </div>
-    </section>
+        <div class="bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-soft flex flex-col divide-y divide-gray-100">
+          
+          <!-- Item 5: MTN MoMo POS -->
+          <a href="../d_tail_d_une_vente/code.html" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors no-underline group" data-channel="momo" data-title="Marc Houessou" data-ref="#TRX-8812">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-lg">point_of_sale</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-on-surface">Marc Houessou</h4>
+                <div class="flex items-center gap-1.5 text-[10px] text-on-surface-variant">
+                  <span class="font-semibold text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded">MTN MoMo</span>
+                  <span>•</span>
+                  <span>18:10</span>
+                  <span>•</span>
+                  <span class="font-mono text-gray-400">#TRX-8812</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-xs font-black font-mono text-emerald-700 block">+22 000 F</span>
+              <span class="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-full">Encaissé</span>
+            </div>
+          </a>
 
-    <!-- Transactions List -->
-    <section class="flex flex-col gap-4">
-      <h2 class="font-body-lg text-body-lg font-semibold text-on-surface-variant mb-2">Aujourd'hui, 24 Octobre</h2>
-
-      <!-- Item 1 -->
-      <div
-        class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between smooth-shadow border border-outline-variant/20 hover:border-primary/20 transition-all cursor-pointer group">
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
-            <span class="material-symbols-outlined" data-icon="phone_iphone">phone_iphone</span>
-          </div>
-          <div>
-            <p class="font-body-lg text-body-lg font-semibold text-on-surface">Marie Koné</p>
-            <div class="flex items-center gap-2 text-outline">
-              <span class="font-label-caps text-label-caps">MTN MoMo</span>
-              <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
-              <span class="font-body-sm text-body-sm">14:32</span>
+          <!-- Item 6: Échec Solde Client -->
+          <div class="sales-item py-2.5 px-2 flex items-center justify-between opacity-60" data-channel="momo" data-title="Client Anonyme" data-ref="#TRX-8810">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-xs shrink-0">
+                <span class="material-symbols-outlined text-lg">cancel</span>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-on-surface line-through">Client Anonyme</h4>
+                <div class="flex items-center gap-1.5 text-[10px] text-rose-600">
+                  <span>Échec • Solde client insuffisant</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-xs font-bold font-mono text-gray-400 line-through">8 000 F</span>
+              <span class="text-[9px] font-bold text-rose-800 bg-rose-100 px-1.5 py-0.2 rounded-full">Refusé</span>
             </div>
           </div>
-        </div>
-        <div class="text-right">
-          <p class="font-body-lg text-body-lg font-bold text-[#10B981]">+ 15 500 FCFA</p>
-          <p class="font-body-sm text-body-sm text-outline">Réf: #TRX-9821</p>
+
         </div>
       </div>
 
-      <!-- Item 2 -->
-      <div
-        class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between smooth-shadow border border-outline-variant/20 hover:border-primary/20 transition-all cursor-pointer group">
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
-            <span class="material-symbols-outlined" data-icon="qr_code">qr_code</span>
-          </div>
-          <div>
-            <p class="font-body-lg text-body-lg font-semibold text-on-surface">Client Anonyme</p>
-            <div class="flex items-center gap-2 text-outline">
-              <span class="font-label-caps text-label-caps">Scan Moov</span>
-              <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
-              <span class="font-body-sm text-body-sm">11:15</span>
-            </div>
-          </div>
-        </div>
-        <div class="text-right">
-          <p class="font-body-lg text-body-lg font-bold text-[#10B981]">+ 4 200 FCFA</p>
-          <p class="font-body-sm text-body-sm text-outline">Réf: #QR-4412</p>
-        </div>
-      </div>
+    </div>
 
-      <!-- Item 3 (Failed) -->
-      <div
-        class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between smooth-shadow border border-error-container hover:border-error/50 transition-all cursor-pointer group opacity-70">
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 rounded-full bg-error-container flex items-center justify-center text-error group-hover:scale-105 transition-transform">
-            <span class="material-symbols-outlined" data-icon="error">error</span>
-          </div>
-          <div>
-            <p class="font-body-lg text-body-lg font-semibold text-on-surface line-through decoration-outline">Jean-Paul
-              S.</p>
-            <div class="flex items-center gap-2 text-error">
-              <span class="font-label-caps text-label-caps">Échoué</span>
-              <span class="w-1 h-1 rounded-full bg-error"></span>
-              <span class="font-body-sm text-body-sm">09:41</span>
-            </div>
-          </div>
-        </div>
-        <div class="text-right">
-          <p class="font-body-lg text-body-lg font-bold text-on-surface-variant line-through decoration-outline">8 000
-            FCFA</p>
-          <p class="font-body-sm text-body-sm text-outline">Solde insuffisant</p>
-        </div>
-      </div>
-
-      <h2 class="font-body-lg text-body-lg font-semibold text-on-surface-variant mt-4 mb-2">Hier, 23 Octobre</h2>
-
-      <!-- Item 4 -->
-      <div
-        class="bg-surface-container-lowest rounded-xl p-4 flex items-center justify-between smooth-shadow border border-outline-variant/20 hover:border-primary/20 transition-all cursor-pointer group">
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
-            <span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
-          </div>
-          <div>
-            <p class="font-body-lg text-body-lg font-semibold text-on-surface">Virement Celtiis</p>
-            <div class="flex items-center gap-2 text-outline">
-              <span class="font-label-caps text-label-caps">Celtiis Pay</span>
-              <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
-              <span class="font-body-sm text-body-sm">18:05</span>
-            </div>
-          </div>
-        </div>
-        <div class="text-right">
-          <p class="font-body-lg text-body-lg font-bold text-[#10B981]">+ 25 000 FCFA</p>
-          <p class="font-body-sm text-body-sm text-outline">Réf: #TRX-9988</p>
-        </div>
-      </div>
-    </section>
   </main>
-  <script>
-    function exportAccountingReport() {
-      const bName = localStorage.getItem('switch_merchant_business_name') || "Mon_Commerce";
-      alert("Génération et téléchargement du Relevé Comptable Certifié Switch (Releve_Ventes_" + bName.replace(/[^a-zA-Z0-9]/g, '_') + "_Aout_2026.pdf) !");
-    }
-  </script>
+
+  <!-- Export Modal -->
+  <div id="export-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 flex flex-col gap-4 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-bold text-on-surface">Exporter le Relevé Comptable</h3>
+        <button onclick="closeExportModal()" class="p-1.5 rounded-full hover:bg-gray-100 text-on-surface-variant cursor-pointer">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-bold text-on-surface-variant">Période du Relevé</label>
+          <select id="export-period" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2.5 text-xs font-semibold">
+            <option value="month">Mois en cours (Août 2026)</option>
+            <option value="week">Semaine en cours (18 - 25 Août)</option>
+            <option value="quarter">Trimestre T3 2026</option>
+            <option value="year">Année complète 2026</option>
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-bold text-on-surface-variant">Format de Fichier</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="p-3 rounded-2xl border-2 border-emerald-600 bg-emerald-50 flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="export-format" value="pdf" checked class="text-emerald-600"/>
+              <span class="text-xs font-bold text-emerald-950">PDF Certifié (Impression)</span>
+            </label>
+            <label class="p-3 rounded-2xl border border-outline-variant/60 bg-surface-container-low flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="export-format" value="excel" class="text-emerald-600"/>
+              <span class="text-xs font-bold text-on-surface">Excel (CSV / Compta)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="p-3 bg-gray-50 rounded-2xl border border-gray-200 text-xs text-gray-600">
+          📄 Le relevé inclut le détail de chaque encaissement avec référence fiscale IFU, date, heure, canal et confirmation BCEAO.
+        </div>
+
+        <div class="flex gap-2.5 mt-2">
+          <button type="button" onclick="closeExportModal()" class="flex-1 py-3 rounded-full border border-outline-variant font-semibold text-xs hover:bg-surface-container cursor-pointer">Annuler</button>
+          <button type="button" onclick="confirmExport()" class="flex-1 py-3 rounded-full bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 active:scale-95 transition-all shadow-md cursor-pointer flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-base">download</span>
+            <span>Télécharger Relevé</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="../assets/switch.router.js"></script>
 
-<nav id="switch-nav" role="navigation" aria-label="Navigation Marchand" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
-  <a href="../tableau_de_bord_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">store</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
-  </a>
-  <a href="../historique_des_ventes/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">receipt_long</span>
-    <span class="nav-label" style="font-size:10px;font-weight:700;">Ventes</span>
-  </a>
-  <a href="../g_n_rer_qr_code_de_r_ception/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">qr_code_2</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">QR</span>
-  </a>
-  <a href="../profil_de_l_entreprise/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">business</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Entreprise</span>
-  </a>
-  <a href="../support_marchand/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-    <span class="material-symbols-outlined" style="font-size:22px;">help</span>
-    <span class="nav-label" style="font-size:10px;font-weight:500;">Support</span>
-  </a>
-</nav>
-</body>
+  <script>
+    let activeTimeframe = 'today';
+    let activeChannel = 'all';
 
+    document.addEventListener("DOMContentLoaded", function () {
+      const bName = localStorage.getItem('switch_merchant_business_name');
+      if (bName) {
+        const subNameEl = document.getElementById('merchant-sub-name');
+        if (subNameEl) subNameEl.textContent = bName + " • Historique certifié";
+      }
+    });
+
+    function setTimeframe(tf, btn) {
+      activeTimeframe = tf;
+      document.querySelectorAll('.time-pill').forEach(b => {
+        b.className = 'time-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0';
+      });
+      btn.className = 'time-pill pill-active px-3 py-1.5 rounded-xl border border-transparent transition-colors cursor-pointer shrink-0';
+      
+      const totalKpi = document.getElementById('total-revenue-kpi');
+      if (tf === 'today') totalKpi.innerHTML = `145 000 <span class="text-lg font-bold font-sans">FCFA</span>`;
+      else if (tf === 'week') totalKpi.innerHTML = `840 500 <span class="text-lg font-bold font-sans">FCFA</span>`;
+      else if (tf === 'month') totalKpi.innerHTML = `3 450 000 <span class="text-lg font-bold font-sans">FCFA</span>`;
+      else totalKpi.innerHTML = `12 850 000 <span class="text-lg font-bold font-sans">FCFA</span>`;
+
+      filterSales();
+    }
+
+    function setChannel(ch, btn) {
+      activeChannel = ch;
+      document.querySelectorAll('.chan-pill').forEach(b => {
+        b.className = 'chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0';
+      });
+      btn.className = 'chan-pill bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-lg border border-emerald-300 shrink-0 font-bold';
+      filterSales();
+    }
+
+    function filterSales() {
+      const query = document.getElementById('sales-search-input').value.toLowerCase().trim();
+      const items = document.querySelectorAll('.sales-item');
+
+      items.forEach(item => {
+        const title = (item.getAttribute('data-title') || '').toLowerCase();
+        const ref = (item.getAttribute('data-ref') || '').toLowerCase();
+        const chan = item.getAttribute('data-channel');
+
+        const matchQuery = !query || title.includes(query) || ref.includes(query);
+        const matchChannel = (activeChannel === 'all') || (chan === activeChannel);
+
+        if (matchQuery && matchChannel) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    function openExportModal() {
+      document.getElementById('export-modal').classList.remove('hidden');
+    }
+
+    function closeExportModal() {
+      document.getElementById('export-modal').classList.add('hidden');
+    }
+
+    function confirmExport() {
+      const bName = localStorage.getItem('switch_merchant_business_name') || "Mon_Commerce";
+      const period = document.getElementById('export-period').value;
+      closeExportModal();
+      alert("✅ Relevé Comptable Certifié Switch (" + bName + " - " + period.toUpperCase() + ") téléchargé avec succès !");
+    }
+  </script>
+
+</body>
 </html>
