@@ -386,23 +386,27 @@
     },
     "historique_des_op_rations_agent": { space: "agent", back: "javascript:history.back()", nav: "a-history", actions: {} },
     "d_p_t_de_fonds_mis_jour_agent": {
-      space: "agent", back: "javascript:history.back()", nav: null,
-      actions: { "Valider": ROOT + "confirmation_de_l_op_ration_code/code.html", "Continuer": ROOT + "confirmation_de_l_op_ration_code/code.html", "Déposer": ROOT + "confirmation_de_l_op_ration_code/code.html" }
+      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
+      actions: {}
     },
     "retrait_de_fonds_mis_jour_agent": {
-      space: "agent", back: "javascript:history.back()", nav: null,
-      actions: { "Valider": ROOT + "confirmation_de_l_op_ration_code/code.html", "Continuer": ROOT + "confirmation_de_l_op_ration_code/code.html", "Retirer": ROOT + "confirmation_de_l_op_ration_code/code.html" }
+      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
+      actions: {}
     },
     "valider_une_op_ration_client": {
-      space: "agent", back: "javascript:history.back()", nav: null,
-      actions: { "Valider": ROOT + "confirmation_de_succ_s/code.html", "Approuver": ROOT + "confirmation_de_succ_s/code.html", "Confirmer": ROOT + "confirmation_de_succ_s/code.html" }
+      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
+      actions: { "Valider": ROOT + "recu_operation_agent/code.html", "Approuver": ROOT + "recu_operation_agent/code.html", "Confirmer": ROOT + "recu_operation_agent/code.html" }
     },
     "demande_de_r_approvisionnement_float": {
-      space: "agent", back: "javascript:history.back()", nav: null,
-      actions: { "Envoyer": ROOT + "confirmation_de_succ_s/code.html", "Demander": ROOT + "confirmation_de_succ_s/code.html", "Soumettre": ROOT + "confirmation_de_succ_s/code.html" }
+      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
+      actions: { "Envoyer": ROOT + "recu_operation_agent/code.html", "Demander": ROOT + "recu_operation_agent/code.html", "Soumettre": ROOT + "recu_operation_agent/code.html" }
+    },
+    "recu_operation_agent": {
+      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
+      actions: { "Accueil": ROOT + "tableau_de_bord_agent/code.html", "Retour": ROOT + "tableau_de_bord_agent/code.html" }
     },
     "param_tres_et_profil_agent": {
-      space: "agent", back: "javascript:history.back()", nav: "a-profile",
+      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: "a-profile",
       actions: { "Enregistrer": ROOT + "tableau_de_bord_agent/code.html" }
     },
   };
