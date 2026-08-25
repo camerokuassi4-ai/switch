@@ -281,6 +281,8 @@
     "politique_confidentialite": { space: "user", back: ROOT + "inscription/code.html", nav: null, actions: {} },
     "centre_de_notifications": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "modification_du_code_pin": { space: "user", back: ROOT + "s_curit/code.html", nav: null, actions: {} },
+    "reinitialisation_code_pin": { space: "user", back: ROOT + "connexion/code.html", nav: null, actions: {} },
+    "recu_recharge_sbee": { space: "user", back: ROOT + "paiement_sbee_electricite/code.html", nav: null, actions: {} },
 
     "kyc_verification_identite": {
       space: "user", back: ROOT + "limites_de_transaction/code.html", nav: null,

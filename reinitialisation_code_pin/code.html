@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Réinitialisation du Code PIN - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .otp-input, .pin-input {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .otp-input:focus, .pin-input:focus {
+      border-color: #5E3BDC;
+      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.18);
+      background-color: #FFFFFF;
+      outline: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-24 flex flex-col justify-between antialiased selection:bg-primary-fixed">
+
+  <!-- Top App Bar -->
+  <header class="w-full max-w-lg mx-auto px-container-margin pt-6 pb-2 flex items-center justify-between z-30">
+    <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    <div class="text-center">
+      <h1 class="text-base sm:text-lg font-black text-on-surface">Récupération de Compte</h1>
+      <p class="text-[10px] text-on-surface-variant font-bold" id="step-indicator">Étape 1 sur 3 • Numéro</p>
+    </div>
+    <div class="w-10"></div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-lg mx-auto px-container-margin flex flex-col items-center text-center gap-4 pt-2 flex-1 justify-center">
+    
+    <!-- Lock Icon -->
+    <div class="relative w-16 h-16 flex items-center justify-center mb-1">
+      <div class="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse"></div>
+      <div class="w-14 h-14 rounded-2xl bg-white border border-primary/20 shadow-md flex items-center justify-center text-primary relative z-10">
+        <span class="material-symbols-outlined text-3xl font-bold" id="main-icon">lock_reset</span>
+      </div>
+    </div>
+
+    <!-- Title & Description -->
+    <div class="space-y-1 max-w-xs">
+      <h2 class="text-xl sm:text-2xl font-extrabold text-on-surface tracking-tight" id="main-title">Code PIN Oublié ?</h2>
+      <p class="text-xs text-on-surface-variant font-medium leading-relaxed" id="main-desc">
+        Entrez le numéro de téléphone associé à votre compte Switch pour recevoir un code de vérification.
+      </p>
+    </div>
+
+    <!-- FORM STEP 1: PHONE NUMBER -->
+    <div id="step-1-container" class="w-full max-w-sm flex flex-col gap-3 mt-2">
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3 text-left">
+        <label class="text-xs font-black uppercase tracking-wider text-on-surface-variant" for="phone-input">Votre Numéro de Téléphone</label>
+        <div class="flex items-center gap-2 bg-surface-container/60 rounded-2xl px-4 py-3.5 border border-outline-variant/50 focus-within:border-primary focus-within:bg-white transition-all">
+          <div class="flex items-center gap-1.5 shrink-0 border-r border-outline-variant/50 pr-2.5">
+            <span class="text-base">🇧🇯</span>
+            <span class="text-xs font-black text-on-surface font-mono">+229</span>
+          </div>
+          <input type="tel" id="phone-input" value="97 12 34 56" placeholder="97 00 00 00" maxlength="11" class="w-full bg-transparent border-none p-0 text-sm font-bold font-mono text-on-surface focus:ring-0 outline-none"/>
+        </div>
+      </div>
+
+      <button type="button" onclick="goToStep2()" class="w-full bg-primary text-white py-4 rounded-full font-bold text-sm shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1">
+        <span>Recevoir le Code SMS</span>
+        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+      </button>
+    </div>
+
+    <!-- FORM STEP 2: OTP CODE -->
+    <div id="step-2-container" class="w-full max-w-sm flex flex-col gap-3 mt-2 hidden">
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-on-surface-variant">Code envoyé au <b id="phone-display" class="font-mono text-on-surface">+229 97 12 34 56</b></span>
+          <button type="button" onclick="goToStep1()" class="text-xs text-primary font-bold hover:underline cursor-pointer">Modifier</button>
+        </div>
+
+        <!-- 6 OTP Input Boxes -->
+        <div class="flex justify-center gap-2 pt-1" id="otp-boxes">
+          <input aria-label="Code 1" class="otp-input w-10 h-12 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="otp-0" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text" autofocus/>
+          <input aria-label="Code 2" class="otp-input w-10 h-12 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="otp-1" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+          <input aria-label="Code 3" class="otp-input w-10 h-12 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="otp-2" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+          <input aria-label="Code 4" class="otp-input w-10 h-12 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="otp-3" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+          <input aria-label="Code 5" class="otp-input w-10 h-12 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="otp-4" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+          <input aria-label="Code 6" class="otp-input w-10 h-12 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="otp-5" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+        </div>
+
+        <!-- Quick Test Code Shortcut -->
+        <button type="button" onclick="fillTestOtp()" class="self-center mt-1 px-3 py-1 bg-purple-50 hover:bg-purple-100 text-primary rounded-full text-[11px] font-bold border border-purple-200 cursor-pointer flex items-center gap-1">
+          <span class="material-symbols-outlined text-xs">bolt</span>
+          <span>Insérer code test : <b>582914</b></span>
+        </button>
+
+      </div>
+
+      <button type="button" onclick="goToStep3()" class="w-full bg-primary text-white py-4 rounded-full font-bold text-sm shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1">
+        <span>Vérifier le code SMS</span>
+        <span class="material-symbols-outlined text-lg">check_circle</span>
+      </button>
+    </div>
+
+    <!-- FORM STEP 3: DEFINE NEW PIN -->
+    <div id="step-3-container" class="w-full max-w-sm flex flex-col gap-3 mt-2 hidden">
+      
+      <!-- New PIN -->
+      <div class="bg-white rounded-3xl p-4 border border-primary/40 shadow-sm flex flex-col gap-2 text-left">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-black uppercase text-primary">Nouveau Code PIN (4 chiffres)</label>
+          <button type="button" onclick="toggleVisibility('new')" class="text-[11px] font-bold text-on-surface-variant hover:text-primary cursor-pointer" id="vis-new-btn">Afficher</button>
+        </div>
+        <div class="flex justify-center gap-2.5 pt-1">
+          <input aria-label="Nouveau PIN 1" class="pin-input w-11 h-13 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="new-0" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Nouveau PIN 2" class="pin-input w-11 h-13 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="new-1" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Nouveau PIN 3" class="pin-input w-11 h-13 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="new-2" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Nouveau PIN 4" class="pin-input w-11 h-13 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="new-3" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+        </div>
+      </div>
+
+      <!-- Confirm PIN -->
+      <div class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-sm flex flex-col gap-2 text-left">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-black uppercase text-on-surface-variant">Confirmez votre Nouveau PIN</label>
+          <button type="button" onclick="toggleVisibility('conf')" class="text-[11px] font-bold text-on-surface-variant hover:text-primary cursor-pointer" id="vis-conf-btn">Afficher</button>
+        </div>
+        <div class="flex justify-center gap-2.5 pt-1">
+          <input aria-label="Confirmer PIN 1" class="pin-input w-11 h-13 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="conf-0" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Confirmer PIN 2" class="pin-input w-11 h-13 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="conf-1" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Confirmer PIN 3" class="pin-input w-11 h-13 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="conf-2" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="Confirmer PIN 4" class="pin-input w-11 h-13 text-center font-mono font-black text-xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="conf-3" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+        </div>
+      </div>
+
+      <button type="button" onclick="finalizePinReset()" class="w-full bg-primary text-white py-4 rounded-full font-bold text-sm shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1">
+        <span class="material-symbols-outlined text-lg">verified</span>
+        <span>Enregistrer mon nouveau code PIN</span>
+      </button>
+    </div>
+
+  </main>
+
+  <script>
+    // Setup auto advance for OTP boxes
+    const otps = [0,1,2,3,4,5].map(i => document.getElementById('otp-' + i));
+    otps.forEach((inp, idx) => {
+      inp.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        if (e.target.value.length === 1 && idx < otps.length - 1) {
+          otps[idx + 1].focus();
+        }
+      });
+      inp.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && e.target.value.length === 0 && idx > 0) {
+          otps[idx - 1].focus();
+          otps[idx - 1].value = '';
+        }
+      });
+    });
+
+    // Setup auto advance for PIN boxes
+    const newPins = [0,1,2,3].map(i => document.getElementById('new-' + i));
+    const confPins = [0,1,2,3].map(i => document.getElementById('conf-' + i));
+
+    function setupPinRow(inputs, nextRow) {
+      inputs.forEach((inp, idx) => {
+        inp.addEventListener('input', (e) => {
+          e.target.value = e.target.value.replace(/[^0-9]/g, '');
+          if (e.target.value.length === 1) {
+            if (idx < inputs.length - 1) inputs[idx + 1].focus();
+            else if (nextRow) nextRow[0].focus();
+            else inp.blur();
+          }
+        });
+        inp.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && e.target.value.length === 0 && idx > 0) {
+            inputs[idx - 1].focus();
+            inputs[idx - 1].value = '';
+          }
+        });
+      });
+    }
+    setupPinRow(newPins, confPins);
+    setupPinRow(confPins, null);
+
+    function goToStep1() {
+      document.getElementById('step-1-container').classList.remove('hidden');
+      document.getElementById('step-2-container').classList.add('hidden');
+      document.getElementById('step-3-container').classList.add('hidden');
+      document.getElementById('step-indicator').textContent = 'Étape 1 sur 3 • Numéro';
+      document.getElementById('main-title').textContent = 'Code PIN Oublié ?';
+      document.getElementById('main-desc').textContent = 'Entrez votre numéro de téléphone pour recevoir le code de sécurité.';
+    }
+
+    function goToStep2() {
+      const phone = document.getElementById('phone-input').value.trim();
+      if (!phone) {
+        alert("Veuillez saisir votre numéro de téléphone.");
+        return;
+      }
+      document.getElementById('phone-display').textContent = '+229 ' + phone;
+      document.getElementById('step-1-container').classList.add('hidden');
+      document.getElementById('step-2-container').classList.remove('hidden');
+      document.getElementById('step-3-container').classList.add('hidden');
+      document.getElementById('step-indicator').textContent = 'Étape 2 sur 3 • Vérification SMS';
+      document.getElementById('main-title').textContent = 'Vérification SMS';
+      document.getElementById('main-desc').textContent = 'Saisissez le code de sécurité à 6 chiffres envoyé sur votre numéro.';
+      otps[0].focus();
+    }
+
+    function fillTestOtp() {
+      const code = "582914";
+      code.split('').forEach((digit, i) => {
+        if (otps[i]) otps[i].value = digit;
+      });
+    }
+
+    function goToStep3() {
+      const enteredOtp = otps.map(o => o.value).join('');
+      if (enteredOtp.length < 6) {
+        alert("Veuillez saisir les 6 chiffres du code SMS de sécurité.");
+        return;
+      }
+      document.getElementById('step-1-container').classList.add('hidden');
+      document.getElementById('step-2-container').classList.add('hidden');
+      document.getElementById('step-3-container').classList.remove('hidden');
+      document.getElementById('step-indicator').textContent = 'Étape 3 sur 3 • Nouveau Code';
+      document.getElementById('main-title').textContent = 'Définir un Nouveau PIN';
+      document.getElementById('main-desc').textContent = 'Choisissez vos 4 nouveaux chiffres secrets pour sécuriser votre compte.';
+      newPins[0].focus();
+    }
+
+    let visNew = false;
+    let visConf = false;
+    function toggleVisibility(type) {
+      if (type === 'new') {
+        visNew = !visNew;
+        newPins.forEach(p => p.type = visNew ? 'text' : 'password');
+        document.getElementById('vis-new-btn').textContent = visNew ? 'Masquer' : 'Afficher';
+      } else {
+        visConf = !visConf;
+        confPins.forEach(p => p.type = visConf ? 'text' : 'password');
+        document.getElementById('vis-conf-btn').textContent = visConf ? 'Masquer' : 'Afficher';
+      }
+    }
+
+    function finalizePinReset() {
+      const p1 = newPins.map(p => p.value).join('');
+      const p2 = confPins.map(p => p.value).join('');
+
+      if (p1.length < 4 || p2.length < 4) {
+        alert("Veuillez saisir et confirmer vos 4 chiffres secrets.");
+        return;
+      }
+      if (p1 !== p2) {
+        alert("Les deux codes PIN ne correspondent pas. Veuillez réessayer.");
+        confPins.forEach(p => p.value = '');
+        confPins[0].focus();
+        return;
+      }
+
+      alert("🎉 Félicitations ! Votre code PIN a été réinitialisé avec succès. Vous pouvez maintenant accéder à votre compte.");
+      if (window.switchNavigate) {
+        window.switchNavigate('../tableau_de_bord_mis_jour/code.html');
+      } else {
+        window.location.href = '../tableau_de_bord_mis_jour/code.html';
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>
