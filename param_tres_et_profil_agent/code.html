@@ -37,8 +37,8 @@
     </button>
     
     <div class="text-center">
-      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Paramètres Guichet</h1>
-      <p class="text-[11px] text-on-surface-variant font-medium">Gestion du point de vente & services agent</p>
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Paramètres & Profil Guichet</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Gestion complète du point de vente agent</p>
     </div>
 
     <!-- Agent ID Badge -->
@@ -50,8 +50,8 @@
   <!-- Main Content Canvas -->
   <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
 
-    <!-- 1. Agent Profile Overview Card -->
-    <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex items-center justify-between">
+    <!-- 1. Agent Profile Hero Card (Click to Edit) -->
+    <a href="../modifier_profil_agent/code.html" class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex items-center justify-between hover:border-primary transition-all no-underline text-on-surface group">
       <div class="flex items-center gap-3.5">
         <div class="relative">
           <div class="w-14 h-14 rounded-2xl overflow-hidden border-2 border-primary/30 shadow-sm">
@@ -62,41 +62,94 @@
         <div>
           <div class="flex items-center gap-1.5">
             <h2 class="text-base font-black text-on-surface">Adèle K.</h2>
-            <span class="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-md">Vérifié ANIP</span>
+            <span class="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-md">Gérante ANIP</span>
           </div>
           <p class="text-xs text-gray-500 font-mono mt-0.5">ID: AGT-4092 • IFU: 0202112345678</p>
-          <span class="text-[10px] text-primary font-bold">Kiosque Central Cotonou (Cadjehoun)</span>
+          <span class="text-[10px] text-primary font-bold">Kiosque Central Cadjehoun (Cotonou)</span>
         </div>
       </div>
 
-      <a href="../d_tail_de_l_agent_switch/code.html" class="w-9 h-9 rounded-full bg-purple-50 hover:bg-purple-100 text-primary flex items-center justify-center transition-colors" title="Voir Fiche Publique">
-        <span class="material-symbols-outlined text-lg">visibility</span>
-      </a>
-    </div>
+      <div class="flex items-center gap-1 text-primary font-bold text-xs">
+        <span class="material-symbols-outlined text-lg">edit</span>
+      </div>
+    </a>
 
-    <!-- 2. Hub des Modules & Outils Métier Agent -->
+    <!-- 2. Section Sécurité, Profil & Documents -->
     <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
       <h3 class="text-xs font-black text-on-surface uppercase tracking-wider border-b border-outline-variant/30 pb-2">
-        Outils de Gestion & Trésorerie Guichet
+        Compte, Sécurité & Documents Légaux
       </h3>
 
       <div class="flex flex-col divide-y divide-outline-variant/30 text-xs">
         
-        <!-- 1. Clôture de Caisse -->
-        <a href="../cloture_de_caisse_agent/code.html" class="py-3 flex items-center justify-between hover:bg-purple-50/40 rounded-xl px-2 transition-colors no-underline">
+        <!-- Modifier Profil Kiosque -->
+        <a href="../modifier_profil_agent/code.html" class="py-3 flex items-center justify-between hover:bg-purple-50/40 rounded-xl px-2 transition-colors no-underline">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-purple-50 text-primary flex items-center justify-center">
-              <span class="material-symbols-outlined text-lg">lock_clock</span>
+              <span class="material-symbols-outlined text-lg">storefront</span>
             </div>
             <div>
-              <b class="text-on-surface text-xs block">Clôture & Arrêté de Caisse</b>
-              <span class="text-[10px] text-gray-500">Billetage physique & bilan de fin de journée</span>
+              <b class="text-on-surface text-xs block">Modifier Informations Kiosque</b>
+              <span class="text-[10px] text-gray-500">Nom commercial, adresse, repères & horaires</span>
             </div>
           </div>
           <span class="material-symbols-outlined text-gray-400 text-lg">chevron_right</span>
         </a>
 
-        <!-- 2. Retrait des Commissions -->
+        <!-- Sécurité & Code PIN Agent -->
+        <a href="../securite_et_pin_agent/code.html" class="py-3 flex items-center justify-between hover:bg-purple-50/40 rounded-xl px-2 transition-colors no-underline">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-purple-50 text-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-lg">lock</span>
+            </div>
+            <div>
+              <b class="text-on-surface text-xs block">Sécurité & Code PIN Agent</b>
+              <span class="text-[10px] text-gray-500">Changer PIN 4 chiffres, biométrie & sessions TPE</span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-gray-400 text-lg">chevron_right</span>
+        </a>
+
+        <!-- Documents, Caution & Agrément -->
+        <a href="../documents_contrat_agent/code.html" class="py-3 flex items-center justify-between hover:bg-purple-50/40 rounded-xl px-2 transition-colors no-underline">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-lg">verified</span>
+            </div>
+            <div>
+              <b class="text-on-surface text-xs block">Agrément & Caution Bancaire</b>
+              <span class="text-[10px] text-gray-500">Certificat BCEAO, caution 500k & contrat officiel</span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-gray-400 text-lg">chevron_right</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- 3. Section Gestion Caisse & Équipe -->
+    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider border-b border-outline-variant/30 pb-2">
+        Trésorerie Guichet & Outils Métier
+      </h3>
+
+      <div class="flex flex-col divide-y divide-outline-variant/30 text-xs">
+        
+        <!-- Clôture de Caisse -->
+        <a href="../cloture_de_caisse_agent/code.html" class="py-3 flex items-center justify-between hover:bg-purple-50/40 rounded-xl px-2 transition-colors no-underline">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-purple-50 text-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-lg">point_of_sale</span>
+            </div>
+            <div>
+              <b class="text-on-surface text-xs block">Clôture & Arrêté de Caisse</b>
+              <span class="text-[10px] text-gray-500">Billetage physique & rapport de fin de journée</span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-gray-400 text-lg">chevron_right</span>
+        </a>
+
+        <!-- Retrait des Commissions -->
         <a href="../retrait_commissions_agent/code.html" class="py-3 flex items-center justify-between hover:bg-purple-50/40 rounded-xl px-2 transition-colors no-underline">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
@@ -110,7 +163,7 @@
           <span class="material-symbols-outlined text-gray-400 text-lg">chevron_right</span>
         </a>
 
-        <!-- 3. Gestion des Caissiers -->
+        <!-- Gestion des Caissiers -->
         <a href="../gestion_caissiers_agent/code.html" class="py-3 flex items-center justify-between hover:bg-purple-50/40 rounded-xl px-2 transition-colors no-underline">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
@@ -124,21 +177,7 @@
           <span class="material-symbols-outlined text-gray-400 text-lg">chevron_right</span>
         </a>
 
-        <!-- 4. Relevé & Export Comptable -->
-        <a href="../releve_operations_agent/code.html" class="py-3 flex items-center justify-between hover:bg-purple-50/40 rounded-xl px-2 transition-colors no-underline">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
-              <span class="material-symbols-outlined text-lg">receipt_long</span>
-            </div>
-            <div>
-              <b class="text-on-surface text-xs block">Relevé & Export Comptable</b>
-              <span class="text-[10px] text-gray-500">Téléchargement PDF et Excel / CSV</span>
-            </div>
-          </div>
-          <span class="material-symbols-outlined text-gray-400 text-lg">chevron_right</span>
-        </a>
-
-        <!-- 5. Barème & Simulateur de Gains -->
+        <!-- Barème des Commissions -->
         <a href="../bareme_commissions_agent/code.html" class="py-3 flex items-center justify-between hover:bg-purple-50/40 rounded-xl px-2 transition-colors no-underline">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-purple-50 text-primary flex items-center justify-center">
@@ -152,7 +191,7 @@
           <span class="material-symbols-outlined text-gray-400 text-lg">chevron_right</span>
         </a>
 
-        <!-- 6. Support Dédié Guichet -->
+        <!-- Support Dédié Guichet -->
         <a href="../support_assistance_agent/code.html" class="py-3 flex items-center justify-between hover:bg-purple-50/40 rounded-xl px-2 transition-colors no-underline">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
@@ -169,7 +208,7 @@
       </div>
     </section>
 
-    <!-- 3. Déconnexion / Changement d'espace -->
+    <!-- 4. Déconnexion & Bascule Particulier -->
     <div class="flex flex-col gap-2 pt-1">
       <a href="../tableau_de_bord_mis_jour/code.html" class="w-full bg-white border border-outline-variant/60 text-primary font-bold py-3.5 rounded-full flex items-center justify-center gap-2 text-xs hover:bg-purple-50 transition-colors no-underline shadow-xs">
         <span class="material-symbols-outlined text-lg">swap_horiz</span>
@@ -187,29 +226,29 @@
   <!-- Router Script -->
   <script src="../assets/switch.router.js"></script>
 
-  <!-- Bottom Navigation Bar Agent (Active on Guichet) -->
+  <!-- Bottom Navigation Bar Agent (Active sur Profil) -->
   <nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
     <a href="../tableau_de_bord_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
       <span class="material-symbols-outlined" style="font-size:22px;">dashboard</span>
       <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
     </a>
-    <a href="../historique_des_op_rations_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-      <span class="material-symbols-outlined" style="font-size:22px;">swap_horiz</span>
-      <span class="nav-label" style="font-size:10px;font-weight:500;">Opérations</span>
-    </a>
     <a href="../valider_une_op_ration_client/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-      <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.3);position:relative;top:-6px;">
-        <span class="material-symbols-outlined" style="font-size:22px;">qr_code_scanner</span>
+      <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.3);position:relative;top:-4px;">
+        <span class="material-symbols-outlined" style="font-size:20px;">qr_code_scanner</span>
       </div>
-      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-4px;">Servir</span>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-2px;">Servir</span>
     </a>
-    <a href="../demande_de_r_approvisionnement_float/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-      <span class="material-symbols-outlined" style="font-size:22px;">account_balance_wallet</span>
-      <span class="nav-label" style="font-size:10px;font-weight:500;">Float</span>
+    <a href="../services_factures_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">apps</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Services</span>
+    </a>
+    <a href="../cloture_de_caisse_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">point_of_sale</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Caisse</span>
     </a>
     <a href="../param_tres_et_profil_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5E3BDC;text-decoration:none;flex:1;">
       <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">manage_accounts</span>
-      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;">Guichet</span>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;">Profil</span>
     </a>
   </nav>
 

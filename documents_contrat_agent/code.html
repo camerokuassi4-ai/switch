@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Documents & Agrément Agent - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    @media print {
+      body { background: white !important; padding: 0 !important; }
+      header, .no-print, #switch-nav { display: none !important; }
+      #printable-agrement { border: 2px solid #5E3BDC !important; box-shadow: none !important; width: 100% !important; margin: 0 auto; }
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md no-print">
+    <button aria-label="Retour" onclick="goBack()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Documents & Agrément</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Contrat officiel, cautionnement & certification</p>
+    </div>
+
+    <!-- Agent ID Badge -->
+    <div class="w-10 h-10 rounded-full bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold text-xs">
+      AGT
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Certificat d'Agrément Officiel (Imprimable / Conforme BCEAO) -->
+    <div id="printable-agrement" class="bg-gradient-to-br from-purple-900 via-indigo-950 to-primary rounded-3xl p-6 text-white shadow-soft flex flex-col gap-4 relative overflow-hidden">
+      <div class="absolute -right-8 -bottom-8 w-44 h-44 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+
+      <!-- Cert Header -->
+      <div class="flex items-center justify-between border-b border-white/20 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-white text-primary flex items-center justify-center font-black text-sm">
+            S
+          </div>
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-wider text-purple-200 block">Switch Bénin Fintech</span>
+            <span class="text-[9px] text-emerald-300 font-bold">Réseau d'Agents Agréés BCEAO</span>
+          </div>
+        </div>
+
+        <span class="text-[9px] font-bold text-emerald-900 bg-emerald-300 px-2.5 py-1 rounded-full">
+          Agrément Actif
+        </span>
+      </div>
+
+      <!-- Cert Body -->
+      <div>
+        <span class="text-[10px] font-mono text-purple-200 uppercase tracking-widest">Certificat d'Opérateur Guichet</span>
+        <h2 class="text-xl font-black mt-0.5">Adèle K. (Kiosque Cadjehoun)</h2>
+        <p class="text-xs text-purple-100 font-mono mt-1">ID Agent: AGT-4092 • N° Agrément: BJ-SW-2026-8492</p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 text-[11px] bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10 font-mono">
+        <div>
+          <span class="text-purple-200 text-[10px] block font-sans">IFU Entreprise :</span>
+          <b>0202112345678</b>
+        </div>
+        <div>
+          <span class="text-purple-200 text-[10px] block font-sans">Caution de Garantie :</span>
+          <b class="text-emerald-300">500 000 FCFA</b>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between text-[10px] text-purple-200 pt-1">
+        <span>Délivré à Cotonou le 15 Janvier 2026</span>
+        <span class="font-bold text-white">Valable jusqu'au 31 Décembre 2027</span>
+      </div>
+    </div>
+
+    <!-- Print Action Row -->
+    <div class="grid grid-cols-2 gap-2 no-print">
+      <button type="button" onclick="window.print()" class="bg-white border border-outline-variant/60 hover:border-primary py-3 rounded-2xl flex items-center justify-center gap-2 text-xs font-bold text-on-surface shadow-soft active:scale-95 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-primary text-base">print</span>
+        <span>Imprimer le Certificat</span>
+      </button>
+
+      <button type="button" onclick="downloadPdf()" class="bg-primary text-white py-3 rounded-2xl flex items-center justify-center gap-2 text-xs font-bold shadow-md hover:bg-primary-container transition-all active:scale-95 cursor-pointer">
+        <span class="material-symbols-outlined text-base">download</span>
+        <span>Télécharger PDF</span>
+      </button>
+    </div>
+
+    <!-- 2. Liste des Pièces & Contrats -->
+    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3 text-xs">
+      <h3 class="font-black text-on-surface uppercase tracking-wider border-b border-outline-variant/30 pb-2">
+        Dossier Juridique & Cautionnement
+      </h3>
+
+      <div class="flex flex-col divide-y divide-outline-variant/30">
+        
+        <!-- Contrat de Partenariat -->
+        <div class="py-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary text-xl">description</span>
+            <div>
+              <b class="text-on-surface block">Contrat d'Agent Distributeur Switch Bénin</b>
+              <span class="text-[10px] text-gray-500 font-mono">Signé électroniquement • 8 pages</span>
+            </div>
+          </div>
+          <button type="button" onclick="alert('Téléchargement du contrat d agent en cours...')" class="text-primary font-bold hover:underline cursor-pointer">
+            Consulter
+          </button>
+        </div>
+
+        <!-- Attestation de Caution -->
+        <div class="py-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-emerald-700 text-xl">account_balance</span>
+            <div>
+              <b class="text-on-surface block">Attestation de Caution de Garantie</b>
+              <span class="text-[10px] text-emerald-700 font-mono font-bold">500 000 FCFA consignés (Compte Séquestre)</span>
+            </div>
+          </div>
+          <button type="button" onclick="alert('Attestation de cautionnement validée par la Banque Centrale.')" class="text-primary font-bold hover:underline cursor-pointer">
+            Voir
+          </button>
+        </div>
+
+        <!-- Pièce ANIP / CIP -->
+        <div class="py-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-purple-700 text-xl">badge</span>
+            <div>
+              <b class="text-on-surface block">Certificat d'Identification Personnelle (CIP)</b>
+              <span class="text-[10px] text-gray-500 font-mono">NPI: 1098234871239 • Vérifié ANIP</span>
+            </div>
+          </div>
+          <span class="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">
+            Validé
+          </span>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Logic -->
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../param_tres_et_profil_agent/code.html';
+      }
+    }
+
+    function downloadPdf() {
+      alert("📄 Téléchargement du Certificat d'Agrément Officiel Switch Bénin (Format PDF Sécurisé avec QR Code)...");
+    }
+  </script>
+
+  <!-- Bottom Navigation Bar Agent -->
+  <nav id="switch-nav" role="navigation" aria-label="Navigation Agent" class="no-print" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+    <a href="../tableau_de_bord_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">dashboard</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+    </a>
+    <a href="../valider_une_op_ration_client/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.3);position:relative;top:-4px;">
+        <span class="material-symbols-outlined" style="font-size:20px;">qr_code_scanner</span>
+      </div>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-2px;">Servir</span>
+    </a>
+    <a href="../services_factures_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">apps</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Services</span>
+    </a>
+    <a href="../cloture_de_caisse_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">point_of_sale</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Caisse</span>
+    </a>
+    <a href="../param_tres_et_profil_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5E3BDC;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">manage_accounts</span>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;">Profil</span>
+    </a>
+  </nav>
+
+</body>
+</html>

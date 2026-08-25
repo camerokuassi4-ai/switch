@@ -277,6 +277,10 @@
     "releve_operations_agent": { space: "agent", back: ROOT + "historique_des_op_rations_agent/code.html", nav: null, actions: {} },
     "support_assistance_agent": { space: "agent", back: ROOT + "param_tres_et_profil_agent/code.html", nav: null, actions: {} },
     "bareme_commissions_agent": { space: "agent", back: ROOT + "param_tres_et_profil_agent/code.html", nav: null, actions: {} },
+    "modifier_profil_agent": { space: "agent", back: ROOT + "param_tres_et_profil_agent/code.html", nav: null, actions: {} },
+    "securite_et_pin_agent": { space: "agent", back: ROOT + "param_tres_et_profil_agent/code.html", nav: null, actions: {} },
+    "documents_contrat_agent": { space: "agent", back: ROOT + "param_tres_et_profil_agent/code.html", nav: null, actions: {} },
+    "services_factures_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: "a-services", actions: {} },
 
     "carte_agents_guichets": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "localiser_un_agent_switch": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },

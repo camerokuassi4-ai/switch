@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Modifier Profil Agent - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .input-focus:focus-within {
+      border-color: #5E3BDC;
+      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.12);
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <button aria-label="Retour" onclick="goBack()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Modifier Profil Agent</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Informations du point de vente & contact</p>
+    </div>
+
+    <!-- Agent ID Badge -->
+    <div class="w-10 h-10 rounded-full bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold text-xs">
+      AGT
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Photo du Gérant & Enseigne -->
+    <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col items-center gap-3 text-center">
+      <div class="relative">
+        <div class="w-20 h-20 rounded-3xl overflow-hidden border-2 border-primary/30 shadow-md">
+          <img id="agent-photo-preview" src="../assets/images/img_045.jpg" alt="Photo Agent" class="w-full h-full object-cover"/>
+        </div>
+        <button type="button" onclick="document.getElementById('file-agent-photo').click()" class="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center shadow-md hover:bg-primary-container transition-colors cursor-pointer" title="Modifier la photo">
+          <span class="material-symbols-outlined text-sm">photo_camera</span>
+        </button>
+        <input type="file" id="file-agent-photo" class="hidden" accept="image/*" onchange="previewPhoto(event)"/>
+      </div>
+      <div>
+        <h2 class="text-sm font-black text-on-surface">Adèle K. (Gérante Titulaire)</h2>
+        <span class="text-[10px] text-gray-500 font-mono">ID Agent: AGT-4092 • Agrément Actif</span>
+      </div>
+    </div>
+
+    <!-- 2. Formulaire de Modification -->
+    <form onsubmit="event.preventDefault(); saveAgentProfile();" class="flex flex-col gap-4">
+
+      <!-- Informations Générales -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3 text-xs">
+        <div class="flex items-center gap-2 border-b border-outline-variant/30 pb-2">
+          <span class="material-symbols-outlined text-primary text-lg">storefront</span>
+          <h3 class="font-black text-on-surface uppercase tracking-wider">Identité du Point de Vente</h3>
+        </div>
+
+        <!-- Nom commercial du Kiosque -->
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-gray-700">Nom de l'Enseigne / Kiosque *</label>
+          <input type="text" id="kioskName" required value="Kiosque Central Cadjehoun" class="w-full rounded-2xl border border-outline-variant/60 bg-gray-50 py-3 px-4 text-xs font-bold text-on-surface focus:border-primary focus:ring-primary"/>
+        </div>
+
+        <!-- Téléphone Guichet -->
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-gray-700">Numéro de Téléphone Principal (+229) *</label>
+          <div class="flex items-center rounded-2xl border border-outline-variant/60 bg-gray-50 overflow-hidden">
+            <span class="px-3.5 py-3 bg-gray-100 border-r border-outline-variant/50 font-bold text-gray-600 select-none">🇧🇯 +229</span>
+            <input type="tel" id="kioskPhone" required value="97 45 67 89" class="w-full bg-transparent border-0 py-3 px-3.5 text-xs font-mono font-bold text-on-surface focus:ring-0 focus:outline-none"/>
+          </div>
+        </div>
+
+        <!-- Téléphone WhatsApp -->
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-gray-700">Contact WhatsApp Client</label>
+          <div class="flex items-center rounded-2xl border border-outline-variant/60 bg-gray-50 overflow-hidden">
+            <span class="px-3.5 py-3 bg-gray-100 border-r border-outline-variant/50 font-bold text-gray-600 select-none">🇧🇯 +229</span>
+            <input type="tel" id="kioskWhatsapp" value="97 45 67 89" class="w-full bg-transparent border-0 py-3 px-3.5 text-xs font-mono font-bold text-on-surface focus:ring-0 focus:outline-none"/>
+          </div>
+        </div>
+      </section>
+
+      <!-- Localisation Géographique -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3 text-xs">
+        <div class="flex items-center gap-2 border-b border-outline-variant/30 pb-2">
+          <span class="material-symbols-outlined text-primary text-lg">location_on</span>
+          <h3 class="font-black text-on-surface uppercase tracking-wider">Localisation & Adresse</h3>
+        </div>
+
+        <!-- Commune / Ville -->
+        <div class="grid grid-cols-2 gap-2">
+          <div class="flex flex-col gap-1">
+            <label class="font-bold text-gray-700">Ville / Commune *</label>
+            <input type="text" id="kioskVille" required value="Cotonou" class="w-full rounded-2xl border border-outline-variant/60 bg-gray-50 py-3 px-4 text-xs font-bold text-on-surface focus:border-primary focus:ring-primary"/>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="font-bold text-gray-700">Quartier *</label>
+            <input type="text" id="kioskQuartier" required value="Cadjehoun" class="w-full rounded-2xl border border-outline-variant/60 bg-gray-50 py-3 px-4 text-xs font-bold text-on-surface focus:border-primary focus:ring-primary"/>
+          </div>
+        </div>
+
+        <!-- Adresse précise et repères -->
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-gray-700">Adresse exacte & Repère visible *</label>
+          <input type="text" id="kioskAddress" required value="Avenue Steinmetz, face Pharmacie Cadjehoun" class="w-full rounded-2xl border border-outline-variant/60 bg-gray-50 py-3 px-4 text-xs font-bold text-on-surface focus:border-primary focus:ring-primary"/>
+        </div>
+      </section>
+
+      <!-- Horaires d'Ouverture -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3 text-xs">
+        <div class="flex items-center gap-2 border-b border-outline-variant/30 pb-2">
+          <span class="material-symbols-outlined text-primary text-lg">schedule</span>
+          <h3 class="font-black text-on-surface uppercase tracking-wider">Horaires de Service au Guichet</h3>
+        </div>
+
+        <!-- Lundi à Vendredi -->
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-gray-50">
+          <span class="font-bold text-on-surface">Lundi - Vendredi :</span>
+          <div class="flex items-center gap-1 font-mono font-bold text-primary">
+            <input type="text" value="08:00" class="w-14 text-center py-1 px-1 rounded-lg border border-outline-variant/60 bg-white text-xs"/>
+            <span>-</span>
+            <input type="text" value="20:00" class="w-14 text-center py-1 px-1 rounded-lg border border-outline-variant/60 bg-white text-xs"/>
+          </div>
+        </div>
+
+        <!-- Samedi -->
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-gray-50">
+          <span class="font-bold text-on-surface">Samedi :</span>
+          <div class="flex items-center gap-1 font-mono font-bold text-primary">
+            <input type="text" value="08:30" class="w-14 text-center py-1 px-1 rounded-lg border border-outline-variant/60 bg-white text-xs"/>
+            <span>-</span>
+            <input type="text" value="19:00" class="w-14 text-center py-1 px-1 rounded-lg border border-outline-variant/60 bg-white text-xs"/>
+          </div>
+        </div>
+
+        <!-- Dimanche -->
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-gray-50">
+          <span class="font-bold text-on-surface">Dimanche :</span>
+          <div class="flex items-center gap-1 font-mono font-bold text-primary">
+            <input type="text" value="09:00" class="w-14 text-center py-1 px-1 rounded-lg border border-outline-variant/60 bg-white text-xs"/>
+            <span>-</span>
+            <input type="text" value="16:00" class="w-14 text-center py-1 px-1 rounded-lg border border-outline-variant/60 bg-white text-xs"/>
+          </div>
+        </div>
+      </section>
+
+      <!-- Informations Fiscales (Lecture Seule / Vérifiées) -->
+      <section class="bg-purple-50/70 rounded-3xl p-5 border border-purple-200/80 flex flex-col gap-2.5 text-xs">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-lg">verified</span>
+          <h3 class="font-black text-purple-900 uppercase tracking-wider">Identifiants Fiscaux Certifiés (DGI Bénin)</h3>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-purple-800 font-medium">Numéro IFU :</span>
+          <b class="font-mono text-primary font-black">0202112345678</b>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-purple-800 font-medium">NPI Titulaire ANIP :</span>
+          <b class="font-mono text-primary font-black">1098234871239</b>
+        </div>
+      </section>
+
+      <!-- Submit Action Button -->
+      <div class="pt-1">
+        <button type="submit" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm cursor-pointer">
+          <span class="material-symbols-outlined text-xl">save</span>
+          <span>Enregistrer les Modifications</span>
+        </button>
+      </div>
+
+    </form>
+
+  </main>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Logic -->
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../param_tres_et_profil_agent/code.html';
+      }
+    }
+
+    function previewPhoto(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('agent-photo-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function saveAgentProfile() {
+      const name = document.getElementById('kioskName').value.trim();
+      alert(`✅ Profil du kiosque "${name}" mis à jour avec succès ! Les modifications sont visibles immédiatement par les clients.`);
+      window.location.href = '../param_tres_et_profil_agent/code.html';
+    }
+  </script>
+
+  <!-- Bottom Navigation Bar Agent (Piliers Opérationnels) -->
+  <nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+    <a href="../tableau_de_bord_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">dashboard</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+    </a>
+    <a href="../valider_une_op_ration_client/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.3);position:relative;top:-4px;">
+        <span class="material-symbols-outlined" style="font-size:20px;">qr_code_scanner</span>
+      </div>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-2px;">Servir</span>
+    </a>
+    <a href="../services_factures_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">apps</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Services</span>
+    </a>
+    <a href="../cloture_de_caisse_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">point_of_sale</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Caisse</span>
+    </a>
+    <a href="../param_tres_et_profil_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5E3BDC;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">manage_accounts</span>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;">Profil</span>
+    </a>
+  </nav>
+
+</body>
+</html>

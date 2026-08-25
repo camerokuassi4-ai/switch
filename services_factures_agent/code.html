@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Guichet Multi-Services - Espace Agent Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .modal-enter {
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <button aria-label="Retour" onclick="window.location.href='../tableau_de_bord_agent/code.html'" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Guichet Multi-Services</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Factures, électricité, eau, bouquets & KYC</p>
+    </div>
+
+    <!-- Agent ID Badge -->
+    <div class="w-10 h-10 rounded-full bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold text-xs">
+      AGT
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Enrôlement Client Hero Banner (+500 F de Prime) -->
+    <div onclick="openKycEnrollmentModal()" class="bg-gradient-to-r from-purple-900 to-indigo-900 rounded-3xl p-5 text-white shadow-soft flex items-center justify-between cursor-pointer hover:opacity-95 transition-opacity">
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-2xl bg-amber-400 text-purple-950 flex items-center justify-center font-black text-xl shrink-0 shadow-md">
+          <span class="material-symbols-outlined text-2xl">how_to_reg</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h2 class="text-sm font-black">Enrôler un Nouveau Client</h2>
+            <span class="text-[9px] font-black uppercase text-amber-300 bg-amber-400/20 border border-amber-300/40 px-1.5 py-0.2 rounded-md">+500 F / KYC</span>
+          </div>
+          <p class="text-xs text-purple-200 mt-0.5">Inscription au guichet & vérification ANIP instantanée</p>
+        </div>
+      </div>
+
+      <span class="material-symbols-outlined text-purple-200 text-xl shrink-0">chevron_right</span>
+    </div>
+
+    <!-- 2. Services Publics & Factures Bento Grid -->
+    <section class="flex flex-col gap-3">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Paiements de Factures & Abonnements</h3>
+
+      <div class="grid grid-cols-2 gap-3">
+        
+        <!-- SBEE Électricité -->
+        <div onclick="openServiceModal('sbee')" class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft hover:border-primary cursor-pointer transition-all flex flex-col gap-2 group">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-colors">
+              <span class="material-symbols-outlined text-xl">electric_bolt</span>
+            </div>
+            <span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md">+150 F com.</span>
+          </div>
+          <div>
+            <b class="text-xs font-bold text-on-surface block">SBEE Électricité</b>
+            <span class="text-[10px] text-gray-500">Recharge code prépayé & facture</span>
+          </div>
+        </div>
+
+        <!-- SONEB Eau -->
+        <div onclick="openServiceModal('soneb')" class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft hover:border-primary cursor-pointer transition-all flex flex-col gap-2 group">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-colors">
+              <span class="material-symbols-outlined text-xl">water_drop</span>
+            </div>
+            <span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md">+150 F com.</span>
+          </div>
+          <div>
+            <b class="text-xs font-bold text-on-surface block">SONEB Eau Potable</b>
+            <span class="text-[10px] text-gray-500">Règlement direct de facture</span>
+          </div>
+        </div>
+
+        <!-- Canal+ / Bouquets TV -->
+        <div onclick="openServiceModal('canal')" class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft hover:border-primary cursor-pointer transition-all flex flex-col gap-2 group">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-purple-50 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+              <span class="material-symbols-outlined text-xl">tv</span>
+            </div>
+            <span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md">+250 F com.</span>
+          </div>
+          <div>
+            <b class="text-xs font-bold text-on-surface block">Canal+ / DSTV</b>
+            <span class="text-[10px] text-gray-500">Réabonnement formules TV</span>
+          </div>
+        </div>
+
+        <!-- Forfaits Telco & Data -->
+        <div onclick="openServiceModal('telco')" class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft hover:border-primary cursor-pointer transition-all flex flex-col gap-2 group">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+              <span class="material-symbols-outlined text-xl">wifi</span>
+            </div>
+            <span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md">+2.5% com.</span>
+          </div>
+          <div>
+            <b class="text-xs font-bold text-on-surface block">Forfaits Telco & Data</b>
+            <span class="text-[10px] text-gray-500">MTN, Moov, Celtiis Bénin</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. Raccourcis Caisse & Float -->
+    <div class="grid grid-cols-2 gap-2.5 pt-1">
+      <a href="../d_p_t_de_fonds_mis_jour_agent/code.html" class="p-3.5 rounded-2xl bg-white border border-outline-variant/40 shadow-soft hover:border-primary flex items-center gap-2.5 text-xs font-bold text-on-surface no-underline">
+        <span class="material-symbols-outlined text-primary text-xl">arrow_downward</span>
+        <span>Dépôt Client</span>
+      </a>
+
+      <a href="../retrait_de_fonds_mis_jour_agent/code.html" class="p-3.5 rounded-2xl bg-white border border-outline-variant/40 shadow-soft hover:border-primary flex items-center gap-2.5 text-xs font-bold text-on-surface no-underline">
+        <span class="material-symbols-outlined text-amber-700 text-xl">arrow_upward</span>
+        <span>Retrait Client</span>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : Enrôlement KYC Client ANIP -->
+  <!-- ============================================================ -->
+  <div id="enrollment-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm hidden flex items-end justify-center">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-10 shadow-2xl modal-enter flex flex-col gap-4">
+      
+      <div class="w-full flex items-center justify-between">
+        <span class="w-12 h-1 bg-outline-variant rounded-full mx-auto -mr-6"></span>
+        <button onclick="closeEnrollmentModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-2xl">how_to_reg</span>
+        </div>
+        <div>
+          <h3 class="text-base font-black text-on-surface">Enrôlement Nouveau Client</h3>
+          <p class="text-xs text-emerald-700 font-bold">Prime Agent immédiate : +500 FCFA</p>
+        </div>
+      </div>
+
+      <form onsubmit="event.preventDefault(); executeEnrollment();" class="flex flex-col gap-3 text-xs">
+        
+        <!-- Téléphone Client -->
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-gray-700">Numéro Mobile du Client (+229) *</label>
+          <div class="flex items-center rounded-2xl border border-outline-variant/60 bg-gray-50 overflow-hidden">
+            <span class="px-3.5 py-3 bg-gray-100 border-r border-outline-variant/50 font-bold text-gray-600 select-none">🇧🇯 +229</span>
+            <input type="tel" id="enrollPhone" required placeholder="97 00 00 00" maxlength="12" class="w-full bg-transparent border-0 py-3 px-3.5 text-xs font-mono font-bold text-on-surface focus:ring-0 focus:outline-none"/>
+          </div>
+        </div>
+
+        <!-- Nom et Prénom -->
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-gray-700">Nom & Prénoms complets du Client *</label>
+          <input type="text" id="enrollName" required placeholder="Ex: Jean DOSSOU" class="w-full rounded-2xl border border-outline-variant/60 bg-gray-50 py-3 px-4 text-xs font-bold text-on-surface focus:border-primary focus:ring-primary"/>
+        </div>
+
+        <!-- NPI / Numéro ANIP -->
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-gray-700">Numéro Personnel d'Identification (NPI / ANIP) *</label>
+          <input type="text" id="enrollNpi" required maxlength="13" placeholder="Ex: 1098234871239" class="w-full rounded-2xl border border-outline-variant/60 bg-gray-50 py-3 px-4 text-xs font-mono font-bold text-on-surface focus:border-primary focus:ring-primary"/>
+        </div>
+
+        <button type="submit" class="w-full mt-2 bg-primary text-white font-bold py-3.5 rounded-full shadow-md hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] cursor-pointer">
+          Valider l'Inscription & Activer le Compte
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : Service Facture (SBEE / SONEB / Canal / Telco) -->
+  <!-- ============================================================ -->
+  <div id="service-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm hidden flex items-end justify-center">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-10 shadow-2xl modal-enter flex flex-col gap-4">
+      
+      <div class="w-full flex items-center justify-between">
+        <span class="w-12 h-1 bg-outline-variant rounded-full mx-auto -mr-6"></span>
+        <button onclick="closeServiceModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div id="service-modal-icon" class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-2xl">electric_bolt</span>
+        </div>
+        <div>
+          <h3 id="service-modal-title" class="text-base font-black text-on-surface">Paiement Facture SBEE</h3>
+          <p id="service-modal-sub" class="text-xs text-gray-500">Recharge compteur prépayé ou conventionnel</p>
+        </div>
+      </div>
+
+      <form onsubmit="event.preventDefault(); executeServicePayment();" class="flex flex-col gap-3 text-xs">
+        
+        <!-- Identifiant compteur / client -->
+        <div class="flex flex-col gap-1">
+          <label id="service-label-id" class="font-bold text-gray-700">Numéro de Compteur / Référence *</label>
+          <input type="text" id="serviceIdInput" required placeholder="Ex: 14283920192" class="w-full rounded-2xl border border-outline-variant/60 bg-gray-50 py-3 px-4 text-xs font-mono font-bold text-on-surface focus:border-primary focus:ring-primary"/>
+        </div>
+
+        <!-- Montant -->
+        <div class="flex flex-col gap-1">
+          <label class="font-bold text-gray-700">Montant à Encaisser (FCFA) *</label>
+          <input type="number" id="serviceAmountInput" required min="500" value="5000" class="w-full rounded-2xl border border-outline-variant/60 bg-gray-50 py-3 px-4 text-xs font-mono font-bold text-on-surface focus:border-primary focus:ring-primary"/>
+        </div>
+
+        <button type="submit" class="w-full mt-2 bg-primary text-white font-bold py-3.5 rounded-full shadow-md hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] cursor-pointer">
+          Valider & Émettre le Reçu Client
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Logic -->
+  <script>
+    function openKycEnrollmentModal() {
+      document.getElementById('enrollment-modal').classList.remove('hidden');
+    }
+
+    function closeEnrollmentModal() {
+      document.getElementById('enrollment-modal').classList.add('hidden');
+    }
+
+    function executeEnrollment() {
+      const name = document.getElementById('enrollName').value.trim();
+      const phone = document.getElementById('enrollPhone').value.trim();
+      closeEnrollmentModal();
+      alert(`🎉 Client "${name}" (+229 ${phone}) inscrit et vérifié ANIP avec succès !\nRIB Switch attribué : BJ062 01001 98234182910 88\nVotre commission de +500 FCFA a été créditée sur votre solde.`);
+    }
+
+    function openServiceModal(type) {
+      const title = document.getElementById('service-modal-title');
+      const sub = document.getElementById('service-modal-sub');
+      const labelId = document.getElementById('service-label-id');
+      const icon = document.getElementById('service-modal-icon');
+
+      if (type === 'sbee') {
+        title.textContent = "SBEE Électricité (Recharge Compteur)";
+        sub.textContent = "Génération instantanée du code de recharge prépayé";
+        labelId.textContent = "Numéro du Compteur SBEE *";
+        icon.className = "w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0";
+        icon.innerHTML = '<span class="material-symbols-outlined text-2xl">electric_bolt</span>';
+      } else if (type === 'soneb') {
+        title.textContent = "SONEB Eau Potable";
+        sub.textContent = "Règlement direct de facture d'eau";
+        labelId.textContent = "Numéro de Police / Référence Facture *";
+        icon.className = "w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0";
+        icon.innerHTML = '<span class="material-symbols-outlined text-2xl">water_drop</span>';
+      } else if (type === 'canal') {
+        title.textContent = "Canal+ / DSTV Réabonnement";
+        sub.textContent = "Réactivation immédiate du décodeur";
+        labelId.textContent = "Numéro de Décodeur / Carte d'Abonnement *";
+        icon.className = "w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center shrink-0";
+        icon.innerHTML = '<span class="material-symbols-outlined text-2xl">tv</span>';
+      } else {
+        title.textContent = "Forfaits Telco & Data (MTN / Moov / Celtiis)";
+        sub.textContent = "Recharge voix et forfaits internet";
+        labelId.textContent = "Numéro Mobile du Client (+229) *";
+        icon.className = "w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0";
+        icon.innerHTML = '<span class="material-symbols-outlined text-2xl">wifi</span>';
+      }
+
+      document.getElementById('service-modal').classList.remove('hidden');
+    }
+
+    function closeServiceModal() {
+      document.getElementById('service-modal').classList.add('hidden');
+    }
+
+    function executeServicePayment() {
+      const amt = document.getElementById('serviceAmountInput').value;
+      closeServiceModal();
+      alert(`✅ Paiement de service de ${parseInt(amt).toLocaleString('fr-FR')} FCFA validé avec succès !\nReçu généré et imprimable.`);
+    }
+  </script>
+
+  <!-- Bottom Navigation Bar Agent (Active sur Services) -->
+  <nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+    <a href="../tableau_de_bord_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">dashboard</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+    </a>
+    <a href="../valider_une_op_ration_client/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.3);position:relative;top:-4px;">
+        <span class="material-symbols-outlined" style="font-size:20px;">qr_code_scanner</span>
+      </div>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-2px;">Servir</span>
+    </a>
+    <a href="../services_factures_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5E3BDC;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">apps</span>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;">Services</span>
+    </a>
+    <a href="../cloture_de_caisse_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">point_of_sale</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Caisse</span>
+    </a>
+    <a href="../param_tres_et_profil_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">manage_accounts</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Profil</span>
+    </a>
+  </nav>
+
+</body>
+</html>
