@@ -104,6 +104,9 @@
     "centre_de_notifications_marchand": {
       space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: null, actions: {}
     },
+    "operations_caisse_marchand": {
+      space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: null, actions: {}
+    },
     "notifications_vides": {
       space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: "notifs", actions: {}
     },
