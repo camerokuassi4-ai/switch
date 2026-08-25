@@ -1,91 +1,357 @@
 <!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Modifier mon Profil - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
 
-<html class="light" lang="fr"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Modifier le profil</title>
-<!-- Material Symbols -->
-
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="../assets/switch.css">
-<script src="../assets/switch.config.js"></script>
-<!-- Tailwind Config -->
-
-<style>
-        @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
-        body { font-family: 'Hanken Grotesk', sans-serif; }
-    </style>
-<style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    
     body {
+      font-family: 'Hanken Grotesk', sans-serif;
       min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .input-focus {
+      transition: all 0.2s ease;
+    }
+
+    .input-focus:focus {
+      border-color: #5E3BDC;
+      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.12);
+      outline: none;
+    }
+
+    /* Toast animation */
+    @keyframes toastSlide {
+      0% { transform: translate(-50%, -100%); opacity: 0; }
+      15% { transform: translate(-50%, 0); opacity: 1; }
+      85% { transform: translate(-50%, 0); opacity: 1; }
+      100% { transform: translate(-50%, -100%); opacity: 0; }
+    }
+
+    .toast-animate {
+      animation: toastSlide 2.5s ease forwards;
     }
   </style>
-  </head>
-<body class="bg-background text-on-background min-h-screen relative flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-container">
-<!-- Header Section -->
-<header class="flex items-center justify-between px-container-margin py-stack-md w-full pt-8">
-<button class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface">
-<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
-</button>
-<h1 class="font-headline-md text-headline-md text-on-surface font-bold absolute left-1/2 -translate-x-1/2">
-            Modifier le profil
-        </h1>
-<div class="w-10"></div> <!-- Spacer for center alignment -->
-</header>
-<!-- Main Content Canvas -->
-<main class="flex-1 px-container-margin py-stack-lg pb-40 flex flex-col items-center">
-<!-- Avatar Section -->
-<div class="relative mb-stack-lg flex flex-col items-center">
-<div class="relative">
-<img alt="Photo de profil d'Adele Doe" title="Photo de profil" class="w-28 h-28 rounded-full object-cover shadow-sm ring-4 ring-surface-container-lowest" data-alt="A highly detailed, professional headshot portrait of a confident young Beninese woman in a bright, modern corporate environment. The lighting is soft and diffused, creating a premium light-mode aesthetic. She is dressed in smart casual business attire, subtly complementing the sleek fintech brand vibe. The background is a slightly blurred, clean office space with natural daylight, emphasizing approachability and modern professionalism. High-resolution photograph." src="../assets/images/img_031.jpg"/>
-<button class="absolute bottom-0 right-0 bg-primary text-on-primary p-2 rounded-full shadow-md hover:bg-primary-container hover:text-on-primary-container transition-colors transform active:scale-95 flex items-center justify-center ring-4 ring-background">
-<span class="material-symbols-outlined text-[18px]" data-icon="edit" style="font-variation-settings: 'FILL' 1;">edit</span>
-</button>
-</div>
-<p class="mt-4 font-label-caps text-label-caps text-primary cursor-pointer hover:underline">Modifier la photo</p>
-</div>
-<!-- Form Section -->
-<form class="w-full max-w-md flex flex-col gap-stack-md" onsubmit="event.preventDefault(); animateSave(this);">
-<!-- First Name Field -->
-<div class="flex flex-col gap-stack-sm">
-<label class="font-label-caps text-label-caps text-on-surface-variant ml-1" for="prenom">Prénom</label>
-<div class="relative flex items-center">
-<span class="material-symbols-outlined absolute left-4 text-outline-variant select-none" data-icon="person">person</span>
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl pl-12 pr-4 py-3 font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow bg-clip-padding shadow-sm" id="prenom" type="text" value="Adele"/>
-</div>
-</div>
-<!-- Last Name Field -->
-<div class="flex flex-col gap-stack-sm">
-<label class="font-label-caps text-label-caps text-on-surface-variant ml-1" for="nom">Nom</label>
-<div class="relative flex items-center">
-<span class="material-symbols-outlined absolute left-4 text-outline-variant select-none" data-icon="badge">badge</span>
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl pl-12 pr-4 py-3 font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow bg-clip-padding shadow-sm" id="nom" type="text" value="Doe"/>
-</div>
-</div>
-<!-- Email Field -->
-<div class="flex flex-col gap-stack-sm mb-stack-lg">
-<label class="font-label-caps text-label-caps text-on-surface-variant ml-1" for="email">Email</label>
-<div class="relative flex items-center">
-<span class="material-symbols-outlined absolute left-4 text-outline-variant select-none" data-icon="mail">mail</span>
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl pl-12 pr-4 py-3 font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow bg-clip-padding shadow-sm" id="email" type="email" value="adele.doe@example.com"/>
-</div>
-</div>
-<!-- Submit Button -->
-<button class="w-full bg-primary text-on-primary font-headline-md text-headline-md py-4 rounded-full shadow-md hover:bg-on-primary-fixed-variant transition-all transform active:scale-95 flex items-center justify-center gap-2 group" id="saveBtn" type="submit">
-<span>Enregistrer les modifications</span>
-<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="check_circle">check_circle</span>
-</button>
-</form>
-</main>
-<!-- Bottom Navigation Bar (Shared Component via JSON rendering) -->
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-36 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
 
-<!-- Simple interaction script -->
-<script>
-        function animateSave(form) {
-            window.location.href = '../profil_utilisateur/code.html';
+  <!-- Success Toast (Hidden by default) -->
+  <div id="save-toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 hidden max-w-sm w-[90%] bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3">
+    <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-xl">check_circle</span>
+    </div>
+    <div>
+      <h4 class="text-xs font-black">Profil Enregistré !</h4>
+      <p class="text-[11px] text-white/90">Vos informations ont été mises à jour avec succès.</p>
+    </div>
+  </div>
+
+  <!-- Top App Bar Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <button onclick="window.history.length > 1 ? window.history.back() : window.location.href='../profil_utilisateur/code.html'" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer" aria-label="Retour au profil">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <h1 class="text-base font-extrabold text-on-surface tracking-tight">Modifier mon profil</h1>
+
+    <div class="w-10"></div> <!-- Spacer for center alignment -->
+  </header>
+
+  <!-- Main Content Form -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-1">
+
+    <!-- Avatar Upload Section -->
+    <div class="flex flex-col items-center justify-center pt-2 pb-1">
+      <div class="relative group cursor-pointer" onclick="document.getElementById('avatar-file-input').click()">
+        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-white shadow-md ring-2 ring-primary/20 group-hover:ring-primary transition-all">
+          <img id="profile-avatar-img" alt="Photo de profil Adele Doe" class="w-full h-full object-cover" src="../assets/images/img_046.jpg"/>
+        </div>
+        
+        <!-- Camera Action Badge -->
+        <div class="absolute bottom-0 right-0 w-9 h-9 rounded-full bg-primary text-white shadow-md border-2 border-white flex items-center justify-center group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-lg">photo_camera</span>
+        </div>
+      </div>
+
+      <!-- Hidden Real File Input -->
+      <input type="file" id="avatar-file-input" accept="image/*" class="hidden" onchange="handleAvatarChange(event)"/>
+
+      <button type="button" onclick="document.getElementById('avatar-file-input').click()" class="mt-2.5 text-xs font-bold text-primary hover:underline cursor-pointer flex items-center gap-1">
+        <span class="material-symbols-outlined text-sm">edit</span>
+        <span>Changer la photo de profil</span>
+      </button>
+      <span class="text-[10px] text-on-surface-variant mt-0.5">Format JPG ou PNG max 5 Mo</span>
+    </div>
+
+    <!-- Form -->
+    <form id="profile-form" onsubmit="handleProfileSubmit(event)" class="flex flex-col gap-4">
+
+      <!-- Section 1 : Identité Personnelle -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3.5">
+        <div class="flex items-center gap-2 border-b border-outline-variant/30 pb-2.5">
+          <span class="material-symbols-outlined text-primary text-lg">badge</span>
+          <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">Identité & État Civil</h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Prénom -->
+          <div class="flex flex-col gap-1">
+            <label for="input-firstname" class="text-[11px] font-bold text-on-surface-variant">Prénom</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">person</span>
+              <input type="text" id="input-firstname" required value="Adele" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+            </div>
+          </div>
+
+          <!-- Nom -->
+          <div class="flex flex-col gap-1">
+            <label for="input-lastname" class="text-[11px] font-bold text-on-surface-variant">Nom de famille</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">badge</span>
+              <input type="text" id="input-lastname" required value="Doe" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Date de Naissance -->
+          <div class="flex flex-col gap-1">
+            <label for="input-birthdate" class="text-[11px] font-bold text-on-surface-variant">Date de naissance</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">calendar_today</span>
+              <input type="date" id="input-birthdate" value="1996-08-14" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+            </div>
+          </div>
+
+          <!-- Genre -->
+          <div class="flex flex-col gap-1">
+            <label for="input-gender" class="text-[11px] font-bold text-on-surface-variant">Genre</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">wc</span>
+              <select id="input-gender" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-8 text-xs sm:text-sm font-semibold text-on-surface cursor-pointer">
+                <option value="F" selected>Femme</option>
+                <option value="M">Homme</option>
+                <option value="O">Autre</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2 : Coordonnées & Localisation au Bénin -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3.5">
+        <div class="flex items-center gap-2 border-b border-outline-variant/30 pb-2.5">
+          <span class="material-symbols-outlined text-primary text-lg">contact_mail</span>
+          <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">Contact & Résidence</h2>
+        </div>
+
+        <!-- Numéro de Téléphone (Verrouillé & Sécurisé) -->
+        <div class="flex flex-col gap-1">
+          <div class="flex items-center justify-between">
+            <label for="input-phone" class="text-[11px] font-bold text-on-surface-variant">Numéro de téléphone Switch</label>
+            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full flex items-center gap-1 border border-emerald-200">
+              <span class="material-symbols-outlined text-xs">verified</span>
+              Vérifié OTP
+            </span>
+          </div>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">smartphone</span>
+            <input type="text" id="input-phone" value="+229 97 12 34 56" readonly class="w-full bg-gray-100/80 border border-outline-variant/40 rounded-2xl py-2.5 pl-10 pr-10 text-xs sm:text-sm font-mono font-bold text-gray-700 cursor-not-allowed select-none"/>
+            <span class="material-symbols-outlined absolute right-3 text-gray-400 text-lg" title="Numéro certifié non modifiable sans vérification de sécurité">lock</span>
+          </div>
+          <p class="text-[10px] text-on-surface-variant ml-1">Pour modifier votre numéro principal, passez par la vérification de sécurité.</p>
+        </div>
+
+        <!-- Adresse Email -->
+        <div class="flex flex-col gap-1">
+          <label for="input-email" class="text-[11px] font-bold text-on-surface-variant">Adresse email</label>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">mail</span>
+            <input type="email" id="input-email" required value="adele.doe@gmail.com" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Commune / Ville au Bénin -->
+          <div class="flex flex-col gap-1">
+            <label for="input-city" class="text-[11px] font-bold text-on-surface-variant">Commune / Ville (Bénin)</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">location_city</span>
+              <select id="input-city" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-8 text-xs sm:text-sm font-semibold text-on-surface cursor-pointer">
+                <option value="Cotonou" selected>Cotonou (Littoral)</option>
+                <option value="Abomey-Calavi">Abomey-Calavi (Atlantique)</option>
+                <option value="Porto-Novo">Porto-Novo (Ouémé)</option>
+                <option value="Parakou">Parakou (Borgou)</option>
+                <option value="Ouidah">Ouidah (Atlantique)</option>
+                <option value="Bohicon">Bohicon (Zou)</option>
+                <option value="Natitingou">Natitingou (Atacora)</option>
+                <option value="Kandi">Kandi (Alibori)</option>
+                <option value="Autre">Autre commune</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Quartier / Adresse -->
+          <div class="flex flex-col gap-1">
+            <label for="input-address" class="text-[11px] font-bold text-on-surface-variant">Quartier</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">home_pin</span>
+              <input type="text" id="input-address" value="Cadjèhoun, Haie Vive" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profession / Activité -->
+        <div class="flex flex-col gap-1">
+          <label for="input-profession" class="text-[11px] font-bold text-on-surface-variant">Profession / Secteur d'activité</label>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">work</span>
+            <input type="text" id="input-profession" value="Entrepreneure / Commerce" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3 : Identité Certifiée ANIP & Statut KYC -->
+      <div class="bg-gradient-to-br from-purple-50/80 to-white rounded-3xl p-5 border border-purple-200/60 shadow-soft flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-purple-200/40 pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">shield</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">Conformité ANIP & KYC</h2>
+          </div>
+          <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300 flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs">verified</span>
+            Niveau 2 Vérifié
+          </span>
+        </div>
+
+        <div class="flex items-center justify-between text-xs pt-1">
+          <span class="text-on-surface-variant font-medium">NPI (Numéro Personnel ANIP) :</span>
+          <b class="font-mono text-gray-800 tracking-wider">1996 0814 •••• 56</b>
+        </div>
+
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-on-surface-variant font-medium">Plafond de compte actuel :</span>
+          <b class="text-primary font-bold">2 000 000 FCFA / mois</b>
+        </div>
+
+        <a href="../verification_niveau_superieur/code.html" class="mt-2 text-xs font-bold text-primary flex items-center justify-between p-3 rounded-2xl bg-white border border-purple-200/80 hover:bg-purple-50/50 transition-colors no-underline">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-amber-500 text-lg">stars</span>
+            <span>Passer au Niveau 3 VIP (10M FCFA)</span>
+          </div>
+          <span class="material-symbols-outlined text-base text-primary">arrow_forward</span>
+        </a>
+      </div>
+
+      <!-- Submit Action Button -->
+      <div class="pt-2">
+        <button id="save-btn" type="submit" class="w-full bg-primary text-on-primary font-bold py-4 rounded-full shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer">
+          <span id="save-btn-text">Enregistrer les modifications</span>
+          <span id="save-btn-icon" class="material-symbols-outlined text-lg">save</span>
+        </button>
+      </div>
+
+    </form>
+
+  </main>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Logic -->
+  <script>
+    // 1. Charger les valeurs sauvegardées si existantes
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedFirstname = localStorage.getItem('switch_user_firstname');
+      const savedLastname = localStorage.getItem('switch_user_lastname');
+      const savedEmail = localStorage.getItem('switch_user_email');
+      const savedCity = localStorage.getItem('switch_user_city');
+      const savedAddress = localStorage.getItem('switch_user_address');
+      const savedProfession = localStorage.getItem('switch_user_profession');
+      const savedAvatar = localStorage.getItem('switch_user_avatar');
+
+      if (savedFirstname) document.getElementById('input-firstname').value = savedFirstname;
+      if (savedLastname) document.getElementById('input-lastname').value = savedLastname;
+      if (savedEmail) document.getElementById('input-email').value = savedEmail;
+      if (savedCity) document.getElementById('input-city').value = savedCity;
+      if (savedAddress) document.getElementById('input-address').value = savedAddress;
+      if (savedProfession) document.getElementById('input-profession').value = savedProfession;
+      if (savedAvatar) document.getElementById('profile-avatar-img').src = savedAvatar;
+    });
+
+    // 2. Gestion du changement d'avatar photo
+    function handleAvatarChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        if (file.size > 5 * 1024 * 1024) {
+          alert("L'image est trop volumineuse (max 5 Mo).");
+          return;
         }
-    </script>
-<script src="../assets/switch.forms.js"></script>
-<script src="../assets/switch.router.js"></script>
-</body></html>
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const dataUrl = e.target.result;
+          document.getElementById('profile-avatar-img').src = dataUrl;
+          localStorage.setItem('switch_user_avatar', dataUrl);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // 3. Gestion de la soumission du formulaire
+    function handleProfileSubmit(e) {
+      e.preventDefault();
+      
+      const btn = document.getElementById('save-btn');
+      const btnText = document.getElementById('save-btn-text');
+      const btnIcon = document.getElementById('save-btn-icon');
+      const toast = document.getElementById('save-toast');
+
+      // Sauvegarde des champs
+      const firstname = document.getElementById('input-firstname').value.trim();
+      const lastname = document.getElementById('input-lastname').value.trim();
+      const email = document.getElementById('input-email').value.trim();
+      const city = document.getElementById('input-city').value;
+      const address = document.getElementById('input-address').value.trim();
+      const profession = document.getElementById('input-profession').value.trim();
+
+      localStorage.setItem('switch_user_firstname', firstname);
+      localStorage.setItem('switch_user_lastname', lastname);
+      localStorage.setItem('switch_user_fullname', `${firstname} ${lastname}`);
+      localStorage.setItem('switch_user_email', email);
+      localStorage.setItem('switch_user_city', city);
+      localStorage.setItem('switch_user_address', address);
+      localStorage.setItem('switch_user_profession', profession);
+
+      // Animation bouton
+      btn.disabled = true;
+      btnText.textContent = "Enregistrement...";
+      btnIcon.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>`;
+
+      // Afficher Toast
+      if (toast) {
+        toast.classList.remove('hidden');
+        toast.classList.add('toast-animate');
+      }
+
+      // Redirection fluide après 1.2s vers le profil
+      setTimeout(() => {
+        window.location.href = '../profil_utilisateur/code.html';
+      }, 1200);
+    }
+  </script>
+
+</body>
+</html>
