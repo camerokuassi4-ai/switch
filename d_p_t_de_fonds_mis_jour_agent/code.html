@@ -536,27 +536,43 @@
       }
     }
 
-    // 5. Exécution du Dépôt & Reçu
+    // 5. Exécution du Dépôt & Redirection vers la page de succès
     function executeDeposit() {
       closePinModal();
       
       const amount = parseInt(document.getElementById('depositAmount').value) || 25000;
       const client = document.getElementById('verified-client-name').textContent;
+      const phone = document.getElementById('clientPhone').value.trim();
       const commText = document.getElementById('agent-commission-text').textContent;
+      const net = document.getElementById('selectedNetwork').value.toUpperCase();
+      const netLabel = (net === 'SWITCH') ? 'Switch Bénin' : (net === 'MTN' ? 'MTN MoMo' : (net === 'MOOV' ? 'Moov Money' : 'Celtiis Cash'));
+      const ref = `TRX-DEP-${Math.floor(10000 + Math.random() * 90000)}`;
 
-      document.getElementById('receipt-ref').textContent = `TRX-DEP-${Math.floor(10000 + Math.random() * 90000)}`;
-      document.getElementById('receipt-client').textContent = client;
-      document.getElementById('receipt-amount').textContent = `${amount.toLocaleString('fr-FR')} FCFA`;
-      document.getElementById('receipt-commission').textContent = commText;
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
-      document.getElementById('success-modal').classList.remove('hidden');
-    }
+      // Enregistrement des détails de l'opération
+      const trxData = {
+        title: "Dépôt d'espèces (Cash-In Client)",
+        amount: amount,
+        fee: "0 FCFA",
+        beneficiary: `${client} (+229 ${phone})`,
+        network: netLabel,
+        commission: commText,
+        source: "Trésorerie Float Agent",
+        ref: ref,
+        date: dateStr,
+        returnUrl: "../tableau_de_bord_agent/code.html",
+        returnLabel: "Retour au Tableau de Bord Agent"
+      };
 
-    function finishDeposit() {
+      localStorage.setItem('switch_last_transaction', JSON.stringify(trxData));
+
+      // Redirection immédiate vers la page officielle de confirmation de succès
       if (window.switchNavigate) {
-        window.switchNavigate('../tableau_de_bord_agent/code.html');
+        window.switchNavigate('../confirmation_de_succ_s/code.html');
       } else {
-        window.location.href = '../tableau_de_bord_agent/code.html';
+        window.location.href = '../confirmation_de_succ_s/code.html';
       }
     }
 
