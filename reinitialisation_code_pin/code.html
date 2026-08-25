@@ -106,20 +106,23 @@
           <span>Insérer code test : <b>582914</b></span>
         </button>
 
-        <!-- Resend Code Options -->
+        <!-- Resend Code Options (2 Clear Buttons) -->
         <div class="pt-2.5 border-t border-outline-variant/30 flex flex-col gap-2">
-          <div class="flex items-center justify-between text-xs">
-            <span class="text-on-surface-variant font-medium">Vous n'avez pas reçu le code ?</span>
-            <button type="button" id="resend-sms-btn" onclick="resendCode('sms')" disabled class="font-bold text-gray-400 cursor-not-allowed transition-colors">
-              Renvoyer (<span id="countdown">45</span>s)
+          <span class="text-xs text-on-surface-variant font-bold text-center">Vous n'avez pas reçu le code ?</span>
+          
+          <div class="grid grid-cols-2 gap-2">
+            <!-- 1. Bouton Renvoyer par SMS -->
+            <button type="button" id="resend-sms-btn" onclick="resendCode('sms')" class="py-2.5 px-2 rounded-2xl bg-purple-50 hover:bg-purple-100 text-primary border border-purple-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-sm">sms</span>
+              <span id="sms-btn-label">Renvoyer SMS (<span id="countdown">45</span>s)</span>
+            </button>
+
+            <!-- 2. Bouton Renvoyer par WhatsApp -->
+            <button type="button" onclick="resendCode('whatsapp')" class="py-2.5 px-2 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-sm text-emerald-600" style="font-variation-settings: 'FILL' 1;">chat</span>
+              <span>Par WhatsApp</span>
             </button>
           </div>
-
-          <!-- WhatsApp Resend Alternative -->
-          <button type="button" onclick="resendCode('whatsapp')" class="w-full py-2 rounded-2xl bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer">
-            <span class="material-symbols-outlined text-sm text-emerald-600" style="font-variation-settings: 'FILL' 1;">chat</span>
-            <span>Renvoyer le code par WhatsApp</span>
-          </button>
         </div>
 
       </div>
@@ -241,13 +244,12 @@
     let timerInterval = null;
     function startCountdown() {
       let seconds = 45;
-      const countEl = document.getElementById('countdown');
       const btn = document.getElementById('resend-sms-btn');
       if (timerInterval) clearInterval(timerInterval);
 
       btn.disabled = true;
-      btn.className = 'font-bold text-gray-400 cursor-not-allowed transition-colors text-xs';
-      btn.innerHTML = 'Renvoyer (<span id="countdown">' + seconds + '</span>s)';
+      btn.className = 'py-2.5 px-2 rounded-2xl bg-gray-100 text-gray-400 border border-gray-200 font-bold text-xs flex items-center justify-center gap-1.5 cursor-not-allowed transition-all';
+      btn.innerHTML = '<span class="material-symbols-outlined text-sm">sms</span> <span>Renvoyer SMS (<span id="countdown">' + seconds + '</span>s)</span>';
 
       timerInterval = setInterval(() => {
         seconds--;
@@ -256,8 +258,8 @@
         if (seconds <= 0) {
           clearInterval(timerInterval);
           btn.disabled = false;
-          btn.className = 'font-bold text-primary hover:underline cursor-pointer transition-colors text-xs';
-          btn.textContent = 'Renvoyer par SMS';
+          btn.className = 'py-2.5 px-2 rounded-2xl bg-purple-50 hover:bg-purple-100 text-primary border border-purple-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer';
+          btn.innerHTML = '<span class="material-symbols-outlined text-sm">sms</span> <span>Renvoyer par SMS</span>';
         }
       }, 1000);
     }
