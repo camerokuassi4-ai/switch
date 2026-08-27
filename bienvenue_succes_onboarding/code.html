@@ -36,7 +36,7 @@
 
     <!-- Title & Subtitle -->
     <div>
-      <h1 class="text-2xl sm:text-3xl font-extrabold text-on-surface">Félicitations, Adele !</h1>
+      <h1 id="welcome-title" class="text-2xl sm:text-3xl font-extrabold text-on-surface">Félicitations !</h1>
       <p class="text-xs sm:text-sm text-on-surface-variant mt-1">Votre compte <b>Switch Bénin</b> est actif et prêt à l'emploi.</p>
     </div>
 
@@ -67,18 +67,18 @@
 
       <div class="flex justify-between items-center">
         <span class="text-on-surface-variant">Titulaire :</span>
-        <b class="text-on-surface">Adele Doe</b>
+        <b id="user-display-name" class="text-on-surface">Utilisateur Switch</b>
       </div>
 
       <div class="flex justify-between items-center">
         <span class="text-on-surface-variant">Numéro Switch :</span>
-        <b class="font-mono text-on-surface">+229 97 12 34 56</b>
+        <b id="user-display-phone" class="font-mono text-on-surface">+229 01 -- -- --</b>
       </div>
 
       <div class="flex flex-col gap-1 pt-1">
         <span class="text-on-surface-variant">RIB Officiel Switch Bénin :</span>
         <div class="p-2.5 bg-surface-container rounded-xl font-mono font-bold text-[11px] text-primary flex items-center justify-between select-all">
-          <span>BJ061 01001 09876543210 44</span>
+          <span id="user-display-rib">BJ061 01001 09876543210 44</span>
           <button onclick="copyRib()" class="text-primary font-bold hover:underline">Copier</button>
         </div>
       </div>
@@ -99,6 +99,21 @@
   </main>
 
   <script>
+    // Initialisation dynamique des données utilisateur
+    document.addEventListener('DOMContentLoaded', () => {
+      const fullName = localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || 'Utilisateur';
+      const firstName = fullName.trim().split(' ')[0] || 'Utilisateur';
+      const phone = localStorage.getItem('switch_user_phone') || '+229 01 -- -- --';
+
+      const titleEl = document.getElementById('welcome-title');
+      const nameEl = document.getElementById('user-display-name');
+      const phoneEl = document.getElementById('user-display-phone');
+
+      if (titleEl) titleEl.textContent = `Félicitations, ${firstName} !`;
+      if (nameEl) nameEl.textContent = fullName;
+      if (phoneEl) phoneEl.textContent = phone;
+    });
+
     function copyRib() {
       navigator.clipboard.writeText("BJ061 01001 09876543210 44");
       alert("RIB UEMOA copié : BJ061 01001 09876543210 44");

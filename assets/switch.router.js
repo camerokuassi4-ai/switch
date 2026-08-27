@@ -1037,6 +1037,7 @@
 
     wireActions(actions);
     wireAvatarToProfile(space);
+    syncUserDataDOM();
 
     // Précharge en arrière-plan pendant les temps d'inactivité du processeur
     if ('requestIdleCallback' in window) {
@@ -1044,6 +1045,40 @@
     } else {
       setTimeout(() => preloadSpaceTabs(space), 800);
     }
+  }
+
+  function syncUserDataDOM() {
+    try {
+      const fullName = localStorage.getItem("switch_user_fullname") || localStorage.getItem("switch_user_name");
+      const phone = localStorage.getItem("switch_user_phone");
+
+      if (fullName && fullName.trim()) {
+        const cleanName = fullName.trim();
+        const firstName = cleanName.split(" ")[0];
+
+        // Remplacement par sélecteurs d'ID
+        const nameElements = document.querySelectorAll("#dashboard-user-name, #settings-user-name, #profile-user-name, #user-profile-name, #stmt-user-name, #user-display-name, #user-fullname-display, #profile-name-header");
+        nameElements.forEach(el => { el.textContent = cleanName; });
+
+        const firstElements = document.querySelectorAll("#welcome-title, #user-firstname-display, #header-greeting-name");
+        firstElements.forEach(el => {
+          if (el.id === "welcome-title") {
+            el.textContent = `Félicitations, ${firstName} !`;
+          } else {
+            el.textContent = firstName;
+          }
+        });
+
+        // Cartes virtuelles et porte-cartes
+        const cardHolders = document.querySelectorAll(".card-holder, #card-holder-name, [data-user-name]");
+        cardHolders.forEach(el => { el.textContent = cleanName.toUpperCase(); });
+      }
+
+      if (phone && phone.trim()) {
+        const phoneElements = document.querySelectorAll("#user-display-phone, #user-phone-display, #user-profile-phone, #settings-user-phone, #profile-user-phone");
+        phoneElements.forEach(el => { el.textContent = phone; });
+      }
+    } catch(e) {}
   }
 
   function preloadSpaceTabs(space) {
