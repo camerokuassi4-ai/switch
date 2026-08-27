@@ -7,6 +7,8 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
@@ -190,13 +192,16 @@
       }
     }
 
-    function executePayment() {
+    async function executePayment() {
       if (enteredPin.length < 4) {
         alert("Veuillez saisir les 4 chiffres de votre code secret Switch.");
         return;
       }
 
       const bName = localStorage.getItem('switch_merchant_business_name') || "Boutique & Restaurant La Plage";
+      const payBtn = document.getElementById('pay-btn');
+      payBtn.disabled = true;
+      payBtn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">sync</span><span>Traitement du paiement...</span>';
 
       if (window.SwitchEngine) {
         const mainBal = window.SwitchEngine.getMainBalance();
@@ -204,6 +209,8 @@
           alert("Solde insuffisant dans votre Compte Switch (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible, " + paymentAmount.toLocaleString('fr-FR') + " FCFA requis).");
           enteredPin = "";
           updateDots();
+          payBtn.disabled = false;
+          payBtn.innerHTML = '<span class="material-symbols-outlined text-lg">lock</span><span>Valider le Paiement Switch</span>';
           return;
         }
 
@@ -221,6 +228,14 @@
         localStorage.setItem('switch_last_tx_id', tx.id);
         localStorage.setItem('switch_last_tx_amount', paymentAmount.toString());
         localStorage.setItem('switch_last_tx_recipient', bName);
+      }
+
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.payMerchant) {
+          await window.SwitchAPI.payMerchant(bName, paymentAmount, "Paiement QR Marchand");
+        }
+      } catch (err) {
+        console.warn("Paiement Marchand SwitchAPI info :", err);
       }
 
       alert("✅ Paiement de " + paymentAmount.toLocaleString('fr-FR') + " FCFA prélevé avec succès sur votre Compte Switch et versé à " + bName + " !");

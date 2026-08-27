@@ -15,6 +15,8 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     body {
@@ -651,7 +653,7 @@
       document.getElementById('transfer-modal').classList.add('hidden');
     }
 
-    function executeTransfer() {
+    async function executeTransfer() {
       const pin = document.getElementById('modal-pin').value.trim();
       if (pin.length < 4) {
         alert("Veuillez saisir votre code PIN secret à 4 chiffres.");
@@ -660,12 +662,24 @@
       }
 
       const amt = parseInt(document.getElementById('transfer-amt').value) || 5000;
-      const note = document.getElementById('transfer-note').value;
+      const note = document.getElementById('transfer-note').value || "Transfert Switch";
+      const recipientName = document.getElementById('sel-name').textContent;
+      const recipientPhone = document.getElementById('sel-phone').textContent;
+
+      const btn = document.getElementById('btn-confirm-exec');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-symbols-outlined text-xl animate-spin">sync</span><span>Virement en cours...</span>';
+
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.transfer) {
+          await window.SwitchAPI.transfer(amt, recipientPhone, note);
+        }
+      } catch (err) {
+        console.warn("Transfert SwitchAPI info :", err);
+      }
 
       if (window.SwitchEngine) {
         if (currentMode === 'contact') {
-          const recipientName = document.getElementById('sel-name').textContent;
-          const recipientPhone = document.getElementById('sel-phone').textContent;
           window.SwitchEngine.addTransaction({
             title: "Transfert à " + recipientName,
             category: "transfer",
@@ -693,17 +707,13 @@
         }
       }
 
-      const btn = document.getElementById('btn-confirm-exec');
-      btn.disabled = true;
-      btn.innerHTML = '<span class="material-symbols-outlined text-xl animate-spin">sync</span><span>Exécution en cours...</span>';
-
       setTimeout(() => {
         if (window.switchNavigate) {
           window.switchNavigate('../confirmation_de_succ_s/code.html');
         } else {
           window.location.href = '../confirmation_de_succ_s/code.html';
         }
-      }, 500);
+      }, 400);
     }
 
     // Initialize balance

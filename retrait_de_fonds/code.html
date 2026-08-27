@@ -7,6 +7,8 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
@@ -170,7 +172,7 @@
       document.getElementById('fee-text').textContent = `Frais réduits Switch : ${fee.toLocaleString('fr-FR')} FCFA (0.5%)`;
     }
 
-    function submitWithdrawal() {
+    async function submitWithdrawal() {
       const rawAmt = parseInt(document.getElementById('amount-field').value || '0');
       if (rawAmt < 500) {
         alert("Le montant minimum de retrait en agence Switch est de 500 FCFA.");
@@ -188,7 +190,16 @@
         }
       }
 
-      localStorage.setItem('switch_pending_withdraw_amt', rawAmt.toString());
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.generateWithdrawalOtp) {
+          await window.SwitchAPI.generateWithdrawalOtp(rawAmt, fee);
+        }
+      } catch (e) {
+        console.warn("OTP generation info :", e);
+      }
+
+      localStorage.setItem('switch_pending_withdrawal_amount', rawAmt.toString());
+      localStorage.setItem('switch_pending_withdrawal_fee', fee.toString());
       localStorage.setItem('switch_pending_withdraw_mode', selectedMode);
 
       if (window.switchNavigate) {

@@ -104,7 +104,7 @@
       }
 
       // Repli local sécurisé
-      const currentBal = parseInt(localStorage.getItem('switch_user_balance') || '110000', 10);
+      const currentBal = parseInt(localStorage.getItem('switch_user_balance') || '125000', 10);
       const newBal = Math.max(0, currentBal - amount);
       const ref = "SW-TX-" + Math.floor(100000 + Math.random() * 900000);
       localStorage.setItem('switch_user_balance', newBal.toString());
@@ -123,14 +123,54 @@
     },
 
     /**
-     * 3. Opération Guichet Agent : Dépôt (Cash-In) & Retrait (Cash-Out)
+     * 3. Génération d'un Code OTP Express de Retrait (Code à 6 chiffres, validité 15 min)
      */
-    processAgentCash: async function (clientPhone, amount, opType = 'DEPOSIT') {
+    generateWithdrawalOtp: async function (amount, fee = 0) {
+      const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+      const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+      const phone = localStorage.getItem('switch_user_phone') || '+229 01 22 90 19 07';
+
+      try {
+        await supabaseFetch('cash_operations', {
+          method: 'POST',
+          body: JSON.stringify({
+            otp_code: otpCode,
+            client_phone: phone,
+            amount: amount,
+            fee: fee,
+            op_type: 'WITHDRAWAL',
+            status: 'pending',
+            expires_at: expiresAt
+          })
+        });
+      } catch (e) {
+        console.info("[SwitchAPI] OTP enregistré en local :", e.message);
+      }
+
+      localStorage.setItem('switch_pending_withdraw_otp', otpCode);
+      localStorage.setItem('switch_pending_withdraw_amt', amount.toString());
+      localStorage.setItem('switch_pending_withdraw_fee', fee.toString());
+      localStorage.setItem('switch_pending_withdraw_expires', expiresAt);
+
+      return {
+        success: true,
+        otp_code: otpCode,
+        amount: amount,
+        fee: fee,
+        expires_at: expiresAt
+      };
+    },
+
+    /**
+     * 4. Opération Guichet Agent : Dépôt (Cash-In) & Retrait (Cash-Out) via Code OTP ou Compte
+     */
+    processAgentCash: async function (clientPhoneOrOtp, amount, opType = 'WITHDRAWAL') {
       try {
         const data = await supabaseRPC('process_agent_cash_operation', {
-          p_client_phone: clientPhone,
+          p_client_phone: clientPhoneOrOtp,
           p_amount: amount,
-          p_operation_type: opType
+          p_operation_type: opType,
+          p_otp_code: clientPhoneOrOtp.length === 6 ? clientPhoneOrOtp : null
         });
         if (data && data.success) {
           return data;
@@ -141,7 +181,7 @@
 
       // Repli local
       const curFloat = parseInt((localStorage.getItem('switch_agent_float') || '1500000').replace(/\s/g, ''), 10);
-      const commission = Math.max(50, Math.round(amount * 0.007));
+      const commission = Math.max(100, Math.round(amount * 0.008));
       let newFloat = curFloat;
 
       if (opType === 'DEPOSIT') {
@@ -157,12 +197,52 @@
         amount: amount,
         commission: commission,
         operation: opType,
-        client: clientPhone
+        client: clientPhoneOrOtp
       };
     },
 
     /**
-     * 4. Récupère les points relais GPS (Carte des Agents)
+     * 5. Paiement Marchand (Scan QR / Caisse POS)
+     */
+    payMerchant: async function (merchantIdentifier, amount, note = "Paiement Marchand Switch") {
+      try {
+        const data = await supabaseRPC('process_merchant_payment', {
+          p_merchant_identifier: merchantIdentifier,
+          p_amount: amount,
+          p_note: note
+        });
+
+        if (data && data.success) {
+          localStorage.setItem('switch_user_balance', data.new_balance.toString());
+          localStorage.setItem('switch_last_tx_id', data.tx_ref);
+          localStorage.setItem('switch_last_tx_amount', amount.toString());
+          localStorage.setItem('switch_last_tx_recipient', merchantIdentifier);
+          return data;
+        }
+      } catch (e) {
+        console.warn("[SwitchAPI] Merchant Payment RPC Fallback :", e.message);
+      }
+
+      // Repli local
+      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '125000', 10);
+      const newBal = Math.max(0, curBal - amount);
+      const ref = "SW-PAY-" + Math.floor(100000 + Math.random() * 900000);
+      localStorage.setItem('switch_user_balance', newBal.toString());
+      localStorage.setItem('switch_last_tx_id', ref);
+      localStorage.setItem('switch_last_tx_amount', amount.toString());
+      localStorage.setItem('switch_last_tx_recipient', merchantIdentifier);
+
+      return {
+        success: true,
+        tx_ref: ref,
+        amount: amount,
+        new_balance: newBal,
+        merchant: merchantIdentifier
+      };
+    },
+
+    /**
+     * 6. Récupère les points relais GPS (Carte des Agents)
      */
     getCashpoints: async function () {
       try {
