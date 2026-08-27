@@ -56,31 +56,33 @@
       </span>
     </div>
 
-    <!-- Generated RIB & Account Details -->
-    <div class="w-full bg-surface-container-lowest rounded-3xl p-4 sm:p-5 soft-shadow border border-outline-variant text-left flex flex-col gap-2.5 text-xs">
+    <!-- Account Identity & Account Number Card -->
+    <div class="w-full bg-surface-container-lowest rounded-3xl p-4 sm:p-5 soft-shadow border border-outline-variant text-left flex flex-col gap-3 text-xs">
       <div class="flex justify-between items-center pb-2 border-b border-outline-variant/50">
-        <span class="font-bold text-on-surface uppercase tracking-wider text-[11px]">Identifiant Bancaire UEMOA</span>
+        <span class="font-bold text-on-surface uppercase tracking-wider text-[11px]">Identifiant Compte Switch</span>
         <span class="text-primary font-bold flex items-center gap-1 bg-primary/10 px-2.5 py-0.5 rounded-full">
           <span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Niveau 1 • 500 000 F
         </span>
       </div>
 
       <div class="flex justify-between items-center">
-        <span class="text-on-surface-variant">Titulaire :</span>
-        <b id="user-display-name" class="text-on-surface">Utilisateur Switch</b>
+        <span class="text-on-surface-variant font-medium">Titulaire du compte :</span>
+        <b id="user-display-name" class="text-on-surface font-bold text-sm">Utilisateur Switch</b>
       </div>
 
-      <div class="flex justify-between items-center">
-        <span class="text-on-surface-variant">Numéro Switch :</span>
-        <b id="user-display-phone" class="font-mono text-on-surface">+229 01 -- -- --</b>
-      </div>
-
-      <div class="flex flex-col gap-1 pt-1">
-        <span class="text-on-surface-variant">RIB Officiel Switch Bénin :</span>
-        <div class="p-2.5 bg-surface-container rounded-xl font-mono font-bold text-[11px] text-primary flex items-center justify-between select-all">
-          <span id="user-display-rib">BJ061 01001 09876543210 44</span>
-          <button onclick="copyRib()" class="text-primary font-bold hover:underline">Copier</button>
+      <div class="flex flex-col gap-1.5 pt-1">
+        <span class="text-on-surface-variant font-medium">Numéro de Compte Switch (Transactions & Retraits) :</span>
+        <div class="p-3 bg-surface-container rounded-2xl font-mono font-black text-sm text-primary flex items-center justify-between select-all border border-outline-variant/40">
+          <span id="user-display-phone">+229 01 -- -- --</span>
+          <button onclick="copyAccountNumber()" class="text-xs bg-white text-primary px-3 py-1 rounded-xl shadow-xs border border-outline-variant font-bold hover:bg-purple-50 transition-colors cursor-pointer">
+            Copier
+          </button>
         </div>
+      </div>
+
+      <div class="p-2.5 bg-purple-50/70 border border-purple-100 rounded-xl flex items-start gap-2 text-[11px] text-purple-900 leading-snug">
+        <span class="material-symbols-outlined text-primary text-base shrink-0 mt-0.5">info</span>
+        <span>Communiquez ce numéro pour recevoir des fonds, payer vos achats ou effectuer un retrait auprès d'un marchand ou agent Switch.</span>
       </div>
     </div>
 
@@ -114,9 +116,10 @@
       if (phoneEl) phoneEl.textContent = phone;
     });
 
-    function copyRib() {
-      navigator.clipboard.writeText("BJ061 01001 09876543210 44");
-      alert("RIB UEMOA copié : BJ061 01001 09876543210 44");
+    function copyAccountNumber() {
+      const phone = localStorage.getItem('switch_user_phone') || '+229 01 -- -- --';
+      navigator.clipboard.writeText(phone);
+      alert("Numéro de Compte Switch copié : " + phone);
     }
 
     // Confetti celebration animation

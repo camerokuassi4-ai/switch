@@ -76,13 +76,13 @@
         </a>
       </div>
 
-      <!-- RIB Box -->
+      <!-- Account Number Box -->
       <div class="bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/20 flex items-center justify-between text-xs font-mono">
         <div class="flex flex-col gap-0.5">
-          <span class="text-[10px] font-bold uppercase text-purple-200 font-sans">RIB Switch UEMOA</span>
-          <span class="text-white font-bold select-all">BJ061 01001 09876543210 44</span>
+          <span class="text-[10px] font-bold uppercase text-purple-200 font-sans">Numéro de Compte Switch</span>
+          <span class="text-white font-bold select-all" id="settings-user-phone">+229 01 -- -- --</span>
         </div>
-        <button onclick="copyUserRib()" class="px-2.5 py-1 rounded-xl bg-white text-primary text-[11px] font-black uppercase shadow-sm hover:bg-purple-50 transition-colors cursor-pointer">
+        <button onclick="copyUserAccountNumber()" class="px-2.5 py-1 rounded-xl bg-white text-primary text-[11px] font-black uppercase shadow-sm hover:bg-purple-50 transition-colors cursor-pointer">
           Copier
         </button>
       </div>
@@ -277,9 +277,10 @@
       }
     });
 
-    function copyUserRib() {
-      navigator.clipboard.writeText("BJ061 01001 09876543210 44");
-      alert("RIB Switch UEMOA copié : BJ061 01001 09876543210 44");
+    function copyUserAccountNumber() {
+      const phone = localStorage.getItem('switch_user_phone') || '+229 01 -- -- --';
+      navigator.clipboard.writeText(phone);
+      alert("Numéro de Compte Switch copié : " + phone);
     }
   </script>
 
