@@ -105,7 +105,19 @@
     document.addEventListener('DOMContentLoaded', () => {
       const fullName = localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || 'Utilisateur';
       const firstName = fullName.trim().split(' ')[0] || 'Utilisateur';
-      const phone = localStorage.getItem('switch_user_phone') || '+229 01 -- -- --';
+      let phone = localStorage.getItem('switch_user_phone') || '+229 01 -- -- --';
+      
+      let accountSuffix = localStorage.getItem('switch_account_suffix');
+      if (!accountSuffix || accountSuffix.length !== 4) {
+        accountSuffix = Math.floor(1000 + Math.random() * 9000).toString();
+        localStorage.setItem('switch_account_suffix', accountSuffix);
+      }
+      
+      let phoneDigits = phone.replace(/\D/g, '');
+      if (phoneDigits.startsWith('229')) phoneDigits = phoneDigits.slice(3);
+      if (phoneDigits.length < 10) phoneDigits = phoneDigits.padStart(10, '0');
+
+      const accountDisplay = '01 ' + phoneDigits.slice(2,4) + ' ' + phoneDigits.slice(4,6) + ' ' + phoneDigits.slice(6,8) + ' ' + phoneDigits.slice(8,10) + ' • ' + accountSuffix;
 
       const titleEl = document.getElementById('welcome-title');
       const nameEl = document.getElementById('user-display-name');
@@ -113,13 +125,13 @@
 
       if (titleEl) titleEl.textContent = `Félicitations, ${firstName} !`;
       if (nameEl) nameEl.textContent = fullName;
-      if (phoneEl) phoneEl.textContent = phone;
+      if (phoneEl) phoneEl.textContent = accountDisplay;
     });
 
     function copyAccountNumber() {
-      const phone = localStorage.getItem('switch_user_phone') || '+229 01 -- -- --';
-      navigator.clipboard.writeText(phone);
-      alert("Numéro de Compte Switch copié : " + phone);
+      const accountNum = localStorage.getItem('switch_account_number') || localStorage.getItem('switch_account_display') || localStorage.getItem('switch_user_phone') || '';
+      navigator.clipboard.writeText(accountNum);
+      alert("Numéro de Compte Switch copié : " + accountNum);
     }
 
     // Confetti celebration animation

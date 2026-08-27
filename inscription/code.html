@@ -393,11 +393,22 @@
       btnIcon.textContent = "sync";
       btnIcon.classList.add('animate-spin');
 
+      // Génération obligatoire du Numéro de Compte Switch : Numéro de téléphone (10 chiffres) + 4 chiffres uniques
+      let accountSuffix = localStorage.getItem('switch_account_suffix');
+      if (!accountSuffix || accountSuffix.length !== 4) {
+        accountSuffix = Math.floor(1000 + Math.random() * 9000).toString();
+        localStorage.setItem('switch_account_suffix', accountSuffix);
+      }
+      const switchAccountNumber = phoneDigits + accountSuffix; // 14 chiffres : 01XXXXXXXX + 4 chiffres
+      const formattedAccountDisplay = '01 ' + phoneDigits.slice(2,4) + ' ' + phoneDigits.slice(4,6) + ' ' + phoneDigits.slice(6,8) + ' ' + phoneDigits.slice(8,10) + ' • ' + accountSuffix;
+
       // Sauvegarde des informations en local
       localStorage.setItem('switch_user_name', fullName);
       localStorage.setItem('switch_user_fullname', fullName);
       localStorage.setItem('switch_user_phone', formattedDisplayPhone);
       localStorage.setItem('switch_user_phone_raw', formattedFullPhone);
+      localStorage.setItem('switch_account_number', switchAccountNumber);
+      localStorage.setItem('switch_account_display', formattedAccountDisplay);
       localStorage.setItem('switch_kyc_level', '1');
 
       // Appel Supabase Auth pour déclencher l'Edge Function Send SMS Hook

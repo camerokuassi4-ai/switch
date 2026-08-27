@@ -207,28 +207,28 @@
         <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
           <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
             <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-lg" id="direct-id-icon">account_balance</span>
-              <h2 class="text-xs font-black text-on-surface uppercase tracking-wider" id="direct-id-title">2. RIB Compte Switch Bénin</h2>
+              <span class="material-symbols-outlined text-primary text-lg" id="direct-id-icon">badge</span>
+              <h2 class="text-xs font-black text-on-surface uppercase tracking-wider" id="direct-id-title">2. Numéro de Compte Switch Client</h2>
             </div>
             
             <div id="direct-switch-toggle" class="flex items-center bg-gray-100 p-0.5 rounded-xl text-[10px] font-bold">
-              <button type="button" onclick="setDirectIdMode('rib')" id="direct-toggle-rib" class="px-2.5 py-1 rounded-lg bg-white text-primary shadow-xs transition-all cursor-pointer">
-                Par RIB
+              <button type="button" onclick="setDirectIdMode('account')" id="direct-toggle-rib" class="px-2.5 py-1 rounded-lg bg-white text-primary shadow-xs transition-all cursor-pointer">
+                N° Compte
               </button>
               <button type="button" onclick="setDirectIdMode('phone')" id="direct-toggle-phone" class="px-2.5 py-1 rounded-lg text-gray-500 hover:text-on-surface transition-all cursor-pointer">
-                Par N° Tél
+                N° Téléphone
               </button>
             </div>
           </div>
 
           <div class="flex flex-col gap-1.5">
-            <!-- RIB Input Wrapper -->
+            <!-- Account Number Input Wrapper -->
             <div id="direct-rib-wrapper" class="input-focus flex items-center rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 overflow-hidden">
               <div class="flex items-center gap-1.5 px-3.5 py-3.5 bg-purple-50 border-r border-outline-variant/50 text-xs font-bold text-primary select-none shrink-0">
-                <span class="material-symbols-outlined text-base">account_balance</span>
-                <span class="font-mono font-bold">RIB</span>
+                <span class="material-symbols-outlined text-base">tag</span>
+                <span class="font-mono font-bold">COMPTE</span>
               </div>
-              <input type="text" id="directClientRib" value="BJ062 01001 98765432109 12" placeholder="BJ062 01001 98765432109 12" class="w-full bg-transparent border-0 py-3 px-3.5 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none"/>
+              <input type="text" id="directClientRib" value="" placeholder="01 97 12 34 56 • 8492" class="w-full bg-transparent border-0 py-3 px-3.5 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none"/>
             </div>
 
             <!-- Phone Input Wrapper -->

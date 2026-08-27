@@ -1050,7 +1050,24 @@
   function syncUserDataDOM() {
     try {
       const fullName = localStorage.getItem("switch_user_fullname") || localStorage.getItem("switch_user_name");
-      const phone = localStorage.getItem("switch_user_phone");
+      let phone = localStorage.getItem("switch_user_phone");
+
+      // Gestion du numéro de compte Switch : 10 chiffres téléphone + 4 chiffres uniques
+      let accountSuffix = localStorage.getItem("switch_account_suffix");
+      if (!accountSuffix || accountSuffix.length !== 4) {
+        accountSuffix = Math.floor(1000 + Math.random() * 9000).toString();
+        localStorage.setItem("switch_account_suffix", accountSuffix);
+      }
+
+      let phoneDigits = phone ? phone.replace(/\D/g, '') : "0197000000";
+      if (phoneDigits.startsWith('229')) phoneDigits = phoneDigits.slice(3);
+      if (phoneDigits.length < 10) phoneDigits = phoneDigits.padStart(10, '0');
+
+      const accountNumber = phoneDigits + accountSuffix; // 14 chiffres
+      const accountDisplay = '01 ' + phoneDigits.slice(2,4) + ' ' + phoneDigits.slice(4,6) + ' ' + phoneDigits.slice(6,8) + ' ' + phoneDigits.slice(8,10) + ' • ' + accountSuffix;
+
+      localStorage.setItem("switch_account_number", accountNumber);
+      localStorage.setItem("switch_account_display", accountDisplay);
 
       if (fullName && fullName.trim()) {
         const cleanName = fullName.trim();
@@ -1075,9 +1092,13 @@
       }
 
       if (phone && phone.trim()) {
-        const phoneElements = document.querySelectorAll("#user-display-phone, #user-phone-display, #user-profile-phone, #settings-user-phone, #profile-user-phone");
+        const phoneElements = document.querySelectorAll("#user-display-phone, #user-phone-display, #user-profile-phone, #profile-user-phone");
         phoneElements.forEach(el => { el.textContent = phone; });
       }
+
+      // Remplacement du Numéro de Compte Switch (Téléphone + 4 chiffres)
+      const accountElements = document.querySelectorAll("#user-account-number, #user-display-account, #settings-user-account, #settings-user-phone, #stmt-user-phone, #stmt-account-number, .switch-account-num");
+      accountElements.forEach(el => { el.textContent = accountDisplay; });
     } catch(e) {}
   }
 
