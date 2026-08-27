@@ -171,7 +171,7 @@
             </label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">store</span>
-              <input type="text" id="businessName" value="Boutique & Restaurant La Plage" placeholder="Ex: Supermarché Le Dauphin, Restaurant Le Béninois" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="text" id="businessName" value="" placeholder="Ex: Supermarché Le Dauphin, Restaurant Le Béninois" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
             </div>
           </div>
 
@@ -182,7 +182,7 @@
             </label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">person</span>
-              <input type="text" id="managerName" value="Kossivi Jean DOSSOU" placeholder="Ex: Kossivi Jean DOSSOU" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="text" id="managerName" value="" placeholder="Ex: Koffi ADEBAYO" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
             </div>
           </div>
         </div>
@@ -404,7 +404,7 @@
             </div>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">tag</span>
-              <input type="text" id="ifuNumber" value="3201910293847" maxlength="13" inputmode="numeric" placeholder="Ex: 3201910293847" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="text" id="ifuNumber" value="" maxlength="13" inputmode="numeric" placeholder="Ex: 3201910293847" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
             </div>
           </div>
 
@@ -415,7 +415,7 @@
             </label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">corporate_fare</span>
-              <input type="text" id="rccmNumber" value="RB/COT/21 B 14920" placeholder="Ex: RB/COT/21 B 14920" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="text" id="rccmNumber" value="" placeholder="Ex: RB/COT/21 B 14920" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
             </div>
           </div>
         </div>
@@ -433,12 +433,12 @@
           <!-- Téléphone Mobile Money -->
           <div class="flex flex-col gap-1.5">
             <label for="merchantPhone" class="text-xs font-bold text-on-surface">
-              Numéro Mobile Money (MTN / Moov / Celtiis) <span class="text-rose-500">*</span>
+              Numéro Mobile Money Bénin (10 chiffres commençant par 01) <span class="text-rose-500">*</span>
             </label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">phone_android</span>
               <span class="absolute left-10 text-xs font-bold font-mono text-gray-500 border-r border-gray-300 pr-2">+229</span>
-              <input type="tel" id="merchantPhone" value="97123456" maxlength="8" inputmode="numeric" placeholder="97 12 34 56" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-24 pr-4 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="tel" id="merchantPhone" value="" maxlength="14" inputmode="numeric" placeholder="01 97 12 34 56" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-24 pr-4 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 placeholder:font-normal" onfocus="if(!this.value) this.value='01 ';"/>
             </div>
             <p class="text-[10px] text-on-surface-variant">Les paiements QR des clients seront crédités immédiatement sur ce compte.</p>
           </div>
@@ -450,7 +450,7 @@
             </label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">mail</span>
-              <input type="email" id="merchantEmail" value="contact@boutiquelaplage.bj" placeholder="contact@moncommerce.bj" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
+              <input type="email" id="merchantEmail" value="" placeholder="contact@votrecommerce.bj" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-4 text-xs sm:text-sm font-semibold text-on-surface placeholder:text-gray-400 placeholder:font-normal"/>
             </div>
           </div>
         </div>

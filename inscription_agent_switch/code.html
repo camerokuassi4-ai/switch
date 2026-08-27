@@ -160,7 +160,7 @@
             <label for="businessName" class="text-[11px] font-bold text-on-surface-variant">Nom commercial du point de service *</label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">store</span>
-              <input type="text" id="businessName" value="Kiosque Saint-Michel" placeholder="Ex: Kiosque Saint-Michel, Boutique La Grâce" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+              <input type="text" id="businessName" value="" placeholder="Ex: Kiosque Saint-Michel, Boutique La Grâce" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
             </div>
           </div>
 
@@ -169,7 +169,7 @@
             <label for="managerName" class="text-[11px] font-bold text-on-surface-variant">Nom complet du gérant / propriétaire *</label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">person</span>
-              <input type="text" id="managerName" value="Adele Doe" placeholder="Prénom et Nom" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+              <input type="text" id="managerName" value="" placeholder="Ex: Koffi ADEBAYO" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
             </div>
           </div>
 
@@ -240,7 +240,7 @@
             </div>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">badge</span>
-              <input type="text" id="managerNpi" value="1996 0814 1234 56" placeholder="Numéro Personnel d'Identification" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-mono font-semibold text-on-surface"/>
+              <input type="text" id="managerNpi" value="" placeholder="Ex: 1996 0814 1234 56" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-mono font-semibold text-on-surface"/>
             </div>
           </div>
 
@@ -392,15 +392,15 @@
 
           <!-- Numéro Téléphone Terminal Agent -->
           <div class="flex flex-col gap-1">
-            <label for="agentPhone" class="text-[11px] font-bold text-on-surface-variant">Numéro de téléphone du terminal Agent (+229) *</label>
+            <label for="agentPhone" class="text-[11px] font-bold text-on-surface-variant">Numéro de téléphone du terminal Agent (10 chiffres commençant par 01) *</label>
             <div class="flex items-center rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
               <div class="flex items-center gap-1.5 px-3.5 py-3 bg-gray-100/80 border-r border-outline-variant/50 text-xs font-bold text-on-surface select-none shrink-0">
                 <span class="text-base leading-none">🇧🇯</span>
                 <span class="font-mono text-gray-700 font-bold">+229</span>
               </div>
-              <input type="tel" id="agentPhone" value="97 12 34 56" placeholder="97 00 00 00" maxlength="12" class="w-full bg-transparent border-0 py-3 px-3.5 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none"/>
+              <input type="tel" id="agentPhone" value="" placeholder="01 97 00 00 00" maxlength="14" class="w-full bg-transparent border-0 py-3 px-3.5 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none" onfocus="if(!this.value) this.value='01 ';"/>
             </div>
-            <p class="text-[10px] text-on-surface-variant ml-1">Ce numéro servira à recevoir les notifications de dépôts/retraits et les commissions.</p>
+            <p class="text-[10px] text-on-surface-variant ml-1">Ce numéro recevra le code SMS d'activation obligatoire.</p>
           </div>
 
           <!-- Email Professionnel -->
@@ -408,7 +408,7 @@
             <label for="agentEmail" class="text-[11px] font-bold text-on-surface-variant">Email professionnel de gestion</label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">mail</span>
-              <input type="email" id="agentEmail" value="adele.doe@gmail.com" placeholder="agent@votreboutique.bj" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+              <input type="email" id="agentEmail" value="" placeholder="Ex: agent@switch.bj" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
             </div>
           </div>
 
@@ -420,7 +420,7 @@
             </div>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">receipt_long</span>
-              <input type="text" id="ifuNumber" maxlength="13" value="3202 0123 4567 8" placeholder="3202 0123 4567 8" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-mono font-semibold text-on-surface"/>
+              <input type="text" id="ifuNumber" maxlength="13" value="" placeholder="Ex: 3202 0123 4567 8" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-mono font-semibold text-on-surface"/>
             </div>
           </div>
 
