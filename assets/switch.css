@@ -94,9 +94,39 @@ input, select, textarea {
   font-size: 16px !important;
 }
 
-/* ── 3. MEDIA QUERIES : RESPONSIVE TOUT APPAREIL ─────────────── */
+/* ── 3. MEDIA QUERIES : RESPONSIVE UNIVERSEL TOUT SMARTPHONE & TABLETTE ── */
 
-/* ── A. Smartphones Android & iPhones (jusqu'à 580px) ── */
+/* ── A0. Très petits smartphones (320px à 360px : iPhone SE 1ère gen, Galaxy Fold écran externe) ── */
+@media (max-width: 360px) {
+  :root {
+    --app-max-width: 100%;
+  }
+
+  body {
+    padding-left: max(8px, var(--sal)) !important;
+    padding-right: max(8px, var(--sar)) !important;
+  }
+
+  .px-container-margin, .px-4, .px-5, .px-6 {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  /* Ajustement proportionnel des boutons d'actions rapides */
+  .grid-cols-4 {
+    gap: 6px !important;
+  }
+
+  .quick-action-btn {
+    padding: 8px 4px !important;
+  }
+
+  h1, h2 {
+    font-size: clamp(1.1rem, 4vw, 1.4rem) !important;
+  }
+}
+
+/* ── A. Smartphones Android & iPhones standards et grands (361px à 580px) ── */
 @media (max-width: 580px) {
   :root {
     --app-max-width: 100%;
@@ -114,13 +144,14 @@ input, select, textarea {
     border: none !important;
     min-height: 100vh !important;
     min-height: 100dvh !important;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
-/* ── B. Tablettes & iPads (581px à 1024px) ── */
+/* ── B. Tablettes, Pliables dépliés & iPads (581px à 1024px) ── */
 @media (min-width: 581px) and (max-width: 1024px) {
   :root {
-    --app-max-width: 580px;
+    --app-max-width: 540px;
   }
 
   html {
@@ -131,11 +162,12 @@ input, select, textarea {
 
   body {
     max-width: var(--app-max-width) !important;
-    margin: 0 auto !important;
-    box-shadow: 0 0 60px rgba(0, 0, 0, 0.4) !important;
-    min-height: 100vh !important;
-    min-height: 100dvh !important;
-    border-radius: 0 !important;
+    margin: 20px auto !important;
+    box-shadow: 0 12px 60px rgba(0, 0, 0, 0.45) !important;
+    min-height: calc(100dvh - 40px) !important;
+    border-radius: 36px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    overflow: hidden !important;
   }
 }
 
