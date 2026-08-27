@@ -186,106 +186,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Card: Sélecteur Visuel Multi-Secteurs d'Activité -->
-        <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
-          <div class="flex items-center justify-between">
-            <h3 class="text-xs font-black text-on-surface uppercase tracking-wider flex items-center gap-2">
-              <span class="material-symbols-outlined text-emerald-600 text-base">category</span>
-              <span>Secteurs d'Activité</span>
-            </h3>
-            <span id="sector-count-badge" class="text-[10px] font-bold text-emerald-800 bg-emerald-100 border border-emerald-300 px-2 py-0.5 rounded-full">
-              1/3 sélectionné
-            </span>
-          </div>
-
-          <p class="text-[11px] text-on-surface-variant">
-            Sélectionnez <b>1, 2 ou jusqu'à 3 secteurs</b> d'activité pour votre commerce (ex: Boutique + Restauration + Tech).
-          </p>
-
-          <input type="hidden" id="selectedSectors" value="retail"/>
-
-          <div class="grid grid-cols-2 gap-2.5">
-            <!-- 1. Boutique & Commerce de détail -->
-            <div id="sector-card-retail" onclick="toggleSector('retail')" class="sector-card selected p-3.5 rounded-2xl border-2 border-emerald-600 bg-emerald-50/50 cursor-pointer flex flex-col gap-1.5 relative shadow-xs">
-              <div class="flex items-center justify-between">
-                <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
-                  <span class="material-symbols-outlined text-xl">shopping_bag</span>
-                </div>
-                <span id="sector-check-retail" class="material-symbols-outlined text-base text-emerald-700 font-bold">check_circle</span>
-              </div>
-              <h4 class="text-xs font-bold text-on-surface">Boutique & Retail</h4>
-              <p class="text-[10px] text-on-surface-variant">Prêt-à-porter, cosmétiques, quincaillerie</p>
-            </div>
-
-            <!-- 2. Restauration & Maquis -->
-            <div id="sector-card-food" onclick="toggleSector('food')" class="sector-card p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-emerald-500/50 cursor-pointer flex flex-col gap-1.5 relative">
-              <div class="flex items-center justify-between">
-                <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center">
-                  <span class="material-symbols-outlined text-xl">restaurant</span>
-                </div>
-                <span id="sector-check-food" class="material-symbols-outlined text-base text-emerald-700 font-bold hidden">check_circle</span>
-              </div>
-              <h4 class="text-xs font-bold text-on-surface">Restauration & Bar</h4>
-              <p class="text-[10px] text-on-surface-variant">Fast-food, maquis, café, pâtisserie</p>
-            </div>
-
-            <!-- 3. Supermarché & Alimentation -->
-            <div id="sector-card-grocery" onclick="toggleSector('grocery')" class="sector-card p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-emerald-500/50 cursor-pointer flex flex-col gap-1.5 relative">
-              <div class="flex items-center justify-between">
-                <div class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center">
-                  <span class="material-symbols-outlined text-xl">local_grocery_store</span>
-                </div>
-                <span id="sector-check-grocery" class="material-symbols-outlined text-base text-emerald-700 font-bold hidden">check_circle</span>
-              </div>
-              <h4 class="text-xs font-bold text-on-surface">Supermarché</h4>
-              <p class="text-[10px] text-on-surface-variant">Supérette, épicerie fine, vivres</p>
-            </div>
-
-            <!-- 4. Pharmacie & Santé -->
-            <div id="sector-card-health" onclick="toggleSector('health')" class="sector-card p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-emerald-500/50 cursor-pointer flex flex-col gap-1.5 relative">
-              <div class="flex items-center justify-between">
-                <div class="w-9 h-9 rounded-xl bg-rose-100 text-rose-800 flex items-center justify-center">
-                  <span class="material-symbols-outlined text-xl">local_pharmacy</span>
-                </div>
-                <span id="sector-check-health" class="material-symbols-outlined text-base text-emerald-700 font-bold hidden">check_circle</span>
-              </div>
-              <h4 class="text-xs font-bold text-on-surface">Pharmacie & Soins</h4>
-              <p class="text-[10px] text-on-surface-variant">Officine, clinique, bien-être</p>
-            </div>
-
-            <!-- 5. Services & Tech -->
-            <div id="sector-card-services" onclick="toggleSector('services')" class="sector-card p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-emerald-500/50 cursor-pointer flex flex-col gap-1.5 relative">
-              <div class="flex items-center justify-between">
-                <div class="w-9 h-9 rounded-xl bg-sky-100 text-sky-800 flex items-center justify-center">
-                  <span class="material-symbols-outlined text-xl">devices</span>
-                </div>
-                <span id="sector-check-services" class="material-symbols-outlined text-base text-emerald-700 font-bold hidden">check_circle</span>
-              </div>
-              <h4 class="text-xs font-bold text-on-surface">Services & Tech</h4>
-              <p class="text-[10px] text-on-surface-variant">Prestations, agences, ateliers, auto</p>
-            </div>
-
-            <!-- 6. Mode & Beauté -->
-            <div id="sector-card-beauty" onclick="toggleSector('beauty')" class="sector-card p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-emerald-500/50 cursor-pointer flex flex-col gap-1.5 relative">
-              <div class="flex items-center justify-between">
-                <div class="w-9 h-9 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center">
-                  <span class="material-symbols-outlined text-xl">spa</span>
-                </div>
-                <span id="sector-check-beauty" class="material-symbols-outlined text-base text-emerald-700 font-bold hidden">check_circle</span>
-              </div>
-              <h4 class="text-xs font-bold text-on-surface">Beauté & Coiffure</h4>
-              <p class="text-[10px] text-on-surface-variant">Salons, institut de beauté, stylisme</p>
-            </div>
-          </div>
-
-          <!-- Toast Notification for max sector limits -->
-          <div id="sector-limit-toast" class="hidden p-2 rounded-xl bg-amber-100 border border-amber-300 text-amber-900 text-[11px] font-bold flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-base text-amber-700">info</span>
-            <span id="sector-toast-msg">Vous pouvez sélectionner jusqu'à 3 secteurs d'activité.</span>
-          </div>
-        </div>
-
       </div>
 
       <!-- ============================================================ -->
@@ -503,64 +403,6 @@
   <script>
     let currentStep = 1;
     const totalSteps = 3;
-    let selectedSectors = ['retail'];
-    const maxSectors = 3;
-
-    function toggleSector(sectorKey) {
-      const idx = selectedSectors.indexOf(sectorKey);
-      if (idx > -1) {
-        if (selectedSectors.length === 1) {
-          showSectorToast("Vous devez conserver au moins 1 secteur d'activité.");
-          return;
-        }
-        selectedSectors.splice(idx, 1);
-      } else {
-        if (selectedSectors.length >= maxSectors) {
-          showSectorToast("Vous pouvez sélectionner jusqu'à 3 secteurs maximum.");
-          return;
-        }
-        selectedSectors.push(sectorKey);
-      }
-      renderSectors();
-    }
-
-    function showSectorToast(msg) {
-      const toast = document.getElementById('sector-limit-toast');
-      const msgEl = document.getElementById('sector-toast-msg');
-      if (toast && msgEl) {
-        msgEl.textContent = msg;
-        toast.classList.remove('hidden');
-        setTimeout(() => {
-          toast.classList.add('hidden');
-        }, 3000);
-      }
-    }
-
-    function renderSectors() {
-      const allSectors = ['retail', 'food', 'grocery', 'health', 'services', 'beauty'];
-      allSectors.forEach(s => {
-        const card = document.getElementById(`sector-card-${s}`);
-        const check = document.getElementById(`sector-check-${s}`);
-        if (card) {
-          if (selectedSectors.includes(s)) {
-            card.className = "sector-card selected p-3.5 rounded-2xl border-2 border-emerald-600 bg-emerald-50/50 cursor-pointer flex flex-col gap-1.5 relative shadow-xs";
-            if (check) check.classList.remove('hidden');
-          } else {
-            card.className = "sector-card p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-emerald-500/50 cursor-pointer flex flex-col gap-1.5 relative";
-            if (check) check.classList.add('hidden');
-          }
-        }
-      });
-
-      const badge = document.getElementById('sector-count-badge');
-      if (badge) {
-        badge.textContent = `${selectedSectors.length}/3 sélectionné${selectedSectors.length > 1 ? 's' : ''}`;
-      }
-      const hiddenInput = document.getElementById('selectedSectors');
-      if (hiddenInput) {
-        hiddenInput.value = selectedSectors.join(',');
-      }
-    }
 
     function goToStep(stepNumber) {
       if (stepNumber >= 1 && stepNumber <= totalSteps) {
@@ -649,7 +491,7 @@
         const merchantData = {
           businessName: document.getElementById('businessName').value.trim(),
           managerName: document.getElementById('managerName').value.trim(),
-          sectors: selectedSectors,
+          sectors: ['general_merchant'],
           city: document.getElementById('city').value,
           neighborhood: document.getElementById('neighborhood').value.trim(),
           landmark: document.getElementById('landmark') ? document.getElementById('landmark').value.trim() : '',
@@ -660,7 +502,7 @@
         };
         localStorage.setItem('switch_merchant_application', JSON.stringify(merchantData));
         localStorage.setItem('switch_merchant_business_name', merchantData.businessName);
-        localStorage.setItem('switch_merchant_sectors', JSON.stringify(selectedSectors));
+        localStorage.setItem('switch_merchant_sectors', JSON.stringify(['general_merchant']));
 
         // Navigation vers la génération et configuration du QR Marchand
         if (window.switchNavigate) {
