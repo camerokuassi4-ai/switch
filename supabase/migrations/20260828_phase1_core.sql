@@ -380,3 +380,53 @@ BEGIN
     );
 END;
 $$;
+
+-- =============================================================================
+-- POLITIQUES DE SECURITE ROW LEVEL SECURITY (RLS)
+-- =============================================================================
+
+-- 1. Activation RLS
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.agents ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.merchants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.transactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.cash_operations ENABLE ROW LEVEL SECURITY;
+
+-- 2. Politiques Profiles (Protection des soldes contre modification client directe)
+DROP POLICY IF EXISTS "profiles_select_policy" ON public.profiles;
+CREATE POLICY "profiles_select_policy" ON public.profiles
+    FOR SELECT USING (auth.uid() = id OR true); -- Permet la résolution de numéro pour transfert
+
+DROP POLICY IF EXISTS "profiles_update_policy" ON public.profiles;
+CREATE POLICY "profiles_update_policy" ON public.profiles
+    FOR UPDATE USING (auth.uid() = id)
+    WITH CHECK (auth.uid() = id);
+
+-- 3. Politiques Transactions (Lecture réservée aux parties prenantes, écriture interdite au client direct)
+DROP POLICY IF EXISTS "transactions_select_policy" ON public.transactions;
+CREATE POLICY "transactions_select_policy" ON public.transactions
+    FOR SELECT USING (
+        auth.uid() = sender_id 
+        OR auth.uid() = receiver_id
+        OR auth.uid() IN (SELECT user_id FROM public.agents WHERE id = transactions.agent_id)
+        OR auth.uid() IN (SELECT user_id FROM public.merchants WHERE id = transactions.merchant_id)
+    );
+
+-- 4. Politiques Agents (Lecture publique des kiosques pour GPS, modification directe de solde interdite)
+DROP POLICY IF EXISTS "agents_select_policy" ON public.agents;
+CREATE POLICY "agents_select_policy" ON public.agents
+    FOR SELECT USING (auth.uid() = user_id OR is_active = true);
+
+-- 5. Politiques Merchants (Lecture publique des commerces, modification directe de solde interdite)
+DROP POLICY IF EXISTS "merchants_select_policy" ON public.merchants;
+CREATE POLICY "merchants_select_policy" ON public.merchants
+    FOR SELECT USING (auth.uid() = user_id OR is_active = true);
+
+-- 6. Politiques Cash Operations (Accès limité au client émetteur et aux agents)
+DROP POLICY IF EXISTS "cash_ops_select_policy" ON public.cash_operations;
+CREATE POLICY "cash_ops_select_policy" ON public.cash_operations
+    FOR SELECT USING (
+        client_phone = (SELECT phone FROM public.profiles WHERE id = auth.uid())
+        OR auth.uid() IN (SELECT user_id FROM public.agents WHERE is_active = true)
+    );
+
