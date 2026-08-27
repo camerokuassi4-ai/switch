@@ -637,15 +637,12 @@
 
     // 6. Exécution du Retrait & Redirection vers le Reçu Agent
     async function executeWithdrawal() {
-      closePinModal();
-      
       const amount = parseInt(document.getElementById('withdrawAmount').value) || 25000;
       const client = document.getElementById('modal-recap-client').textContent;
       const netLabel = document.getElementById('modal-recap-network').textContent;
       const commText = document.getElementById('withdraw-commission-text').textContent;
-      const ref = `TRX-RET-${Math.floor(10000 + Math.random() * 90000)}`;
 
-      // Identification du code ou numéro client
+      // Identification du code OTP ou numéro client
       let clientIdent = "";
       if (withdrawalMode === 'code') {
         clientIdent = document.getElementById('withdrawalCode').value.trim();
@@ -653,19 +650,34 @@
         clientIdent = (directIdMode === 'account') ? document.getElementById('directClientRib').value.trim() : document.getElementById('directClientPhone').value.trim();
       }
 
+      let opSuccess = false;
+      let txRef = "";
+      let errorMessage = "Échec du retrait. Code OTP expiré ou solde client insuffisant.";
+
       // Appel de la procédure Supabase RPC process_agent_cash_operation
       try {
         if (window.SwitchAPI && window.SwitchAPI.processAgentCash) {
-          await window.SwitchAPI.processAgentCash(clientIdent || "Client Switch", amount, 'WITHDRAWAL');
+          const res = await window.SwitchAPI.processAgentCash(clientIdent || "Client Switch", amount, 'WITHDRAWAL');
+          if (res && res.success) {
+            opSuccess = true;
+            txRef = res.tx_ref;
+          } else if (res && res.message) {
+            errorMessage = res.message;
+          }
         }
       } catch (err) {
-        console.warn("Opération Retrait Agent SwitchAPI info :", err);
+        errorMessage = err.message || errorMessage;
       }
 
-      // 1. Crédit réel du solde Float (l'agent a donné des espèces et son compte Switch est recrédité)
-      const curFloat = parseInt((localStorage.getItem('switch_agent_float') || '500000').replace(/\s/g, '')) || 500000;
-      const newFloat = curFloat + amount;
-      localStorage.setItem('switch_agent_float', newFloat.toString());
+      if (!opSuccess) {
+        alert("❌ Opération rejetée : " + errorMessage);
+        pinCode = "";
+        updatePinDots();
+        closePinModal();
+        return; // STRICTEMENT BLOQUANT : Refus de redirection vers le reçu !
+      }
+
+      closePinModal();
 
       const isHybrid = localStorage.getItem('switch_is_hybrid') === 'true';
       const homeTarget = isHybrid ? "../tableau_de_bord_agent/code.html" : "../tableau_de_bord_agent_simple/code.html";
@@ -681,7 +693,7 @@
         network: netLabel,
         commission: commText,
         source: "Caisse Espèces Guichet",
-        ref: ref,
+        ref: txRef || `TRX-RET-${Date.now().toString().slice(-5)}`,
         date: dateStr,
         returnUrl: homeTarget,
         returnLabel: "Retour au Tableau de Bord Agent"

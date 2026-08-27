@@ -401,17 +401,15 @@
         overlay.classList.add('opacity-100', 'scale-100');
       }
 
-      // 4. Smooth Redirect after 700ms delight moment
-      setTimeout(function() {
-        if (window.currentStream) {
-          window.currentStream.getTracks().forEach(t => t.stop());
-        }
-        if (window.switchNavigate) {
-          window.switchNavigate('../confirmation_paiement_qr/code.html');
-        } else {
-          window.location.href = '../confirmation_paiement_qr/code.html';
-        }
-      }, 700);
+      // 4. Redirection directe vers la confirmation de paiement
+      if (window.currentStream) {
+        window.currentStream.getTracks().forEach(t => t.stop());
+      }
+      if (window.switchNavigate) {
+        window.switchNavigate('../confirmation_paiement_qr/code.html');
+      } else {
+        window.location.href = '../confirmation_paiement_qr/code.html';
+      }
     };
 
     // Auto-launch camera when screen is shown

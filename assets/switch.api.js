@@ -81,6 +81,20 @@
     },
 
     /**
+     * Helper : Générateur cryptographique sécurisé
+     */
+    _generateSecureCode: function (length = 6) {
+      if (window.crypto && window.crypto.getRandomValues) {
+        const array = new Uint32Array(1);
+        window.crypto.getRandomValues(array);
+        const min = Math.pow(10, length - 1);
+        const max = Math.pow(10, length) - 1;
+        return (min + (array[0] % (max - min + 1))).toString();
+      }
+      return Math.floor(100000 + Math.random() * 900000).toString();
+    },
+
+    /**
      * 2. Transfert P2P Sécurisé (Appelle la fonction RPC PostgreSQL process_p2p_transfer)
      */
     transfer: async function (amount, recipientPhone, note = "Transfert Switch") {
@@ -98,15 +112,24 @@
           localStorage.setItem('switch_last_tx_recipient', recipientPhone);
           localStorage.setItem('switch_last_tx_note', note);
           return data;
+        } else if (data && data.success === false) {
+          return data;
         }
       } catch (e) {
+        if (!cfg.OFFLINE_FALLBACK) {
+          return { success: false, message: e.message || "Erreur de connexion au serveur." };
+        }
         console.warn("[SwitchAPI] RPC Fallback LocalStorage :", e.message);
       }
 
       // Repli local sécurisé
       const currentBal = parseInt(localStorage.getItem('switch_user_balance') || '125000', 10);
+      if (currentBal < amount) {
+        return { success: false, message: "Solde insuffisant dans votre Compte Switch." };
+      }
+
       const newBal = Math.max(0, currentBal - amount);
-      const ref = "SW-TX-" + Math.floor(100000 + Math.random() * 900000);
+      const ref = "SW-TX-" + this._generateSecureCode(6);
       localStorage.setItem('switch_user_balance', newBal.toString());
       localStorage.setItem('switch_last_tx_id', ref);
       localStorage.setItem('switch_last_tx_amount', amount.toString());
@@ -123,10 +146,10 @@
     },
 
     /**
-     * 3. Génération d'un Code OTP Express de Retrait (Code à 6 chiffres, validité 15 min)
+     * 3. Génération d'un Code OTP Express de Retrait (Code à 6 chiffres, cryptographique, validité 15 min)
      */
     generateWithdrawalOtp: async function (amount, fee = 0) {
-      const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+      const otpCode = this._generateSecureCode(6);
       const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
       const phone = localStorage.getItem('switch_user_phone') || '+229 01 22 90 19 07';
 
@@ -170,12 +193,17 @@
           p_client_phone: clientPhoneOrOtp,
           p_amount: amount,
           p_operation_type: opType,
-          p_otp_code: clientPhoneOrOtp.length === 6 ? clientPhoneOrOtp : null
+          p_otp_code: (clientPhoneOrOtp && clientPhoneOrOtp.length === 6) ? clientPhoneOrOtp : null
         });
         if (data && data.success) {
           return data;
+        } else if (data && data.success === false) {
+          return data;
         }
       } catch (e) {
+        if (!cfg.OFFLINE_FALLBACK) {
+          return { success: false, message: e.message || "Erreur lors de l'opération guichet." };
+        }
         console.warn("[SwitchAPI] Agent RPC Fallback LocalStorage :", e.message);
       }
 
@@ -185,6 +213,9 @@
       let newFloat = curFloat;
 
       if (opType === 'DEPOSIT') {
+        if (curFloat < amount) {
+          return { success: false, message: "Float agent insuffisant pour effectuer ce dépôt." };
+        }
         newFloat = Math.max(0, curFloat - amount);
       } else {
         newFloat = curFloat + amount;
@@ -193,7 +224,7 @@
 
       return {
         success: true,
-        tx_ref: `TRX-${opType.slice(0, 3)}-${Math.floor(10000 + Math.random() * 90000)}`,
+        tx_ref: `TRX-${opType.slice(0, 3)}-` + this._generateSecureCode(5),
         amount: amount,
         commission: commission,
         operation: opType,
@@ -218,15 +249,23 @@
           localStorage.setItem('switch_last_tx_amount', amount.toString());
           localStorage.setItem('switch_last_tx_recipient', merchantIdentifier);
           return data;
+        } else if (data && data.success === false) {
+          return data;
         }
       } catch (e) {
+        if (!cfg.OFFLINE_FALLBACK) {
+          return { success: false, message: e.message || "Erreur lors du paiement marchand." };
+        }
         console.warn("[SwitchAPI] Merchant Payment RPC Fallback :", e.message);
       }
 
       // Repli local
       const curBal = parseInt(localStorage.getItem('switch_user_balance') || '125000', 10);
+      if (curBal < amount) {
+        return { success: false, message: "Solde insuffisant pour payer ce marchand." };
+      }
       const newBal = Math.max(0, curBal - amount);
-      const ref = "SW-PAY-" + Math.floor(100000 + Math.random() * 900000);
+      const ref = "SW-PAY-" + this._generateSecureCode(6);
       localStorage.setItem('switch_user_balance', newBal.toString());
       localStorage.setItem('switch_last_tx_id', ref);
       localStorage.setItem('switch_last_tx_amount', amount.toString());

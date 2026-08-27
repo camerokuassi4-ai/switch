@@ -670,12 +670,27 @@
       btn.disabled = true;
       btn.innerHTML = '<span class="material-symbols-outlined text-xl animate-spin">sync</span><span>Virement en cours...</span>';
 
+      let transferSuccess = false;
+      let errorMessage = "Échec du virement. Veuillez vérifier votre solde et votre connexion.";
+
       try {
         if (window.SwitchAPI && window.SwitchAPI.transfer) {
-          await window.SwitchAPI.transfer(amt, recipientPhone, note);
+          const res = await window.SwitchAPI.transfer(amt, recipientPhone, note);
+          if (res && res.success) {
+            transferSuccess = true;
+          } else if (res && res.message) {
+            errorMessage = res.message;
+          }
         }
       } catch (err) {
-        console.warn("Transfert SwitchAPI info :", err);
+        errorMessage = err.message || errorMessage;
+      }
+
+      if (!transferSuccess) {
+        alert("❌ Erreur de transfert : " + errorMessage);
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined text-xl">send</span><span>Confirmer et Transférer</span>';
+        return; // STRICTEMENT BLOQUANT : Ne pas rediriger vers la page de succès !
       }
 
       if (window.SwitchEngine) {
@@ -707,13 +722,11 @@
         }
       }
 
-      setTimeout(() => {
-        if (window.switchNavigate) {
-          window.switchNavigate('../confirmation_de_succ_s/code.html');
-        } else {
-          window.location.href = '../confirmation_de_succ_s/code.html';
-        }
-      }, 400);
+      if (window.switchNavigate) {
+        window.switchNavigate('../confirmation_de_succ_s/code.html');
+      } else {
+        window.location.href = '../confirmation_de_succ_s/code.html';
+      }
     }
 
     // Initialize balance

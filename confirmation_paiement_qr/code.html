@@ -203,18 +203,33 @@
       payBtn.disabled = true;
       payBtn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">sync</span><span>Traitement du paiement...</span>';
 
-      if (window.SwitchEngine) {
-        const mainBal = window.SwitchEngine.getMainBalance();
-        if (mainBal < paymentAmount) {
-          alert("Solde insuffisant dans votre Compte Switch (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible, " + paymentAmount.toLocaleString('fr-FR') + " FCFA requis).");
-          enteredPin = "";
-          updateDots();
-          payBtn.disabled = false;
-          payBtn.innerHTML = '<span class="material-symbols-outlined text-lg">lock</span><span>Valider le Paiement Switch</span>';
-          return;
-        }
+      let paySuccess = false;
+      let errorMessage = "Échec du paiement. Solde insuffisant ou compte marchand introuvable.";
 
-        const tx = window.SwitchEngine.addTransaction({
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.payMerchant) {
+          const res = await window.SwitchAPI.payMerchant(bName, paymentAmount, "Paiement QR Marchand");
+          if (res && res.success) {
+            paySuccess = true;
+          } else if (res && res.message) {
+            errorMessage = res.message;
+          }
+        }
+      } catch (err) {
+        errorMessage = err.message || errorMessage;
+      }
+
+      if (!paySuccess) {
+        alert("❌ Erreur de paiement : " + errorMessage);
+        enteredPin = "";
+        updateDots();
+        payBtn.disabled = false;
+        payBtn.innerHTML = '<span class="material-symbols-outlined text-lg">lock</span><span>Valider le Paiement Switch</span>';
+        return; // STRICTEMENT BLOQUANT : Refus de redirection vers la page de succès !
+      }
+
+      if (window.SwitchEngine) {
+        window.SwitchEngine.addTransaction({
           title: "Paiement QR (" + bName + ")",
           category: "qr",
           amount: -paymentAmount,
@@ -224,18 +239,6 @@
           icon: "qr_code_scanner",
           iconBg: "bg-purple-50 text-primary"
         });
-
-        localStorage.setItem('switch_last_tx_id', tx.id);
-        localStorage.setItem('switch_last_tx_amount', paymentAmount.toString());
-        localStorage.setItem('switch_last_tx_recipient', bName);
-      }
-
-      try {
-        if (window.SwitchAPI && window.SwitchAPI.payMerchant) {
-          await window.SwitchAPI.payMerchant(bName, paymentAmount, "Paiement QR Marchand");
-        }
-      } catch (err) {
-        console.warn("Paiement Marchand SwitchAPI info :", err);
       }
 
       alert("✅ Paiement de " + paymentAmount.toLocaleString('fr-FR') + " FCFA prélevé avec succès sur votre Compte Switch et versé à " + bName + " !");

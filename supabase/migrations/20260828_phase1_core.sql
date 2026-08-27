@@ -187,22 +187,52 @@ DECLARE
     v_client_id UUID;
     v_client_bal NUMERIC;
     v_tx_ref TEXT;
+    v_otp_record RECORD;
 BEGIN
     IF p_amount <= 0 THEN
-        RETURN jsonb_build_object('success', false, 'message', 'Montant invalide.');
+        RAISE EXCEPTION 'Montant de transaction invalide (doit être supérieur à 0 FCFA).';
     END IF;
 
-    -- Calcul de la commission agent (~0.8%)
+    -- 1. Contrôle strict de l'OTP si fourni (Retrait Express)
+    IF p_otp_code IS NOT NULL AND trim(p_otp_code) <> '' THEN
+        SELECT id, client_phone, amount, status, expires_at INTO v_otp_record
+        FROM public.cash_operations
+        WHERE otp_code = trim(p_otp_code)
+        FOR UPDATE;
+
+        IF v_otp_record.id IS NULL THEN
+            RAISE EXCEPTION 'Code secret OTP de retrait introuvable ou incorrect.';
+        END IF;
+
+        IF v_otp_record.status <> 'pending' THEN
+            RAISE EXCEPTION 'Ce code OTP a déjà été utilisé ou clôturé (Statut: %).', v_otp_record.status;
+        END IF;
+
+        IF v_otp_record.expires_at <= now() THEN
+            UPDATE public.cash_operations SET status = 'expired' WHERE id = v_otp_record.id;
+            RAISE EXCEPTION 'Ce code secret OTP a expiré. Veuillez générer un nouveau code.';
+        END IF;
+
+        IF p_amount <> v_otp_record.amount THEN
+            RAISE EXCEPTION 'Montant non conforme au code OTP (Attendu: % FCFA).', v_otp_record.amount;
+        END IF;
+    END IF;
+
+    -- 2. Calcul de la commission agent (~0.8%)
     v_commission := GREATEST(100, ROUND(p_amount * 0.008));
 
-    -- Récupération de l'agent
+    -- 3. Récupération et verrouillage de l'agent
     SELECT id, float_balance INTO v_agent_id, v_agent_float
     FROM public.agents
     ORDER BY created_at ASC
     LIMIT 1
     FOR UPDATE;
 
-    -- Récupération du client
+    IF v_agent_id IS NULL THEN
+        RAISE EXCEPTION 'Compte agent distributeur introuvable.';
+    END IF;
+
+    -- 4. Récupération et verrouillage du client
     SELECT id, balance INTO v_client_id, v_client_bal
     FROM public.profiles
     WHERE phone = p_client_phone OR phone = REPLACE(p_client_phone, ' ', '')
@@ -211,7 +241,7 @@ BEGIN
     IF UPPER(p_operation_type) = 'WITHDRAWAL' THEN
         -- RETRAIT D'ESPECES
         IF v_client_bal IS NOT NULL AND v_client_bal < p_amount THEN
-            RETURN jsonb_build_object('success', false, 'message', 'Solde client insuffisant.');
+            RAISE EXCEPTION 'Solde du compte client insuffisant pour ce retrait (% FCFA disponible).', v_client_bal;
         END IF;
 
         IF v_client_id IS NOT NULL THEN
@@ -231,7 +261,7 @@ BEGIN
     ELSE
         -- DEPOT D'ESPECES
         IF v_agent_float < p_amount THEN
-            RETURN jsonb_build_object('success', false, 'message', 'Float agent insuffisant pour effectuer ce dépôt.');
+            RAISE EXCEPTION 'Float agent insuffisant (% FCFA disponible) pour effectuer ce dépôt de % FCFA.', v_agent_float, p_amount;
         END IF;
 
         -- Débit du float agent + crédit commission
@@ -250,14 +280,14 @@ BEGIN
         v_tx_ref := 'TRX-DEP-' || lpad(floor(random() * 90000 + 10000)::text, 5, '0');
     END IF;
 
-    -- Clôture du code OTP si fourni
-    IF p_otp_code IS NOT NULL THEN
+    -- 5. Clôture de l'OTP si utilisé
+    IF p_otp_code IS NOT NULL AND trim(p_otp_code) <> '' THEN
         UPDATE public.cash_operations
-        SET status = 'completed'
-        WHERE otp_code = p_otp_code AND status = 'pending';
+        SET status = 'completed', agent_id = v_agent_id
+        WHERE otp_code = trim(p_otp_code);
     END IF;
 
-    -- Enregistrement dans transactions
+    -- 6. Enregistrement dans transactions
     INSERT INTO public.transactions (
         tx_ref, sender_id, receiver_id, agent_id, amount, fee, transaction_type, status, note
     ) VALUES (
