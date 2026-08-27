@@ -80,7 +80,7 @@
         <span class="bg-emerald-100 text-emerald-900 px-1.5 py-0.2 rounded-full text-[10px] font-bold">2</span>
       </button>
       <button type="button" onclick="filterMerchantNotifs('settlement', this)" class="px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 shrink-0">
-        <span>Versements MoMo 💸</span>
+        <span>Versements & Solde 💸</span>
       </button>
       <button type="button" onclick="filterMerchantNotifs('team', this)" class="px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 shrink-0">
         <span>Équipe & Stock 📦</span>
@@ -90,34 +90,34 @@
     <!-- Notifications List -->
     <div class="flex flex-col gap-3" id="merchant-notifs-list">
 
-      <!-- 1. Encaissement QR MTN MoMo -->
+      <!-- 1. Encaissement QR Switch Pay -->
       <div id="mnotif-1" data-cat="sales" onclick="openMerchantNotifModal(1)" class="notif-card bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-soft flex items-start gap-3.5 relative cursor-pointer group">
-        <div class="w-11 h-11 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center font-bold shrink-0">
+        <div class="w-11 h-11 rounded-2xl bg-purple-100 text-[#5E3BDC] flex items-center justify-center font-bold shrink-0">
           <span class="material-symbols-outlined text-2xl">qr_code_2</span>
         </div>
         <div class="flex-1 space-y-1">
           <div class="flex items-center justify-between">
-            <h3 class="font-extrabold text-sm text-on-surface">Paiement QR MTN MoMo Reçu</h3>
+            <h3 class="font-extrabold text-sm text-on-surface">Paiement QR Switch Reçu</h3>
             <span class="text-[10px] text-gray-400 font-medium">À l'instant</span>
           </div>
           <p class="text-xs text-on-surface-variant leading-relaxed">
             Encaissement de <b class="text-emerald-700 font-mono font-bold">+18 500 FCFA</b> par <b>Dossou Christian</b> à la Caisse Principale.
           </p>
           <div class="flex items-center gap-2 text-[10px] text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded-md w-fit mt-1">
-            <span>Réf: #TRX-8821</span> • <span>0% Frais</span>
+            <span>Réf: #TRX-8821</span> • <span>0% Frais Switch</span>
           </div>
         </div>
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 shrink-0 mt-1.5 unread-dot" id="mdot-1"></span>
       </div>
 
-      <!-- 2. Vente Caisse POS Moov Money -->
+      <!-- 2. Vente Caisse POS Switch Pay -->
       <div id="mnotif-2" data-cat="sales" onclick="openMerchantNotifModal(2)" class="notif-card bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-soft flex items-start gap-3.5 relative cursor-pointer group">
         <div class="w-11 h-11 rounded-2xl bg-blue-100 text-blue-900 flex items-center justify-center font-bold shrink-0">
           <span class="material-symbols-outlined text-2xl">point_of_sale</span>
         </div>
         <div class="flex-1 space-y-1">
           <div class="flex items-center justify-between">
-            <h3 class="font-extrabold text-sm text-on-surface">Vente Caisse POS • Moov Money</h3>
+            <h3 class="font-extrabold text-sm text-on-surface">Vente Caisse POS • Switch Pay</h3>
             <span class="text-[10px] text-gray-400 font-medium">Il y a 15 min</span>
           </div>
           <p class="text-xs text-on-surface-variant leading-relaxed">
@@ -141,7 +141,7 @@
             <span class="text-[10px] text-emerald-800 font-medium">Hier à 22:00</span>
           </div>
           <p class="text-xs text-on-surface-variant leading-relaxed">
-            Votre total d'encaissements cumulé disponible est de <b class="text-emerald-800 font-mono font-bold">2 450 000 FCFA</b>. Virement immédiat vers votre numéro MoMo sans frais.
+            Votre total d'encaissements cumulé disponible est de <b class="text-emerald-800 font-mono font-bold">2 450 000 FCFA</b>. Virement disponible sans frais vers votre compte Switch.
           </p>
         </div>
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 shrink-0 mt-1.5 unread-dot" id="mdot-3"></span>
@@ -252,14 +252,14 @@
   <script>
     const mNotifs = {
       1: {
-        title: "Paiement QR MTN MoMo Reçu",
+        title: "Paiement QR Switch Reçu",
         time: "Aujourd'hui à 14:32 • Caisse Principale",
         icon: "qr_code_2",
-        iconClass: "bg-amber-100 text-amber-900",
-        desc: "Le client Dossou Christian a réglé ses achats de +18 500 FCFA avec succès par QR Code Switch Pay. Les fonds sont crédités sans aucun frais.",
+        iconClass: "bg-purple-100 text-[#5E3BDC]",
+        desc: "Le client Dossou Christian a réglé ses achats de +18 500 FCFA avec succès par QR Code Switch Pay. Les fonds sont crédités sur votre solde Marchand sans aucun frais.",
         extras: `
           <div class="flex justify-between"><span>Montant Encaissé :</span><b class="text-emerald-700 font-mono font-bold">+18 500 FCFA</b></div>
-          <div class="flex justify-between"><span>Client :</span><b>Dossou Christian (MTN MoMo)</b></div>
+          <div class="flex justify-between"><span>Client :</span><b>Dossou Christian (Compte Switch)</b></div>
           <div class="flex justify-between"><span>Canal :</span><b>QR Standee Comptoir</b></div>
           <div class="flex justify-between"><span>Réf. Transaction :</span><b class="font-mono">#TRX-8821</b></div>
         `,
@@ -267,14 +267,14 @@
         actionUrl: "../d_tail_d_une_vente/code.html"
       },
       2: {
-        title: "Vente Caisse POS • Moov Money",
+        title: "Vente Caisse POS • Switch Pay",
         time: "Aujourd'hui à 13:15 • Caissier Koffi Mensah",
         icon: "point_of_sale",
         iconClass: "bg-blue-100 text-blue-900",
-        desc: "Une vente de 4 200 FCFA a été validée sur le terminal POS Express par le caissier Koffi Mensah. Ticket de caisse électronique envoyé au client.",
+        desc: "Une vente de 4 200 FCFA a été validée sur le terminal POS Express par le caissier Koffi Mensah via Switch Pay. Ticket de caisse électronique envoyé au client.",
         extras: `
           <div class="flex justify-between"><span>Montant Encaissé :</span><b class="text-emerald-700 font-mono font-bold">+4 200 FCFA</b></div>
-          <div class="flex justify-between"><span>Client :</span><b>Jeanne Agbo (Moov Money)</b></div>
+          <div class="flex justify-between"><span>Client :</span><b>Jeanne Agbo (Compte Switch)</b></div>
           <div class="flex justify-between"><span>Ticket N° :</span><b class="font-mono">#TK-88912</b></div>
         `,
         actionLabel: "Consulter la Vente POS",
@@ -285,12 +285,12 @@
         time: "Hier à 22:00 • Clôture Journalière",
         icon: "payments",
         iconClass: "bg-emerald-100 text-emerald-800",
-        desc: "Votre solde de caisse total s'élève à 2 450 000 FCFA. Vous pouvez effectuer un virement automatique sans frais vers votre compte MoMo.",
+        desc: "Votre solde de caisse total s'élève à 2 450 000 FCFA. Vous pouvez effectuer un virement instantané sans frais vers votre compte Switch ou bancaire.",
         extras: `
           <div class="flex justify-between"><span>Solde Caisse :</span><b class="text-emerald-800 font-mono font-bold">2 450 000 FCFA</b></div>
           <div class="flex justify-between"><span>Frais de Virement :</span><b class="text-emerald-700">0% (Gratuit)</b></div>
         `,
-        actionLabel: "Virer vers mon compte Mobile Money",
+        actionLabel: "Virer vers mon compte Switch",
         actionUrl: "../retrait_marchand/code.html"
       },
       4: {

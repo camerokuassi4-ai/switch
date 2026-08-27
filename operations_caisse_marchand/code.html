@@ -227,8 +227,8 @@
         </div>
 
         <div class="flex flex-col gap-1">
-          <label class="text-xs font-bold text-on-surface-variant">Numéro de téléphone / Compte Mobile Money *</label>
-          <input type="tel" id="supp-phone" required maxlength="8" placeholder="97 00 00 00" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2 text-xs font-mono font-bold"/>
+          <label class="text-xs font-bold text-on-surface-variant">Numéro de téléphone du Fournisseur (Compte Switch) *</label>
+          <input type="tel" id="supp-phone" required maxlength="14" placeholder="01 97 00 00 00" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2 text-xs font-mono font-bold" onfocus="if(!this.value) this.value='01 ';"/>
         </div>
 
         <div class="flex flex-col gap-1">
@@ -243,7 +243,7 @@
 
         <div class="flex gap-2.5 mt-2">
           <button type="button" onclick="closeModal('supplier-modal')" class="flex-1 py-3 rounded-full border border-outline-variant font-semibold text-xs hover:bg-surface-container cursor-pointer">Annuler</button>
-          <button type="submit" class="flex-1 py-3 rounded-full bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 active:scale-95 transition-all shadow-md cursor-pointer">Payer depuis la Caisse</button>
+          <button type="submit" class="flex-1 py-3 rounded-full bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 active:scale-95 transition-all shadow-md cursor-pointer">Payer depuis la Caisse Switch</button>
         </div>
       </form>
     </div>
@@ -268,8 +268,8 @@
         <div class="flex flex-col gap-1">
           <label class="text-xs font-bold text-on-surface-variant">Source de débit</label>
           <select class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2 text-xs font-semibold">
-            <option>MTN Mobile Money (+229 97 12 34 56)</option>
-            <option>Moov Money (+229 95 88 44 22)</option>
+            <option>Compte Switch Principal (+229 01 97 12 34 56)</option>
+            <option>Coffre Épargne Switch Pro</option>
             <option>Carte Bancaire Visa / Mastercard</option>
           </select>
         </div>
