@@ -1092,7 +1092,7 @@
       }
 
       if (phone && phone.trim()) {
-        const phoneElements = document.querySelectorAll("#user-display-phone, #user-phone-display, #user-profile-phone, #profile-user-phone");
+        const phoneElements = document.querySelectorAll("#user-phone-display, #user-profile-phone, #profile-user-phone");
         phoneElements.forEach(el => { el.textContent = phone; });
       }
 

@@ -71,18 +71,22 @@
       </div>
 
       <div class="flex flex-col gap-1.5 pt-1">
-        <span class="text-on-surface-variant font-medium">Numéro de Compte Switch (Transactions & Retraits) :</span>
-        <div class="p-3 bg-surface-container rounded-2xl font-mono font-black text-sm text-primary flex items-center justify-between select-all border border-outline-variant/40">
-          <span id="user-display-phone">+229 01 -- -- --</span>
-          <button onclick="copyAccountNumber()" class="text-xs bg-white text-primary px-3 py-1 rounded-xl shadow-xs border border-outline-variant font-bold hover:bg-purple-50 transition-colors cursor-pointer">
-            Copier
+        <span class="text-on-surface-variant font-medium">Numéro de Compte Switch (14 chiffres) :</span>
+        <div class="p-3.5 bg-purple-50/60 rounded-2xl font-mono font-black text-sm sm:text-base text-primary flex items-center justify-between select-all border border-purple-200 shadow-xs">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">badge</span>
+            <span id="user-display-account" class="tracking-wide">01 22 90 19 07 • 8492</span>
+          </div>
+          <button onclick="copyAccountNumber()" class="text-xs bg-white text-primary px-3.5 py-1.5 rounded-xl shadow-sm border border-purple-200 font-bold hover:bg-purple-100 transition-all cursor-pointer flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">content_copy</span>
+            <span>Copier</span>
           </button>
         </div>
       </div>
 
       <div class="p-2.5 bg-purple-50/70 border border-purple-100 rounded-xl flex items-start gap-2 text-[11px] text-purple-900 leading-snug">
         <span class="material-symbols-outlined text-primary text-base shrink-0 mt-0.5">info</span>
-        <span>Communiquez ce numéro pour recevoir des fonds, payer vos achats ou effectuer un retrait auprès d'un marchand ou agent Switch.</span>
+        <span>Communiquez ce numéro (10 chiffres téléphone + 4 chiffres de compte) pour vos virements, paiements marchands ou retraits en agence Switch.</span>
       </div>
     </div>
 
@@ -102,10 +106,10 @@
 
   <script>
     // Initialisation dynamique des données utilisateur
-    document.addEventListener('DOMContentLoaded', () => {
-      const fullName = localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || 'Utilisateur';
+    function initOnboardingUser() {
+      const fullName = localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || 'Utilisateur Switch';
       const firstName = fullName.trim().split(' ')[0] || 'Utilisateur';
-      let phone = localStorage.getItem('switch_user_phone') || '+229 01 -- -- --';
+      let phone = localStorage.getItem('switch_user_phone') || '+229 01 22 90 19 07';
       
       let accountSuffix = localStorage.getItem('switch_account_suffix');
       if (!accountSuffix || accountSuffix.length !== 4) {
@@ -117,21 +121,28 @@
       if (phoneDigits.startsWith('229')) phoneDigits = phoneDigits.slice(3);
       if (phoneDigits.length < 10) phoneDigits = phoneDigits.padStart(10, '0');
 
-      const accountDisplay = '01 ' + phoneDigits.slice(2,4) + ' ' + phoneDigits.slice(4,6) + ' ' + phoneDigits.slice(6,8) + ' ' + phoneDigits.slice(8,10) + ' • ' + accountSuffix;
+      const formattedAccount = '01 ' + phoneDigits.slice(2,4) + ' ' + phoneDigits.slice(4,6) + ' ' + phoneDigits.slice(6,8) + ' ' + phoneDigits.slice(8,10) + ' • ' + accountSuffix;
+      const rawAccount = phoneDigits + accountSuffix;
+
+      localStorage.setItem('switch_account_number', rawAccount);
+      localStorage.setItem('switch_account_display', formattedAccount);
 
       const titleEl = document.getElementById('welcome-title');
       const nameEl = document.getElementById('user-display-name');
-      const phoneEl = document.getElementById('user-display-phone');
+      const accountEl = document.getElementById('user-display-account');
 
       if (titleEl) titleEl.textContent = `Félicitations, ${firstName} !`;
       if (nameEl) nameEl.textContent = fullName;
-      if (phoneEl) phoneEl.textContent = accountDisplay;
-    });
+      if (accountEl) accountEl.textContent = formattedAccount;
+    }
+
+    document.addEventListener('DOMContentLoaded', initOnboardingUser);
+    initOnboardingUser();
 
     function copyAccountNumber() {
-      const accountNum = localStorage.getItem('switch_account_number') || localStorage.getItem('switch_account_display') || localStorage.getItem('switch_user_phone') || '';
+      const accountNum = localStorage.getItem('switch_account_number') || localStorage.getItem('switch_account_display') || '';
       navigator.clipboard.writeText(accountNum);
-      alert("Numéro de Compte Switch copié : " + accountNum);
+      alert("Numéro de Compte Switch (14 chiffres) copié :\n" + accountNum);
     }
 
     // Confetti celebration animation
