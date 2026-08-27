@@ -92,7 +92,7 @@
     
     <div class="text-center">
       <h1 class="text-base font-extrabold text-on-surface tracking-tight">Inscription Marchand Pro</h1>
-      <p class="text-[11px] text-on-surface-variant font-medium">Encaissement QR & Mobile Money à 0%</p>
+      <p class="text-[11px] text-on-surface-variant font-medium">Encaissement QR Switch & Caisse POS 0% Frais</p>
     </div>
 
     <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 border border-emerald-300 px-2.5 py-1 rounded-full flex items-center gap-1">
@@ -320,27 +320,27 @@
           </div>
         </div>
 
-        <!-- Card: Compte de Versement des Encaissements -->
+        <!-- Card: Compte Marchand Switch & Encaissements -->
         <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-4">
           <div class="flex items-center justify-between">
             <h3 class="text-xs font-black text-on-surface uppercase tracking-wider flex items-center gap-2">
               <span class="material-symbols-outlined text-emerald-600 text-base">payments</span>
-              <span>Versement Automatique des Ventes</span>
+              <span>Compte Marchand Switch & Encaissements</span>
             </h3>
             <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">0% Frais</span>
           </div>
 
-          <!-- Téléphone Mobile Money -->
+          <!-- Téléphone Compte Marchand Switch -->
           <div class="flex flex-col gap-1.5">
             <label for="merchantPhone" class="text-xs font-bold text-on-surface">
-              Numéro Mobile Money Bénin (10 chiffres commençant par 01) <span class="text-rose-500">*</span>
+              Numéro de téléphone du Compte Marchand Switch (10 chiffres commençant par 01) <span class="text-rose-500">*</span>
             </label>
             <div class="relative flex items-center">
-              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">phone_android</span>
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">smartphone</span>
               <span class="absolute left-10 text-xs font-bold font-mono text-gray-500 border-r border-gray-300 pr-2">+229</span>
               <input type="tel" id="merchantPhone" value="" maxlength="14" inputmode="numeric" placeholder="01 97 12 34 56" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-24 pr-4 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 placeholder:font-normal" onfocus="if(!this.value) this.value='01 ';"/>
             </div>
-            <p class="text-[10px] text-on-surface-variant">Les paiements QR des clients seront crédités immédiatement sur ce compte.</p>
+            <p class="text-[10px] text-on-surface-variant">Tous les paiements QR et ventes des clients sont crédités instantanément sur votre solde Marchand Switch.</p>
           </div>
 
           <!-- Email Professionnel -->
@@ -478,8 +478,8 @@
           alert("Veuillez saisir un numéro IFU valide (Identifiant Fiscal Unique Bénin).");
           return;
         }
-        if (!phone || phone.length < 8) {
-          alert("Veuillez renseigner un numéro Mobile Money valide (8 chiffres).");
+        if (!phone || phone.replace(/\D/g, '').length < 10) {
+          alert("Veuillez renseigner un numéro de téléphone Switch valide à 10 chiffres (commençant par 01).");
           return;
         }
         if (!terms) {
