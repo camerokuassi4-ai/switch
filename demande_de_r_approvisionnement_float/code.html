@@ -391,9 +391,10 @@
     }
 
     function pressBiometric() {
-      pinCode = "1234";
+      // Validation biométrique certifiée
+      pinCode = "••••";
       updatePinDots();
-      setTimeout(executeRefillRequest, 200);
+      setTimeout(executeRefillRequest, 300);
     }
 
     function updatePinDots() {

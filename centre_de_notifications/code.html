@@ -329,12 +329,14 @@
           <div class="flex justify-between"><span>Plafond Mensuel :</span><b class="font-mono">2 000 000 FCFA</b></div>
         `,
         actionLabel: "Voir mes Plafonds & Limites",
-        actionUrl: "../plafonds_et_limites_de_transactions/code.html"
+        actionUrl: "../limites_de_transaction/code.html"
       }
     };
 
     function goBack() {
-      if (window.history.length > 1) {
+      if (window.switchHandleBack) {
+        window.switchHandleBack();
+      } else if (window.history.length > 1) {
         window.history.back();
       } else {
         window.location.href = '../tableau_de_bord_mis_jour/code.html';
@@ -416,5 +418,6 @@
     }
   </script>
 
+  <script src="../assets/switch.router.js"></script>
 </body>
 </html>

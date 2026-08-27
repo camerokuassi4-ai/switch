@@ -165,8 +165,22 @@
 
     function handleLoanRequest(e) {
       e.preventDefault();
-      const sliderVal = document.getElementById('loan-slider').value;
-      document.getElementById('modal-net').textContent = parseInt(sliderVal).toLocaleString('fr-FR') + ' FCFA';
+      const sliderVal = parseInt(document.getElementById('loan-slider').value || '50000');
+      
+      if (window.SwitchEngine) {
+        window.SwitchEngine.addTransaction({
+          title: "Micro-Crédit Débloqué (Switch Avance)",
+          category: "credit",
+          amount: sliderVal,
+          fee: 0,
+          recipient: "Compte Switch (Adele Doe)",
+          note: "Prêt instantané remboursable sous " + currentDays + " jours",
+          icon: "speed",
+          iconBg: "bg-emerald-50 text-emerald-700"
+        });
+      }
+
+      document.getElementById('modal-net').textContent = sliderVal.toLocaleString('fr-FR') + ' FCFA';
       document.getElementById('loan-modal').classList.remove('hidden');
     }
   </script>

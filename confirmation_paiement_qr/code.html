@@ -142,12 +142,23 @@
 
   <script>
     let enteredPin = "";
-    const paymentAmount = 15500;
+    let paymentAmount = 15500;
 
     document.addEventListener("DOMContentLoaded", function () {
       const bName = localStorage.getItem('switch_merchant_business_name');
       if (bName) {
         document.getElementById('merchant-name-display').textContent = bName;
+      }
+      const storedAmt = localStorage.getItem('switch_qr_amount');
+      if (storedAmt) {
+        paymentAmount = parseInt(storedAmt) || 15500;
+        const amtEl = document.getElementById('amount-display');
+        if (amtEl) amtEl.textContent = paymentAmount.toLocaleString('fr-FR');
+      }
+      if (window.SwitchEngine) {
+        const bal = window.SwitchEngine.getMainBalance();
+        const balEl = document.getElementById('user-balance-display');
+        if (balEl) balEl.textContent = bal.toLocaleString('fr-FR') + ' FCFA disponible';
       }
     });
 
@@ -186,8 +197,38 @@
       }
 
       const bName = localStorage.getItem('switch_merchant_business_name') || "Boutique & Restaurant La Plage";
+
+      if (window.SwitchEngine) {
+        const mainBal = window.SwitchEngine.getMainBalance();
+        if (mainBal < paymentAmount) {
+          alert("Solde insuffisant dans votre Compte Switch (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible, " + paymentAmount.toLocaleString('fr-FR') + " FCFA requis).");
+          enteredPin = "";
+          updateDots();
+          return;
+        }
+
+        const tx = window.SwitchEngine.addTransaction({
+          title: "Paiement QR (" + bName + ")",
+          category: "qr",
+          amount: -paymentAmount,
+          fee: 0,
+          recipient: bName,
+          note: "Paiement Marchand Agréé Switch",
+          icon: "qr_code_scanner",
+          iconBg: "bg-purple-50 text-primary"
+        });
+
+        localStorage.setItem('switch_last_tx_id', tx.id);
+        localStorage.setItem('switch_last_tx_amount', paymentAmount.toString());
+        localStorage.setItem('switch_last_tx_recipient', bName);
+      }
+
       alert("✅ Paiement de " + paymentAmount.toLocaleString('fr-FR') + " FCFA prélevé avec succès sur votre Compte Switch et versé à " + bName + " !");
-      window.location.href = '../tableau_de_bord_mis_jour/code.html';
+      if (window.switchNavigate) {
+        window.switchNavigate('../confirmation_de_succ_s/code.html');
+      } else {
+        window.location.href = '../confirmation_de_succ_s/code.html';
+      }
     }
   </script>
 

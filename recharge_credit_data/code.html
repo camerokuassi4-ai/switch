@@ -198,7 +198,9 @@
       }
     }
 
+    let currentProductType = 'airtime';
     function selectProductType(type) {
+      currentProductType = type;
       if (type === 'airtime') {
         document.getElementById('tab-airtime').className = 'py-2.5 rounded-xl text-sm font-bold bg-surface-container-lowest text-primary shadow-sm transition-all';
         document.getElementById('tab-data').className = 'py-2.5 rounded-xl text-sm font-bold text-on-surface-variant transition-all';
@@ -218,6 +220,31 @@
 
     function handleRecharge(e) {
       e.preventDefault();
+      const phone = document.getElementById('phone-num').value || '+229 97 12 34 56';
+      let amt = 1000;
+      let title = "Recharge Crédit " + currentOp;
+
+      if (currentProductType === 'airtime') {
+        amt = parseInt(document.getElementById('airtime-amount').value) || 1000;
+      } else {
+        const bundle = document.querySelector('input[name="bundle"]:checked');
+        amt = 2000; // default for Mega Data
+        title = "Forfait Internet 5 Go " + currentOp;
+      }
+
+      if (window.SwitchEngine) {
+        window.SwitchEngine.addTransaction({
+          title: title,
+          category: "telecom",
+          amount: -amt,
+          fee: 0,
+          recipient: currentOp + " (" + phone + ")",
+          note: "Recharge instantanée",
+          icon: "cell_tower",
+          iconBg: "bg-amber-50 text-amber-800"
+        });
+      }
+
       document.getElementById('modal-op').textContent = currentOp;
       document.getElementById('recharge-modal').classList.remove('hidden');
     }

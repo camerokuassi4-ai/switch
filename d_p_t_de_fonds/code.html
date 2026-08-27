@@ -173,6 +173,13 @@
     }
 
     function submitDepositFlow() {
+      const rawAmt = document.getElementById('dep-amount').value || '50 000';
+      const amt = parseInt(rawAmt.replace(/\s+/g, '')) || 50000;
+      const phone = document.getElementById('dep-phone') ? document.getElementById('dep-phone').value : '97 12 34 56';
+      
+      localStorage.setItem('switch_pending_deposit_amount', amt.toString());
+      localStorage.setItem('switch_pending_deposit_source', selectedDepositSource);
+
       if (selectedDepositSource === 'agent') {
         if (window.switchNavigate) {
           window.switchNavigate('../code_depot_especes_agent/code.html');
@@ -180,10 +187,23 @@
           window.location.href = '../code_depot_especes_agent/code.html';
         }
       } else {
+        const opName = selectedDepositSource === 'mtn' ? 'MTN MoMo' : (selectedDepositSource === 'moov' ? 'Moov Money' : 'Celtiis Cash');
+        if (window.SwitchEngine) {
+          window.SwitchEngine.addTransaction({
+            title: "Dépôt " + opName,
+            category: "deposit",
+            amount: amt,
+            fee: 0,
+            recipient: "Mon Compte Principal (+229 " + phone + ")",
+            note: "Recharge instantanée via " + opName,
+            icon: "add_circle",
+            iconBg: "bg-emerald-50 text-emerald-700"
+          });
+        }
         if (window.switchNavigate) {
-          window.switchNavigate('../confirmation_de_l_op_ration_code/code.html');
+          window.switchNavigate('../confirmation_de_succ_s/code.html');
         } else {
-          window.location.href = '../confirmation_de_l_op_ration_code/code.html';
+          window.location.href = '../confirmation_de_succ_s/code.html';
         }
       }
     }

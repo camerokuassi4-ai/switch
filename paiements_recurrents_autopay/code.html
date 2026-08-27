@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Switch Auto-Pay - Prélèvements & Règlements Automatiques</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
+
+  <!-- Top App Bar -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-surface-container transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-base sm:text-lg font-black text-on-surface">Switch Auto-Pay</h1>
+        <p class="text-xs text-on-surface-variant font-medium">Paiements & Prélèvements Automatiques</p>
+      </div>
+    </div>
+    <button onclick="openNewAutoPayModal()" class="flex items-center gap-1 bg-primary text-white text-xs font-bold px-3.5 py-2 rounded-full shadow-md hover:opacity-90 active:scale-95 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-base">add</span>
+      <span>Programmer</span>
+    </button>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-1 flex-1">
+    
+    <!-- Hero Banner -->
+    <section class="bg-gradient-to-r from-purple-700 via-indigo-800 to-primary rounded-[32px] p-6 text-white shadow-md flex items-center justify-between">
+      <div>
+        <span class="text-[10px] font-black uppercase tracking-wider text-purple-200 block">Tranquillité d'Esprit</span>
+        <h2 class="text-xl sm:text-2xl font-black mt-0.5">Zéro Facture Oubliée</h2>
+        <p class="text-xs text-purple-100 mt-1">Vos abonnements et charges payés automatiquement à bonne date.</p>
+      </div>
+      <div class="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center text-white shrink-0">
+        <span class="material-symbols-outlined text-3xl">autorenew</span>
+      </div>
+    </section>
+
+    <!-- Active Recurring Rules List -->
+    <section class="flex flex-col gap-3">
+      <div class="flex items-center justify-between px-1">
+        <h3 class="text-xs font-black text-on-surface uppercase tracking-wider">Mes Prélèvements Actifs (3)</h3>
+        <span class="text-[11px] text-emerald-700 font-bold">100% Automatisé</span>
+      </div>
+
+      <!-- Rule 1: Recharge SBEE Compteur -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-2xl">bolt</span>
+            </div>
+            <div>
+              <h4 class="font-black text-sm text-on-surface">Recharge Compteur SBEE</h4>
+              <p class="text-xs text-on-surface-variant">Compteur N° 1420-9938-112</p>
+            </div>
+          </div>
+          <input type="checkbox" checked onchange="toggleRule(this, 'SBEE')" class="w-5 h-5 rounded text-primary focus:ring-primary cursor-pointer"/>
+        </div>
+
+        <div class="p-3 bg-surface-container/50 rounded-2xl flex items-center justify-between text-xs">
+          <div>
+            <span class="text-gray-500">Fréquence :</span>
+            <b class="text-on-surface ml-1">Chaque 1er du mois</b>
+          </div>
+          <span class="font-black font-mono text-primary text-sm">10 000 FCFA</span>
+        </div>
+      </div>
+
+      <!-- Rule 2: Cotisation Tontine Famille -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-2xl">groups</span>
+            </div>
+            <div>
+              <h4 class="font-black text-sm text-on-surface">Cotisation Tontine Famille Cotonou</h4>
+              <p class="text-xs text-on-surface-variant">Tour mensuel automatique</p>
+            </div>
+          </div>
+          <input type="checkbox" checked onchange="toggleRule(this, 'Tontine')" class="w-5 h-5 rounded text-primary focus:ring-primary cursor-pointer"/>
+        </div>
+
+        <div class="p-3 bg-surface-container/50 rounded-2xl flex items-center justify-between text-xs">
+          <div>
+            <span class="text-gray-500">Fréquence :</span>
+            <b class="text-on-surface ml-1">Chaque 5 du mois</b>
+          </div>
+          <span class="font-black font-mono text-primary text-sm">50 000 FCFA</span>
+        </div>
+      </div>
+
+      <!-- Rule 3: Forfait Fibre Internet -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-700 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-2xl">wifi</span>
+            </div>
+            <div>
+              <h4 class="font-black text-sm text-on-surface">Abonnement Fibre Internet Maison</h4>
+              <p class="text-xs text-on-surface-variant">Débit automatique sans coupure</p>
+            </div>
+          </div>
+          <input type="checkbox" checked onchange="toggleRule(this, 'Fibre')" class="w-5 h-5 rounded text-primary focus:ring-primary cursor-pointer"/>
+        </div>
+
+        <div class="p-3 bg-surface-container/50 rounded-2xl flex items-center justify-between text-xs">
+          <div>
+            <span class="text-gray-500">Fréquence :</span>
+            <b class="text-on-surface ml-1">Chaque 28 du mois</b>
+          </div>
+          <span class="font-black font-mono text-primary text-sm">25 000 FCFA</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function toggleRule(checkbox, name) {
+      if (checkbox.checked) {
+        alert(`✅ Prélèvement automatique « ${name} » activé.`);
+      } else {
+        alert(`⏸️ Prélèvement automatique « ${name} » suspendu.`);
+      }
+    }
+
+    function openNewAutoPayModal() {
+      const name = prompt("Nom du service à programmer (ex: Canal+, SONEB, Loyer...) :", "Canal+ Evasion");
+      if (name) {
+        alert(`🎉 Règle Auto-Pay pour « ${name} » enregistrée avec succès !`);
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

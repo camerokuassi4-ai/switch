@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Switch Kids & Famille - Argent de Poche & Contrôle Parental</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .kids-gradient {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #B45309 100%);
+      box-shadow: 0 16px 36px -10px rgba(217, 119, 6, 0.35);
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
+
+  <!-- Top App Bar -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-amber-700 hover:bg-amber-50 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-base sm:text-lg font-black text-on-surface">Switch Kids & Famille</h1>
+        <p class="text-xs text-on-surface-variant font-medium">Argent de poche & Contrôle parental</p>
+      </div>
+    </div>
+    <button onclick="openNewKidModal()" class="flex items-center gap-1 bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-xs hover:bg-amber-700 active:scale-95 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-base">add</span>
+      <span>Ajouter</span>
+    </button>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-1 flex-1">
+    
+    <!-- Hero Kid Card : Junior Doe -->
+    <section class="kids-gradient rounded-[32px] p-6 text-white relative overflow-hidden flex flex-col gap-4">
+      <div class="flex items-center justify-between z-10">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center font-black text-lg text-amber-100 shadow-inner">
+            JD
+          </div>
+          <div>
+            <h2 class="text-lg font-black" id="kid-name-display">Junior Doe (14 ans)</h2>
+            <p class="text-xs text-amber-200">Collège Catholique Père Aupiais</p>
+          </div>
+        </div>
+        <span id="card-status-pill" class="text-[10px] font-black uppercase bg-white/20 text-white px-3 py-1 rounded-full border border-white/20">
+          Carte Active
+        </span>
+      </div>
+
+      <!-- Balance & Quick Topup -->
+      <div class="bg-black/20 backdrop-blur-md rounded-2xl p-4 flex items-center justify-between z-10 border border-white/10">
+        <div>
+          <span class="text-[10px] text-amber-200 uppercase font-bold">Solde Disponible Junior</span>
+          <h3 class="text-2xl font-black font-mono mt-0.5" id="kid-balance-display">8 500 FCFA</h3>
+        </div>
+        <button onclick="openTopUpModal()" class="px-4 py-2 rounded-xl bg-white text-amber-900 font-bold text-xs shadow-sm hover:bg-amber-50 active:scale-95 transition-all cursor-pointer">
+          Recharger
+        </button>
+      </div>
+
+      <!-- Limit info & Freeze button -->
+      <div class="flex items-center justify-between text-xs pt-1 border-t border-white/20 z-10">
+        <span class="text-amber-100 font-medium">Plafond : <b>2 000 FCFA / jour</b></span>
+        <button onclick="toggleFreezeKidCard()" id="btn-freeze-kid" class="text-xs font-bold text-amber-200 hover:text-white underline cursor-pointer">
+          Geler la carte
+        </button>
+      </div>
+    </section>
+
+    <!-- Recent Kid Expenses Activity -->
+    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+      <div class="flex items-center justify-between px-1">
+        <h3 class="text-xs font-black text-on-surface uppercase tracking-wider">Dépenses Récentes de Junior</h3>
+        <span class="text-[11px] text-green-700 font-bold">Aujourd'hui</span>
+      </div>
+
+      <div class="flex flex-col divide-y divide-outline-variant/30 text-xs">
+        <div class="py-2.5 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-base">restaurant</span>
+            </div>
+            <div>
+              <p class="font-bold text-on-surface">Cantine Scolaire Aupiais</p>
+              <p class="text-[10px] text-on-surface-variant">Paiement QR • 12:30</p>
+            </div>
+          </div>
+          <span class="font-bold font-mono text-rose-600">-1 200 FCFA</span>
+        </div>
+
+        <div class="py-2.5 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-base">two_wheeler</span>
+            </div>
+            <div>
+              <p class="font-bold text-on-surface">Transport Zem Cotonou</p>
+              <p class="text-[10px] text-on-surface-variant">Paiement QR • 07:45</p>
+            </div>
+          </div>
+          <span class="font-bold font-mono text-rose-600">-500 FCFA</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal Recharger Argent de Poche -->
+  <div id="topup-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl p-6 flex flex-col gap-4 shadow-2xl animate-in zoom-in-95 duration-200">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-bold text-on-surface">Recharger l'argent de poche</h3>
+        <button onclick="closeTopUpModal()" class="p-1 rounded-full hover:bg-gray-100 text-on-surface-variant cursor-pointer">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="handleTopUp(event)" class="flex flex-col gap-3">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-bold text-on-surface-variant uppercase">Montant à verser</label>
+          <div class="relative flex items-center">
+            <input type="number" id="topup-amt" required min="500" step="500" value="5000" class="w-full bg-surface-container-low border border-outline-variant rounded-2xl px-4 pr-16 py-3 font-mono font-bold text-lg text-primary focus:outline-none focus:border-primary"/>
+            <span class="absolute right-4 text-xs font-bold text-on-surface-variant">FCFA</span>
+          </div>
+        </div>
+
+        <div class="flex gap-2 mt-2">
+          <button type="button" onclick="closeTopUpModal()" class="flex-1 py-3 rounded-full border border-outline-variant font-bold text-xs hover:bg-surface-container cursor-pointer">Annuler</button>
+          <button type="submit" class="flex-1 py-3 rounded-full bg-amber-600 text-white font-bold text-xs hover:bg-amber-700 shadow-md cursor-pointer">Transférer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let kidBal = 8500;
+    let isFrozen = false;
+
+    function openTopUpModal() {
+      document.getElementById('topup-modal').classList.remove('hidden');
+    }
+    function closeTopUpModal() {
+      document.getElementById('topup-modal').classList.add('hidden');
+    }
+
+    function handleTopUp(e) {
+      e.preventDefault();
+      const amt = parseInt(document.getElementById('topup-amt').value || '5000');
+
+      if (window.SwitchEngine) {
+        const mainBal = window.SwitchEngine.getMainBalance();
+        if (mainBal < amt) {
+          alert("Solde insuffisant dans votre Compte Principal (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible).");
+          return;
+        }
+
+        window.SwitchEngine.addTransaction({
+          title: "Argent de Poche Junior Doe",
+          category: "internal",
+          amount: -amt,
+          fee: 0,
+          recipient: "Sous-compte Junior Doe",
+          note: "Recharge argent de poche hebdomadaire",
+          icon: "child_care",
+          iconBg: "bg-amber-50 text-amber-700"
+        });
+      }
+
+      kidBal += amt;
+      document.getElementById('kid-balance-display').textContent = kidBal.toLocaleString('fr-FR') + ' FCFA';
+      closeTopUpModal();
+      alert(`✅ ${amt.toLocaleString('fr-FR')} FCFA transférés instantanément sur le compte de Junior !`);
+    }
+
+    function toggleFreezeKidCard() {
+      isFrozen = !isFrozen;
+      const pill = document.getElementById('card-status-pill');
+      const btn = document.getElementById('btn-freeze-kid');
+      if (isFrozen) {
+        pill.className = "text-[10px] font-black uppercase bg-rose-600 text-white px-3 py-1 rounded-full border border-white/20";
+        pill.textContent = "Carte Gelée";
+        btn.textContent = "Débloquer la carte";
+        alert("🔒 La carte de Junior a été gelée. Tout paiement sera rejeté.");
+      } else {
+        pill.className = "text-[10px] font-black uppercase bg-white/20 text-white px-3 py-1 rounded-full border border-white/20";
+        pill.textContent = "Carte Active";
+        btn.textContent = "Geler la carte";
+        alert("🔓 La carte de Junior a été réactivée avec succès.");
+      }
+    }
+
+    function openNewKidModal() {
+      const name = prompt("Nom et prénom du nouvel enfant / proche :", "Kevin Doe");
+      if (name) {
+        alert(`🎉 Sous-compte créé pour « ${name} » !`);
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

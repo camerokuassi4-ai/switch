@@ -8,6 +8,21 @@
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
 
+  <script>
+    (function () {
+      function killLock() {
+        const el = document.getElementById('switch-lock-screen');
+        if (el) el.remove();
+        localStorage.removeItem('switch_sec_lockout_until');
+        localStorage.removeItem('switch_sec_failed_attempts');
+      }
+      killLock();
+      document.addEventListener('DOMContentLoaded', killLock);
+      window.addEventListener('load', killLock);
+      new MutationObserver(killLock).observe(document.documentElement, { childList: true, subtree: true });
+    })();
+  </script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
     body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); }
@@ -18,9 +33,9 @@
   <!-- TopAppBar -->
   <header class="flex items-center justify-between px-container-margin py-stack-md w-full max-w-xl mx-auto pt-6">
     <div class="flex items-center gap-3">
-      <button aria-label="Retour" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
-        <span class="material-symbols-outlined">arrow_back</span>
-      </button>
+      <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center">
+        <span class="material-symbols-outlined text-xl">verified_user</span>
+      </div>
       <div>
         <h1 class="text-xl font-bold text-on-surface">Agrément Agent Relais</h1>
         <p class="text-xs text-on-surface-variant">Cautionnement & Activation de Guichet</p>
@@ -96,18 +111,24 @@
   </main>
 
   <script>
-    function selectCaution(amt) {
-      document.getElementById('c-100k').className = 'p-3.5 rounded-2xl border border-outline-variant bg-surface-container text-center flex flex-col items-center gap-1 transition-all cursor-pointer opacity-70';
-      document.getElementById('c-500k').className = 'p-3.5 rounded-2xl border border-outline-variant bg-surface-container text-center flex flex-col items-center gap-1 transition-all cursor-pointer opacity-70';
-      document.getElementById('c-1m').className = 'p-3.5 rounded-2xl border border-outline-variant bg-surface-container text-center flex flex-col items-center gap-1 transition-all cursor-pointer opacity-70';
+    let selectedAmount = 500000;
 
-      if (amt === 100000) {
-        document.getElementById('c-100k').className = 'p-3.5 rounded-2xl border-2 border-primary bg-primary/5 text-center flex flex-col items-center gap-1 transition-all cursor-pointer';
-      } else if (amt === 500000) {
-        document.getElementById('c-500k').className = 'p-3.5 rounded-2xl border-2 border-primary bg-primary/5 text-center flex flex-col items-center gap-1 transition-all cursor-pointer';
-      } else {
-        document.getElementById('c-1m').className = 'p-3.5 rounded-2xl border-2 border-primary bg-primary/5 text-center flex flex-col items-center gap-1 transition-all cursor-pointer';
-      }
+    function selectCaution(amt) {
+      selectedAmount = amt;
+      const amounts = [100000, 500000, 1000000];
+      const ids = { 100000: 'c-100k', 500000: 'c-500k', 1000000: 'c-1m' };
+
+      amounts.forEach(a => {
+        const el = document.getElementById(ids[a]);
+        if (el) {
+          if (a === amt) {
+            el.className = 'p-3.5 rounded-2xl border-2 border-primary bg-primary/10 text-center flex flex-col items-center gap-1 transition-all cursor-pointer shadow-sm scale-[1.02]';
+          } else {
+            el.className = 'p-3.5 rounded-2xl border border-outline-variant bg-surface-container text-center flex flex-col items-center gap-1 transition-all cursor-pointer opacity-70 hover:opacity-100';
+          }
+        }
+      });
+      localStorage.setItem('switch_agent_float', amt.toString());
     }
 
     function activateAgentAccount() {
@@ -115,11 +136,17 @@
         alert("Veuillez accepter les termes du contrat.");
         return;
       }
+
+      localStorage.setItem('switch_agent_float', selectedAmount.toString());
+      localStorage.setItem('switch_agent_session_active', 'true');
+      localStorage.setItem('switch_active_role', 'agent');
+      sessionStorage.setItem('switchActiveSpace', 'agent');
+
       alert("Félicitations ! Votre guichet Agent Switch est officiellement agréé et activé !");
       if (window.switchNavigate) {
-        window.switchNavigate('../tableau_de_bord_agent/code.html');
+        window.switchNavigate('../tableau_de_bord_agent_simple/code.html');
       } else {
-        window.location.href = '../tableau_de_bord_agent/code.html';
+        window.location.href = '../tableau_de_bord_agent_simple/code.html';
       }
     }
   </script>

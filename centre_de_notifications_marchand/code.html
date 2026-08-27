@@ -45,12 +45,12 @@
   <!-- Top Header Navigation -->
   <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
     <div class="flex items-center gap-3">
-      <button aria-label="Retour" onclick="window.location.href='../tableau_de_bord_marchand/code.html'" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-emerald-700 hover:bg-emerald-50 transition-all cursor-pointer">
+      <a href="../tableau_de_bord_agent_mixte/code.html" aria-label="Retour" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-purple-50 transition-all cursor-pointer no-underline">
         <span class="material-symbols-outlined text-xl">arrow_back</span>
-      </button>
+      </a>
       <div>
-        <h1 class="text-base sm:text-lg font-black text-on-surface tracking-tight">Notifications Caisse</h1>
-        <p id="notif-merchant-store" class="text-[11px] text-on-surface-variant font-medium">Boutique La Plage • Alertes d'encaissement</p>
+        <h1 class="text-base sm:text-lg font-black text-on-surface tracking-tight">Notifications Caisse & Ventes</h1>
+        <p id="notif-merchant-store" class="text-[11px] text-on-surface-variant font-medium">Commerce & Guichet Saint-Michel • Alertes d'encaissement</p>
       </div>
     </div>
 
@@ -377,7 +377,15 @@
         document.getElementById('merchant-empty-state').classList.remove('hidden');
       }
     }
+
+    // Charger le nom de la boutique enregistrée
+    (function() {
+      var storeName = localStorage.getItem('switch_merchant_business_name') || "Commerce & Guichet Saint-Michel";
+      var sub = document.getElementById('notif-merchant-store');
+      if (sub) sub.textContent = storeName + " • Alertes d'encaissement";
+    })();
   </script>
 
+  <script src="../assets/switch.router.js?v=4.0"></script>
 </body>
 </html>

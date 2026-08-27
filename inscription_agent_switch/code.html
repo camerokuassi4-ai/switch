@@ -8,6 +8,23 @@
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
 
+  <script>
+    // Élimination absolue et instantanée de tout écran de verrouillage PIN et bouton retour
+    (function () {
+      function killLockAndBack() {
+        const el = document.getElementById('switch-lock-screen');
+        if (el) el.remove();
+        document.querySelectorAll('.switch-back-btn, button[aria-label="Retour"]').forEach(b => b.remove());
+        localStorage.removeItem('switch_sec_lockout_until');
+        localStorage.removeItem('switch_sec_failed_attempts');
+      }
+      killLockAndBack();
+      document.addEventListener('DOMContentLoaded', killLockAndBack);
+      window.addEventListener('load', killLockAndBack);
+      new MutationObserver(killLockAndBack).observe(document.documentElement, { childList: true, subtree: true });
+    })();
+  </script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
     
@@ -49,7 +66,7 @@
     }
 
     .form-step.active {
-      display: flex;
+      display: flex !important;
       flex-direction: column;
       opacity: 1;
       transform: translateY(0);
@@ -71,9 +88,9 @@
 
   <!-- Top Header Navigation -->
   <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
-    <button aria-label="Retour" onclick="previousStep()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
-      <span class="material-symbols-outlined text-xl">arrow_back</span>
-    </button>
+    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+      <span class="material-symbols-outlined text-xl">badge</span>
+    </div>
     
     <div class="text-center">
       <h1 class="text-base font-extrabold text-on-surface tracking-tight">Inscription Agent Agréé</h1>
@@ -96,7 +113,7 @@
         <div id="progress-bar-fill" class="absolute left-6 top-1/2 -translate-y-1/2 h-1 bg-primary rounded-full z-0 step-transition" style="width: 0%;"></div>
 
         <!-- Step 1 Indicator -->
-        <div class="relative z-10 flex flex-col items-center gap-1">
+        <div class="relative z-10 flex flex-col items-center gap-1 select-none">
           <div id="step-dot-1" class="w-8 h-8 rounded-full bg-primary text-white font-bold text-xs flex items-center justify-center shadow-md step-transition">
             1
           </div>
@@ -104,7 +121,7 @@
         </div>
 
         <!-- Step 2 Indicator -->
-        <div class="relative z-10 flex flex-col items-center gap-1">
+        <div class="relative z-10 flex flex-col items-center gap-1 select-none">
           <div id="step-dot-2" class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition">
             2
           </div>
@@ -112,7 +129,7 @@
         </div>
 
         <!-- Step 3 Indicator -->
-        <div class="relative z-10 flex flex-col items-center gap-1">
+        <div class="relative z-10 flex flex-col items-center gap-1 select-none">
           <div id="step-dot-3" class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition">
             3
           </div>
@@ -122,7 +139,7 @@
     </div>
 
     <!-- Form Body -->
-    <form id="agent-form" onsubmit="event.preventDefault(); nextStep();" class="flex flex-col gap-4">
+    <form id="agent-form" data-no-router="true" onsubmit="event.preventDefault(); nextStep();" class="flex flex-col gap-4">
 
       <!-- ========================================== -->
       <!-- STEP 1 : Informations de base & Établissement -->
@@ -143,7 +160,7 @@
             <label for="businessName" class="text-[11px] font-bold text-on-surface-variant">Nom commercial du point de service *</label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">store</span>
-              <input type="text" id="businessName" placeholder="Ex: Kiosque Saint-Michel, Boutique La Grâce" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+              <input type="text" id="businessName" value="Kiosque Saint-Michel" placeholder="Ex: Kiosque Saint-Michel, Boutique La Grâce" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
             </div>
           </div>
 
@@ -160,7 +177,7 @@
           <div class="flex flex-col gap-2">
             <label class="text-[11px] font-bold text-on-surface-variant">Modèle d'activité de votre guichet *</label>
             
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               
               <!-- Option 1: Pur Guichet Financier -->
               <div onclick="selectAgentModel('pure_agent')" id="model-card-pure_agent" class="p-3.5 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer transition-all flex flex-col justify-between gap-2 shadow-xs">
@@ -176,21 +193,7 @@
                 </div>
               </div>
 
-              <!-- Option 2: Agent Mixte (Commerce + Guichet) -->
-              <div onclick="selectAgentModel('hybrid_merchant')" id="model-card-hybrid_merchant" class="p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 hover:border-primary/50 cursor-pointer transition-all flex flex-col justify-between gap-2 shadow-xs">
-                <div class="flex items-center justify-between">
-                  <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-700 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-lg">storefront</span>
-                  </div>
-                  <span class="text-[9px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">Mixte</span>
-                </div>
-                <div>
-                  <h3 class="text-xs font-bold text-on-surface">Commerce + Guichet</h3>
-                  <p class="text-[10px] text-on-surface-variant mt-0.5 leading-tight">Vente de vos produits + Retraits et dépôts cash quartier</p>
-                </div>
-              </div>
-
-              <!-- Option 3: Agent Itinérant -->
+              <!-- Option 2: Agent Itinérant -->
               <div onclick="selectAgentModel('mobile_agent')" id="model-card-mobile_agent" class="p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 hover:border-primary/50 cursor-pointer transition-all flex flex-col justify-between gap-2 shadow-xs">
                 <div class="flex items-center justify-between">
                   <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center">
@@ -208,24 +211,6 @@
 
             <!-- Hidden real input value -->
             <input type="hidden" id="selectedAgentModel" value="pure_agent"/>
-          </div>
-
-          <!-- Sous-section dynamique : Type de commerce / Produits vendus (visible si Mixte) -->
-          <div id="merchant-products-section" class="hidden p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex flex-col gap-2 transition-all">
-            <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-amber-700 text-base">shopping_bag</span>
-              <label for="productCategory" class="text-[11px] font-bold text-amber-900">Type de marchandises & produits vendus dans votre boutique *</label>
-            </div>
-            <select id="productCategory" class="input-focus w-full bg-white border border-amber-300 rounded-xl py-2.5 pl-3 pr-8 text-xs font-semibold text-on-surface cursor-pointer">
-              <option value="alimentation" selected>Alimentation générale / Épicerie / Boissons</option>
-              <option value="pharmacie">Pharmacie / Dépôt de médicaments / Santé</option>
-              <option value="mode">Prêt-à-porter / Cosmétiques / Chaussures</option>
-              <option value="quincaillerie">Quincaillerie / Bâtiment / Matériaux</option>
-              <option value="telephonie">Téléphonie / Accessoires électroniques / Recharges</option>
-              <option value="bureautique">Secrétariat bureautique / Cybercafé / Librairie</option>
-              <option value="autre_commerce">Autre commerce de détail</option>
-            </select>
-            <p class="text-[10px] text-amber-800/80">Vous pourrez aussi encaisser vos clients pour vos articles via QR Code Switch.</p>
           </div>
 
           <!-- Services Financiers Actifs sur votre Guichet -->
@@ -491,7 +476,7 @@
 
       <!-- Action Buttons Footer -->
       <div class="pt-2 flex items-center gap-3">
-        <button type="button" onclick="previousStep()" class="w-1/3 py-4 rounded-full bg-white border border-outline-variant/60 text-on-surface font-bold text-xs sm:text-sm hover:bg-gray-50 transition-all cursor-pointer">
+        <button type="button" data-no-router="true" onclick="previousStep()" class="w-1/3 py-4 rounded-full bg-white border border-outline-variant/60 text-on-surface font-bold text-xs sm:text-sm hover:bg-gray-50 transition-all cursor-pointer">
           Précédent
         </button>
         <button type="button" onclick="nextStep()" id="next-btn" data-no-router="true" class="w-2/3 py-4 rounded-full bg-primary text-white font-bold text-xs sm:text-sm shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer">
@@ -515,7 +500,7 @@
     function selectAgentModel(modelKey) {
       document.getElementById('selectedAgentModel').value = modelKey;
       
-      const cards = ['pure_agent', 'hybrid_merchant', 'mobile_agent'];
+      const cards = ['pure_agent', 'mobile_agent'];
       cards.forEach(c => {
         const cardEl = document.getElementById(`model-card-${c}`);
         if (cardEl) {
@@ -526,16 +511,6 @@
           }
         }
       });
-
-      // Afficher le sélecteur de produits si l'agent vend des marchandises (Mixte)
-      const productsSection = document.getElementById('merchant-products-section');
-      if (productsSection) {
-        if (modelKey === 'hybrid_merchant') {
-          productsSection.classList.remove('hidden');
-        } else {
-          productsSection.classList.add('hidden');
-        }
-      }
     }
 
     function updateUI() {
@@ -608,20 +583,26 @@
           return;
         }
 
-        // Sauvegarde des données Agent complètes
+        // Sauvegarde des données Agent complètes (Compte Agent Simple)
         const agentData = {
           businessName: document.getElementById('businessName').value.trim(),
           managerName: document.getElementById('managerName').value.trim(),
-          agentModel: document.getElementById('selectedAgentModel').value,
-          productCategory: document.getElementById('productCategory') ? document.getElementById('productCategory').value : '',
-          city: document.getElementById('city').value,
+          agentModel: document.getElementById('selectedAgentModel').value || 'pure_agent',
+          city: document.getElementById('city') ? document.getElementById('city').value : 'Cotonou',
           neighborhood: document.getElementById('neighborhood').value.trim(),
           landmark: document.getElementById('landmark') ? document.getElementById('landmark').value.trim() : '',
           phone: document.getElementById('agentPhone').value.trim(),
           email: document.getElementById('agentEmail').value.trim(),
-          ifu: document.getElementById('ifuNumber').value.trim()
+          ifu: document.getElementById('ifuNumber') ? document.getElementById('ifuNumber').value.trim() : ''
         };
         localStorage.setItem('switch_agent_application', JSON.stringify(agentData));
+        localStorage.setItem('switch_is_hybrid', 'false');
+        localStorage.setItem('switch_agent_session_active', 'true');
+        localStorage.setItem('switch_active_role', 'agent');
+        localStorage.setItem('switch_agent_name', agentData.managerName || 'Amina K.');
+        localStorage.setItem('switch_agent_account', '9700409215');
+        localStorage.setItem('switch_agent_id', 'AGT-4092');
+        sessionStorage.setItem('switchActiveSpace', 'agent');
 
         // Redirection vers l'étape de cautionnement
         if (window.switchNavigate) {
@@ -633,6 +614,7 @@
       }
 
       currentStep++;
+      try { window.history.pushState({ step: currentStep }, ''); } catch(e) {}
       updateUI();
     }
 
@@ -641,16 +623,26 @@
         currentStep--;
         updateUI();
       } else {
-        if (window.history.length > 1) {
-          window.history.back();
+        // Retourner à l'écran de sélection de rôle (Choix type de compte)
+        if (window.switchNavigate) {
+          window.switchNavigate('../choix_type_compte/code.html');
         } else {
-          window.location.href = '../tableau_de_bord_agent/code.html';
+          window.location.href = '../choix_type_compte/code.html';
         }
       }
     }
 
-    // Capture GPS en temps réel ou simulée haute précision
-    function captureGpsLocation() {
+    window.addEventListener('popstate', (e) => {
+      if (e.state && e.state.step) {
+        currentStep = e.state.step;
+        updateUI();
+      } else if (currentStep > 1) {
+        currentStep = 1;
+        updateUI();
+      }
+    });
+
+    function applyGpsSuccess(lat, lng) {
       const btn = document.getElementById('gps-capture-btn');
       const btnText = document.getElementById('gps-btn-text');
       const statusBadge = document.getElementById('gps-status-badge');
@@ -658,8 +650,29 @@
       const coordsText = document.getElementById('gps-coords-text');
       const addressDetected = document.getElementById('gps-address-detected');
 
-      btn.disabled = true;
-      btnText.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-primary border-t-transparent rounded-full mr-1"></span> Recherche du signal satellite GPS...`;
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = "📍 Coordonnées GPS actualisées";
+      if (statusBadge) {
+        statusBadge.className = "text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1";
+        statusBadge.innerHTML = `<span class="material-symbols-outlined text-xs">verified</span> Fixé`;
+      }
+
+      if (coordsDisplay) {
+        coordsDisplay.classList.remove('hidden');
+        coordsDisplay.style.display = 'flex';
+      }
+      if (coordsText) coordsText.textContent = `LAT: ${lat}° N • LNG: ${lng}° E`;
+      if (addressDetected) addressDetected.textContent = `📍 Guichet repéré avec succès à Cotonou (Littoral, Bénin)`;
+      localStorage.setItem('switch_agent_gps', `${lat},${lng}`);
+    }
+
+    // Capture GPS en temps réel ou simulée haute précision
+    function captureGpsLocation() {
+      const btn = document.getElementById('gps-capture-btn');
+      const btnText = document.getElementById('gps-btn-text');
+
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-primary border-t-transparent rounded-full mr-1"></span> Recherche du signal satellite GPS...`;
 
       setTimeout(() => {
         if (navigator.geolocation) {
@@ -678,30 +691,18 @@
         } else {
           applyGpsSuccess("6.3654", "2.4183");
         }
-      }, 800);
-
-      function applyGpsSuccess(lat, lng) {
-        btn.disabled = false;
-        btnText.textContent = "📍 Coordonnées GPS actualisées";
-        statusBadge.className = "text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1";
-        statusBadge.innerHTML = `<span class="material-symbols-outlined text-xs">verified</span> Fixé`;
-
-        coordsDisplay.classList.remove('hidden');
-        coordsText.textContent = `LAT: ${lat}° N • LNG: ${lng}° E`;
-        addressDetected.textContent = `📍 Guichet repéré avec succès à Cotonou (Littoral, Bénin)`;
-        localStorage.setItem('switch_agent_gps', `${lat},${lng}`);
-      }
+      }, 700);
     }
 
     function handleStorefrontUpload(event) {
-      const file = event.target.files[0];
+      const file = event.target.files && event.target.files[0];
       if (file) {
         document.getElementById('storefront-filename').textContent = `📷 ${file.name} (Prêt à l'envoi)`;
       }
     }
 
     function handleDocUpload(event) {
-      const file = event.target.files[0];
+      const file = event.target.files && event.target.files[0];
       if (file) {
         document.getElementById('doc-filename').textContent = `📄 ${file.name}`;
         const badge = document.getElementById('doc-status-badge');

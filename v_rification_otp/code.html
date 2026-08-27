@@ -33,9 +33,9 @@
 
   <!-- Top App Bar -->
   <header class="w-full max-w-lg mx-auto px-container-margin pt-6 pb-2 flex items-center justify-between z-30">
-    <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
-      <span class="material-symbols-outlined text-xl">arrow_back</span>
-    </button>
+    <div class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm text-primary">
+      <span class="material-symbols-outlined text-xl">sms</span>
+    </div>
     
     <!-- Step 3/4 Progression Indicator -->
     <div class="flex items-center gap-1">
@@ -174,18 +174,26 @@
 
     // Countdown Timer logic
     let secondsLeft = 45;
-    const timerInterval = setInterval(() => {
-      secondsLeft--;
+    let timerInterval = null;
+
+    function startOtpCountdown() {
+      if (timerInterval) clearInterval(timerInterval);
       const timerSec = document.getElementById('timer-sec');
       if (timerSec) timerSec.textContent = secondsLeft + 's';
-      if (secondsLeft <= 0) {
-        clearInterval(timerInterval);
-        const wrapper = document.getElementById('resend-wrapper');
-        if (wrapper) {
-          wrapper.innerHTML = '<button onclick="restartTimer()" class="text-xs font-bold text-primary hover:underline cursor-pointer">Renvoyer le code SMS</button>';
+
+      timerInterval = setInterval(() => {
+        secondsLeft--;
+        const timerEl = document.getElementById('timer-sec');
+        if (timerEl) timerEl.textContent = secondsLeft + 's';
+        if (secondsLeft <= 0) {
+          clearInterval(timerInterval);
+          const wrapper = document.getElementById('resend-wrapper');
+          if (wrapper) {
+            wrapper.innerHTML = '<button onclick="restartTimer()" class="text-xs font-bold text-primary hover:underline cursor-pointer">Renvoyer le code SMS</button>';
+          }
         }
-      }
-    }, 1000);
+      }, 1000);
+    }
 
     function restartTimer() {
       secondsLeft = 45;
@@ -193,8 +201,11 @@
       if (wrapper) {
         wrapper.innerHTML = '<span class="text-xs font-bold text-gray-400">Renvoyer dans <span class="font-mono text-primary font-extrabold" id="timer-sec">45s</span></span>';
       }
+      startOtpCountdown();
       alert("📨 Un nouveau code SMS a été envoyé au +229 97 12 34 56 !");
     }
+
+    startOtpCountdown();
 
     function resendByWhatsapp() {
       alert("📲 Code envoyé par WhatsApp au +229 97 12 34 56 !");

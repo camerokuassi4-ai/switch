@@ -73,7 +73,7 @@
         <div class="flex gap-6 mt-2 text-xs text-purple-200">
           <span>EXP : <b class="text-white font-mono" id="card-exp-text">12/28</b></span>
           <span>CVV : <b class="text-white font-mono" id="card-cvv-text">•••</b></span>
-          <span>Solde : <b class="text-white font-mono">75 000 FCFA</b></span>
+          <span>Solde : <b class="text-white font-mono" id="card-balance-val">75 000 FCFA</b></span>
         </div>
       </div>
 
@@ -198,6 +198,26 @@
   <script>
     let isDetailsVisible = false;
     let isFrozen = false;
+    let cardBalance = 75000;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const storedBal = localStorage.getItem('switch_card_balance');
+      if (storedBal) {
+        cardBalance = parseInt(storedBal) || 75000;
+      }
+      updateCardBalanceDisplay();
+
+      const frozenStored = localStorage.getItem('switch_card_frozen') === 'true';
+      if (frozenStored) {
+        isFrozen = true;
+        applyFreezeUI();
+      }
+    });
+
+    function updateCardBalanceDisplay() {
+      const el = document.getElementById('card-balance-val');
+      if (el) el.textContent = cardBalance.toLocaleString('fr-FR') + ' FCFA';
+    }
 
     function toggleCardVisibility() {
       isDetailsVisible = !isDetailsVisible;
@@ -221,8 +241,7 @@
       alert("Numéro de carte copié dans le presse-papiers (4289 3301 8847 4289) !");
     }
 
-    function toggleFreezeCard() {
-      isFrozen = !isFrozen;
+    function applyFreezeUI() {
       const dot = document.getElementById('status-dot');
       const label = document.getElementById('status-label');
       const freezeIcon = document.getElementById('freeze-icon');
@@ -230,26 +249,59 @@
       const freezeBox = document.getElementById('freeze-icon-box');
 
       if (isFrozen) {
-        dot.className = 'w-2 h-2 rounded-full bg-red-400';
-        label.textContent = 'Gelée • Transactions bloquées';
-        freezeIcon.textContent = 'lock_open';
-        freezeLabel.textContent = 'Débloquer';
-        freezeBox.className = 'w-11 h-11 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center';
-        alert("Carte gelée avec succès. Aucun paiement ne pourra être débité.");
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-red-400';
+        if (label) label.textContent = 'Gelée • Transactions bloquées';
+        if (freezeIcon) freezeIcon.textContent = 'lock_open';
+        if (freezeLabel) freezeLabel.textContent = 'Débloquer';
+        if (freezeBox) freezeBox.className = 'w-11 h-11 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center';
       } else {
-        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
-        label.textContent = 'Active • 3D Secure';
-        freezeIcon.textContent = 'ac_unit';
-        freezeLabel.textContent = 'Geler carte';
-        freezeBox.className = 'w-11 h-11 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center';
-        alert("Carte réactivée avec succès !");
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+        if (label) label.textContent = 'Active • 3D Secure';
+        if (freezeIcon) freezeIcon.textContent = 'ac_unit';
+        if (freezeLabel) freezeLabel.textContent = 'Geler carte';
+        if (freezeBox) freezeBox.className = 'w-11 h-11 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center';
+      }
+    }
+
+    function toggleFreezeCard() {
+      isFrozen = !isFrozen;
+      localStorage.setItem('switch_card_frozen', isFrozen.toString());
+      applyFreezeUI();
+      if (isFrozen) {
+        alert("Carte gelée avec succès. Aucun paiement international ne pourra être débité.");
+      } else {
+        alert("Carte réactivée avec succès ! Vos paiements 3D-Secure sont actifs.");
       }
     }
 
     function rechargeCardPrompt() {
-      const amt = prompt("Entrez le montant à recharger sur votre carte virtuelle (FCFA) :", "10000");
-      if (amt && parseInt(amt) > 0) {
-        alert(`${amt} FCFA ont été transférés avec succès depuis votre Solde Principal vers votre Carte Virtuelle !`);
+      const amtInput = prompt("Entrez le montant à transférer depuis votre Compte Principal vers votre Carte Virtuelle Visa (FCFA) :", "10000");
+      if (!amtInput) return;
+      const amt = parseInt(amtInput.replace(/\s+/g, '')) || 0;
+      if (amt <= 0) return;
+
+      if (window.SwitchEngine) {
+        const mainBal = window.SwitchEngine.getMainBalance();
+        if (mainBal < amt) {
+          alert("Solde insuffisant dans votre Compte Principal (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible).");
+          return;
+        }
+
+        window.SwitchEngine.addTransaction({
+          title: "Recharge Carte Virtuelle Visa",
+          category: "internal",
+          amount: -amt,
+          fee: 0,
+          recipient: "Carte Virtuelle Visa (4289)",
+          note: "Recharge interne solde carte",
+          icon: "credit_card",
+          iconBg: "bg-purple-50 text-primary"
+        });
+
+        cardBalance += amt;
+        localStorage.setItem('switch_card_balance', cardBalance.toString());
+        updateCardBalanceDisplay();
+        alert(`${amt.toLocaleString('fr-FR')} FCFA ont été crédités avec succès sur votre Carte Virtuelle Visa !`);
       }
     }
   </script>

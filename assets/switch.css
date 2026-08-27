@@ -25,6 +25,14 @@
   --app-max-width: 520px;
 }
 
+/* Masquage strict des boutons retour sur toutes les pages et formulaires d'inscription */
+body:has(form#registration-form) .switch-back-btn,
+body:has([id*="step-"]) .switch-back-btn,
+body:has(form[onsubmit*="handleAgentRegistration"]) .switch-back-btn,
+body:has(form[onsubmit*="handleMerchantRegistration"]) .switch-back-btn {
+  display: none !important;
+}
+
 /* ── 2. RESET & BASE UNIVERSELLE SANS COUPURE ────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -116,16 +124,18 @@ input, select, textarea {
   }
 
   html {
-    background: linear-gradient(145deg, #1b172a 0%, #261f3d 50%, #3d227a 100%);
-    padding: 16px 0;
+    background: #120f1e !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
   body {
     max-width: var(--app-max-width) !important;
     margin: 0 auto !important;
-    border-radius: 28px !important;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(202, 190, 255, 0.25) !important;
-    min-height: calc(100vh - 32px) !important;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.4) !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    border-radius: 0 !important;
   }
 }
 
@@ -136,16 +146,18 @@ input, select, textarea {
   }
 
   html {
-    background: radial-gradient(circle at 50% 20%, #2d1c59 0%, #151122 60%, #0c0a14 100%);
-    padding: 24px 0;
+    background: radial-gradient(circle at 50% 20%, #2d1c59 0%, #151122 60%, #0c0a14 100%) !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
   body {
     max-width: var(--app-max-width) !important;
     margin: 0 auto !important;
-    border-radius: 32px !important;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5), 0 0 0 1.5px rgba(202, 190, 255, 0.2) !important;
-    min-height: calc(100vh - 48px) !important;
+    box-shadow: 0 0 70px rgba(0, 0, 0, 0.6) !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    border-radius: 0 !important;
   }
 }
 
@@ -299,49 +311,6 @@ input, select, textarea {
   z-index: 40;
 }
 
-/* ── 6. BARRE DE NAVIGATION FIGÉE (100% IMMOBILE SUR TOUS APPAREILS) ── */
-#switch-nav {
-  position: fixed !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  width: 100% !important;
-  max-width: var(--app-max-width) !important;
-  height: 64px !important;
-  z-index: 9999 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-around !important;
-  padding: 6px 10px !important;
-  padding-bottom: max(8px, var(--sab)) !important;
-  background: #ffffff !important;
-  border-top: 1px solid #ECE6F0 !important;
-  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.08) !important;
-  /* Accélération GPU matérielle pour figer la barre sans aucun sautillement */
-  -webkit-transform: translate3d(0, 0, 0) !important;
-  transform: translate3d(0, 0, 0) !important;
-  -webkit-backface-visibility: hidden !important;
-  backface-visibility: hidden !important;
-  will-change: transform !important;
-  contain: layout paint !important;
-}
-
-@media (min-width: 581px) and (max-width: 1024px) {
-  #switch-nav {
-    border-bottom-left-radius: 28px !important;
-    border-bottom-right-radius: 28px !important;
-  }
-}
-
-@media (min-width: 1025px) {
-  #switch-nav {
-    border-bottom-left-radius: 32px !important;
-    border-bottom-right-radius: 32px !important;
-  }
-}
-
 /* Barres de boutons fixes au bas de l'écran */
 footer.fixed, div.fixed.bottom-0, .fixed.bottom-0:not(#switch-nav) {
   left: 50% !important;
@@ -372,6 +341,60 @@ nav:not(#switch-nav) {
   display: none !important;
 }
 
+/* Barre de navigation universelle Switch (Collée strictement à bottom: 0) */
+#switch-nav {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+  width: 100% !important;
+  max-width: var(--app-max-width, 480px) !important;
+  height: 64px !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-around !important;
+  padding: 6px 10px !important;
+  padding-bottom: max(8px, env(safe-area-inset-bottom, 8px)) !important;
+  background: #ffffff !important;
+  border-top: 1px solid #ECE6F0 !important;
+  border-left: 1px solid #ECE6F0 !important;
+  border-right: 1px solid #ECE6F0 !important;
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom: none !important;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.09) !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 580px) {
+  #switch-nav {
+    max-width: 100% !important;
+    border-left: none !important;
+    border-right: none !important;
+  }
+}
+
+/* En-têtes fixes stables */
+.app-header-fixed, header.sticky {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 40 !important;
+  background: rgba(248, 249, 253, 0.96) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  width: 100% !important;
+  max-width: var(--app-max-width, 480px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 /* Bouton de retour universel */
 .switch-back-btn {
   position: fixed !important;
@@ -385,3 +408,4 @@ nav:not(#switch-nav) {
     left: 14px !important;
   }
 }
+

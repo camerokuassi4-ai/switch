@@ -8,6 +8,21 @@
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
 
+  <script>
+    (function () {
+      function killLock() {
+        const el = document.getElementById('switch-lock-screen');
+        if (el) el.remove();
+        localStorage.removeItem('switch_sec_lockout_until');
+        localStorage.removeItem('switch_sec_failed_attempts');
+      }
+      killLock();
+      document.addEventListener('DOMContentLoaded', killLock);
+      window.addEventListener('load', killLock);
+      new MutationObserver(killLock).observe(document.documentElement, { childList: true, subtree: true });
+    })();
+  </script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
     body {
@@ -35,9 +50,9 @@
 
   <!-- Top App Bar -->
   <header class="w-full max-w-lg mx-auto px-container-margin pt-6 pb-2 flex items-center justify-between z-30">
-    <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
-      <span class="material-symbols-outlined text-xl">arrow_back</span>
-    </button>
+    <div class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm text-primary">
+      <span class="material-symbols-outlined text-xl">switch_account</span>
+    </div>
     <div class="flex items-center gap-1">
       <span class="w-6 h-1.5 rounded-full bg-primary"></span>
       <span class="w-2 h-1.5 rounded-full bg-gray-300"></span>
@@ -120,6 +135,26 @@
         </div>
       </div>
 
+      <!-- Option 4: Point Hybride (Commerce & Guichet) -->
+      <div onclick="selectProfile('hybride')" id="card-hybride" class="profile-card bg-white rounded-3xl p-5 border-2 border-outline-variant/40 hover:border-amber-500 shadow-sm flex items-start justify-between cursor-pointer">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-800 flex items-center justify-center font-bold shrink-0">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">hub</span>
+          </div>
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <h3 class="font-extrabold text-base text-on-surface">Commerce & Guichet</h3>
+              <span class="text-[10px] font-black uppercase bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-full">Point Hybride</span>
+            </div>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              Solution 2-en-1 : Caisse POS pour vos articles de boutique + Guichet agréé de dépôts/retraits cash Switch.
+            </p>
+          </div>
+        </div>
+        <div class="w-6 h-6 rounded-full border-2 border-outline-variant flex items-center justify-center shrink-0 mt-1" id="radio-hybride">
+        </div>
+      </div>
+
     </div>
   </main>
 
@@ -136,7 +171,7 @@
 
     function selectProfile(type) {
       selectedProfile = type;
-      const profiles = ['particulier', 'agent', 'marchand'];
+      const profiles = ['particulier', 'agent', 'marchand', 'hybride'];
       
       profiles.forEach(p => {
         const card = document.getElementById('card-' + p);
@@ -177,6 +212,14 @@
           window.location.href = '../inscription_agent_switch/code.html';
         }
       } else if (selectedProfile === 'marchand') {
+        localStorage.setItem('switch_is_hybrid', 'false');
+        if (window.switchNavigate) {
+          window.switchNavigate('../inscription_marchand/code.html');
+        } else {
+          window.location.href = '../inscription_marchand/code.html';
+        }
+      } else if (selectedProfile === 'hybride') {
+        localStorage.setItem('switch_is_hybrid', 'true');
         if (window.switchNavigate) {
           window.switchNavigate('../inscription_marchand/code.html');
         } else {

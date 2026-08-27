@@ -262,8 +262,31 @@
     }
 
     function payContribution(tontineName, amount) {
-      if (confirm(`Confirmez-vous le paiement de votre cotisation de ${amount.toLocaleString()} FCFA pour « ${tontineName} » débité de votre solde Switch ?`)) {
-        alert(`✅ Cotisation de ${amount.toLocaleString()} FCFA payée avec succès !`);
+      if (window.SwitchEngine) {
+        const mainBal = window.SwitchEngine.getMainBalance();
+        if (mainBal < amount) {
+          alert("Solde insuffisant dans votre Compte Principal (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible, " + amount.toLocaleString('fr-FR') + " FCFA requis).");
+          return;
+        }
+
+        if (confirm(`Confirmez-vous le paiement de votre cotisation de ${amount.toLocaleString('fr-FR')} FCFA pour « ${tontineName} » débité de votre solde Switch ?`)) {
+          window.SwitchEngine.addTransaction({
+            title: "Cotisation Tontine (" + tontineName + ")",
+            category: "tontine",
+            amount: -amount,
+            fee: 0,
+            recipient: "Tontine " + tontineName,
+            note: "Cotisation mensuelle automatique",
+            icon: "groups",
+            iconBg: "bg-purple-50 text-purple-700"
+          });
+
+          alert(`✅ Cotisation de ${amount.toLocaleString('fr-FR')} FCFA payée avec succès ! Votre statut est désormais à jour pour ce tour.`);
+        }
+      } else {
+        if (confirm(`Confirmez-vous le paiement de votre cotisation de ${amount.toLocaleString('fr-FR')} FCFA pour « ${tontineName} » ?`)) {
+          alert(`✅ Cotisation de ${amount.toLocaleString('fr-FR')} FCFA payée avec succès !`);
+        }
       }
     }
 

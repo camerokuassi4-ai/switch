@@ -225,6 +225,7 @@
     function updateDynamicQr() {
       const amt = parseInt(document.getElementById('qr-amount-input').value, 10) || 0;
       document.getElementById('qr-display-amount').textContent = amt.toLocaleString('fr-FR') + " FCFA";
+      localStorage.setItem('switch_qr_amount', amt.toString());
     }
 
     function downloadQrKitPdf() {

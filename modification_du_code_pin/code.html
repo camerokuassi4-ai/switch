@@ -238,7 +238,10 @@
         return;
       }
 
-      alert("🎉 Votre code PIN a été mis à jour avec succès !");
+      localStorage.setItem('switch_user_pin_hash', btoa('salt_sw_pin_' + newCode));
+      localStorage.removeItem('switch_user_pin');
+      if (navigator.vibrate) navigator.vibrate([60, 40, 100]);
+      alert("🎉 Votre code PIN secret Switch a été mis à jour et sécurisé avec succès !");
       if (window.switchNavigate) {
         window.switchNavigate('../s_curit/code.html');
       } else {

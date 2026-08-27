@@ -191,7 +191,8 @@
 
     function handleSbeeSubmit(e) {
       e.preventDefault();
-      const amt = document.getElementById('amount').value;
+      const amt = parseInt(document.getElementById('amount').value) || 0;
+      const meter = document.getElementById('meter-number').value || '1423 8890 1234';
       const kwh = (parseFloat(amt) / 117.5).toFixed(2);
       
       // Generate random 20-digit token
@@ -199,8 +200,22 @@
       for (let i = 0; i < 5; i++) {
         token += Math.floor(1000 + Math.random() * 9000) + ' ';
       }
+      token = token.trim();
+
+      if (window.SwitchEngine) {
+        window.SwitchEngine.addTransaction({
+          title: "Recharge SBEE Électricité (" + kwh + " kWh)",
+          category: "utility",
+          amount: -amt,
+          fee: 0,
+          recipient: "SBEE Compteur " + meter,
+          note: "Code Token: " + token,
+          icon: "bolt",
+          iconBg: "bg-amber-50 text-amber-600"
+        });
+      }
       
-      document.getElementById('generated-token').textContent = token.trim();
+      document.getElementById('generated-token').textContent = token;
       document.getElementById('modal-amount').textContent = parseInt(amt).toLocaleString('fr-FR') + ' FCFA';
       document.getElementById('modal-kwh').textContent = kwh + ' kWh';
       document.getElementById('token-modal').classList.remove('hidden');

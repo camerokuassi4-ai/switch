@@ -154,7 +154,38 @@
     }
 
     function createCardSubmit() {
-      alert("Félicitations ! Votre nouvelle Carte Virtuelle Visa Switch est active et prête pour vos achats en ligne !");
+      const label = document.getElementById('card-label-input').value || 'Achats en ligne';
+      const initAmt = parseInt(document.getElementById('init-amount').value) || 5000;
+      const creationFee = 1000;
+      const totalDebit = initAmt + creationFee;
+
+      if (window.SwitchEngine) {
+        const mainBal = window.SwitchEngine.getMainBalance();
+        if (mainBal < totalDebit) {
+          alert("Solde insuffisant dans votre Compte Principal (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible, " + totalDebit.toLocaleString('fr-FR') + " FCFA requis pour la création et la recharge initiale).");
+          return;
+        }
+
+        // Add transaction for card creation & recharge
+        window.SwitchEngine.addTransaction({
+          title: "Création Carte Virtuelle Visa (" + label + ")",
+          category: "transfer",
+          amount: -totalDebit,
+          fee: creationFee,
+          recipient: "Carte Virtuelle Visa (" + currentType + ")",
+          note: "Frais création: 1 000 F • Dépôt initial: " + initAmt.toLocaleString('fr-FR') + " F",
+          icon: "credit_card",
+          iconBg: "bg-purple-50 text-primary"
+        });
+
+        // Set card active in localStorage
+        localStorage.setItem('switch_card_created', 'true');
+        localStorage.setItem('switch_card_balance', (75000 + initAmt).toString());
+        localStorage.setItem('switch_card_label', label);
+        localStorage.setItem('switch_card_theme', currentTheme);
+      }
+
+      alert("Félicitations ! Votre nouvelle Carte Virtuelle Visa Switch (" + label + ") est active et prête pour vos achats internationaux !");
       if (window.switchNavigate) {
         window.switchNavigate('../achats_en_ligne_cartes_virtuelles/code.html');
       } else {

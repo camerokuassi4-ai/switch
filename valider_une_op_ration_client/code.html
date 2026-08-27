@@ -493,6 +493,13 @@
 
       localStorage.setItem('switch_last_transaction', JSON.stringify(trxData));
 
+      // Update Agent Commissions & Daily Stats
+      const prevComm = parseInt(localStorage.getItem('switch_agent_commissions') || '14200');
+      localStorage.setItem('switch_agent_commissions', (prevComm + 200).toString());
+      
+      const prevOps = parseInt(localStorage.getItem('switch_agent_ops_count') || '18');
+      localStorage.setItem('switch_agent_ops_count', (prevOps + 1).toString());
+
       if (window.switchNavigate) {
         window.switchNavigate('../recu_operation_agent/code.html');
       } else {

@@ -7,6 +7,14 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script>
+    try {
+      const app = JSON.parse(localStorage.getItem('switch_agent_application') || '{}');
+      if (app.agentModel === 'hybrid_merchant' || sessionStorage.getItem('switchActiveSpace') === 'hybrid') {
+        window.location.replace('../param_tres_et_profil_hybride/code.html');
+      }
+    } catch(e) {}
+  </script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
@@ -48,29 +56,49 @@
   </header>
 
   <!-- Main Content Canvas -->
-  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow pb-36">
 
-    <!-- 1. Agent Profile Hero Card (Click to Edit) -->
-    <a href="../modifier_profil_agent/code.html" class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex items-center justify-between hover:border-primary transition-all no-underline text-on-surface group">
-      <div class="flex items-center gap-3.5">
-        <div class="relative">
-          <div class="w-14 h-14 rounded-2xl overflow-hidden border-2 border-primary/30 shadow-sm">
-            <img src="../assets/images/img_045.jpg" alt="Adèle K." class="w-full h-full object-cover"/>
-          </div>
-          <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white" title="Guichet Agréé"></span>
+    <!-- 0. Badge Point Hybride Affilié (Visible uniquement si compte hybride) -->
+    <div id="hybrid-banner-section" class="hidden bg-gradient-to-r from-indigo-900 via-indigo-800 to-purple-900 rounded-3xl p-4 text-white shadow-md flex items-center justify-between gap-3 border border-indigo-700/50">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-white/15 text-white flex items-center justify-center font-bold text-xl shrink-0">
+          🏪
         </div>
         <div>
           <div class="flex items-center gap-1.5">
-            <h2 class="text-base font-black text-on-surface">Adèle K.</h2>
-            <span class="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-md">Gérante ANIP</span>
+            <span class="text-[10px] font-bold uppercase text-indigo-200 tracking-wider">Point Hybride Lié</span>
+            <span class="text-[8px] font-black uppercase bg-emerald-500/30 text-emerald-300 px-1.5 py-0.2 rounded">Actif</span>
           </div>
-          <p class="text-xs text-gray-500 font-mono mt-0.5">ID: AGT-4092 • IFU: 0202112345678</p>
-          <span class="text-[10px] text-primary font-bold">Kiosque Central Cadjehoun (Cotonou)</span>
+          <b class="text-xs sm:text-sm text-white block" id="parent-store-name">Boutique La Plage • Caisse & Guichet</b>
+        </div>
+      </div>
+      <a href="../tableau_de_bord_agent_mixte/code.html" class="px-3 py-1.5 rounded-2xl bg-white/20 hover:bg-white/30 text-white text-xs font-bold flex items-center gap-1 transition-all no-underline shrink-0">
+        <span>Ma Boutique</span>
+        <span class="material-symbols-outlined text-xs">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- 1. Agent Profile Hero Card (Click to Edit) -->
+    <a href="../modifier_profil_agent/code.html" class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex items-center justify-between hover:border-indigo-600 transition-all no-underline text-on-surface group">
+      <div class="flex items-center gap-3.5">
+        <div class="relative">
+          <div class="w-14 h-14 rounded-2xl overflow-hidden border-2 border-indigo-600/30 shadow-sm p-0.5 bg-white">
+            <img id="profile-agent-avatar" src="../assets/images/img_054.jpg" alt="Amina K." class="w-full h-full object-cover rounded-xl"/>
+          </div>
+          <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white shadow-xs" title="Guichet Agréé"></span>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h2 id="profile-agent-name" class="text-base font-black text-gray-950">Amina K.</h2>
+            <span class="text-[9px] font-black uppercase text-indigo-900 bg-indigo-100 border border-indigo-300 px-1.5 py-0.5 rounded-md">Agent Agréé</span>
+          </div>
+          <p class="text-xs text-gray-600 font-mono mt-0.5" id="profile-agent-id-span">ID: AGT-4092 • N° Compte : 9700409215</p>
+          <span class="text-[10px] text-indigo-700 font-bold" id="profile-agent-store-location">Guichet Agréé Switch (Cotonou, Bénin)</span>
         </div>
       </div>
 
-      <div class="flex items-center gap-1 text-primary font-bold text-xs">
-        <span class="material-symbols-outlined text-lg">edit</span>
+      <div class="flex items-center gap-1 text-indigo-600 font-bold text-xs">
+        <span class="material-symbols-outlined text-xl group-hover:translate-x-0.5 transition-transform">edit</span>
       </div>
     </a>
 
@@ -222,14 +250,19 @@
       </div>
     </section>
 
-    <!-- 4. Déconnexion & Bascule Particulier -->
+    <!-- 4. Déconnexion & Bascules d'espace -->
     <div class="flex flex-col gap-2 pt-1">
-      <a href="../tableau_de_bord_mis_jour/code.html" class="w-full bg-white border border-outline-variant/60 text-primary font-bold py-3.5 rounded-full flex items-center justify-center gap-2 text-xs hover:bg-purple-50 transition-colors no-underline shadow-xs">
-        <span class="material-symbols-outlined text-lg">swap_horiz</span>
-        <span>Basculer vers mon Compte Particulier</span>
+      <a href="../tableau_de_bord_agent_mixte/code.html" id="switch-to-boutique-btn" class="hidden w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-full flex items-center justify-center gap-2 text-xs transition-colors no-underline shadow-sm">
+        <span class="material-symbols-outlined text-lg">storefront</span>
+        <span>Basculer vers mon Espace Boutique & Caisse</span>
       </a>
 
-      <button onclick="window.location.href='../accueil_splash_mis_jour/code.html'" class="w-full bg-rose-50 border border-rose-100 text-rose-700 font-bold py-3.5 rounded-full flex items-center justify-center gap-2 text-xs hover:bg-rose-100 transition-colors cursor-pointer">
+      <button type="button" onclick="openPersonalAccountModal()" class="w-full bg-white border border-outline-variant/60 text-indigo-700 font-bold py-3.5 rounded-full flex items-center justify-center gap-2 text-xs hover:bg-indigo-50 transition-colors cursor-pointer shadow-xs">
+        <span class="material-symbols-outlined text-lg">swap_horiz</span>
+        <span>Basculer vers mon Compte Particulier</span>
+      </button>
+
+      <button onclick="logoutAgent()" class="w-full bg-rose-50 border border-rose-100 text-rose-700 font-bold py-3.5 rounded-full flex items-center justify-center gap-2 text-xs hover:bg-rose-100 transition-colors cursor-pointer">
         <span class="material-symbols-outlined text-lg">logout</span>
         <span>Fermer la Session Agent</span>
       </button>
@@ -237,38 +270,140 @@
 
   </main>
 
-  <!-- Router Script -->
-  <script src="../assets/switch.router.js"></script>
+  <!-- Modal Choix Compte Personnel (Bottom Sheet & Dialog) -->
+  <div id="personal-account-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm items-end sm:items-center justify-center p-0 sm:p-4 transition-all">
+    <div class="absolute inset-0" onclick="closePersonalAccountModal()"></div>
+    <div class="relative bg-white w-full max-w-md rounded-t-[32px] sm:rounded-[32px] p-6 shadow-2xl z-10 flex flex-col gap-5 border border-outline-variant/30 animate-in fade-in slide-in-from-bottom duration-200">
+      
+      <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto sm:hidden -mt-1 mb-1"></div>
 
-  <!-- Bottom Navigation Bar Agent (Active sur Profil) -->
-  <nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
-    <a href="../tableau_de_bord_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-      <span class="material-symbols-outlined" style="font-size:22px;">dashboard</span>
-      <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
-    </a>
-    <!-- 2. Services -->
-    <a href="../services_factures_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-      <span class="material-symbols-outlined" style="font-size:22px;">apps</span>
-      <span class="nav-label" style="font-size:10px;font-weight:500;">Services</span>
-    </a>
-    <!-- 3. Servir (Centre en relief) -->
-    <a href="../valider_une_op_ration_client/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-      <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.3);position:relative;top:-6px;">
-        <span class="material-symbols-outlined" style="font-size:22px;">qr_code_scanner</span>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-700 border border-indigo-100 flex items-center justify-center font-bold shadow-2xs">
+            <span class="material-symbols-outlined text-2xl">account_circle</span>
+          </div>
+          <div>
+            <h3 class="text-base font-black text-gray-950">Espace Personnel Particulier</h3>
+            <p class="text-xs text-gray-500 font-medium">Relier ou accéder à votre compte Switch</p>
+          </div>
+        </div>
+
+        <button type="button" onclick="closePersonalAccountModal()" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition-colors cursor-pointer" aria-label="Fermer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
       </div>
-      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-4px;">Servir</span>
-    </a>
-    <!-- 4. Caisse -->
-    <a href="../cloture_de_caisse_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-      <span class="material-symbols-outlined" style="font-size:22px;">point_of_sale</span>
-      <span class="nav-label" style="font-size:10px;font-weight:500;">Caisse</span>
-    </a>
-    <!-- 5. Profil (Actif) -->
-    <a href="../param_tres_et_profil_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5E3BDC;text-decoration:none;flex:1;">
-      <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">manage_accounts</span>
-      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;">Profil</span>
-    </a>
-  </nav>
 
+      <div class="bg-indigo-50/60 border border-indigo-100 rounded-2xl p-3.5 text-xs text-indigo-950 leading-relaxed flex items-start gap-2.5">
+        <span class="material-symbols-outlined text-indigo-600 text-base shrink-0 mt-0.5">info</span>
+        <span>Avez-vous déjà un compte personnel Switch ou souhaitez-vous en créer un nouveau pour le relier à ce guichet ?</span>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <button type="button" onclick="handleExistingPersonalAccount()" class="w-full bg-white hover:bg-indigo-50/40 border-2 border-indigo-600 rounded-3xl p-4 flex items-center justify-between text-left transition-all group cursor-pointer shadow-xs hover:shadow-md">
+          <div class="flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs">
+              <span class="material-symbols-outlined text-xl">login</span>
+            </div>
+            <div>
+              <b class="text-sm text-gray-950 font-black block group-hover:text-indigo-700 transition-colors">J'ai déjà un compte Switch</b>
+              <span class="text-xs text-gray-500">Se connecter et basculer sur mon profil personnel</span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-indigo-600 group-hover:translate-x-1 transition-transform">chevron_right</span>
+        </button>
+
+        <button type="button" onclick="handleCreatePersonalAccount()" class="w-full bg-white hover:bg-purple-50/50 border border-outline-variant/60 rounded-3xl p-4 flex items-center justify-between text-left transition-all group cursor-pointer shadow-2xs hover:border-purple-400">
+          <div class="flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-xl">person_add</span>
+            </div>
+            <div>
+              <b class="text-sm text-gray-950 font-black block group-hover:text-purple-700 transition-colors">Créer un compte particulier</b>
+              <span class="text-xs text-gray-500">Nouveau sur Switch ? Inscription gratuite en 2 min</span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-gray-400 group-hover:translate-x-1 group-hover:text-purple-600 transition-all">chevron_right</span>
+        </button>
+      </div>
+
+      <button type="button" onclick="closePersonalAccountModal()" class="w-full py-3 rounded-full text-xs font-bold text-gray-500 hover:text-gray-900 transition-colors cursor-pointer">
+        Annuler
+      </button>
+    </div>
+  </div>
+
+  <!-- Script d'hydratation dynamique du profil Guichet -->
+  <script>
+    function openPersonalAccountModal() {
+      const modal = document.getElementById('personal-account-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closePersonalAccountModal() {
+      const modal = document.getElementById('personal-account-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function handleExistingPersonalAccount() {
+      sessionStorage.setItem('switchActiveSpace', 'user');
+      localStorage.setItem('switch_active_role', 'user');
+      if (window.switchNavigate) {
+        window.switchNavigate('../tableau_de_bord_mis_jour/code.html');
+      } else {
+        window.location.href = '../tableau_de_bord_mis_jour/code.html';
+      }
+    }
+
+    function handleCreatePersonalAccount() {
+      if (window.switchNavigate) {
+        window.switchNavigate('../inscription/code.html');
+      } else {
+        window.location.href = '../inscription/code.html';
+      }
+    }
+
+    function logoutAgent() {
+      localStorage.removeItem('switch_agent_session_active');
+      window.location.href = '../accueil_splash_mis_jour/code.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const isHybrid = localStorage.getItem('switch_is_hybrid') === 'true';
+      const agentName = localStorage.getItem('switch_agent_name') || 'Adele Doe';
+      const agentAcc = localStorage.getItem('switch_agent_account') || '9700112233';
+      const agentId = localStorage.getItem('switch_agent_id') || 'AGT-4092';
+      const storeName = localStorage.getItem('switch_store_name') || 'Boutique La Plage';
+
+      const nameEl = document.getElementById('profile-agent-name');
+      if (nameEl) nameEl.textContent = agentName;
+
+      const idSpan = document.getElementById('profile-agent-id-span');
+      if (idSpan) idSpan.textContent = `ID: ${agentId} • N° Compte : ${agentAcc}`;
+
+      const locSpan = document.getElementById('profile-agent-store-location');
+      if (locSpan) {
+        locSpan.textContent = isHybrid ? `Point Agréé : ${storeName} (Cotonou, Bénin)` : 'Guichet Agréé Switch (Cotonou, Bénin)';
+      }
+
+      // N'afficher les passerelles vers la boutique que pour un compte hybride
+      if (isHybrid) {
+        const banner = document.getElementById('hybrid-banner-section');
+        const boutiqueBtn = document.getElementById('switch-to-boutique-btn');
+        if (banner) banner.classList.remove('hidden');
+        if (boutiqueBtn) boutiqueBtn.classList.remove('hidden');
+      }
+    });
+  </script>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js?v=4.5"></script>
 </body>
 </html>

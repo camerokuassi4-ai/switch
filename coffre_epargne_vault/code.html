@@ -190,6 +190,16 @@
   </div>
 
   <script>
+    let vaultTotal = 350000;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.SwitchEngine) {
+        vaultTotal = window.SwitchEngine.getVaultBalance();
+        const totalEl = document.getElementById('vault-total');
+        if (totalEl) totalEl.textContent = vaultTotal.toLocaleString('fr-FR') + ' FCFA';
+      }
+    });
+
     function openDepositModal() {
       document.getElementById('deposit-modal').classList.remove('hidden');
     }
@@ -199,14 +209,36 @@
     function openNewVaultModal() {
       openDepositModal();
     }
+
     function handleDeposit(e) {
       e.preventDefault();
       const amt = parseInt(document.getElementById('deposit-amt').value || 10000);
-      const totalEl = document.getElementById('vault-total');
-      const current = 350000;
-      totalEl.textContent = (current + amt).toLocaleString('fr-FR') + ' FCFA';
+      
+      if (window.SwitchEngine) {
+        const mainBal = window.SwitchEngine.getMainBalance();
+        if (mainBal < amt) {
+          alert("Solde insuffisant dans votre Compte Principal (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible).");
+          return;
+        }
+
+        window.SwitchEngine.addTransaction({
+          title: "Versement Coffre Switch Vault",
+          category: "internal",
+          amount: -amt,
+          fee: 0,
+          recipient: "Coffre Switch Vault (6% Intérêts)",
+          note: "Épargne rémunérée",
+          icon: "savings",
+          iconBg: "bg-indigo-50 text-indigo-700"
+        });
+
+        vaultTotal = window.SwitchEngine.depositToVault(amt);
+        const totalEl = document.getElementById('vault-total');
+        if (totalEl) totalEl.textContent = vaultTotal.toLocaleString('fr-FR') + ' FCFA';
+      }
+
       closeDepositModal();
-      alert('Dépôt de ' + amt.toLocaleString('fr-FR') + ' FCFA effectué avec succès ! Vos intérêts démarrent immédiatement.');
+      alert('Dépôt de ' + amt.toLocaleString('fr-FR') + ' FCFA effectué avec succès ! Vos intérêts à 6% démarrent immédiatement.');
     }
   </script>
 

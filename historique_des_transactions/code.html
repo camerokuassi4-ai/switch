@@ -2,218 +2,163 @@
 <html class="light" lang="fr">
 <head>
   <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title data-i18n="page_title">Historique des Transactions - Switch Bénin</title>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>Historique des Transactions - Switch Bénin</title>
+  
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..900;1,300..900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS & Switch Design System -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <!-- Load SwitchEngine explicitly to prevent race conditions -->
+  <script src="../assets/switch.engine.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap');
-    
     body {
-      font-family: 'Hanken Grotesk', sans-serif;
-      min-height: max(884px, 100dvh);
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: #F8F9FD;
       color: #1C1A24;
       -webkit-font-smoothing: antialiased;
     }
-
     .font-mono {
       font-family: 'JetBrains Mono', monospace;
     }
-
-    .shadow-ambient-soft {
-      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
-    }
-    
-    .shadow-modal {
-      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
-    }
-
     .stat-gradient {
       background: linear-gradient(135deg, #5E3BDC 0%, #4323B0 60%, #2A1175 100%);
+      box-shadow: 0 12px 32px -8px rgba(94, 59, 220, 0.3);
     }
-
     .tx-item {
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
     .tx-item:hover {
       transform: translateY(-2px);
+      background-color: #FAF8FF;
     }
-
     .tx-item:active {
       transform: scale(0.98);
     }
-
-    /* Modal Animation */
-    .modal-enter {
-      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    .filter-pill {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
-    @keyframes slideUp {
-      from { transform: translateY(100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    .filter-pill.active {
+      background-color: #5E3BDC !important;
+      color: #ffffff !important;
+      border-color: #5E3BDC !important;
+    }
+    .cat-chip.active {
+      background-color: #5E3BDC !important;
+      color: #ffffff !important;
+      font-weight: 800 !important;
+      border-color: #5E3BDC !important;
     }
 
     /* Print Styles for Bank Statement */
     @media print {
-      @page {
-        size: A4 portrait;
-        margin: 8mm 10mm 8mm 10mm;
-      }
-      
-      *, *:before, *:after {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        color-adjust: exact !important;
-      }
-
-      html, body {
-        background: #ffffff !important;
-        color: #111827 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        min-height: auto !important;
-        font-size: 10pt !important;
-      }
-
-      /* Hide everything except the statement document */
-      body > header,
-      body > main,
-      body > #search-container,
-      body > #tx-detail-modal,
-      body > #switch-nav,
-      .no-print {
+      @page { size: A4 portrait; margin: 10mm; }
+      body > header, body > main, body > #search-container, body > #tx-detail-modal, body > #switch-nav, .no-print {
         display: none !important;
       }
-
-      /* Ensure statement modal is rendered cleanly on paper */
       #statement-modal {
         display: block !important;
         position: static !important;
-        width: 100% !important;
-        height: auto !important;
-        max-height: none !important;
         background: #ffffff !important;
         padding: 0 !important;
-        margin: 0 !important;
-        overflow: visible !important;
-        z-index: 1 !important;
-        box-shadow: none !important;
-        backdrop-filter: none !important;
       }
-
       #statement-document {
-        display: block !important;
         box-shadow: none !important;
-        border: 1px solid #d1d5db !important;
-        border-radius: 8px !important;
-        max-width: 100% !important;
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 10mm !important;
-        page-break-inside: avoid !important;
-      }
-
-      table {
-        width: 100% !important;
-        border-collapse: collapse !important;
-      }
-
-      th, td {
-        padding: 6px 8px !important;
-        border-bottom: 1px solid #e5e7eb !important;
+        border: 1px solid #e5e7eb !important;
+        padding: 0 !important;
       }
     }
   </style>
 </head>
-<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
 
-  <!-- Top App Bar Navigation -->
-  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
-    <!-- Back to Dashboard & User Status -->
+  <!-- Fixed Immobile Top App Bar Navigation (No jitter, No User Avatar) -->
+  <header class="w-full max-w-xl mx-auto px-4 pt-4 pb-3 flex items-center justify-between z-40 sticky top-0 bg-[#F8F9FD] border-b border-outline-variant/30 shadow-xs">
+    <!-- Single Clean Back Button + Screen Title -->
     <div class="flex items-center gap-3">
-      <a href="../tableau_de_bord_mis_jour/code.html" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all no-underline shrink-0" aria-label="Retour au tableau de bord">
+      <button 
+        type="button"
+        aria-label="Retour" 
+        onclick="window.history.back()" 
+        class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-xs flex items-center justify-center text-on-surface hover:text-primary hover:bg-purple-50 active:scale-95 transition-all cursor-pointer shrink-0"
+      >
         <span class="material-symbols-outlined text-xl">arrow_back</span>
-      </a>
+      </button>
       
-      <div class="flex items-center gap-2.5 select-none">
-        <div class="w-9 h-9 rounded-full overflow-hidden border border-primary/30 shrink-0 shadow-sm">
-          <img alt="Adele Doe" class="w-full h-full object-cover" src="../assets/images/img_046.jpg"/>
-        </div>
-        <div>
-          <span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block" data-i18n="greeting_title">Compte Principal</span>
-          <span class="text-xs font-bold text-on-surface truncate block">Adele Doe</span>
-        </div>
+      <div>
+        <h1 class="text-base sm:text-lg font-black text-on-surface tracking-tight leading-tight">Historique des Flux</h1>
+        <p class="text-[11px] text-on-surface-variant font-medium">Toutes vos opérations Switch Bénin 🇧🇯</p>
       </div>
     </div>
 
-    <!-- Actions: Search & Language Switcher -->
+    <!-- Right Actions: Search & Statement -->
     <div class="flex items-center gap-2">
-      <!-- Search toggle button -->
-      <button id="toggle-search-btn" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-colors cursor-pointer" aria-label="Rechercher une transaction">
-        <span class="material-symbols-outlined text-xl" data-icon="search">search</span>
+      <button 
+        type="button"
+        id="toggle-search-btn" 
+        onclick="toggleSearch()" 
+        class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-xs flex items-center justify-center text-on-surface hover:text-primary hover:bg-purple-50 active:scale-95 transition-colors cursor-pointer" 
+        aria-label="Rechercher"
+      >
+        <span class="material-symbols-outlined text-xl">search</span>
       </button>
 
-      <!-- Language selector -->
-      <select id="lang-switch-mobile" class="bg-white text-on-surface font-semibold text-xs rounded-full border border-outline-variant/50 py-1.5 pl-3 pr-7 h-10 focus:ring-2 focus:ring-primary focus:border-primary shadow-sm cursor-pointer">
-        <option value="fr">🇫🇷 FR</option>
-        <option value="en">🇬🇧 EN</option>
-        <option value="es">🇪🇸 ES</option>
-        <option value="de">🇩🇪 DE</option>
-      </select>
+      <button 
+        type="button"
+        onclick="openStatementModal()" 
+        class="flex items-center gap-1 px-3 py-2 rounded-full bg-primary/10 hover:bg-primary/20 text-primary text-xs font-black transition-colors cursor-pointer border border-primary/20"
+      >
+        <span class="material-symbols-outlined text-base">receipt_long</span>
+        <span class="hidden sm:inline">Relevé</span>
+      </button>
     </div>
   </header>
 
-  <!-- Live Search Bar (Expandable) -->
-  <div id="search-container" class="w-full max-w-xl mx-auto px-container-margin hidden transition-all duration-300 mb-2">
+  <!-- Live Search Box (Expandable) -->
+  <div id="search-container" class="w-full max-w-xl mx-auto px-4 hidden transition-all duration-300 my-2">
     <div class="relative flex items-center">
-      <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">search</span>
-      <input type="text" id="tx-search-input" placeholder="Rechercher par nom, montant, service..." class="w-full bg-white border border-outline-variant rounded-2xl py-2.5 pl-10 pr-10 text-xs sm:text-sm font-medium text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"/>
-      <button id="clear-search-btn" class="material-symbols-outlined absolute right-3 text-on-surface-variant hover:text-on-surface text-lg hidden cursor-pointer">close</button>
+      <span class="material-symbols-outlined absolute left-3.5 text-gray-400 text-lg">search</span>
+      <input 
+        type="text" 
+        id="tx-search-input" 
+        oninput="applyFilterAndSearch()" 
+        placeholder="Rechercher par nom, montant, opérateur, SBEE..." 
+        class="w-full bg-white border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-10 text-xs font-bold text-on-surface placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary shadow-xs"
+      />
+      <button id="clear-search-btn" onclick="clearSearch()" class="material-symbols-outlined absolute right-3 text-gray-400 hover:text-on-surface text-lg hidden cursor-pointer">close</button>
     </div>
   </div>
 
   <!-- Main Content Canvas -->
-  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-1">
+  <main class="w-full max-w-xl mx-auto px-4 flex flex-col gap-4 pt-3 flex-1">
 
-    <!-- Header Title & Statement Action -->
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-xl sm:text-2xl font-black text-on-surface tracking-tight" data-i18n="page_heading">Historique</h1>
-        <p class="text-xs text-on-surface-variant font-medium mt-0.5" data-i18n="page_subheading">Toutes vos opérations au Bénin</p>
-      </div>
-
-      <!-- Export Statement Button (Opens Official Statement Modal) -->
-      <button onclick="openStatementModal()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white border border-outline-variant/60 shadow-sm text-xs font-bold text-primary hover:bg-primary/5 hover:border-primary transition-all cursor-pointer">
-        <span class="material-symbols-outlined text-base text-primary">description</span>
-        <span data-i18n="statement_btn">Relevé Officiel</span>
-      </button>
-    </div>
-
-    <!-- Monthly Summary Stat Card -->
-    <section class="stat-gradient text-white rounded-3xl p-5 shadow-ambient-soft flex flex-col gap-4 relative overflow-hidden">
+    <!-- Monthly Summary Stat Hero Card -->
+    <section class="stat-gradient text-white rounded-3xl p-5 shadow-lg flex flex-col gap-3 relative overflow-hidden">
       <div class="flex items-center justify-between relative z-10">
         <div class="flex items-center gap-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-          <span class="text-xs font-bold text-purple-200 uppercase tracking-wider" data-i18n="summary_month">Août 2026</span>
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-xs font-bold text-purple-200 uppercase tracking-wider" id="stat-month-label">Août 2026</span>
         </div>
-        <button onclick="openStatementModal()" class="text-[11px] font-bold text-white/90 bg-white/20 hover:bg-white/30 backdrop-blur-md px-3 py-1 rounded-full border border-white/25 transition-colors cursor-pointer flex items-center gap-1">
-          <span class="material-symbols-outlined text-xs">download</span>
-          <span>Relevé PDF</span>
-        </button>
+        <div class="bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase text-white border border-white/20">
+          UEMOA • 0% Frais
+        </div>
       </div>
 
       <div class="grid grid-cols-2 gap-4 pt-1 relative z-10 border-t border-white/15">
         <div>
-          <span class="text-[11px] text-purple-200 font-semibold block" data-i18n="summary_received">Total Reçu</span>
-          <span class="text-base sm:text-lg font-black font-mono text-emerald-300 block">+70 000 FCFA</span>
+          <span class="text-[11px] text-purple-200 font-semibold block">Total Reçu (+)</span>
+          <span class="text-base sm:text-lg font-black font-mono text-emerald-300 block" id="stat-total-received">+0 FCFA</span>
         </div>
         <div>
-          <span class="text-[11px] text-purple-200 font-semibold block" data-i18n="summary_spent">Total Dépensé</span>
-          <span class="text-base sm:text-lg font-black font-mono text-white block">-55 100 FCFA</span>
+          <span class="text-[11px] text-purple-200 font-semibold block">Total Dépensé (-)</span>
+          <span class="text-base sm:text-lg font-black font-mono text-white block" id="stat-total-spent">-0 FCFA</span>
         </div>
       </div>
     </section>
@@ -221,186 +166,47 @@
     <!-- Filter Buttons (Tout / Reçu / Envoyé) -->
     <section class="flex flex-col gap-2">
       <!-- Direction Filters -->
-      <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-        <button id="filter-all" class="bg-primary text-on-primary font-bold text-xs sm:text-sm px-4 py-2 rounded-full whitespace-nowrap shadow-sm transition-all cursor-pointer flex items-center gap-1.5" data-i18n="filter_all">
+      <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+        <button id="filter-all" onclick="setDirectionFilter('all')" class="filter-pill active bg-primary text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-full whitespace-nowrap shadow-xs transition-all cursor-pointer flex items-center gap-1.5">
           <span>Tout</span>
-          <span id="badge-all" class="bg-white/25 text-white text-[10px] px-1.5 py-0.2 rounded-full font-black">6</span>
+          <span id="badge-all" class="bg-white/25 text-white text-[10px] px-1.5 py-0.2 rounded-full font-black">0</span>
         </button>
 
-        <button id="filter-received" class="bg-white text-on-surface-variant border border-outline-variant font-bold text-xs sm:text-sm px-4 py-2 rounded-full whitespace-nowrap hover:bg-surface-container-low transition-all cursor-pointer flex items-center gap-1.5" data-i18n="filter_received">
-          <span>Reçu</span>
-          <span id="badge-received" class="bg-emerald-100 text-emerald-800 text-[10px] px-1.5 py-0.2 rounded-full font-black">3</span>
+        <button id="filter-received" onclick="setDirectionFilter('received')" class="filter-pill bg-white text-on-surface-variant border border-outline-variant/60 font-bold text-xs sm:text-sm px-4 py-2 rounded-full whitespace-nowrap hover:bg-purple-50 transition-all cursor-pointer flex items-center gap-1.5">
+          <span>Reçu (+)</span>
+          <span id="badge-received" class="bg-emerald-100 text-emerald-800 text-[10px] px-1.5 py-0.2 rounded-full font-black">0</span>
         </button>
 
-        <button id="filter-sent" class="bg-white text-on-surface-variant border border-outline-variant font-bold text-xs sm:text-sm px-4 py-2 rounded-full whitespace-nowrap hover:bg-surface-container-low transition-all cursor-pointer flex items-center gap-1.5" data-i18n="filter_sent">
-          <span>Envoyé</span>
-          <span id="badge-sent" class="bg-surface-container text-on-surface-variant text-[10px] px-1.5 py-0.2 rounded-full font-black">3</span>
+        <button id="filter-sent" onclick="setDirectionFilter('sent')" class="filter-pill bg-white text-on-surface-variant border border-outline-variant/60 font-bold text-xs sm:text-sm px-4 py-2 rounded-full whitespace-nowrap hover:bg-purple-50 transition-all cursor-pointer flex items-center gap-1.5">
+          <span>Envoyé (-)</span>
+          <span id="badge-sent" class="bg-surface-container text-on-surface-variant text-[10px] px-1.5 py-0.2 rounded-full font-black">0</span>
         </button>
       </div>
 
-      <!-- Quick Category Chips -->
-      <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide text-[11px]">
-        <button onclick="setCategoryFilter('all')" class="cat-chip bg-surface-container px-3 py-1 rounded-full font-bold text-on-surface hover:bg-primary/10 hover:text-primary transition-colors whitespace-nowrap cursor-pointer">Tous les services</button>
-        <button onclick="setCategoryFilter('momo')" class="cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-colors whitespace-nowrap cursor-pointer">Mobile Money</button>
-        <button onclick="setCategoryFilter('sbee')" class="cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-colors whitespace-nowrap cursor-pointer">Factures SBEE</button>
-        <button onclick="setCategoryFilter('qr')" class="cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-colors whitespace-nowrap cursor-pointer">Achats QR</button>
-        <button onclick="setCategoryFilter('tontine')" class="cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-colors whitespace-nowrap cursor-pointer">Tontines</button>
+      <!-- Category Filter Chips -->
+      <div class="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar text-[11px]">
+        <button onclick="setCategoryFilter('all', this)" class="cat-chip active bg-primary text-white px-3 py-1 rounded-full font-bold transition-all whitespace-nowrap cursor-pointer shadow-2xs">Tous les services</button>
+        <button onclick="setCategoryFilter('transfer', this)" class="cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer">Transferts</button>
+        <button onclick="setCategoryFilter('utility', this)" class="cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer">Factures SBEE / Eau</button>
+        <button onclick="setCategoryFilter('telecom', this)" class="cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer">Mobile Money & Forfaits</button>
+        <button onclick="setCategoryFilter('tontine', this)" class="cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer">Tontines</button>
       </div>
     </section>
 
-    <!-- Empty Filter Result State (Hidden by default) -->
-    <div id="no-tx-found" class="hidden flex-col items-center justify-center text-center py-12 bg-white rounded-3xl p-6 border border-outline-variant/40 shadow-sm">
-      <div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant mb-3">
-        <span class="material-symbols-outlined text-3xl">search_off</span>
-      </div>
-      <h3 class="text-sm font-bold text-on-surface" data-i18n="no_result_title">Aucune transaction trouvée</h3>
-      <p class="text-xs text-on-surface-variant mt-1 max-w-xs" data-i18n="no_result_desc">Modifiez vos filtres ou vos termes de recherche pour afficher vos opérations.</p>
-      <button id="reset-filter-btn" class="mt-4 px-4 py-2 bg-primary text-on-primary rounded-full text-xs font-bold shadow-sm hover:opacity-90 transition-opacity cursor-pointer" data-i18n="reset_filter_btn">
-        Réinitialiser les filtres
-      </button>
+    <!-- Dynamic Transactions List Container -->
+    <div id="tx-list-container" class="bg-white rounded-3xl p-2 border border-outline-variant/40 shadow-xs flex flex-col divide-y divide-outline-variant/30">
+      <!-- Injected via JavaScript -->
     </div>
 
-    <!-- Chronological Transaction Groups -->
-    <div id="tx-groups-container" class="flex flex-col gap-5">
-
-      <!-- Group 1: Aujourd'hui -->
-      <section class="tx-group flex flex-col gap-2.5" id="group-today">
-        <h2 class="text-xs font-black text-on-surface-variant uppercase tracking-wider px-1 flex items-center justify-between" data-i18n="date_today">
-          <span>Aujourd'hui</span>
-          <span class="text-[10px] font-semibold text-on-surface-variant/70">24 Août 2026</span>
-        </h2>
-
-        <div class="bg-white rounded-3xl p-2 border border-outline-variant/40 shadow-ambient-soft flex flex-col divide-y divide-outline-variant/30">
-
-          <!-- Transaction 1: Dépôt MoMo (Reçu) -->
-          <div onclick="showTxDetail({title:'Dépôt MTN MoMo', type:'received', amount:'+25 000 FCFA', date:'24 Août 2026, 14:32', ref:'SW-TX-20260824-994821', source:'MTN Mobile Money (+229 97 12 34 56)', dest:'Portefeuille Switch Adele', fee:'0 FCFA (Gratuit)', icon:'MTN', iconBg:'bg-amber-50 text-amber-800', tag:'MoMo', tagColor:'bg-amber-50 text-amber-800', pageUrl:'../recu_transaction_partage/code.html'})"
-               data-type="received" data-category="momo" data-search="depot momo mtn benin 25000 recu transfert"
-               class="tx-item p-3.5 flex items-center justify-between hover:bg-surface-container/50 rounded-2xl transition-colors text-on-surface cursor-pointer">
-            <div class="flex items-center gap-3.5 min-w-0 pr-3">
-              <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-800 flex items-center justify-center font-black text-xs shrink-0 border border-amber-200/60 shadow-xs">
-                MTN
-              </div>
-              <div class="min-w-0">
-                <h3 class="text-xs sm:text-sm font-bold text-on-surface truncate" data-i18n="tx_momo_deposit">Dépôt MTN MoMo</h3>
-                <p class="text-[11px] text-on-surface-variant truncate">14:32 • MoMo Principal</p>
-              </div>
-            </div>
-            <div class="text-right shrink-0">
-              <span class="text-xs sm:text-sm font-black font-mono text-emerald-600 block">+25 000 F</span>
-              <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full inline-block mt-0.5" data-i18n="tag_received">Reçu</span>
-            </div>
-          </div>
-
-          <!-- Transaction 2: Paiement SBEE (Envoyé) -->
-          <div onclick="showTxDetail({title:'Paiement Facture SBEE', type:'sent', amount:'-12 500 FCFA', date:'24 Août 2026, 09:15', ref:'SW-TX-20260824-110293', source:'Portefeuille Switch Adele', dest:'SBEE Bénin (Compteur 1428-9901)', fee:'0 FCFA (Inclus)', icon:'bolt', iconBg:'bg-indigo-50 text-indigo-700', isMaterial:true, tag:'Électricité', tagColor:'bg-indigo-50 text-indigo-700', pageUrl:'../recu_recharge_sbee/code.html'})"
-               data-type="sent" data-category="sbee" data-search="paiement sbee electricite facture 12500 envoye compteur"
-               class="tx-item p-3.5 flex items-center justify-between hover:bg-surface-container/50 rounded-2xl transition-colors text-on-surface cursor-pointer">
-            <div class="flex items-center gap-3.5 min-w-0 pr-3">
-              <div class="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center shrink-0 border border-indigo-200/60 shadow-xs">
-                <span class="material-symbols-outlined text-xl">bolt</span>
-              </div>
-              <div class="min-w-0">
-                <h3 class="text-xs sm:text-sm font-bold text-on-surface truncate" data-i18n="tx_sbee_payment">Paiement SBEE</h3>
-                <p class="text-[11px] text-on-surface-variant truncate">09:15 • Compteur Prépayé</p>
-              </div>
-            </div>
-            <div class="text-right shrink-0">
-              <span class="text-xs sm:text-sm font-black font-mono text-on-surface block">-12 500 F</span>
-              <span class="text-[9px] text-indigo-700 font-bold bg-indigo-50 px-2 py-0.5 rounded-full inline-block mt-0.5" data-i18n="tag_electricity">Électricité</span>
-            </div>
-          </div>
-
-          <!-- Transaction 3: Transfert Switch de Koffi Mensah (Reçu) -->
-          <div onclick="showTxDetail({title:'Transfert Switch Reçu', type:'received', amount:'+15 000 FCFA', date:'24 Août 2026, 08:30', ref:'SW-TX-20260824-002914', source:'Koffi Mensah (+229 96 88 44 22)', dest:'Adele Doe', fee:'0 FCFA (Gratuit Switch)', icon:'KM', iconBg:'bg-purple-50 text-purple-700', tag:'Switch Pay', tagColor:'bg-purple-50 text-purple-700', pageUrl:'../recu_transaction_partage/code.html'})"
-               data-type="received" data-category="momo" data-search="transfert switch koffi mensah 15000 recu switch pay"
-               class="tx-item p-3.5 flex items-center justify-between hover:bg-surface-container/50 rounded-2xl transition-colors text-on-surface cursor-pointer">
-            <div class="flex items-center gap-3.5 min-w-0 pr-3">
-              <div class="w-11 h-11 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold text-xs shrink-0 border border-purple-200/60 shadow-xs">
-                KM
-              </div>
-              <div class="min-w-0">
-                <h3 class="text-xs sm:text-sm font-bold text-on-surface truncate">Koffi Mensah</h3>
-                <p class="text-[11px] text-on-surface-variant truncate">08:30 • Transfert Switch Gratuit</p>
-              </div>
-            </div>
-            <div class="text-right shrink-0">
-              <span class="text-xs sm:text-sm font-black font-mono text-emerald-600 block">+15 000 F</span>
-              <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full inline-block mt-0.5" data-i18n="tag_received">Reçu</span>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- Group 2: Hier -->
-      <section class="tx-group flex flex-col gap-2.5" id="group-yesterday">
-        <h2 class="text-xs font-black text-on-surface-variant uppercase tracking-wider px-1 flex items-center justify-between" data-i18n="date_yesterday">
-          <span>Hier</span>
-          <span class="text-[10px] font-semibold text-on-surface-variant/70">23 Août 2026</span>
-        </h2>
-
-        <div class="bg-white rounded-3xl p-2 border border-outline-variant/40 shadow-ambient-soft flex flex-col divide-y divide-outline-variant/30">
-
-          <!-- Transaction 4: Supermarché Erevan (Envoyé) -->
-          <div onclick="showTxDetail({title:'Achat Supermarché Erevan', type:'sent', amount:'-23 400 FCFA', date:'23 Août 2026, 12:20', ref:'SW-TX-20260823-774910', source:'Portefeuille Switch Adele', dest:'Supermarché Erevan Cotonou', fee:'0 FCFA', icon:'shopping_cart', iconBg:'bg-rose-50 text-rose-700', isMaterial:true, tag:'Marchand', tagColor:'bg-purple-50 text-purple-700', pageUrl:'../d_tail_de_transaction/code.html'})"
-               data-type="sent" data-category="qr" data-search="achat supermarche erevan carte bancaire qr 23400 envoye courses"
-               class="tx-item p-3.5 flex items-center justify-between hover:bg-surface-container/50 rounded-2xl transition-colors text-on-surface cursor-pointer">
-            <div class="flex items-center gap-3.5 min-w-0 pr-3">
-              <div class="w-11 h-11 rounded-2xl bg-rose-50 text-rose-700 flex items-center justify-center shrink-0 border border-rose-200/60 shadow-xs">
-                <span class="material-symbols-outlined text-xl">shopping_cart</span>
-              </div>
-              <div class="min-w-0">
-                <h3 class="text-xs sm:text-sm font-bold text-on-surface truncate" data-i18n="tx_erevan_purchase">Supermarché Erevan</h3>
-                <p class="text-[11px] text-on-surface-variant truncate">12:20 • Paiement QR Cotonou</p>
-              </div>
-            </div>
-            <div class="text-right shrink-0">
-              <span class="text-xs sm:text-sm font-black font-mono text-on-surface block">-23 400 F</span>
-              <span class="text-[9px] text-purple-700 font-bold bg-purple-50 px-2 py-0.5 rounded-full inline-block mt-0.5" data-i18n="tag_merchant">Marchand</span>
-            </div>
-          </div>
-
-          <!-- Transaction 5: Moov Money Transfert Reçu (Reçu) -->
-          <div onclick="showTxDetail({title:'Transfert Reçu Moov', type:'received', amount:'+30 000 FCFA', date:'23 Août 2026, 10:14', ref:'SW-TX-20260823-339102', source:'Moov Money (+229 95 00 11 22)', dest:'Portefeuille Switch Adele', fee:'0 FCFA', icon:'MOOV', iconBg:'bg-blue-50 text-blue-800', tag:'Moov', tagColor:'bg-blue-50 text-blue-800', pageUrl:'../recu_transaction_partage/code.html'})"
-               data-type="received" data-category="momo" data-search="transfert recu moov money 30000 recu"
-               class="tx-item p-3.5 flex items-center justify-between hover:bg-surface-container/50 rounded-2xl transition-colors text-on-surface cursor-pointer">
-            <div class="flex items-center gap-3.5 min-w-0 pr-3">
-              <div class="w-11 h-11 rounded-2xl bg-blue-50 text-blue-800 flex items-center justify-center font-black text-xs shrink-0 border border-blue-200/60 shadow-xs">
-                MOOV
-              </div>
-              <div class="min-w-0">
-                <h3 class="text-xs sm:text-sm font-bold text-on-surface truncate" data-i18n="tx_transfer_received">Transfert Moov Money</h3>
-                <p class="text-[11px] text-on-surface-variant truncate">10:14 • Rechargement compte</p>
-              </div>
-            </div>
-            <div class="text-right shrink-0">
-              <span class="text-xs sm:text-sm font-black font-mono text-emerald-600 block">+30 000 F</span>
-              <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full inline-block mt-0.5" data-i18n="tag_received">Reçu</span>
-            </div>
-          </div>
-
-          <!-- Transaction 6: Cotisation Tontine Switch (Envoyé) -->
-          <div onclick="showTxDetail({title:'Cotisation Tontine Épargne', type:'sent', amount:'-19 200 FCFA', date:'23 Août 2026, 08:10', ref:'SW-TX-20260823-118844', source:'Portefeuille Switch Adele', dest:'Tontine Les Entrepreneurs Bénin (Tour 3)', fee:'0 FCFA', icon:'savings', iconBg:'bg-emerald-50 text-emerald-700', isMaterial:true, tag:'Tontine', tagColor:'bg-emerald-50 text-emerald-700', pageUrl:'../mes_tontines/code.html'})"
-               data-type="sent" data-category="tontine" data-search="cotisation tontine switch epargne 19200 envoye tour"
-               class="tx-item p-3.5 flex items-center justify-between hover:bg-surface-container/50 rounded-2xl transition-colors text-on-surface cursor-pointer">
-            <div class="flex items-center gap-3.5 min-w-0 pr-3">
-              <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200/60 shadow-xs">
-                <span class="material-symbols-outlined text-xl">savings</span>
-              </div>
-              <div class="min-w-0">
-                <h3 class="text-xs sm:text-sm font-bold text-on-surface truncate">Tontine Entrepreneurs</h3>
-                <p class="text-[11px] text-on-surface-variant truncate">08:10 • Cotisation Tour #3</p>
-              </div>
-            </div>
-            <div class="text-right shrink-0">
-              <span class="text-xs sm:text-sm font-black font-mono text-on-surface block">-19 200 F</span>
-              <span class="text-[9px] text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded-full inline-block mt-0.5">Tontine</span>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
+    <!-- Empty State -->
+    <div id="tx-empty-state" class="hidden bg-white rounded-3xl p-8 border border-outline-variant/40 shadow-xs flex flex-col items-center justify-center text-center gap-3 my-2">
+      <div class="w-14 h-14 rounded-full bg-purple-50 text-primary flex items-center justify-center">
+        <span class="material-symbols-outlined text-3xl">receipt_long</span>
+      </div>
+      <h3 class="text-sm font-black text-on-surface">Aucune transaction trouvée</h3>
+      <p class="text-xs text-on-surface-variant max-w-xs">
+        Aucune écriture ne correspond à vos critères de recherche.
+      </p>
     </div>
 
   </main>
@@ -408,68 +214,68 @@
   <!-- ============================================================ -->
   <!-- MODAL 1 : Tiroir de Détail de Transaction Instantané -->
   <!-- ============================================================ -->
-  <div id="tx-detail-modal" class="fixed inset-0 z-[1000] bg-black/60 backdrop-blur-xs hidden flex items-end justify-center">
-    <div class="w-full max-w-lg bg-white rounded-t-[32px] p-6 pb-12 shadow-modal modal-enter max-h-[90vh] overflow-y-auto flex flex-col gap-4">
+  <div id="tx-detail-modal" class="fixed inset-0 z-[1000] bg-black/60 backdrop-blur-xs hidden flex items-end justify-center p-0 sm:p-4">
+    <div class="w-full max-w-md bg-white rounded-t-[32px] sm:rounded-3xl p-6 shadow-2xl flex flex-col gap-4 animate-in fade-in slide-in-from-bottom duration-200">
       
       <!-- Top Handle & Close -->
       <div class="flex items-center justify-between">
-        <span class="w-12 h-1 bg-outline-variant rounded-full mx-auto -mr-6"></span>
+        <h3 class="text-base font-black text-on-surface">Détail de l'opération</h3>
         <button onclick="closeTxDetail()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
           <span class="material-symbols-outlined text-lg">close</span>
         </button>
       </div>
 
-      <!-- Transaction Icon & Status -->
+      <!-- Icon & Status -->
       <div class="text-center flex flex-col items-center gap-2 pt-1">
-        <div id="modal-icon-container" class="w-14 h-14 rounded-2xl flex items-center justify-center font-black text-sm shadow-sm">
-          <span id="modal-icon-content"></span>
+        <div id="modal-icon-container" class="w-14 h-14 rounded-2xl flex items-center justify-center font-black text-sm shadow-xs bg-purple-50 text-primary">
+          <span class="material-symbols-outlined text-2xl" id="modal-icon-symbol">payments</span>
         </div>
-        <h3 id="modal-title" class="text-base font-extrabold text-on-surface"></h3>
-        <div id="modal-amount" class="text-2xl font-black font-mono"></div>
-        <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 text-[11px] font-bold px-3 py-1 rounded-full border border-emerald-200">
+        <h4 id="modal-title" class="text-sm font-black text-on-surface">Transfert Switch</h4>
+        <div id="modal-amount" class="text-2xl sm:text-3xl font-black font-mono text-primary">-5 000 FCFA</div>
+        <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 text-[11px] font-extrabold px-3 py-0.5 rounded-full border border-emerald-200">
           <span class="material-symbols-outlined text-sm">check_circle</span>
           Opération Réussie
         </span>
       </div>
 
       <!-- Information List -->
-      <div class="bg-surface-container-low rounded-2xl p-4 border border-outline-variant/30 flex flex-col gap-3 text-xs">
-        <div class="flex justify-between">
-          <span class="text-on-surface-variant font-medium">Date & Heure :</span>
-          <b id="modal-date" class="text-on-surface"></b>
+      <div class="bg-surface-container-low/70 rounded-2xl p-4 border border-outline-variant/30 flex flex-col gap-2.5 text-xs">
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-bold">Date & Heure :</span>
+          <b id="modal-date" class="text-on-surface font-extrabold">Aujourd'hui • 14:32</b>
         </div>
-        <div class="flex justify-between">
-          <span class="text-on-surface-variant font-medium">Référence :</span>
-          <b id="modal-ref" class="font-mono text-primary select-all"></b>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-bold">Référence :</span>
+          <b id="modal-ref" class="font-mono text-primary font-black select-all">SW-8921</b>
         </div>
-        <div class="flex justify-between">
-          <span class="text-on-surface-variant font-medium">Source / Émetteur :</span>
-          <b id="modal-source" class="text-on-surface text-right"></b>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-bold">Bénéficiaire / Tiers :</span>
+          <b id="modal-dest" class="text-on-surface font-extrabold">Maman</b>
         </div>
-        <div class="flex justify-between">
-          <span class="text-on-surface-variant font-medium">Bénéficiaire :</span>
-          <b id="modal-dest" class="text-on-surface text-right"></b>
+        <div class="flex justify-between items-center hidden" id="modal-token-row">
+          <span class="text-gray-500 font-bold">Code Token SBEE :</span>
+          <b id="modal-token-val" class="font-mono text-primary font-black select-all"></b>
         </div>
-        <div class="flex justify-between">
-          <span class="text-on-surface-variant font-medium">Frais Switch :</span>
-          <b id="modal-fee" class="text-emerald-700 font-bold"></b>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-bold">Frais Switch :</span>
+          <b id="modal-fee" class="text-emerald-700 font-extrabold">0 FCFA (Gratuit)</b>
         </div>
       </div>
 
       <!-- Actions -->
       <div class="flex flex-col gap-2 pt-1">
-        <button onclick="shareWhatsAppModal()" class="w-full bg-[#25D366] text-white font-bold py-3.5 rounded-2xl shadow-sm hover:opacity-90 flex items-center justify-center gap-2 text-xs sm:text-sm cursor-pointer">
+        <button onclick="shareWhatsAppModal()" class="w-full bg-[#25D366] text-white font-black py-3.5 rounded-2xl shadow-xs hover:opacity-95 flex items-center justify-center gap-2 text-xs sm:text-sm cursor-pointer">
           <span class="material-symbols-outlined text-lg">chat</span>
-          <span>Partager sur WhatsApp</span>
+          <span>Partager le Reçu sur WhatsApp</span>
         </button>
 
         <div class="grid grid-cols-2 gap-2">
-          <a id="modal-full-receipt-link" href="#" class="py-3 rounded-2xl bg-white border border-outline-variant text-on-surface font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-surface-container cursor-pointer no-underline">
-            <span class="material-symbols-outlined text-base">receipt</span>
+          <a id="modal-full-receipt-link" href="../recu_transaction_partage/code.html" class="py-2.5 rounded-2xl bg-white border border-outline-variant text-on-surface font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-purple-50 cursor-pointer no-underline">
+            <span class="material-symbols-outlined text-base text-primary">receipt</span>
             <span>Reçu Complet</span>
           </a>
-          <button onclick="copyModalRef()" class="py-3 rounded-2xl bg-white border border-outline-variant text-on-surface font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-surface-container cursor-pointer">
-            <span class="material-symbols-outlined text-base">content_copy</span>
+          <button onclick="copyModalRef()" class="py-2.5 rounded-2xl bg-white border border-outline-variant text-on-surface font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-purple-50 cursor-pointer">
+            <span class="material-symbols-outlined text-base text-primary">content_copy</span>
             <span>Copier Réf</span>
           </button>
         </div>
@@ -481,570 +287,106 @@
   <!-- ============================================================ -->
   <!-- MODAL 2 : Relevé de Compte Bancaire Officiel Switch Bénin -->
   <!-- ============================================================ -->
-  <div id="statement-modal" class="fixed inset-0 z-[1000] bg-black/70 backdrop-blur-md hidden flex items-start justify-center p-3 sm:p-6 overflow-y-auto">
-    
-    <div id="statement-document" class="w-full max-w-2xl bg-white rounded-3xl p-5 sm:p-8 shadow-2xl border border-outline-variant/60 modal-enter my-4 sm:my-8 relative flex flex-col gap-6 pb-8">
+  <div id="statement-modal" class="fixed inset-0 z-[1000] bg-black/70 backdrop-blur-xs hidden flex items-start justify-center p-3 sm:p-6 overflow-y-auto">
+    <div id="statement-document" class="w-full max-w-2xl bg-white rounded-3xl p-5 sm:p-8 shadow-2xl border border-outline-variant/60 my-4 sm:my-8 relative flex flex-col gap-6">
       
-      <!-- Modal Toolbar (Sticky / Top actions) -->
+      <!-- Toolbar -->
       <div class="no-print flex items-center justify-between pb-3 border-b border-outline-variant/40">
         <div class="flex items-center gap-2">
-          <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span class="text-xs font-extrabold text-on-surface uppercase tracking-wider">Aperçu du Relevé de Compte</span>
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+          <span class="text-xs font-black text-on-surface uppercase tracking-wider">Aperçu du Relevé Officiel</span>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="printStatement()" class="px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-bold flex items-center gap-1.5 shadow-sm hover:opacity-90 cursor-pointer" title="Imprimer ou enregistrer en PDF">
+          <button onclick="printStatement()" class="px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-black flex items-center gap-1.5 shadow-xs hover:opacity-90 cursor-pointer">
             <span class="material-symbols-outlined text-sm">print</span>
             <span>Imprimer / PDF</span>
           </button>
-          <button onclick="closeStatementModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer" aria-label="Fermer">
+          <button onclick="closeStatementModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-gray-200 cursor-pointer">
             <span class="material-symbols-outlined text-lg">close</span>
           </button>
         </div>
       </div>
 
-      <!-- 1. En-Tête Officiel SWITCH BÉNIN / BCEAO -->
+      <!-- En-tête Switch Bénin -->
       <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
-        <!-- Logo & Établissement -->
         <div class="flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-[#5E3BDC] text-white flex items-center justify-center font-black text-2xl shadow-md shrink-0">
+          <div class="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center font-black text-2xl shadow-xs shrink-0">
             S
           </div>
           <div>
-            <h2 class="text-lg font-black text-[#1C1A24] tracking-tight">SWITCH BÉNIN S.A.S</h2>
+            <h2 class="text-lg font-black text-on-surface tracking-tight">SWITCH BÉNIN S.A.S</h2>
             <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Établissement de Monnaie Électronique</p>
             <p class="text-[10px] text-gray-400 font-mono">Agrément BCEAO N° EME-BJ-04/2024</p>
-            <p class="text-[10px] text-gray-400">Siège : Bd de la Marina, Cotonou, Bénin</p>
           </div>
         </div>
 
-        <!-- Document Badge & Date -->
-        <div class="sm:text-right bg-purple-50/70 p-3 rounded-2xl border border-purple-100 sm:min-w-[200px] w-full sm:w-auto">
-          <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#5E3BDC] block">Relevé d'Opérations</span>
-          <p class="text-xs font-bold text-gray-800 mt-0.5">Période : Du 01 au 24 Août 2026</p>
-          <p class="text-[10px] text-gray-500 font-mono mt-0.5">Édité le : 24/08/2026 à 14:35</p>
-          <p class="text-[10px] font-mono text-purple-700 font-bold">N° : REL-BJ-202608-882104</p>
+        <div class="bg-purple-50/70 p-3 rounded-2xl border border-purple-100 sm:min-w-[200px] w-full sm:w-auto">
+          <span class="text-[10px] font-black uppercase text-primary block">Relevé de Compte</span>
+          <p class="text-xs font-bold text-gray-800 mt-0.5">Période : Mois en cours (Août 2026)</p>
+          <p class="text-[10px] font-mono text-purple-700 font-bold">Réf : REL-BJ-202608-882104</p>
         </div>
       </div>
 
-      <!-- 2. Informations Titulaire de Compte (RIB / KYC) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-gray-50/80 p-4 rounded-2xl border border-gray-200/80 text-xs">
+      <!-- Info Titulaire -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-gray-50 p-4 rounded-2xl border border-gray-200 text-xs">
         <div>
-          <span class="text-[10px] font-bold uppercase text-gray-400 tracking-wider">Titulaire du compte</span>
-          <p class="font-extrabold text-sm text-gray-900 mt-0.5">Mme Adele DOE</p>
-          <p class="text-gray-600 font-mono mt-0.5">Tél : +229 97 12 34 56</p>
-          <p class="text-gray-600">Statut : <span class="text-emerald-700 font-bold">Niveau 2 ANIP Vérifié ✅</span></p>
+          <span class="text-[10px] font-bold uppercase text-gray-400">Titulaire</span>
+          <p class="font-black text-sm text-gray-900 mt-0.5" id="stmt-user-name">Adele DOE</p>
+          <p class="text-gray-600 font-mono mt-0.5">+229 97 12 34 56</p>
         </div>
         <div class="sm:border-l sm:border-gray-200 sm:pl-4">
-          <span class="text-[10px] font-bold uppercase text-gray-400 tracking-wider">Identifiant Bancaire Switch (RIB)</span>
-          <p class="font-mono font-bold text-xs text-[#5E3BDC] select-all mt-0.5">BJ66 BJ06 1012 3456 7890 12</p>
-          <p class="text-gray-600 mt-0.5">Devise : <b>Franc CFA (XOF)</b></p>
-          <p class="text-gray-600">Plafond mensuel : <b>2 000 000 FCFA</b></p>
+          <span class="text-[10px] font-bold uppercase text-gray-400">Identifiant Switch (RIB)</span>
+          <p class="font-mono font-bold text-xs text-primary mt-0.5">BJ66 BJ06 1012 3456 7890 12</p>
+          <p class="text-gray-600">Devise : <b>Franc CFA (XOF)</b></p>
         </div>
       </div>
 
-      <!-- 3. Synthèse Financière du Relevé -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
-        <div class="bg-white p-3 rounded-xl border border-gray-200">
-          <span class="text-[10px] text-gray-500 font-semibold uppercase block">Solde Initial (01/08)</span>
-          <b class="font-mono text-sm text-gray-900 block mt-0.5">220 080 F</b>
-        </div>
-        <div class="bg-emerald-50/80 p-3 rounded-xl border border-emerald-200">
+      <!-- Sélecteur de période -->
+      <div class="flex items-center justify-between bg-gray-50 p-2.5 rounded-xl border border-gray-200 text-xs font-sans">
+        <label class="font-bold text-gray-700">Période du Relevé :</label>
+        <select id="stmt-period-select" onchange="renderStatementPeriod()" class="bg-white border border-gray-300 rounded-lg px-2.5 py-1 text-xs font-bold text-gray-800 focus:outline-none focus:border-primary">
+          <option value="current" selected>Mois en cours (Août 2026)</option>
+          <option value="last">Mois précédent (Juillet 2026)</option>
+          <option value="q3">3e Trimestre 2026 (Juil - Sept)</option>
+          <option value="year">Année 2026 complète</option>
+        </select>
+      </div>
+
+      <!-- Synthèse financière -->
+      <div class="grid grid-cols-3 gap-2 text-center text-xs">
+        <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200">
           <span class="text-[10px] text-emerald-800 font-bold uppercase block">Total Crédits (+)</span>
-          <b class="font-mono text-sm text-emerald-700 block mt-0.5">+70 000 F</b>
+          <b class="font-mono text-sm text-emerald-700 block mt-0.5" id="stmt-total-credits">+0 F</b>
         </div>
-        <div class="bg-rose-50/80 p-3 rounded-xl border border-rose-200">
+        <div class="bg-rose-50 p-3 rounded-xl border border-rose-200">
           <span class="text-[10px] text-rose-800 font-bold uppercase block">Total Débits (-)</span>
-          <b class="font-mono text-sm text-rose-700 block mt-0.5">-55 100 F</b>
+          <b class="font-mono text-sm text-rose-700 block mt-0.5" id="stmt-total-debits">-0 F</b>
         </div>
         <div class="bg-purple-50 p-3 rounded-xl border border-purple-200">
-          <span class="text-[10px] text-[#5E3BDC] font-bold uppercase block">Solde Disponible</span>
-          <b class="font-mono text-sm text-[#5E3BDC] block mt-0.5">234 980 F</b>
+          <span class="text-[10px] text-primary font-bold uppercase block">Solde Actuel</span>
+          <b class="font-mono text-sm text-primary block mt-0.5" id="stmt-current-bal">0 F</b>
         </div>
       </div>
 
-      <!-- 4. Tableau Détaillé des Écritures Comptables -->
+      <!-- Tableau des écritures -->
       <div class="overflow-x-auto rounded-2xl border border-gray-200">
         <table class="w-full text-left text-xs border-collapse">
           <thead>
-            <tr class="bg-gray-100/80 text-gray-700 font-bold uppercase text-[10px] tracking-wider border-b border-gray-200">
+            <tr class="bg-gray-100 text-gray-700 font-bold uppercase text-[10px] border-b border-gray-200">
               <th class="p-3">Date</th>
-              <th class="p-3">Référence / Opération</th>
-              <th class="p-3 text-right">Débit (-)</th>
-              <th class="p-3 text-right">Crédit (+)</th>
-              <th class="p-3 text-right">Solde</th>
+              <th class="p-3">Opération</th>
+              <th class="p-3 text-right">Montant</th>
+              <th class="p-3 text-right">Statut</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100 font-mono text-[11px]">
-            <!-- Ligne 1 -->
-            <tr class="hover:bg-gray-50/60">
-              <td class="p-3 text-gray-500 whitespace-nowrap">24/08 14:32</td>
-              <td class="p-3 font-sans">
-                <span class="font-bold text-gray-900 block">Dépôt MTN Mobile Money</span>
-                <span class="text-[10px] text-gray-400 font-mono">SW-TX-20260824-994821</span>
-              </td>
-              <td class="p-3 text-right text-gray-400">-</td>
-              <td class="p-3 text-right font-bold text-emerald-600">+25 000 F</td>
-              <td class="p-3 text-right font-bold text-gray-900">234 980 F</td>
-            </tr>
-
-            <!-- Ligne 2 -->
-            <tr class="hover:bg-gray-50/60">
-              <td class="p-3 text-gray-500 whitespace-nowrap">24/08 09:15</td>
-              <td class="p-3 font-sans">
-                <span class="font-bold text-gray-900 block">Facture Électricité SBEE</span>
-                <span class="text-[10px] text-gray-400 font-mono">SW-TX-20260824-110293 • Compteur 1428</span>
-              </td>
-              <td class="p-3 text-right font-bold text-rose-600">-12 500 F</td>
-              <td class="p-3 text-right text-gray-400">-</td>
-              <td class="p-3 text-right font-bold text-gray-900">209 980 F</td>
-            </tr>
-
-            <!-- Ligne 3 -->
-            <tr class="hover:bg-gray-50/60">
-              <td class="p-3 text-gray-500 whitespace-nowrap">24/08 08:30</td>
-              <td class="p-3 font-sans">
-                <span class="font-bold text-gray-900 block">Transfert Switch (Koffi Mensah)</span>
-                <span class="text-[10px] text-gray-400 font-mono">SW-TX-20260824-002914</span>
-              </td>
-              <td class="p-3 text-right text-gray-400">-</td>
-              <td class="p-3 text-right font-bold text-emerald-600">+15 000 F</td>
-              <td class="p-3 text-right font-bold text-gray-900">222 480 F</td>
-            </tr>
-
-            <!-- Ligne 4 -->
-            <tr class="hover:bg-gray-50/60">
-              <td class="p-3 text-gray-500 whitespace-nowrap">23/08 12:20</td>
-              <td class="p-3 font-sans">
-                <span class="font-bold text-gray-900 block">Achat Supermarché Erevan Cotonou</span>
-                <span class="text-[10px] text-gray-400 font-mono">SW-TX-20260823-774910 • Paiement QR</span>
-              </td>
-              <td class="p-3 text-right font-bold text-rose-600">-23 400 F</td>
-              <td class="p-3 text-right text-gray-400">-</td>
-              <td class="p-3 text-right font-bold text-gray-900">207 480 F</td>
-            </tr>
-
-            <!-- Ligne 5 -->
-            <tr class="hover:bg-gray-50/60">
-              <td class="p-3 text-gray-500 whitespace-nowrap">23/08 10:14</td>
-              <td class="p-3 font-sans">
-                <span class="font-bold text-gray-900 block">Rechargement Moov Money</span>
-                <span class="text-[10px] text-gray-400 font-mono">SW-TX-20260823-339102</span>
-              </td>
-              <td class="p-3 text-right text-gray-400">-</td>
-              <td class="p-3 text-right font-bold text-emerald-600">+30 000 F</td>
-              <td class="p-3 text-right font-bold text-gray-900">230 880 F</td>
-            </tr>
-
-            <!-- Ligne 6 -->
-            <tr class="hover:bg-gray-50/60">
-              <td class="p-3 text-gray-500 whitespace-nowrap">23/08 08:10</td>
-              <td class="p-3 font-sans">
-                <span class="font-bold text-gray-900 block">Cotisation Tontine Entrepreneurs (Tour 3)</span>
-                <span class="text-[10px] text-gray-400 font-mono">SW-TX-20260823-118844</span>
-              </td>
-              <td class="p-3 text-right font-bold text-rose-600">-19 200 F</td>
-              <td class="p-3 text-right text-gray-400">-</td>
-              <td class="p-3 text-right font-bold text-gray-900">200 880 F</td>
-            </tr>
+          <tbody id="stmt-table-body" class="divide-y divide-gray-100 font-mono text-[11px]">
+            <!-- Injected dynamically -->
           </tbody>
         </table>
       </div>
 
-      <!-- 5. Authentification, Cachet Officiel & QR Code de Vérification -->
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-200">
-        <div class="flex items-center gap-3">
-          <div class="w-14 h-14 bg-white p-1 rounded-xl border border-gray-300 flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-3xl text-gray-800">qr_code_2</span>
-          </div>
-          <div class="text-xs">
-            <p class="font-bold text-gray-900 flex items-center gap-1">
-              <span class="material-symbols-outlined text-base text-[#5E3BDC]">verified</span>
-              Document Officiel Certifié
-            </p>
-            <p class="text-[10px] text-gray-500">Scannez ce QR Code pour vérifier l'authenticité sur <b>verify.switch.bj</b></p>
-          </div>
-        </div>
-
-        <div class="text-center sm:text-right border-t sm:border-t-0 pt-2 sm:pt-0 border-gray-200 w-full sm:w-auto">
-          <span class="text-[10px] uppercase font-bold text-gray-400 block">Cachet Électronique Switch Bénin</span>
-          <span class="text-xs font-black text-[#5E3BDC] font-mono block">SIGNÉ NUMÉRIQUEMENT</span>
-          <span class="text-[9px] text-gray-400 font-mono">SHA256: e8f9...4c21 • BCEAO / ANSSI-BJ</span>
-        </div>
-      </div>
-
-      <!-- 6. Footer Actions (No Print) -->
-      <div class="no-print flex flex-col sm:flex-row gap-2 pt-2 border-t border-gray-100">
-        <button onclick="printStatement()" class="flex-1 bg-[#5E3BDC] text-white font-bold py-3.5 rounded-2xl shadow-sm hover:opacity-90 flex items-center justify-center gap-2 text-xs sm:text-sm cursor-pointer">
-          <span class="material-symbols-outlined text-base">print</span>
-          <span>Imprimer / Sauvegarder PDF</span>
-        </button>
-        <button onclick="shareStatementWhatsApp()" class="flex-1 bg-[#25D366] text-white font-bold py-3.5 rounded-2xl shadow-sm hover:opacity-90 flex items-center justify-center gap-2 text-xs sm:text-sm cursor-pointer">
-          <span class="material-symbols-outlined text-base">chat</span>
-          <span>Partager sur WhatsApp</span>
-        </button>
-        <button onclick="closeStatementModal()" class="px-6 py-3.5 rounded-2xl bg-gray-100 text-gray-700 font-bold text-xs sm:text-sm hover:bg-gray-200 cursor-pointer">
-          Fermer
-        </button>
-      </div>
-
     </div>
   </div>
-
-  <!-- Router Script -->
-  <script src="../assets/switch.router.js"></script>
-
-  <!-- Inline Interactive Logic -->
-  <script>
-    // Dictionnaire multilingue
-    const translations = {
-      fr: {
-        page_title: "Historique des Transactions - Switch Bénin",
-        greeting_title: "Compte Principal",
-        page_heading: "Historique",
-        page_subheading: "Toutes vos opérations au Bénin",
-        statement_btn: "Relevé Officiel",
-        summary_month: "Août 2026",
-        summary_tx_count: "6 transactions",
-        summary_received: "Total Reçu",
-        summary_spent: "Total Dépensé",
-        filter_all: "Tout",
-        filter_received: "Reçu",
-        filter_sent: "Envoyé",
-        no_result_title: "Aucune transaction trouvée",
-        no_result_desc: "Modifiez vos filtres ou vos termes de recherche pour afficher vos opérations.",
-        reset_filter_btn: "Réinitialiser les filtres",
-        date_today: "Aujourd'hui",
-        date_yesterday: "Hier",
-        tx_momo_deposit: "Dépôt MTN MoMo",
-        tx_sbee_payment: "Paiement SBEE",
-        tx_transfer_received: "Transfert Moov Money",
-        tx_erevan_purchase: "Supermarché Erevan",
-        tag_received: "Reçu",
-        tag_electricity: "Électricité",
-        tag_merchant: "Marchand"
-      },
-      en: {
-        page_title: "Transaction History - Switch Benin",
-        greeting_title: "Main Account",
-        page_heading: "History",
-        page_subheading: "All your transactions in Benin",
-        statement_btn: "Official Statement",
-        summary_month: "August 2026",
-        summary_tx_count: "6 transactions",
-        summary_received: "Total Received",
-        summary_spent: "Total Spent",
-        filter_all: "All",
-        filter_received: "Received",
-        filter_sent: "Sent",
-        no_result_title: "No transactions found",
-        no_result_desc: "Try adjusting your filters or search terms.",
-        reset_filter_btn: "Reset filters",
-        date_today: "Today",
-        date_yesterday: "Yesterday",
-        tx_momo_deposit: "MTN MoMo Deposit",
-        tx_sbee_payment: "SBEE Payment",
-        tx_transfer_received: "Moov Money Transfer",
-        tx_erevan_purchase: "Erevan Supermarket",
-        tag_received: "Received",
-        tag_electricity: "Electricity",
-        tag_merchant: "Merchant"
-      },
-      es: {
-        page_title: "Historial de Transacciones - Switch Benin",
-        greeting_title: "Cuenta Principal",
-        page_heading: "Historial",
-        page_subheading: "Todas sus transacciones en Benín",
-        statement_btn: "Extracto Oficial",
-        summary_month: "Agosto 2026",
-        summary_tx_count: "6 transacciones",
-        summary_received: "Total Recibido",
-        summary_spent: "Total Gastado",
-        filter_all: "Todo",
-        filter_received: "Recibido",
-        filter_sent: "Enviado",
-        no_result_title: "No se encontraron transacciones",
-        no_result_desc: "Ajuste sus filtros o términos de búsqueda.",
-        reset_filter_btn: "Restablecer filtros",
-        date_today: "Hoy",
-        date_yesterday: "Ayer",
-        tx_momo_deposit: "Depósito MTN MoMo",
-        tx_sbee_payment: "Pago SBEE",
-        tx_transfer_received: "Transferencia Moov Money",
-        tx_erevan_purchase: "Supermercado Erevan",
-        tag_received: "Recibido",
-        tag_electricity: "Electricidad",
-        tag_merchant: "Comercio"
-      },
-      de: {
-        page_title: "Transaktionsverlauf - Switch Benin",
-        greeting_title: "Hauptkonto",
-        page_heading: "Verlauf",
-        page_subheading: "Alle Ihre Vorgänge in Benin",
-        statement_btn: "Offizieller Auszug",
-        summary_month: "August 2026",
-        summary_tx_count: "6 Transaktionen",
-        summary_received: "Gesamt Erhalten",
-        summary_spent: "Gesamt Ausgegeben",
-        filter_all: "Alle",
-        filter_received: "Erhalten",
-        filter_sent: "Gesendet",
-        no_result_title: "Keine Transaktionen gefunden",
-        no_result_desc: "Passen Sie Filter oder Suchbegriffe an.",
-        reset_filter_btn: "Filter zurücksetzen",
-        date_today: "Heute",
-        date_yesterday: "Gestern",
-        tx_momo_deposit: "MTN MoMo Einzahlung",
-        tx_sbee_payment: "SBEE Zahlung",
-        tx_transfer_received: "Moov Money Überweisung",
-        tx_erevan_purchase: "Supermarkt Erevan",
-        tag_received: "Erhalten",
-        tag_electricity: "Strom",
-        tag_merchant: "Händler"
-      }
-    };
-
-    function setLanguage(lang) {
-      if (!translations[lang]) return;
-      document.documentElement.lang = lang;
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (translations[lang][key]) {
-          const firstSpan = el.querySelector('span');
-          if (firstSpan && el.children.length > 0 && el.id && el.id.startsWith('filter-')) {
-            firstSpan.textContent = translations[lang][key];
-          } else if (firstSpan && el.tagName === 'H2') {
-            firstSpan.textContent = translations[lang][key];
-          } else {
-            el.textContent = translations[lang][key];
-          }
-        }
-      });
-      const mobileLangEl = document.getElementById('lang-switch-mobile');
-      if (mobileLangEl) mobileLangEl.value = lang;
-    }
-
-    const langSelect = document.getElementById('lang-switch-mobile');
-    if (langSelect) {
-      langSelect.addEventListener('change', (e) => setLanguage(e.target.value));
-    }
-
-    // --- Filtres & Recherche Dynamique ---
-    let currentFilter = 'all';
-    let currentCategory = 'all';
-    let searchQuery = '';
-
-    const filterBtns = {
-      all: document.getElementById('filter-all'),
-      received: document.getElementById('filter-received'),
-      sent: document.getElementById('filter-sent'),
-    };
-
-    const activeClasses = ['bg-primary', 'text-on-primary', 'shadow-sm'];
-    const inactiveClasses = ['bg-white', 'text-on-surface-variant', 'border', 'border-outline-variant'];
-
-    function applyFilters() {
-      const items = document.querySelectorAll('.tx-item');
-      let visibleTotal = 0;
-
-      items.forEach(item => {
-        const itemType = item.dataset.type;
-        const itemCat = item.dataset.category;
-        const searchData = (item.dataset.search || '' + item.textContent).toLowerCase();
-        
-        const matchesType = (currentFilter === 'all' || itemType === currentFilter);
-        const matchesCat = (currentCategory === 'all' || itemCat === currentCategory);
-        const matchesSearch = (!searchQuery || searchData.includes(searchQuery.toLowerCase()));
-
-        if (matchesType && matchesCat && matchesSearch) {
-          item.style.display = 'flex';
-          visibleTotal++;
-        } else {
-          item.style.display = 'none';
-        }
-      });
-
-      // Show/Hide date group headers
-      const groups = document.querySelectorAll('.tx-group');
-      groups.forEach(group => {
-        const visibleInGroup = group.querySelectorAll('.tx-item:not([style*="display: none"])').length;
-        group.style.display = visibleInGroup > 0 ? 'flex' : 'none';
-      });
-
-      // Show empty state if nothing found
-      const emptyState = document.getElementById('no-tx-found');
-      if (emptyState) {
-        emptyState.style.display = visibleTotal === 0 ? 'flex' : 'none';
-      }
-    }
-
-    function setFilter(type) {
-      currentFilter = type;
-      Object.entries(filterBtns).forEach(([key, btn]) => {
-        if (!btn) return;
-        if (key === type) {
-          btn.classList.remove(...inactiveClasses);
-          btn.classList.add(...activeClasses);
-        } else {
-          btn.classList.remove(...activeClasses);
-          btn.classList.add(...inactiveClasses);
-        }
-      });
-      applyFilters();
-    }
-
-    function setCategoryFilter(category) {
-      currentCategory = category;
-      document.querySelectorAll('.cat-chip').forEach(btn => {
-        btn.classList.remove('bg-surface-container', 'text-on-surface', 'font-bold');
-        btn.classList.add('bg-white', 'border', 'border-outline-variant/50', 'text-on-surface-variant', 'font-semibold');
-      });
-      if (event && event.target) {
-        event.target.classList.remove('bg-white', 'border', 'border-outline-variant/50', 'text-on-surface-variant', 'font-semibold');
-        event.target.classList.add('bg-surface-container', 'text-on-surface', 'font-bold');
-      }
-      applyFilters();
-    }
-
-    if (filterBtns.all) filterBtns.all.addEventListener('click', () => setFilter('all'));
-    if (filterBtns.received) filterBtns.received.addEventListener('click', () => setFilter('received'));
-    if (filterBtns.sent) filterBtns.sent.addEventListener('click', () => setFilter('sent'));
-
-    // --- Search Toggle & Input ---
-    const toggleSearchBtn = document.getElementById('toggle-search-btn');
-    const searchContainer = document.getElementById('search-container');
-    const searchInput = document.getElementById('tx-search-input');
-    const clearSearchBtn = document.getElementById('clear-search-btn');
-    const resetFilterBtn = document.getElementById('reset-filter-btn');
-
-    if (toggleSearchBtn && searchContainer && searchInput) {
-      toggleSearchBtn.addEventListener('click', () => {
-        const isHidden = searchContainer.classList.contains('hidden');
-        if (isHidden) {
-          searchContainer.classList.remove('hidden');
-          searchInput.focus();
-        } else {
-          searchContainer.classList.add('hidden');
-          searchQuery = '';
-          searchInput.value = '';
-          if (clearSearchBtn) clearSearchBtn.classList.add('hidden');
-          applyFilters();
-        }
-      });
-
-      searchInput.addEventListener('input', (e) => {
-        searchQuery = e.target.value.trim();
-        if (clearSearchBtn) {
-          if (searchQuery.length > 0) {
-            clearSearchBtn.classList.remove('hidden');
-          } else {
-            clearSearchBtn.classList.add('hidden');
-          }
-        }
-        applyFilters();
-      });
-
-      if (clearSearchBtn) {
-        clearSearchBtn.addEventListener('click', () => {
-          searchInput.value = '';
-          searchQuery = '';
-          clearSearchBtn.classList.add('hidden');
-          applyFilters();
-        });
-      }
-    }
-
-    if (resetFilterBtn) {
-      resetFilterBtn.addEventListener('click', () => {
-        if (searchInput) searchInput.value = '';
-        searchQuery = '';
-        currentCategory = 'all';
-        if (clearSearchBtn) clearSearchBtn.classList.add('hidden');
-        setFilter('all');
-      });
-    }
-
-    // --- Modal Détail de Transaction ---
-    let activeTxData = null;
-
-    function showTxDetail(data) {
-      activeTxData = data;
-      const modal = document.getElementById('tx-detail-modal');
-      const iconContainer = document.getElementById('modal-icon-container');
-      const iconContent = document.getElementById('modal-icon-content');
-      
-      document.getElementById('modal-title').textContent = data.title;
-      document.getElementById('modal-amount').textContent = data.amount;
-      document.getElementById('modal-amount').className = data.type === 'received' ? 'text-2xl font-black font-mono text-emerald-600' : 'text-2xl font-black font-mono text-on-surface';
-      
-      document.getElementById('modal-date').textContent = data.date;
-      document.getElementById('modal-ref').textContent = data.ref;
-      document.getElementById('modal-source').textContent = data.source;
-      document.getElementById('modal-dest').textContent = data.dest;
-      document.getElementById('modal-fee').textContent = data.fee;
-
-      iconContainer.className = 'w-14 h-14 rounded-2xl flex items-center justify-center font-black text-sm shadow-sm ' + data.iconBg;
-      if (data.isMaterial) {
-        iconContent.innerHTML = `<span class="material-symbols-outlined text-2xl">${data.icon}</span>`;
-      } else {
-        iconContent.textContent = data.icon;
-      }
-
-      document.getElementById('modal-full-receipt-link').href = data.pageUrl || '../recu_transaction_partage/code.html';
-
-      modal.classList.remove('hidden');
-    }
-
-    function closeTxDetail() {
-      document.getElementById('tx-detail-modal').classList.add('hidden');
-    }
-
-    function shareWhatsAppModal() {
-      if (!activeTxData) return;
-      const msg = encodeURIComponent(
-        `✅ *REÇU SWITCH BÉNIN*\n━━━━━━━━━━━━━━━━━━━━\n💰 *Montant :* ${activeTxData.amount}\n📝 *Opération :* ${activeTxData.title}\n📅 *Date :* ${activeTxData.date}\n🔢 *Réf :* ${activeTxData.ref}\n━━━━━━━━━━━━━━━━━━━━\n🔒 *Vérifié par Switch Bénin*`
-      );
-      window.open('https://wa.me/?text=' + msg, '_blank');
-    }
-
-    function copyModalRef() {
-      if (!activeTxData) return;
-      navigator.clipboard.writeText(activeTxData.ref);
-      alert('Référence copiée : ' + activeTxData.ref);
-    }
-
-    // --- Modal Export & Visualisation Relevé Bancaire Officiel ---
-    function openStatementModal() {
-      document.getElementById('statement-modal').classList.remove('hidden');
-    }
-
-    function closeStatementModal() {
-      document.getElementById('statement-modal').classList.add('hidden');
-    }
-
-    function printStatement() {
-      const modal = document.getElementById('statement-modal');
-      if (modal) modal.classList.remove('hidden');
-      setTimeout(() => {
-        window.print();
-      }, 150);
-    }
-
-    function shareStatementWhatsApp() {
-      const msg = encodeURIComponent(
-        "📄 *RELEVÉ DE COMPTE SWITCH BÉNIN (Août 2026)*\n" +
-        "━━━━━━━━━━━━━━━━━━━━\n" +
-        "👤 *Titulaire :* Adele Doe\n" +
-        "🏦 *RIB Switch :* BJ66 BJ06 1012 3456 7890 12\n" +
-        "💰 *Total Crédits :* +70 000 FCFA\n" +
-        "📉 *Total Débits :* -55 100 FCFA\n" +
-        "💳 *Solde Disponible :* 234 980 FCFA\n" +
-        "🔢 *Réf Relevé :* REL-BJ-202608-882104\n" +
-        "━━━━━━━━━━━━━━━━━━━━\n" +
-        "🔒 *Vérifié & Certifié UEMOA / BCEAO*"
-      );
-      window.open("https://wa.me/?text=" + msg, "_blank");
-    }
-  </script>
 
   <!-- Bottom Navigation Bar -->
   <nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
@@ -1072,5 +414,374 @@
     </a>
   </nav>
 
+  <!-- Interactive Logic -->
+  <script>
+    let currentDirection = 'all';
+    let currentCategory = 'all';
+    let searchQuery = '';
+    let selectedTx = null;
+
+    const defaultTransactionsFallback = [
+      {
+        id: "SW-8921",
+        title: "Transfert à Maman (Awa GBEGNON)",
+        category: "transfer",
+        amount: -5000,
+        fee: 0,
+        date: "Aujourd'hui • 14:32",
+        status: "success",
+        recipient: "Maman (Awa GBEGNON)",
+        phone: "+229 95 00 00 00",
+        note: "Dépense de maison",
+        icon: "send",
+        iconBg: "bg-indigo-50 text-indigo-700"
+      },
+      {
+        id: "SW-8920",
+        title: "Recharge Forfait MTN Data 5 Go",
+        category: "telecom",
+        amount: -2000,
+        fee: 0,
+        date: "Hier • 19:15",
+        status: "success",
+        recipient: "MTN Bénin (+229 97 12 34 56)",
+        note: "Forfait Maxi Data 30j",
+        icon: "cell_tower",
+        iconBg: "bg-amber-50 text-amber-800"
+      },
+      {
+        id: "SW-8919",
+        title: "Dépôt Espèces Kiosque Switch Akpakpa",
+        category: "telecom",
+        amount: 50000,
+        fee: 0,
+        date: "23 Août • 11:05",
+        status: "success",
+        recipient: "Kiosque Switch 042 (Akpakpa)",
+        note: "Recharge compte principal",
+        icon: "add_circle",
+        iconBg: "bg-emerald-50 text-emerald-700"
+      },
+      {
+        id: "SW-8918",
+        title: "Recharge SBEE Compteur Électrique",
+        category: "utility",
+        amount: -10000,
+        fee: 0,
+        date: "21 Août • 08:40",
+        status: "success",
+        recipient: "SBEE Prépayé (1428 5930 192)",
+        note: "Token généré: 5829-1940-5821-9402",
+        icon: "bolt",
+        iconBg: "bg-amber-50 text-amber-600"
+      },
+      {
+        id: "SW-8917",
+        title: "Cotisation Tontine Solidarité+",
+        category: "tontine",
+        amount: -15000,
+        fee: 0,
+        date: "18 Août • 17:00",
+        status: "success",
+        recipient: "Tontine Solidarité+ (Tour 4)",
+        note: "Cotisation mensuelle",
+        icon: "groups",
+        iconBg: "bg-purple-50 text-purple-700"
+      }
+    ];
+
+    function getTxList() {
+      if (window.SwitchEngine && typeof window.SwitchEngine.getTransactions === 'function') {
+        const list = window.SwitchEngine.getTransactions();
+        if (list && list.length > 0) return list;
+      }
+      const raw = localStorage.getItem('switch_transactions');
+      if (raw) {
+        try {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        } catch (e) {}
+      }
+      return defaultTransactionsFallback;
+    }
+
+    function renderTransactions() {
+      const container = document.getElementById('tx-list-container');
+      const emptyState = document.getElementById('tx-empty-state');
+      if (!container) return;
+
+      const txList = getTxList();
+      let totalReceived = 0;
+      let totalSpent = 0;
+      let countAll = txList.length;
+      let countReceived = 0;
+      let countSent = 0;
+
+      // Calculate totals
+      txList.forEach(tx => {
+        if (tx.amount > 0) {
+          totalReceived += tx.amount;
+          countReceived++;
+        } else {
+          totalSpent += Math.abs(tx.amount);
+          countSent++;
+        }
+      });
+
+      // Update badges & stats
+      const statRec = document.getElementById('stat-total-received');
+      const statSpent = document.getElementById('stat-total-spent');
+      if (statRec) statRec.textContent = '+' + totalReceived.toLocaleString('fr-FR') + ' FCFA';
+      if (statSpent) statSpent.textContent = '-' + totalSpent.toLocaleString('fr-FR') + ' FCFA';
+
+      const bAll = document.getElementById('badge-all');
+      const bRec = document.getElementById('badge-received');
+      const bSent = document.getElementById('badge-sent');
+      if (bAll) bAll.textContent = countAll;
+      if (bRec) bRec.textContent = countReceived;
+      if (bSent) bSent.textContent = countSent;
+
+      // Filter
+      const filtered = txList.filter(tx => {
+        const isReceived = tx.amount > 0;
+        if (currentDirection === 'received' && !isReceived) return false;
+        if (currentDirection === 'sent' && isReceived) return false;
+
+        if (currentCategory !== 'all') {
+          if (currentCategory === 'utility' && tx.category !== 'utility') return false;
+          if (currentCategory === 'telecom' && tx.category !== 'telecom' && tx.category !== 'deposit') return false;
+          if (currentCategory === 'tontine' && tx.category !== 'tontine') return false;
+          if (currentCategory === 'transfer' && tx.category !== 'transfer' && tx.category !== 'internal') return false;
+        }
+
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          const matchTitle = (tx.title || '').toLowerCase().includes(q);
+          const matchRecip = (tx.recipient || '').toLowerCase().includes(q);
+          const matchNote = (tx.note || '').toLowerCase().includes(q);
+          const matchAmt = Math.abs(tx.amount).toString().includes(q);
+          if (!matchTitle && !matchRecip && !matchNote && !matchAmt) return false;
+        }
+
+        return true;
+      });
+
+      container.innerHTML = '';
+      if (filtered.length === 0) {
+        if (emptyState) emptyState.classList.remove('hidden');
+        container.classList.add('hidden');
+        return;
+      }
+
+      if (emptyState) emptyState.classList.add('hidden');
+      container.classList.remove('hidden');
+
+      filtered.forEach(tx => {
+        const isPos = tx.amount > 0;
+        const sign = isPos ? '+' : '-';
+        const amtColor = isPos ? 'text-emerald-600 font-mono' : 'text-on-surface font-mono';
+        const badgeBg = isPos ? 'bg-emerald-50 text-emerald-700' : 'bg-surface-container text-on-surface-variant';
+        const badgeLabel = isPos ? 'Reçu' : (tx.category === 'utility' ? 'Facture' : (tx.category === 'telecom' ? 'Recharge' : 'Débit'));
+
+        const item = document.createElement('div');
+        item.className = 'tx-item p-3.5 flex items-center justify-between hover:bg-purple-50/40 rounded-2xl transition-colors text-on-surface cursor-pointer';
+        item.onclick = () => openTxDetail(tx);
+
+        item.innerHTML = `
+          <div class="flex items-center gap-3 min-w-0 pr-2">
+            <div class="w-11 h-11 rounded-2xl ${tx.iconBg || 'bg-purple-50 text-primary'} flex items-center justify-center font-black text-xs shrink-0 shadow-2xs">
+              <span class="material-symbols-outlined text-xl">${tx.icon || 'payments'}</span>
+            </div>
+            <div class="min-w-0">
+              <h4 class="text-xs sm:text-sm font-bold text-on-surface truncate">${tx.title}</h4>
+              <p class="text-[10px] text-on-surface-variant truncate">${tx.date} • ${tx.recipient || 'Switch Bénin'}</p>
+            </div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="text-xs sm:text-sm font-black ${amtColor} block">${sign}${Math.abs(tx.amount).toLocaleString('fr-FR')} F</span>
+            <span class="text-[9px] font-extrabold ${badgeBg} px-2 py-0.5 rounded-full inline-block mt-0.5">${badgeLabel}</span>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function setDirectionFilter(dir) {
+      currentDirection = dir;
+      ['all', 'received', 'sent'].forEach(d => {
+        const btn = document.getElementById('filter-' + d);
+        if (btn) {
+          if (d === dir) {
+            btn.className = 'filter-pill active bg-primary text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-full whitespace-nowrap shadow-xs transition-all cursor-pointer flex items-center gap-1.5';
+          } else {
+            btn.className = 'filter-pill bg-white text-on-surface-variant border border-outline-variant/60 font-bold text-xs sm:text-sm px-4 py-2 rounded-full whitespace-nowrap hover:bg-purple-50 transition-all cursor-pointer flex items-center gap-1.5';
+          }
+        }
+      });
+      renderTransactions();
+    }
+
+    function setCategoryFilter(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-chip').forEach(c => {
+        c.className = 'cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer';
+      });
+      if (btn) {
+        btn.className = 'cat-chip active bg-primary text-white px-3 py-1 rounded-full font-bold transition-all whitespace-nowrap cursor-pointer shadow-2xs';
+      }
+      renderTransactions();
+    }
+
+    function toggleSearch() {
+      const box = document.getElementById('search-container');
+      const input = document.getElementById('tx-search-input');
+      if (box.classList.contains('hidden')) {
+        box.classList.remove('hidden');
+        input.focus();
+      } else {
+        box.classList.add('hidden');
+        clearSearch();
+      }
+    }
+
+    function applyFilterAndSearch() {
+      const input = document.getElementById('tx-search-input');
+      searchQuery = input.value.trim();
+      const clearBtn = document.getElementById('clear-search-btn');
+      if (clearBtn) {
+        if (searchQuery.length > 0) {
+          clearBtn.classList.remove('hidden');
+        } else {
+          clearBtn.classList.add('hidden');
+        }
+      }
+      renderTransactions();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('tx-search-input');
+      if (input) input.value = '';
+      searchQuery = '';
+      const clearBtn = document.getElementById('clear-search-btn');
+      if (clearBtn) clearBtn.classList.add('hidden');
+      renderTransactions();
+    }
+
+    function openTxDetail(tx) {
+      selectedTx = tx;
+      document.getElementById('modal-title').textContent = tx.title;
+      document.getElementById('modal-amount').textContent = (tx.amount > 0 ? '+' : '-') + Math.abs(tx.amount).toLocaleString('fr-FR') + ' FCFA';
+      document.getElementById('modal-amount').className = tx.amount > 0 ? 'text-2xl sm:text-3xl font-black font-mono text-emerald-600' : 'text-2xl sm:text-3xl font-black font-mono text-on-surface';
+      document.getElementById('modal-date').textContent = tx.date;
+      document.getElementById('modal-ref').textContent = tx.id;
+      document.getElementById('modal-dest').textContent = tx.recipient || 'Switch Bénin';
+      document.getElementById('modal-icon-symbol').textContent = tx.icon || 'payments';
+
+      const tokenRow = document.getElementById('modal-token-row');
+      const tokenVal = document.getElementById('modal-token-val');
+      if (tx.note && tx.note.includes('Token')) {
+        tokenRow.classList.remove('hidden');
+        tokenVal.textContent = tx.note.replace('Token généré: ', '').replace('Code Token: ', '');
+      } else {
+        tokenRow.classList.add('hidden');
+      }
+
+      localStorage.setItem('switch_last_tx_id', tx.id);
+      localStorage.setItem('switch_last_tx_amount', Math.abs(tx.amount).toString());
+      localStorage.setItem('switch_last_tx_recipient', tx.recipient || tx.title);
+      localStorage.setItem('switch_last_tx_note', tx.note || '');
+
+      document.getElementById('tx-detail-modal').classList.remove('hidden');
+    }
+
+    function closeTxDetail() {
+      document.getElementById('tx-detail-modal').classList.add('hidden');
+    }
+
+    function shareWhatsAppModal() {
+      if (!selectedTx) return;
+      const msg = encodeURIComponent(
+        `✅ *REÇU SWITCH BÉNIN*\n━━━━━━━━━━━━━━━━━━━━\n💰 *Montant :* ${selectedTx.amount > 0 ? '+' : '-'}${Math.abs(selectedTx.amount).toLocaleString('fr-FR')} FCFA\n📝 *Opération :* ${selectedTx.title}\n📅 *Date :* ${selectedTx.date}\n🔢 *Réf :* ${selectedTx.id}\n━━━━━━━━━━━━━━━━━━━━\n🔒 *Vérifié par Switch Bénin*`
+      );
+      window.open('https://wa.me/?text=' + msg, '_blank');
+    }
+
+    function copyModalRef() {
+      if (!selectedTx) return;
+      navigator.clipboard.writeText(selectedTx.id);
+      alert('Référence copiée : ' + selectedTx.id);
+    }
+
+    function renderStatementPeriod() {
+      const select = document.getElementById('stmt-period-select');
+      const period = select ? select.value : 'current';
+      const txList = getTxList();
+      const user = window.SwitchEngine ? window.SwitchEngine.getUser() : { name: "Adele Doe" };
+      const mainBal = window.SwitchEngine ? window.SwitchEngine.getMainBalance() : 125000;
+
+      let filtered = txList;
+      if (period === 'last') {
+        filtered = txList.filter(t => (t.date || '').includes('Juil') || (t.date || '').includes('2024') || (t.id || '').includes('9'));
+      } else if (period === 'q3') {
+        filtered = txList;
+      } else if (period === 'year') {
+        filtered = txList;
+      }
+
+      let credits = 0;
+      let debits = 0;
+      filtered.forEach(t => {
+        if (t.amount > 0) credits += t.amount;
+        else debits += Math.abs(t.amount);
+      });
+
+      document.getElementById('stmt-user-name').textContent = user.name;
+      document.getElementById('stmt-total-credits').textContent = '+' + credits.toLocaleString('fr-FR') + ' F';
+      document.getElementById('stmt-total-debits').textContent = '-' + debits.toLocaleString('fr-FR') + ' F';
+      document.getElementById('stmt-current-bal').textContent = mainBal.toLocaleString('fr-FR') + ' F';
+
+      const tbody = document.getElementById('stmt-table-body');
+      tbody.innerHTML = '';
+
+      filtered.forEach(tx => {
+        const isPos = tx.amount > 0;
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-50';
+        tr.innerHTML = `
+          <td class="p-3 text-gray-500 whitespace-nowrap">${tx.date}</td>
+          <td class="p-3 font-sans">
+            <b class="text-gray-900 block">${tx.title}</b>
+            <span class="text-[10px] text-gray-400 font-mono">${tx.id} • ${tx.recipient || ''}</span>
+          </td>
+          <td class="p-3 text-right font-bold ${isPos ? 'text-emerald-600' : 'text-rose-600'}">
+            ${isPos ? '+' : '-'}${Math.abs(tx.amount).toLocaleString('fr-FR')} F
+          </td>
+          <td class="p-3 text-right">
+            <span class="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">Succès</span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openStatementModal() {
+      renderStatementPeriod();
+      document.getElementById('statement-modal').classList.remove('hidden');
+    }
+
+    function closeStatementModal() {
+      document.getElementById('statement-modal').classList.add('hidden');
+    }
+
+    function printStatement() {
+      window.print();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderTransactions();
+    });
+  </script>
+
+  <script src="../assets/switch.router.js" defer></script>
 </body>
 </html>

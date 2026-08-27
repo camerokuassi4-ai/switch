@@ -150,6 +150,32 @@
     }
 
     function payWaterInvoice() {
+      const police = document.getElementById('police-number').value || '0849201';
+      const amt = 8450;
+
+      if (window.SwitchEngine) {
+        const mainBal = window.SwitchEngine.getMainBalance();
+        if (mainBal < amt) {
+          alert("Solde insuffisant dans votre Compte Principal (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible, " + amt.toLocaleString('fr-FR') + " FCFA requis).");
+          return;
+        }
+
+        const tx = window.SwitchEngine.addTransaction({
+          title: "Facture Eau SONEB (" + police + ")",
+          category: "utility",
+          amount: -amt,
+          fee: 0,
+          recipient: "SONEB Bénin (Police " + police + ")",
+          note: "Quittance: SNB-2026-0849201-9",
+          icon: "water_drop",
+          iconBg: "bg-sky-50 text-sky-700"
+        });
+
+        localStorage.setItem('switch_last_tx_id', tx.id);
+        localStorage.setItem('switch_last_tx_amount', amt.toString());
+        localStorage.setItem('switch_last_tx_recipient', "SONEB Bénin (Police " + police + ")");
+      }
+
       document.getElementById('success-modal').classList.remove('hidden');
     }
   </script>

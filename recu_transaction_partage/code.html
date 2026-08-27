@@ -21,11 +21,11 @@
 <body class="bg-surface-container text-on-background min-h-screen pb-24 flex flex-col antialiased">
   <!-- TopAppBar -->
   <header class="flex items-center justify-between px-container-margin py-stack-md w-full max-w-md mx-auto pt-6">
-    <button aria-label="Retour" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
+    <button aria-label="Retour" onclick="window.switchHandleBack ? window.switchHandleBack() : (window.history.length > 1 ? window.history.back() : window.location.href='../tableau_de_bord_mis_jour/code.html')" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
       <span class="material-symbols-outlined">arrow_back</span>
     </button>
     <h1 class="text-lg font-bold text-on-surface">Reçu de Transaction</h1>
-    <button onclick="downloadReceipt()" class="p-2 rounded-full hover:bg-surface-container-high text-on-surface cursor-pointer">
+    <button onclick="downloadReceipt()" class="p-2 rounded-full hover:bg-surface-container-high text-on-surface cursor-pointer" title="Télécharger">
       <span class="material-symbols-outlined">download</span>
     </button>
   </header>
@@ -52,45 +52,44 @@
 
       <!-- Amount Header -->
       <div class="text-center py-4 border-y border-dashed border-outline-variant">
-        <span class="text-xs text-on-surface-variant font-bold uppercase tracking-wider">Montant Transféré</span>
-        <h3 class="text-3xl sm:text-4xl font-black font-mono text-primary mt-1">25 000 FCFA</h3>
-        <p class="text-xs text-green-700 font-semibold mt-1">Frais de transfert : 0 FCFA (Gratuit)</p>
+        <span id="rcpt-type-label" class="text-xs text-on-surface-variant font-bold uppercase tracking-wider">Montant de l'Opération</span>
+        <h3 id="rcpt-amount" class="text-3xl sm:text-4xl font-black font-mono text-primary mt-1">25 000 FCFA</h3>
+        <p class="text-xs text-green-700 font-semibold mt-1">Frais Switch : 0 FCFA (Gratuit)</p>
       </div>
 
       <!-- Details List -->
       <div class="flex flex-col gap-3 text-xs">
         <div class="flex justify-between">
-          <span class="text-on-surface-variant">Expéditeur :</span>
-          <b class="text-on-surface">Adele Doe (+229 97 12 34 56)</b>
+          <span class="text-on-surface-variant">Titulaire du compte :</span>
+          <b id="rcpt-sender" class="text-on-surface">Adele Doe (+229 97 12 34 56)</b>
         </div>
         <div class="flex justify-between">
-          <span class="text-on-surface-variant">Bénéficiaire :</span>
-          <b class="text-on-surface">Koffi Mensah (+229 96 88 44 22)</b>
+          <span class="text-on-surface-variant">Bénéficiaire / Service :</span>
+          <b id="rcpt-beneficiary" class="text-on-surface">Koffi Mensah</b>
         </div>
         <div class="flex justify-between">
           <span class="text-on-surface-variant">Type d'opération :</span>
-          <b class="text-on-surface">Transfert Switch à Switch</b>
+          <b id="rcpt-op-type" class="text-on-surface">Paiement / Transfert Switch</b>
         </div>
         <div class="flex justify-between">
           <span class="text-on-surface-variant">Date & Heure :</span>
-          <b class="text-on-surface">24 Août 2026, 22:52:10</b>
+          <b id="rcpt-date" class="text-on-surface">Aujourd'hui</b>
         </div>
         <div class="flex justify-between">
           <span class="text-on-surface-variant">Référence Unique :</span>
-          <b class="font-mono text-primary select-all">SW-TX-20260824-994821</b>
+          <b id="rcpt-ref" class="font-mono text-primary select-all">SW-TX-2026-994821</b>
         </div>
       </div>
 
       <!-- QR Code de Vérification & Cachet -->
       <div class="bg-surface-container rounded-2xl p-4 flex items-center justify-between border border-outline-variant">
         <div class="flex items-center gap-3">
-          <!-- Stylized QR placeholder -->
           <div class="w-14 h-14 bg-white p-1 rounded-xl border border-outline-variant flex items-center justify-center">
             <span class="material-symbols-outlined text-3xl text-on-surface">qr_code_2</span>
           </div>
           <div>
             <p class="text-xs font-bold text-on-surface">Authentifié numériquement</p>
-            <p class="text-[10px] text-on-surface-variant">Scannez pour vérifier la validité</p>
+            <p class="text-[10px] text-on-surface-variant">Scannez pour vérifier la validité BCEAO</p>
           </div>
         </div>
         <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
@@ -122,28 +121,55 @@
   </main>
 
   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const txId = localStorage.getItem("switch_last_tx_id") || "SW-TX-8921";
+      const amount = localStorage.getItem("switch_last_tx_amount") || "25000";
+      const recipient = localStorage.getItem("switch_last_tx_recipient") || "Koffi Mensah";
+      const phone = localStorage.getItem("switch_last_tx_phone") || "";
+      const note = localStorage.getItem("switch_last_tx_note") || "";
+      const userFullname = localStorage.getItem("switch_user_fullname") || localStorage.getItem("switch_user_name") || "Adele Doe";
+
+      const amtNum = parseInt(amount, 10) || 25000;
+      document.getElementById('rcpt-amount').textContent = amtNum.toLocaleString('fr-FR') + " FCFA";
+      document.getElementById('rcpt-sender').textContent = `${userFullname} (+229 97 12 34 56)`;
+      document.getElementById('rcpt-beneficiary').textContent = phone ? `${recipient} (${phone})` : recipient;
+      document.getElementById('rcpt-ref').textContent = txId;
+      document.getElementById('rcpt-date').textContent = new Date().toLocaleString('fr-FR', { dateStyle: 'long', timeStyle: 'short' });
+      if (note) {
+        document.getElementById('rcpt-op-type').textContent = note;
+      }
+    });
+
     function shareWhatsAppReceipt() {
+      const txId = document.getElementById('rcpt-ref').textContent;
+      const amt = document.getElementById('rcpt-amount').textContent;
+      const benef = document.getElementById('rcpt-beneficiary').textContent;
+      const sender = document.getElementById('rcpt-sender').textContent;
+      const date = document.getElementById('rcpt-date').textContent;
+
       const msg = encodeURIComponent(
-        "✅ *REÇU OFFICIEL SWITCH BÉNIN*\n" +
-        "━━━━━━━━━━━━━━━━━━━━\n" +
-        "💰 *Montant :* 25 000 FCFA (Frais: 0 FCFA)\n" +
-        "👤 *Expéditeur :* Adele Doe\n" +
-        "📥 *Bénéficiaire :* Koffi Mensah\n" +
-        "📅 *Date :* 24 Août 2026 à 22:52\n" +
-        "🔢 *Réf :* SW-TX-20260824-994821\n" +
-        "━━━━━━━━━━━━━━━━━━━━\n" +
-        "🔒 *Vérification :* https://verify.switch.bj/tx/SW-TX-20260824-994821"
+        `✅ *REÇU OFFICIEL SWITCH BÉNIN*\n` +
+        `━━━━━━━━━━━━━━━━━━━━\n` +
+        `💰 *Montant :* ${amt} (Frais: 0 FCFA)\n` +
+        `👤 *Expéditeur :* ${sender}\n` +
+        `📥 *Bénéficiaire :* ${benef}\n` +
+        `📅 *Date :* ${date}\n` +
+        `🔢 *Réf :* ${txId}\n` +
+        `━━━━━━━━━━━━━━━━━━━━\n` +
+        `🔒 *Vérification certifiée Switch Bénin*`
       );
       window.open("https://wa.me/?text=" + msg, "_blank");
     }
 
     function downloadReceipt() {
-      alert("Reçu officiel téléchargé au format PDF (SW-TX-20260824-994821.pdf) !");
+      const txId = document.getElementById('rcpt-ref').textContent;
+      alert(`Reçu officiel téléchargé au format PDF (${txId}.pdf) !`);
     }
 
     function copyReceiptRef() {
-      navigator.clipboard.writeText("SW-TX-20260824-994821");
-      alert("Référence copiée : SW-TX-20260824-994821");
+      const txId = document.getElementById('rcpt-ref').textContent;
+      navigator.clipboard.writeText(txId);
+      alert("Référence copiée : " + txId);
     }
   </script>
 

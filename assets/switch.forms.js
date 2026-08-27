@@ -31,13 +31,8 @@
     "verrouillage_pin":         "../tableau_de_bord_mis_jour/code.html",
 
     // Marchand
-    "inscription_marchand":     "../v_rification_marchand/code.html",
     "v_rification_marchand":    "../setup_point_de_vente_marchand/code.html",
     "setup_point_de_vente_marchand":"../tableau_de_bord_marchand/code.html",
-
-    // Agent
-    "inscription_agent_switch": "../agent_verification_caution/code.html",
-    "agent_verification_caution":"../tableau_de_bord_agent/code.html",
 
     // Formulaires de paramètres / profil
     "modifier_le_profil":       "../profil_utilisateur/code.html",
@@ -255,9 +250,10 @@
   // de type submit/button principaux pour naviguer.
 
   function fixForms(destination) {
-    // Cas A : balises <form> avec onsubmit="event.preventDefault()"
+    // Cas A : balises <form> sans onsubmit
     const forms = document.querySelectorAll("form");
     forms.forEach(function (form) {
+      if (form.hasAttribute("onsubmit") || form.getAttribute("data-no-router") === "true") return;
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -280,6 +276,7 @@
     );
 
     allBtns.forEach(function (btn) {
+      if (btn.hasAttribute("onclick") || btn.getAttribute("data-no-router") === "true") return;
       const txt = (btn.textContent || "").trim().toLowerCase();
       const matches = ACTION_TEXTS.some(function (t) {
         return txt.includes(t);

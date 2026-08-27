@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="fr"><head>
 <meta charset="utf-8"/>
@@ -51,73 +51,110 @@
 <h1 class="font-headline-md text-headline-md text-on-surface font-bold">Nouvelle Cagnotte</h1>
 </div>
 </header>
-<main class="flex-grow px-container-margin py-stack-md max-w-md mx-auto w-full">
-<form class="flex flex-col gap-stack-lg" onsubmit="event.preventDefault(); document.getElementById('success-state').classList.remove('hidden'); document.getElementById('form-state').classList.add('hidden');">
-<div class="flex flex-col gap-stack-md" id="form-state">
-<div class="flex flex-col gap-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Titre de la cagnotte</label>
-<input class="form-input-soft rounded-lg px-4 py-3 font-body-lg text-on-surface w-full placeholder:text-outline-variant" placeholder="Ex: Cadeau d'anniversaire" required="" type="text"/>
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Catégorie</label>
-<div class="relative">
-<select class="form-input-soft rounded-lg px-4 py-3 font-body-lg text-on-surface w-full appearance-none bg-white" required="">
-<option disabled="" selected="" value="">Sélectionner un objectif</option>
-<option value="cadeau">Cadeau commun</option>
-<option value="projet">Projet personnel</option>
-<option value="soins">Frais médicaux</option>
-<option value="autre">Autre</option>
-</select>
-<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
-</div>
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Objectif à atteindre (FCFA)</label>
-<div class="relative">
-<input class="form-input-soft rounded-lg pl-4 pr-16 py-3 font-body-lg text-on-surface w-full font-bold" placeholder="50 000" required="" type="number"/>
-<span class="absolute right-4 top-1/2 -translate-y-1/2 font-label-caps text-on-surface-variant font-bold">FCFA</span>
-</div>
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Description (Optionnel)</label>
-<textarea class="form-input-soft rounded-lg px-4 py-3 font-body-sm text-on-surface w-full resize-none placeholder:text-outline-variant" placeholder="Décrivez le but de cette cagnotte..." rows="3"></textarea>
-</div>
-<button class="btn-primary w-full rounded-full py-4 font-headline-md text-body-lg font-bold mt-stack-md flex items-center justify-center gap-2 shadow-lg shadow-primary-container/30" type="submit">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
-                    Lancer la cagnotte
-                </button>
-</div>
-</form>
-<div class="hidden flex-col items-center text-center gap-stack-lg pt-stack-lg animate-[fadeIn_0.5s_ease-out]" id="success-state">
-<div class="w-24 h-24 rounded-full bg-surface-container-low flex items-center justify-center mb-2 relative">
-<div class="absolute inset-0 rounded-full border-4 border-primary/20 animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]"></div>
-<span class="material-symbols-outlined text-5xl text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-</div>
-<div class="flex flex-col gap-2">
-<h2 class="font-display-lg-mobile text-display-lg-mobile text-on-surface">Cagnotte créée !</h2>
-<p class="font-body-lg text-on-surface-variant px-4">Votre cagnotte est prête. Partagez le lien avec vos proches pour commencer à récolter des fonds.</p>
-</div>
-<div class="glass-panel w-full rounded-xl p-card-padding flex flex-col gap-stack-md mt-stack-sm">
-<span class="font-label-caps text-label-caps text-on-surface-variant uppercase text-left">Lien de partage</span>
-<div class="flex items-center gap-2 bg-surface-container-lowest border border-surface-variant rounded-lg p-2">
-<input class="bg-transparent border-none w-full font-body-sm text-on-surface focus:ring-0 truncate px-2" readonly="" type="text" value="https://momo.bj/c/ab89x2"/>
-<button class="w-10 h-10 rounded-md bg-primary-container text-on-primary-container flex items-center justify-center hover:bg-primary transition-colors hover:text-white shrink-0" onclick="alert('Lien copié !')">
-<span class="material-symbols-outlined text-sm">content_copy</span>
-</button>
-</div>
-<div class="grid grid-cols-2 gap-3 mt-2">
-<button class="flex items-center justify-center gap-2 py-3 rounded-lg border border-outline-variant font-body-sm font-semibold hover:bg-surface-container-low transition-colors">
-<span class="material-symbols-outlined text-primary">share</span>
-                        Partager
-                     </button>
-<button class="flex items-center justify-center gap-2 py-3 rounded-lg border border-outline-variant font-body-sm font-semibold hover:bg-surface-container-low transition-colors" onclick="location.reload()">
-<span class="material-symbols-outlined text-on-surface">dashboard</span>
-                        Tableau de bord
-                     </button>
-</div>
-</div>
-</div>
-</main>
+  <main class="flex-grow px-container-margin py-stack-md max-w-md mx-auto w-full">
+    <form class="flex flex-col gap-stack-lg" onsubmit="event.preventDefault(); submitNewCagnotte();">
+      <div class="flex flex-col gap-stack-md" id="form-state">
+        <div class="flex flex-col gap-2">
+          <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Titre de la cagnotte</label>
+          <input id="cagnotte-title" class="form-input-soft rounded-2xl px-4 py-3.5 font-body-lg text-on-surface w-full placeholder:text-outline-variant font-bold" placeholder="Ex: Cadeau d'anniversaire, Mariage..." required="" type="text"/>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Catégorie</label>
+          <div class="relative">
+            <select id="cagnotte-cat" class="form-input-soft rounded-2xl px-4 py-3.5 font-body-lg text-on-surface w-full appearance-none bg-white font-semibold" required="">
+              <option disabled="" value="">Sélectionner un objectif</option>
+              <option value="Cadeau commun" selected>Cadeau commun</option>
+              <option value="Projet personnel">Projet personnel / Commerce</option>
+              <option value="Frais médicaux">Solidarité & Santé</option>
+              <option value="Autre">Autre projet</option>
+            </select>
+            <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Objectif à atteindre (FCFA)</label>
+          <div class="relative">
+            <input id="cagnotte-target" class="form-input-soft rounded-2xl pl-4 pr-16 py-3.5 font-body-lg text-on-surface w-full font-bold font-mono text-xl" placeholder="50 000" required="" type="number" value="100000"/>
+            <span class="absolute right-4 top-1/2 -translate-y-1/2 font-label-caps text-on-surface-variant font-bold">FCFA</span>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Description (Optionnel)</label>
+          <textarea id="cagnotte-desc" class="form-input-soft rounded-2xl px-4 py-3 font-body-sm text-on-surface w-full resize-none placeholder:text-outline-variant" placeholder="Décrivez le but de cette cagnotte..." rows="3">Cotisation solidaire pour notre événement.</textarea>
+        </div>
+        <button class="btn-primary w-full rounded-full py-4 font-headline-md text-body-lg font-bold mt-stack-md flex items-center justify-center gap-2 shadow-lg shadow-primary-container/30 cursor-pointer" type="submit">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+          Lancer la cagnotte Switch
+        </button>
+      </div>
+    </form>
+
+    <div class="hidden flex-col items-center text-center gap-stack-lg pt-stack-lg animate-[fadeIn_0.5s_ease-out]" id="success-state">
+      <div class="w-24 h-24 rounded-full bg-surface-container-low flex items-center justify-center mb-2 relative">
+        <div class="absolute inset-0 rounded-full border-4 border-primary/20 animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]"></div>
+        <span class="material-symbols-outlined text-5xl text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+      </div>
+      <div class="flex flex-col gap-2">
+        <h2 class="text-2xl font-black text-on-surface">Cagnotte créée ! 🎉</h2>
+        <p class="text-xs text-on-surface-variant px-4">Votre cagnotte est active et prête à recevoir des dons par Switch ou Mobile Money.</p>
+      </div>
+      <div class="glass-panel w-full rounded-3xl p-5 flex flex-col gap-3 mt-2 shadow-sm border border-outline-variant">
+        <span class="text-[11px] font-bold text-on-surface-variant uppercase text-left">Lien sécurisé de collecte</span>
+        <div class="flex items-center gap-2 bg-surface-container-lowest border border-surface-variant rounded-2xl p-2">
+          <input id="share-link-input" class="bg-transparent border-none w-full text-xs font-bold text-on-surface focus:ring-0 truncate px-2" readonly="" type="text" value="https://pay.switch.bj/cagnotte/anniv-7890"/>
+          <button class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center hover:opacity-90 transition-colors shrink-0 cursor-pointer" onclick="copyLink()">
+            <span class="material-symbols-outlined text-sm">content_copy</span>
+          </button>
+        </div>
+        <div class="grid grid-cols-2 gap-3 mt-2">
+          <button onclick="shareCagnotteWhatsApp()" class="flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-[#25D366] text-white text-xs font-bold shadow-sm hover:opacity-90 transition-colors cursor-pointer">
+            <span class="material-symbols-outlined text-base">share</span>
+            Partager WhatsApp
+          </button>
+          <button onclick="window.switchNavigate ? window.switchNavigate('../mes_cagnottes/code.html') : window.location.href='../mes_cagnottes/code.html'" class="flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-white border border-outline-variant text-xs font-bold text-on-surface hover:bg-surface-container transition-colors cursor-pointer">
+            <span class="material-symbols-outlined text-base">savings</span>
+            Mes Cagnottes
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function submitNewCagnotte() {
+      const title = document.getElementById('cagnotte-title').value;
+      const target = parseInt(document.getElementById('cagnotte-target').value || 100000);
+      const cat = document.getElementById('cagnotte-cat').value;
+      
+      const newCagnotte = {
+        title: title,
+        target: target,
+        collected: 0,
+        category: cat,
+        created: new Date().toISOString()
+      };
+
+      const existing = JSON.parse(localStorage.getItem('switch_cagnottes') || '[]');
+      existing.push(newCagnotte);
+      localStorage.setItem('switch_cagnottes', JSON.stringify(existing));
+
+      document.getElementById('form-state').classList.add('hidden');
+      document.getElementById('success-state').classList.remove('hidden');
+    }
+
+    function copyLink() {
+      const link = document.getElementById('share-link-input').value;
+      navigator.clipboard.writeText(link);
+      alert("Lien de collecte copié dans le presse-papiers !");
+    }
+
+    function shareCagnotteWhatsApp() {
+      const title = document.getElementById('cagnotte-title').value || "notre projet";
+      const link = document.getElementById('share-link-input').value;
+      const msg = encodeURIComponent(`👋 Bonjour ! Participez à notre cagnotte solidaire Switch « ${title} » en toute sécurité : ${link}`);
+      window.open("https://wa.me/?text=" + msg, "_blank");
+    }
+  </script>
 
 <style>
         @keyframes fadeIn {

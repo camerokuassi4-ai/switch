@@ -9,14 +9,23 @@
 (function () {
   "use strict";
 
+  if (window.__SWITCH_ROUTER_INITIALIZED__) {
+    if (typeof window.switchRouterInit === "function") {
+      window.switchRouterInit();
+    }
+    return;
+  }
+  window.__SWITCH_ROUTER_INITIALIZED__ = true;
+
   const ROOT = "../";
 
   const DASHBOARDS = {
     user: ROOT + "tableau_de_bord_mis_jour/code.html",
     merchant: ROOT + "tableau_de_bord_marchand/code.html",
-    agent: ROOT + "tableau_de_bord_agent/code.html",
+    agent: ROOT + "tableau_de_bord_agent_simple/code.html",
+    hybrid: ROOT + "tableau_de_bord_agent_mixte/code.html",
   };
-  const DASHBOARD_KEYS = ["tableau_de_bord_mis_jour", "tableau_de_bord_marchand", "tableau_de_bord_agent"];
+  const DASHBOARD_KEYS = ["tableau_de_bord_mis_jour", "tableau_de_bord_marchand", "tableau_de_bord_agent", "tableau_de_bord_agent_simple", "tableau_de_bord_agent_mixte"];
   const DYNAMIC_DASHBOARD = "__DYNAMIC_DASHBOARD__";
 
   function getActiveDashboard() {
@@ -27,41 +36,67 @@
   const SCREENS = {
     "accueil_splash_mis_jour": {
       space: "auth", back: null, nav: null,
-      actions: { "Commencer": ROOT + "choix_type_compte/code.html", "Se connecter": ROOT + "connexion/code.html" }
+      actions: {}
     },
     "choix_type_compte": {
       space: "auth", back: null, nav: null,
       actions: {}
     },
+    "inscription_agent_switch": {
+      space: "agent", back: null, nav: null,
+      actions: {}
+    },
+    "agent_verification_caution": {
+      space: "agent", back: null, nav: null,
+      actions: {}
+    },
+    "documents_contrat_agent": {
+      space: "agent", back: null, nav: null,
+      actions: {}
+    },
+    "confirmation_biometrique_agent": {
+      space: "agent", back: null, nav: null,
+      actions: {}
+    },
+    "inscription_marchand": {
+      space: "merchant", back: null, nav: null,
+      actions: {}
+    },
+    "v_rification_marchand": {
+      space: "merchant", back: null, nav: null,
+      actions: {}
+    },
+    "setup_point_de_vente_marchand": {
+      space: "merchant", back: null, nav: null,
+      actions: {}
+    },
     "inscription": {
-      space: "auth", back: ROOT + "accueil_splash_mis_jour/code.html", nav: null,
-      actions: {
-        "Créer mon compte": ROOT + "v_rification_otp/code.html",
-        "Se connecter": ROOT + "connexion/code.html",
-        "Je suis un marchand": ROOT + "inscription_marchand/code.html",
-        "Je suis un agent": ROOT + "inscription_agent_switch/code.html",
-      }
+      space: "auth", back: null, nav: null,
+      actions: {}
     },
     "connexion": {
-      space: "auth", back: ROOT + "accueil_splash_mis_jour/code.html", nav: null,
-      actions: {
-        "Se connecter": ROOT + "verrouillage_pin/code.html",
-        "Connexion": ROOT + "verrouillage_pin/code.html",
-        "Créer un compte": ROOT + "inscription/code.html",
-        "Mot de passe": ROOT + "v_rification_otp/code.html",
-      }
+      space: "auth", back: null, nav: null,
+      actions: {}
     },
     "v_rification_otp": {
-      space: "auth", back: ROOT + "inscription/code.html", nav: null,
-      actions: { "Vérifier": ROOT + "cr_ation_code_pin/code.html", "Confirmer": ROOT + "cr_ation_code_pin/code.html", "Continuer": ROOT + "cr_ation_code_pin/code.html" }
+      space: "auth", back: null, nav: null,
+      actions: {}
     },
     "cr_ation_code_pin": {
-      space: "auth", back: ROOT + "v_rification_otp/code.html", nav: null,
-      actions: { "Créer mon PIN": ROOT + "kyc_verification_identite/code.html", "Confirmer": ROOT + "kyc_verification_identite/code.html", "Continuer": ROOT + "kyc_verification_identite/code.html" }
+      space: "auth", back: null, nav: null,
+      actions: {}
+    },
+    "kyc_verification_identite": {
+      space: "auth", back: null, nav: null,
+      actions: {}
+    },
+    "verification_niveau_superieur": {
+      space: "auth", back: null, nav: null,
+      actions: {}
     },
     "verrouillage_pin": {
-      space: "auth", back: ROOT + "connexion/code.html", nav: null,
-      actions: { "Valider": ROOT + "tableau_de_bord_mis_jour/code.html", "Confirmer": ROOT + "tableau_de_bord_mis_jour/code.html" }
+      space: "auth", back: null, nav: null,
+      actions: {}
     },
     "pas_de_connexion": {
       space: "auth", back: null, nav: null,
@@ -273,12 +308,22 @@
     "coffre_epargne_vault": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: "vault", actions: {} },
     "micro_credit_express": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "parrainage_recompenses": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
+    "paiement_scolarite_campus": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
+    "switch_kids_famille": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
+    "paiements_recurrents_autopay": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
+    "investissements_bons_tresor": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
+    "switch_sante_assurance": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
+    "centre_de_notifications": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "recu_transaction_partage": { space: "user", back: "javascript:history.back()", nav: null, actions: {} },
     "caisse_marchand_pos": { space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: null, actions: {} },
     "inscription_agent_switch": { space: "agent", back: ROOT + "accueil_espace_agent/code.html", nav: null, actions: {} },
     "agent_verification_caution": { space: "agent", back: ROOT + "inscription_agent_switch/code.html", nav: null, actions: {} },
-    "d_p_t_de_fonds_mis_jour_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
-    "recu_operation_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
+     "tableau_de_bord_agent": { space: "agent", back: null, nav: "a-home", actions: {} },
+     "tableau_de_bord_agent_simple": { space: "agent", back: null, nav: "a-home", actions: {} },
+     "tableau_de_bord_agent_mixte": { space: "hybrid", back: null, nav: "h-home", actions: {} },
+    "services_factures_hybride": { space: "hybrid", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "h-kiosk", actions: {} },
+    "cloture_de_caisse_hybride": { space: "hybrid", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "h-caisse", actions: {} },
+    "param_tres_et_profil_hybride": { space: "hybrid", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: null, actions: {} },
     "centre_de_notifications_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
     "succes_reapprovisionnement_float": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
     "cloture_de_caisse_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: "a-caisse", actions: {} },
@@ -294,8 +339,8 @@
     "transfert_float_inter_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
     "confirmation_biometrique_agent": { space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {} },
 
-    "carte_agents_guichets": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
-    "localiser_un_agent_switch": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
+    "carte_agents_guichets": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: "map", actions: {} },
+    "localiser_un_agent_switch": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: "map", actions: {} },
     "d_tail_de_l_agent_switch": { space: "user", back: ROOT + "carte_agents_guichets/code.html", nav: null, actions: {} },
     "budget_analyse_depenses": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
     "partage_addition_split": { space: "user", back: ROOT + "tableau_de_bord_mis_jour/code.html", nav: null, actions: {} },
@@ -387,10 +432,16 @@
       space: "merchant", back: ROOT + "profil_de_l_entreprise/code.html", nav: null, actions: {}
     },
     "support_marchand": { space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: "m-support", actions: {} },
+    "messagerie_marchand_clients": { space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-messages", actions: {} },
+    "liens_de_paiement_marchand": { space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-sales", actions: {} },
+    "carnet_de_dettes_marchand": { space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-debt", actions: {} },
 
     "inscription_agent_switch": {
       space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
       actions: { "Soumettre": ROOT + "agent_verification_caution/code.html", "Continuer": ROOT + "agent_verification_caution/code.html", "S'inscrire": ROOT + "agent_verification_caution/code.html", "Terminer": ROOT + "agent_verification_caution/code.html" }
+    },
+    "connexion_agent": {
+      space: "agent", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: null, actions: {}
     },
     "tableau_de_bord_agent": {
       space: "agent", back: null, nav: "a-home",
@@ -431,31 +482,79 @@
       space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: "a-profile",
       actions: { "Enregistrer": ROOT + "tableau_de_bord_agent/code.html" }
     },
+    "tableau_de_bord_agent_mixte": {
+      space: "merchant", back: null, nav: "m-home",
+      actions: {
+        "Vitrine": ROOT + "catalogue_produits_services/code.html",
+        "Catalogue": ROOT + "catalogue_produits_services/code.html",
+        "Caisse": ROOT + "caisse_marchand_pos/code.html",
+        "Ventes": ROOT + "historique_des_ventes/code.html",
+        "Messages": ROOT + "catalogue_produits_services/code.html?tab=messages",
+        "Guichet": ROOT + "tableau_de_bord_agent/code.html",
+        "Agent": ROOT + "tableau_de_bord_agent/code.html"
+      }
+    },
+    "catalogue_produits_services": {
+      space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-catalog",
+      actions: {
+        "Marketplace": ROOT + "marketplace_boutiques_switch/code.html",
+        "Accueil": ROOT + "tableau_de_bord_agent_mixte/code.html"
+      }
+    },
+    "caisse_marchand_pos": {
+      space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-pos",
+      actions: {
+        "Accueil": ROOT + "tableau_de_bord_agent_mixte/code.html"
+      }
+    },
+    "carnet_de_dettes_marchand": {
+      space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-debt",
+      actions: {
+        "Accueil": ROOT + "tableau_de_bord_agent_mixte/code.html"
+      }
+    },
+    "param_tres_et_profil_hybride": {
+      space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-profile",
+      actions: {
+        "Accueil": ROOT + "tableau_de_bord_agent_mixte/code.html"
+      }
+    },
+    "historique_des_ventes": {
+      space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-sales",
+      actions: {
+        "Accueil": ROOT + "tableau_de_bord_agent_mixte/code.html"
+      }
+    },
   };
 
   const NAV_BAR_STYLE = [
-    "position:fixed", "bottom:0", "left:0", "right:0",
+    "position:fixed", "bottom:0",
+    "left:0", "right:0",
     "margin-left:auto", "margin-right:auto",
-    "width:100%", "max-width:var(--app-max-width, 520px)",
+    "transform:none", "-webkit-transform:none",
+    "width:100%", "max-width:576px",
     "height:64px",
     "z-index:90", "display:flex", "align-items:center",
     "justify-content:space-around", "padding:6px 10px",
     "padding-bottom:max(8px, env(safe-area-inset-bottom, 8px))",
-    "background:#ffffff",
+    "background:rgba(255, 255, 255, 0.98)",
+    "backdrop-filter:blur(12px)",
+    "-webkit-backdrop-filter:blur(12px)",
     "border-top:1px solid #ECE6F0",
-    "box-shadow:0 -2px 16px rgba(0,0,0,0.08)",
-    "-webkit-transform:translate3d(0,0,0)",
-    "transform:translate3d(0,0,0)",
-    "-webkit-backface-visibility:hidden",
-    "backface-visibility:hidden",
-    "will-change:transform",
-    "contain:layout paint",
+    "border-left:1px solid #ECE6F0",
+    "border-right:1px solid #ECE6F0",
+    "border-top-left-radius:24px",
+    "border-top-right-radius:24px",
+    "box-shadow:0 -4px 20px rgba(0,0,0,0.08)",
+    "box-sizing:border-box",
   ].join(";");
 
-  function navItemHTML(href, icon, label, active) {
+  function navItemHTML(href, icon, label, active, badgeCount) {
     const color = active ? "#5e3bdc" : "#79747E";
+    const badgeHTML = badgeCount ? `<span style="position:absolute;top:-2px;right:calc(50% - 15px);background:#EF4444;color:#ffffff;font-size:9px;font-weight:900;border-radius:99px;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;padding:0 3px;border:1.5px solid #ffffff;box-shadow:0 2px 4px rgba(239,68,68,0.4);">${badgeCount}</span>` : "";
     return `
-  <a href="${href}" data-spa="true" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:${color};text-decoration:none;flex:1;">
+  <a href="${href}" data-spa="true" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:${color};text-decoration:none;flex:1;position:relative;">
+    ${badgeHTML}
     <span class="material-symbols-outlined" style="font-size:22px;${active ? "font-variation-settings:'FILL' 1;" : ""}">${icon}</span>
     <span class="nav-label" style="font-size:10px;font-weight:${active ? "700" : "500"};color:${color};">${label}</span>
   </a>`;
@@ -474,7 +573,7 @@
   function navHTML(space, activeTab) {
     if (space === "user") {
       return `
-<nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="${NAV_BAR_STYLE}">
+<nav id="switch-nav" role="navigation" aria-label="Navigation principale">
   ${navItemHTML(ROOT + "tableau_de_bord_mis_jour/code.html", "home", "Accueil", activeTab === "home")}
   ${navItemHTML(ROOT + "achats_en_ligne_cartes_virtuelles/code.html", "credit_card", "Cartes", activeTab === "cards" || activeTab === "wallet")}
   ${navCenterItemHTML(ROOT + "scanner_qr_code/code.html", "qr_code_scanner", "Payer QR", activeTab === "qr")}
@@ -482,20 +581,23 @@
   ${navItemHTML(ROOT + "param_tres_g_n_raux/code.html", "settings", "Paramètres", activeTab === "settings" || activeTab === "profile")}
 </nav>`;
     }
-    if (space === "merchant") {
+    if (space === "merchant" || space === "hybrid") {
       return `
-<nav id="switch-nav" role="navigation" aria-label="Navigation Marchand" style="${NAV_BAR_STYLE}">
-  ${navItemHTML(ROOT + "tableau_de_bord_marchand/code.html", "store", "Accueil", activeTab === "m-home")}
-  ${navItemHTML(ROOT + "historique_des_ventes/code.html", "receipt_long", "Ventes", activeTab === "m-history")}
-  ${navCenterItemHTML(ROOT + "g_n_rer_qr_code_de_r_ception/code.html", "qr_code_2", "QR Caisse", activeTab === "m-qr")}
-  ${navItemHTML(ROOT + "profil_de_l_entreprise/code.html", "business", "Entreprise", activeTab === "m-profile")}
-  ${navItemHTML(ROOT + "operations_caisse_marchand/code.html", "account_balance", "Opérations", activeTab === "m-ops")}
+<nav id="switch-nav" role="navigation" aria-label="Navigation Marchand Boutique">
+  ${navItemHTML(ROOT + "tableau_de_bord_agent_mixte/code.html", "home", "Accueil", activeTab === "m-home" || activeTab === "h-home")}
+  ${navItemHTML(ROOT + "catalogue_produits_services/code.html", "storefront", "Vitrine", activeTab === "m-catalog" || activeTab === "m-sales" || activeTab === "m-history")}
+  ${navCenterItemHTML(ROOT + "caisse_marchand_pos/code.html", "point_of_sale", "Caisse POS", activeTab === "m-pos" || activeTab === "m-qr" || activeTab === "h-shop")}
+  ${navItemHTML(ROOT + "messagerie_marchand_clients/code.html", "chat", "Messages", activeTab === "m-messages" || activeTab === "m-chat", 3)}
+  ${navItemHTML(ROOT + "param_tres_et_profil_hybride/code.html", "manage_accounts", "Profil", activeTab === "m-profile" || activeTab === "h-profile")}
 </nav>`;
     }
+
     if (space === "agent") {
+      const isHybrid = localStorage.getItem("switch_is_hybrid") === "true";
+      const agentHomeUrl = isHybrid ? (ROOT + "tableau_de_bord_agent/code.html") : (ROOT + "tableau_de_bord_agent_simple/code.html");
       return `
-<nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="${NAV_BAR_STYLE}">
-  ${navItemHTML(ROOT + "tableau_de_bord_agent/code.html", "dashboard", "Accueil", activeTab === "a-home")}
+<nav id="switch-nav" role="navigation" aria-label="Navigation Agent">
+  ${navItemHTML(agentHomeUrl, "dashboard", "Accueil", activeTab === "a-home")}
   ${navItemHTML(ROOT + "services_factures_agent/code.html", "apps", "Services", activeTab === "a-services")}
   ${navCenterItemHTML(ROOT + "valider_une_op_ration_client/code.html", "qr_code_scanner", "Servir", activeTab === "a-serve")}
   ${navItemHTML(ROOT + "cloture_de_caisse_agent/code.html", "point_of_sale", "Caisse", activeTab === "a-caisse")}
@@ -574,10 +676,9 @@
     }
     if (targetUrl.startsWith("javascript:") || targetUrl.startsWith("tel:") || targetUrl.startsWith("mailto:")) return;
 
-    const resolved = resolveTarget(targetUrl);
-    const normalizedUrl = new URL(resolved, window.location.href).href;
-
+    let normalizedUrl = targetUrl;
     try {
+      normalizedUrl = new URL(targetUrl, window.location.href).href;
       const pageData = await getPageData(normalizedUrl);
       if (pageData.title) document.title = pageData.title;
       if (pageData.bodyClass) document.body.className = pageData.bodyClass;
@@ -596,18 +697,10 @@
         window.history.pushState({ url: normalizedUrl }, "", normalizedUrl);
       }
 
-      // 3. Conserver la barre de tâches existante
-      const currentNav = document.getElementById("switch-nav");
-
-      // 4. Injecter le nouveau contenu
+      // 3. Injecter le nouveau contenu HTML
       document.body.innerHTML = pageData.bodyHTML;
 
-      // 5. Ré-injecter / synchroniser la barre de tâches immédiatement sans clignotement
-      if (currentNav) {
-        document.body.appendChild(currentNav);
-      }
-
-      // 6. Exécuter les scripts interactifs de la page (ex: toggleBalance, formulaires, etc.)
+      // 4. Exécuter les scripts interactifs de la page
       pageData.scripts.forEach(s => {
         const sc = document.createElement("script");
         if (s.src) {
@@ -618,9 +711,15 @@
         document.body.appendChild(sc);
       });
 
-      // 7. Initialiser l'état et scroll en haut
+      // 5. Initialiser les écouteurs, la barre de navigation correspondante et le scroll
       init();
+      if (window.SwitchSecurity) {
+        window.SwitchSecurity.init();
+      }
       applyGlobalKycState();
+      if (typeof window.renderProducts === "function") {
+        try { window.renderProducts(); } catch (e) {}
+      }
       if (typeof window.switchInitForms === "function") {
         window.switchInitForms();
       }
@@ -681,6 +780,12 @@
   window.applyGlobalKycState = applyGlobalKycState;
 
   function createBackButton() {
+    const path = (window.location.pathname || "").toLowerCase();
+    const title = (document.title || "").toLowerCase();
+    if (path.includes("inscri") || path.includes("connex") || path.includes("onboard") || path.includes("splash") || title.includes("inscription") || title.includes("connexion")) {
+      return null;
+    }
+
     const btn = document.createElement("button");
     btn.className = "switch-back-btn";
     btn.setAttribute("aria-label", "Retour");
@@ -795,6 +900,14 @@
     let path = window.location.pathname || "";
     try { path = decodeURIComponent(path); } catch (e) {}
 
+    // Priorité absolue aux pages hybrides
+    if (path.includes("agent_mixte") || path.includes("hybride")) {
+      if (path.includes("services_factures_hybride")) return "services_factures_hybride";
+      if (path.includes("cloture_de_caisse_hybride")) return "cloture_de_caisse_hybride";
+      if (path.includes("param_tres_et_profil_hybride")) return "param_tres_et_profil_hybride";
+      return "tableau_de_bord_agent_mixte";
+    }
+
     const parts = path.split("/").map(function (p) {
       return p.trim();
     }).filter(function (p) {
@@ -808,17 +921,20 @@
 
     for (let i = parts.length - 1; i >= 0; i--) {
       const part = parts[i].toLowerCase();
+      // 1. Correspondance exacte insensible à la casse
       for (const key of Object.keys(SCREENS)) {
         if (key.toLowerCase() === part) return key;
+      }
+      // 2. Correspondance exacte après suppression des séparateurs
+      const normPart = part.replace(/[^a-z0-9]/gi, "");
+      for (const key of Object.keys(SCREENS)) {
         const normKey = key.replace(/[^a-z0-9]/gi, "");
-        const normPart = part.replace(/[^a-z0-9]/gi, "");
-        if (normKey && normPart && (normKey === normPart || normPart.includes(normKey) || normKey.includes(normPart))) {
-          return key;
-        }
+        if (normKey === normPart) return key;
       }
     }
 
     const title = (document.title || "").toLowerCase();
+    if (title.includes("hybride") || title.includes("mixte") || title.includes("boutique & guichet")) return "tableau_de_bord_agent_mixte";
     if (title.includes("tableau de bord") || title.includes("accueil")) {
       if (title.includes("agent")) return "tableau_de_bord_agent";
       if (title.includes("marchand")) return "tableau_de_bord_marchand";
@@ -830,10 +946,47 @@
 
   function init() {
     applyGlobalKycState();
+
+    // Activation automatique du bouclier de sécurité SwitchSecurity
+    if (!window.SwitchSecurity && !document.querySelector('script[src*="switch.security.js"]')) {
+      const secScript = document.createElement("script");
+      secScript.src = ROOT + "assets/switch.security.js?v=5.0";
+      secScript.defer = true;
+      document.head.appendChild(secScript);
+    }
+
+    // Connexion automatique à l'API RESTful SwitchAPI
+    if (!window.SwitchAPI && !document.querySelector('script[src*="switch.api.js"]')) {
+      const apiScript = document.createElement("script");
+      apiScript.src = ROOT + "assets/switch.api.js";
+      apiScript.defer = true;
+      document.head.appendChild(apiScript);
+    }
+
+    // Manifest PWA pour installation sur smartphone
+    if (!document.querySelector('link[rel="manifest"]')) {
+      const mLink = document.createElement("link");
+      mLink.rel = "manifest";
+      mLink.href = "/manifest.json";
+      document.head.appendChild(mLink);
+    }
+
     const screenKey = getCurrentScreen();
     const config = SCREENS[screenKey];
 
+    const isSignupScreen = (window.location.pathname || "").toLowerCase().includes("inscri") || 
+                           (window.location.pathname || "").toLowerCase().includes("connex") || 
+                           (window.location.pathname || "").toLowerCase().includes("onboard") || 
+                           (document.title || "").toLowerCase().includes("inscription") || 
+                           (document.title || "").toLowerCase().includes("connexion") || 
+                           (screenKey && (screenKey.includes("inscri") || screenKey.includes("connex")));
+
+    if (isSignupScreen) {
+      document.querySelectorAll(".switch-back-btn").forEach(b => b.remove());
+    }
+
     if (!config) {
+      document.querySelectorAll(".switch-back-btn").forEach(b => b.remove());
       return;
     }
 
@@ -860,29 +1013,37 @@
       document.querySelectorAll("nav").forEach(function (existingNav) { existingNav.remove(); });
     }
 
-    let existingBackBtn = document.querySelector('button[aria-label="Retour"], button.switch-back-btn, button.back-btn, [data-action="back"]');
+    let existingBackBtn = document.querySelector('button[aria-label="Retour"], button.switch-back-btn, button.back-btn, [data-action="back"], a[aria-label="Retour"]');
     if (!existingBackBtn) {
-      const buttons = document.querySelectorAll("button");
-      for (const btn of buttons) {
-        if (btn.textContent.includes("arrow_back")) {
-          existingBackBtn = btn;
+      const allClickables = document.querySelectorAll("button, a");
+      for (const el of allClickables) {
+        if (el.textContent && el.textContent.includes("arrow_back")) {
+          existingBackBtn = el;
           break;
         }
       }
     }
 
     if (existingBackBtn) {
-      existingBackBtn.addEventListener("click", handleBack);
+      if (!existingBackBtn.hasAttribute("onclick") && existingBackBtn.getAttribute("data-no-router") !== "true") {
+        existingBackBtn.addEventListener("click", handleBack);
+      }
     } else if (back) {
       const backBtn = createBackButton();
       if (backBtn) document.body.insertBefore(backBtn, document.body.firstChild);
+    } else {
+      document.querySelectorAll(".switch-back-btn").forEach(b => b.remove());
     }
 
     wireActions(actions);
     wireAvatarToProfile(space);
 
-    // Précharge immédiatement les onglets frères de l'espace actif pour un clic à 0ms
-    preloadSpaceTabs(space);
+    // Précharge en arrière-plan pendant les temps d'inactivité du processeur
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => preloadSpaceTabs(space), { timeout: 2000 });
+    } else {
+      setTimeout(() => preloadSpaceTabs(space), 800);
+    }
   }
 
   function preloadSpaceTabs(space) {
@@ -921,12 +1082,15 @@
   document.addEventListener("click", function (e) {
     const backBtn = e.target.closest('button[aria-label="Retour"], button.switch-back-btn, button.back-btn, #back-btn, .btn-back, [data-action="back"]');
     if (backBtn) {
+      if (backBtn.hasAttribute("onclick") || backBtn.getAttribute("data-no-router") === "true") {
+        return;
+      }
       handleBack(e);
       return;
     }
 
     const btn = e.target.closest("button");
-    if (btn && btn.textContent && btn.textContent.includes("arrow_back") && !btn.hasAttribute("onclick")) {
+    if (btn && btn.textContent && btn.textContent.includes("arrow_back") && !btn.hasAttribute("onclick") && btn.getAttribute("data-no-router") !== "true") {
       handleBack(e);
       return;
     }
@@ -946,6 +1110,23 @@
     }
   }, true);
 
+  // Chargement automatique du moteur de réalisme SwitchEngine
+  if (!window.SwitchEngine) {
+    const engineScript = document.createElement("script");
+    engineScript.src = ROOT + "assets/switch.engine.js";
+    engineScript.async = false;
+    document.head.appendChild(engineScript);
+  }
+
+  // Clic sonore doux sur les boutons interactifs
+  document.addEventListener("click", function(e) {
+    const interactive = e.target.closest("button, .btn-primary, .btn-secondary, .action-bubble, .service-card, .contact-card");
+    if (interactive && window.SwitchEngine) {
+      window.SwitchEngine.playSound("click");
+      window.SwitchEngine.haptic([15]);
+    }
+  }, true);
+
   // Gestion du bouton précédent / suivant du navigateur en mode SPA instantané
   window.addEventListener("popstate", function () {
     switchNavigate(window.location.href, false);
@@ -953,6 +1134,7 @@
 
   window.switchNavigate = switchNavigate;
   window.switchHandleBack = handleBack;
+  window.switchRouterInit = init;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);

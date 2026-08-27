@@ -33,9 +33,9 @@
 
   <!-- Top App Bar -->
   <header class="w-full max-w-lg mx-auto px-container-margin pt-6 pb-2 flex items-center justify-between z-30">
-    <button aria-label="Retour" onclick="window.switchNavigate ? window.switchNavigate('../accueil_splash_mis_jour/code.html') : window.location.href='../accueil_splash_mis_jour/code.html'" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
-      <span class="material-symbols-outlined text-xl">arrow_back</span>
-    </button>
+    <div class="w-10 h-10 rounded-full flex items-center justify-center bg-primary/10 border border-primary/20 text-primary">
+      <span class="material-symbols-outlined text-xl">login</span>
+    </div>
     <div class="text-center">
       <span class="text-xs font-black uppercase text-primary tracking-wider">Switch Bénin</span>
     </div>
@@ -182,10 +182,12 @@
     }
 
     function triggerBiometrics() {
+      if (navigator.vibrate) navigator.vibrate([40, 30, 80]);
+      alert("🤳 Authentification Biométrique réussie (Face ID / Empreinte digitale reconnue) !");
       if (window.switchNavigate) {
-        window.switchNavigate('../d_verrouillage_biom_trique/code.html');
+        window.switchNavigate('../tableau_de_bord_mis_jour/code.html');
       } else {
-        window.location.href = '../d_verrouillage_biom_trique/code.html';
+        window.location.href = '../tableau_de_bord_mis_jour/code.html';
       }
     }
   </script>
