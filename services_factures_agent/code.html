@@ -271,7 +271,9 @@
       const name = document.getElementById('enrollName').value.trim();
       const phone = document.getElementById('enrollPhone').value.trim();
       closeEnrollmentModal();
-      alert(`🎉 Client "${name}" (+229 ${phone}) inscrit et vérifié ANIP avec succès !\nRIB Switch attribué : BJ062 01001 98234182910 88\nVotre commission de +500 FCFA a été créditée sur votre solde.`);
+      const pDigits = phone.replace(/\D/g, '');
+      const accNum = (pDigits.length >= 8 ? pDigits : '01970000') + ' • 8492';
+      alert(`🎉 Client "${name}" (+229 ${phone}) inscrit et vérifié ANIP avec succès !\nNuméro de Compte Switch attribué : ${accNum}\nVotre commission de +500 FCFA a été créditée sur votre solde.`);
     }
 
     function openServiceModal(type) {

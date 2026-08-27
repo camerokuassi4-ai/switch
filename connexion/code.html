@@ -69,8 +69,9 @@
             <span class="text-base">🇧🇯</span>
             <span class="text-xs font-black text-on-surface font-mono">+229</span>
           </div>
-          <input type="tel" id="login-phone" value="97 12 34 56" placeholder="97 00 00 00" maxlength="11" class="w-full bg-transparent border-none p-0 text-sm font-bold font-mono text-on-surface focus:ring-0 outline-none"/>
+          <input type="tel" id="login-phone" value="" placeholder="01 97 12 34 56" maxlength="14" class="w-full bg-transparent border-none p-0 text-sm font-bold font-mono text-on-surface focus:ring-0 outline-none" oninput="formatLoginPhone(this)" onfocus="if(!this.value) this.value='01 ';"/>
         </div>
+        <p class="text-[10px] text-gray-400 pl-1">Format 10 chiffres commençant par <b>01</b>.</p>
       </div>
 
       <!-- 2. 4-Digit Secret PIN Boxes -->
@@ -160,12 +161,39 @@
       document.getElementById('eye-text').textContent = isPinVisible ? 'Masquer' : 'Afficher';
     }
 
+    function formatLoginPhone(el) {
+      let raw = el.value.replace(/\D/g, '');
+      if (raw.length > 10) raw = raw.substring(0, 10);
+      
+      let formatted = '';
+      for (let i = 0; i < raw.length; i++) {
+        if (i > 0 && i % 2 === 0) formatted += ' ';
+        formatted += raw[i];
+      }
+      el.value = formatted;
+    }
+
+    // Préremplissage si utilisateur déjà existant en mémoire
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedPhone = localStorage.getItem('switch_user_phone');
+      const phoneInp = document.getElementById('login-phone');
+      if (savedPhone && phoneInp && !phoneInp.value) {
+        let digits = savedPhone.replace(/\D/g, '');
+        if (digits.startsWith('229')) digits = digits.slice(3);
+        if (digits.length >= 10) {
+          phoneInp.value = '01 ' + digits.slice(2,4) + ' ' + digits.slice(4,6) + ' ' + digits.slice(6,8) + ' ' + digits.slice(8,10);
+        }
+      }
+    });
+
     function handleLogin() {
       const pin = pinInputs.map(i => i.value).join('');
-      const phone = document.getElementById('login-phone').value.trim();
+      const phoneInput = document.getElementById('login-phone').value.trim();
+      const phoneDigits = phoneInput.replace(/\D/g, '');
 
-      if (!phone) {
-        alert("Veuillez saisir votre numéro de téléphone.");
+      if (!phoneDigits || phoneDigits.length !== 10 || !phoneDigits.startsWith('01')) {
+        alert("Veuillez saisir un numéro de téléphone béninois valide à 10 chiffres commençant par 01 (ex: 01 97 12 34 56).");
+        document.getElementById('login-phone').focus();
         return;
       }
       if (pin.length < 4) {

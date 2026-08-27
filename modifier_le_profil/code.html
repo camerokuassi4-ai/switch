@@ -394,8 +394,17 @@
 
     // 1. Charger les valeurs sauvegardées au chargement
     document.addEventListener('DOMContentLoaded', () => {
-      const savedFirstname = localStorage.getItem('switch_user_firstname');
-      const savedLastname = localStorage.getItem('switch_user_lastname');
+      const fullName = localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || '';
+      let savedFirstname = localStorage.getItem('switch_user_firstname');
+      let savedLastname = localStorage.getItem('switch_user_lastname');
+
+      if (fullName && (!savedFirstname || !savedLastname)) {
+        const parts = fullName.trim().split(' ');
+        savedFirstname = parts[0] || '';
+        savedLastname = parts.slice(1).join(' ') || '';
+      }
+
+      const savedPhone = localStorage.getItem('switch_user_phone');
       const savedEmail = localStorage.getItem('switch_user_email');
       const savedCity = localStorage.getItem('switch_user_city');
       const savedAddress = localStorage.getItem('switch_user_address');
@@ -404,6 +413,7 @@
 
       if (savedFirstname) document.getElementById('input-firstname').value = savedFirstname;
       if (savedLastname) document.getElementById('input-lastname').value = savedLastname;
+      if (savedPhone) document.getElementById('input-phone').value = savedPhone;
       if (savedEmail) document.getElementById('input-email').value = savedEmail;
       if (savedCity) document.getElementById('input-city').value = savedCity;
       if (savedAddress) document.getElementById('input-address').value = savedAddress;
