@@ -1,4 +1,4 @@
-// Supabase Edge Function: Send SMS Hook (Bird / MessageBird API)
+// Supabase Edge Function: Send SMS Hook (Bird API v2 - Workspaces & Channels)
 // Documentation Supabase Auth Hooks: https://supabase.com/docs/guides/auth/auth-hooks/send-sms-hook
 // Documentation Bird API: https://docs.bird.com/api-reference
 
@@ -17,7 +17,7 @@ interface SupabaseSmsHookPayload {
 }
 
 serve(async (req: Request) => {
-  // Only accept POST requests
+  // Accepter uniquement les requêtes POST
   if (req.method !== "POST") {
     return new Response(
       JSON.stringify({ error: { message: "Method Not Allowed" } }),
@@ -31,101 +31,95 @@ serve(async (req: Request) => {
     const otp = payload.sms?.otp;
 
     if (!phone || !otp) {
-      console.error("[send-sms-hook] Missing phone or OTP in payload:", payload);
+      console.error("[send-sms-hook] Paramètres manquants dans le payload Supabase :", payload);
       return new Response(
-        JSON.stringify({ error: { message: "Phone number and OTP are required" } }),
+        JSON.stringify({ error: { message: "Le numéro de téléphone et l'OTP sont requis" } }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    // Retrieve environment variables
+    // Récupération des 3 variables d'environnement obligatoires Bird API
     const birdApiKey = Deno.env.get("BIRD_API_KEY");
-    const originator = Deno.env.get("BIRD_ORIGINATOR") || "Switch";
     const workspaceId = Deno.env.get("BIRD_WORKSPACE_ID");
     const channelId = Deno.env.get("BIRD_CHANNEL_ID");
 
-    if (!birdApiKey) {
-      console.error("[send-sms-hook] Missing BIRD_API_KEY environment variable");
+    if (!birdApiKey || !workspaceId || !channelId) {
+      const missingVars = [];
+      if (!birdApiKey) missingVars.push("BIRD_API_KEY");
+      if (!workspaceId) missingVars.push("BIRD_WORKSPACE_ID");
+      if (!channelId) missingVars.push("BIRD_CHANNEL_ID");
+
+      console.error(`[send-sms-hook] Variables d'environnement manquantes : ${missingVars.join(", ")}`);
       return new Response(
-        JSON.stringify({ error: { message: "SMS Gateway configuration error" } }),
+        JSON.stringify({
+          error: {
+            message: `Configuration de passerelle SMS incomplète. Variables manquantes : ${missingVars.join(", ")}`,
+          },
+        }),
         { status: 500, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    // Clean phone number format (ensure international format without spaces or dashes)
+    // Nettoyage du numéro de téléphone (format international sans espaces, ex: +22997000000)
     const formattedPhone = phone.replace(/[\s\-\(\)]/g, "");
-    const messageText = `Votre code de sécurité Switch Bénin est : ${otp}. Ne le partagez avec personne.`;
+    const messageText = `Votre code Switch Bénin est : ${otp}`;
 
-    let birdResponse: Response;
+    const birdApiUrl = `https://api.bird.com/workspaces/${workspaceId}/channels/${channelId}/messages`;
 
-    if (workspaceId && channelId) {
-      // Modern Bird Workspace Channel API
-      console.log(`[send-sms-hook] Sending SMS via Bird Workspace API to ${formattedPhone}`);
-      birdResponse = await fetch(
-        `https://api.bird.com/workspaces/${workspaceId}/channels/${channelId}/messages`,
-        {
-          method: "POST",
-          headers: {
-            "Authorization": `AccessKey ${birdApiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            receiver: {
-              contacts: [{ identifierValue: formattedPhone }],
+    console.log(`[send-sms-hook] Envoi du SMS Bird vers ${formattedPhone} via le canal ${channelId}`);
+
+    const birdResponse = await fetch(birdApiUrl, {
+      method: "POST",
+      headers: {
+        "Authorization": `AccessKey ${birdApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        receiver: {
+          contacts: [
+            {
+              identifierValue: formattedPhone,
             },
-            body: {
-              type: "text",
-              text: { text: messageText },
-            },
-          }),
-        }
-      );
-    } else {
-      // Standard Bird / MessageBird REST SMS API
-      console.log(`[send-sms-hook] Sending SMS via Bird REST API to ${formattedPhone}`);
-      birdResponse = await fetch("https://rest.messagebird.com/messages", {
-        method: "POST",
-        headers: {
-          "Authorization": `AccessKey ${birdApiKey}`,
-          "Content-Type": "application/json",
+          ],
         },
-        body: JSON.stringify({
-          originator: originator,
-          recipients: [formattedPhone],
-          body: messageText,
-        }),
-      });
-    }
+        body: {
+          type: "text",
+          text: {
+            text: messageText,
+          },
+        },
+      }),
+    });
 
-    const responseBody = await birdResponse.text();
+    const responseText = await birdResponse.text();
 
     if (!birdResponse.ok) {
       console.error(
-        `[send-sms-hook] Bird API error (${birdResponse.status}):`,
-        responseBody
+        `[send-sms-hook] Erreur API Bird (HTTP ${birdResponse.status}) :`,
+        responseText
       );
       return new Response(
         JSON.stringify({
           error: {
-            message: `Bird SMS API error: ${responseBody || birdResponse.statusText}`,
+            message: `Erreur API Bird (${birdResponse.status}) : ${responseText || birdResponse.statusText}`,
           },
         }),
         { status: birdResponse.status, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    console.log(`[send-sms-hook] SMS sent successfully to ${formattedPhone}`);
+    console.log(`[send-sms-hook] SMS envoyé avec succès à ${formattedPhone}`);
 
-    // Supabase Auth expects an empty JSON object `{}` with HTTP 200 on success
+    // Supabase Auth Hook attend un objet JSON vide `{}` avec un code HTTP 200 en cas de succès
     return new Response(JSON.stringify({}), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : String(err);
-    console.error("[send-sms-hook] Internal Error:", errorMsg);
+    console.error("[send-sms-hook] Erreur interne :", errorMsg);
     return new Response(
-      JSON.stringify({ error: { message: `Internal Error: ${errorMsg}` } }),
+      JSON.stringify({ error: { message: `Erreur interne Hook SMS : ${errorMsg}` } }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
