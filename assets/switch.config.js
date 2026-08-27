@@ -11,11 +11,11 @@
   'use strict';
 
   window.SWITCH_CONFIG = {
-    // 1. URL de votre projet Supabase (Ex: "https://xyzcompany.supabase.co")
-    SUPABASE_URL: window.localStorage.getItem('switch_supabase_url') || "https://votre-projet.supabase.co",
+    // 1. URL de votre projet Supabase (dfzyyawclnxcgykktrbr)
+    SUPABASE_URL: window.localStorage.getItem('switch_supabase_url') || "https://dfzyyawclnxcgykktrbr.supabase.co",
 
     // 2. Clé d'API publique anonyme (anon public key)
-    SUPABASE_ANON_KEY: window.localStorage.getItem('switch_supabase_anon_key') || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    SUPABASE_ANON_KEY: window.localStorage.getItem('switch_supabase_anon_key') || "",
 
     // 3. Mode de fonctionnement
     OFFLINE_FALLBACK: true, // Bascule automatiquement sur localStorage si réseau coupé ou clés non configurées
