@@ -151,11 +151,11 @@ input, select, textarea {
 /* ── B. Tablettes, Pliables dépliés & iPads (581px à 1024px) ── */
 @media (min-width: 581px) and (max-width: 1024px) {
   :root {
-    --app-max-width: 540px;
+    --app-max-width: 500px;
   }
 
   html {
-    background: #120f1e !important;
+    background: #EBEBF2 !important;
     padding: 0 !important;
     margin: 0 !important;
   }
@@ -163,35 +163,51 @@ input, select, textarea {
   body {
     max-width: var(--app-max-width) !important;
     margin: 20px auto !important;
-    box-shadow: 0 12px 60px rgba(0, 0, 0, 0.45) !important;
+    box-shadow: 0 16px 40px -10px rgba(94, 59, 220, 0.18), 0 4px 16px rgba(0, 0, 0, 0.08) !important;
     min-height: calc(100dvh - 40px) !important;
-    border-radius: 36px !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    overflow: hidden !important;
+    border-radius: 32px !important;
+    border: 6px solid #FFFFFF !important;
+    overflow-x: hidden !important;
+    background-color: #F8F9FD !important;
   }
 }
 
 /* ── C. Ordinateurs & Écrans Larges (> 1024px) ── */
 @media (min-width: 1025px) {
   :root {
-    --app-max-width: 480px;
+    --app-max-width: 460px;
   }
 
   html {
-    background: radial-gradient(circle at 50% 20%, #2d1c59 0%, #151122 60%, #0c0a14 100%) !important;
+    background: linear-gradient(135deg, #F0EFF7 0%, #E5E4F0 100%) !important;
     padding: 0 !important;
     margin: 0 !important;
+    min-height: 100vh !important;
   }
 
   body {
     max-width: var(--app-max-width) !important;
-    margin: 0 auto !important;
-    box-shadow: 0 0 70px rgba(0, 0, 0, 0.6) !important;
-    min-height: 100vh !important;
-    min-height: 100dvh !important;
-    border-radius: 0 !important;
+    margin: 30px auto !important;
+    box-shadow: 0 24px 64px -12px rgba(94, 59, 220, 0.2), 0 8px 24px rgba(0, 0, 0, 0.06) !important;
+    min-height: calc(100vh - 60px) !important;
+    min-height: calc(100dvh - 60px) !important;
+    border-radius: 36px !important;
+    border: 8px solid #FFFFFF !important;
+    overflow-x: hidden !important;
+    background-color: #F8F9FD !important;
   }
 }
+
+/* ── Utilitaires Design System Switch ── */
+.bg-primary { background-color: #5E3BDC !important; }
+.text-primary { color: #5E3BDC !important; }
+.border-primary { border-color: #5E3BDC !important; }
+.bg-primary-container { background-color: #EDE7FE !important; }
+.text-on-surface { color: #1C1A24 !important; }
+.text-on-surface-variant { color: #5D5A68 !important; }
+.border-outline-variant { border-color: #E2E0EC !important; }
+.px-container-margin { padding-left: 20px !important; padding-right: 20px !important; }
+
 
 /* ── 4. ICÔNES MATERIAL SYMBOLS ─────────────────────────────── */
 .material-symbols-outlined {
