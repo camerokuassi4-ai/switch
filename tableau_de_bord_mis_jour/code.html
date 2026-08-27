@@ -116,12 +116,12 @@
         </h2>
       </div>
 
-      <!-- Card Bottom Row : Numéro de Compte Switch 10 chiffres & QR Shortcut -->
+      <!-- Card Bottom Row : Numéro de Compte Switch (10 chiffres tél + 4 chiffres uniques) & QR Shortcut -->
       <div class="relative z-10 flex items-center justify-between pt-2.5 border-t border-white/15 text-xs text-purple-200">
         <div class="flex items-center gap-1.5 font-mono bg-white/15 px-2.5 py-1 rounded-xl border border-white/15 text-white">
-          <span class="material-symbols-outlined text-xs">account_balance</span>
-          <span class="font-black text-xs">N° Compte : 9712345678</span>
-          <button onclick="navigator.clipboard.writeText('9712345678'); alert('✅ Numéro de compte Switch copié : 9712345678');" class="text-purple-200 hover:text-white cursor-pointer ml-0.5" title="Copier mon numéro de compte">
+          <span class="material-symbols-outlined text-xs">badge</span>
+          <span class="font-bold text-xs" id="dashboard-account-number">N° Compte : 01 22 90 19 07 • 8492</span>
+          <button onclick="copyDashboardAccountNumber()" class="text-purple-200 hover:text-white cursor-pointer ml-0.5" title="Copier mon numéro de compte">
             <span class="material-symbols-outlined text-xs">content_copy</span>
           </button>
         </div>
@@ -517,9 +517,30 @@
         const uEl = document.getElementById('dashboard-user-name');
         if (uEl) uEl.textContent = savedName;
       }
+      
+      let phone = localStorage.getItem('switch_user_phone') || '0122901907';
+      let accountSuffix = localStorage.getItem('switch_account_suffix');
+      if (!accountSuffix || accountSuffix.length !== 4) {
+        accountSuffix = Math.floor(1000 + Math.random() * 9000).toString();
+        localStorage.setItem('switch_account_suffix', accountSuffix);
+      }
+      let digits = phone.replace(/\D/g, '');
+      if (digits.startsWith('229')) digits = digits.slice(3);
+      if (digits.length < 10) digits = digits.padStart(10, '0');
+
+      const formattedAccount = 'N° Compte : 01 ' + digits.slice(2,4) + ' ' + digits.slice(4,6) + ' ' + digits.slice(6,8) + ' ' + digits.slice(8,10) + ' • ' + accountSuffix;
+      const accEl = document.getElementById('dashboard-account-number');
+      if (accEl) accEl.textContent = formattedAccount;
+
       updateGreeting();
       renderDashboardBalance();
       renderRecentTransactions();
+    };
+
+    window.copyDashboardAccountNumber = function() {
+      const accNum = localStorage.getItem('switch_account_number') || localStorage.getItem('switch_account_display') || '';
+      navigator.clipboard.writeText(accNum);
+      alert("Numéro de Compte Switch (14 chiffres) copié :\n" + accNum);
     };
 
     window.toggleServicesExpand = function() {
