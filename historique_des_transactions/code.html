@@ -717,7 +717,7 @@
       const period = select ? select.value : 'current';
       const txList = getTxList();
       const user = window.SwitchEngine ? window.SwitchEngine.getUser() : { name: "Adele Doe" };
-      const mainBal = window.SwitchEngine ? window.SwitchEngine.getMainBalance() : 125000;
+      const mainBal = window.SwitchEngine ? window.SwitchEngine.getMainBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 50000);
 
       let filtered = txList;
       if (period === 'last') {

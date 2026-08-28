@@ -165,7 +165,7 @@
     // ── GESTIONNAIRES UTILISATEUR & SOLDES ──────────────────────
 
     getMainBalance() {
-      return parseInt(localStorage.getItem("switch_user_balance") || "125000", 10);
+      return parseInt(localStorage.getItem("switch_user_balance") || "50000", 10);
     }
 
     getVaultBalance() {

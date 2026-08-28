@@ -160,7 +160,7 @@
       }
 
       // Repli local sécurisé
-      const currentBal = parseInt(localStorage.getItem('switch_user_balance') || '125000', 10);
+      const currentBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
       if (currentBal < amount) {
         return { success: false, message: "Solde insuffisant dans votre Compte Switch." };
       }
@@ -188,7 +188,7 @@
     generateWithdrawalOtp: async function (amount, fee = 0) {
       const otpCode = this._generateSecureCode(6);
       const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
-      const phone = localStorage.getItem('switch_user_phone') || '+229 01 22 90 19 07';
+      const phone = localStorage.getItem('switch_user_phone') || localStorage.getItem('switch_user_phone_raw') || '+229 01 97 12 34 56';
 
       try {
         await supabaseFetch('cash_operations', {
@@ -297,7 +297,7 @@
       }
 
       // Repli local
-      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '125000', 10);
+      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
       if (curBal < amount) {
         return { success: false, message: "Solde insuffisant pour payer ce marchand." };
       }
@@ -375,7 +375,7 @@
       }
       const newComm = curComm - amount;
       localStorage.setItem('switch_agent_commissions', newComm.toString());
-      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '125000', 10);
+      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
       localStorage.setItem('switch_user_balance', (curBal + amount).toString());
 
       return {
@@ -539,7 +539,7 @@
       }
       const newBal = curBal - amount;
       localStorage.setItem('switch_merchant_balance', newBal.toString());
-      const curUserBal = parseInt(localStorage.getItem('switch_user_balance') || '125000', 10);
+      const curUserBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
       localStorage.setItem('switch_user_balance', (curUserBal + amount).toString());
 
       return {
@@ -577,7 +577,7 @@
       }
 
       // Repli local
-      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '125000', 10);
+      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
       const curVault = parseInt(localStorage.getItem('switch_user_vault') || '25000', 10);
       let newBal = curBal;
       let newVault = curVault;
@@ -628,7 +628,7 @@
       }
 
       // Repli local
-      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '125000', 10);
+      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
       if (curBal < amount) return { success: false, message: "Solde insuffisant pour cotiser à la tontine." };
       const newBal = curBal - amount;
       localStorage.setItem('switch_user_balance', newBal.toString());
@@ -667,7 +667,7 @@
       }
 
       // Repli local
-      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '125000', 10);
+      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
       if (curBal < amount) return { success: false, message: "Solde insuffisant pour régler ce service." };
       const newBal = curBal - amount;
       localStorage.setItem('switch_user_balance', newBal.toString());

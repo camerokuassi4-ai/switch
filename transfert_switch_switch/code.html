@@ -465,7 +465,7 @@
 
   <!-- Interactive Logic -->
   <script>
-    let currentBalance = 125000;
+    let currentBalance = parseInt(localStorage.getItem('switch_user_balance'), 10) || 50000;
     let currentMode = 'contact'; // 'contact' or 'internal'
 
     let selectedInternalDest = {
@@ -730,15 +730,20 @@
     }
 
     // Initialize balance
-    window.addEventListener('DOMContentLoaded', () => {
+    function initTransferBalance() {
       const storedBal = localStorage.getItem('switch_user_balance');
       if (storedBal) {
-        currentBalance = parseInt(storedBal) || 125000;
+        currentBalance = parseInt(storedBal, 10) || 50000;
+      } else {
+        currentBalance = 50000;
       }
       const balDisplay = document.getElementById('user-balance-display');
       if (balDisplay) balDisplay.textContent = currentBalance.toLocaleString('fr-FR') + ' F';
       updateTransferCalculations();
-    });
+    }
+
+    window.addEventListener('DOMContentLoaded', initTransferBalance);
+    initTransferBalance();
   </script>
 
   <script src="../assets/switch.router.js" defer></script>
