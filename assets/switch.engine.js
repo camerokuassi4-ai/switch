@@ -28,10 +28,10 @@
       cip: "229-987654321"
     },
     balances: {
-      main: 125000,
-      vault: 45000,
-      card: 18500,
-      points: 1250
+      main: 50000,
+      vault: 0,
+      card: 0,
+      points: 500
     },
     isPrivacyMode: false,
     transactions: [

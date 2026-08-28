@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     phone TEXT UNIQUE NOT NULL,
     full_name TEXT NOT NULL DEFAULT 'Utilisateur Switch',
-    balance NUMERIC NOT NULL DEFAULT 0 CHECK (balance >= 0),
+    balance NUMERIC NOT NULL DEFAULT 50000 CHECK (balance >= 0), -- Solde de départ symbolique (50 000 FCFA) pour démo BCEAO
     vault_balance NUMERIC NOT NULL DEFAULT 0 CHECK (vault_balance >= 0),
     kyc_level INT NOT NULL DEFAULT 1,
     pin_hash TEXT,

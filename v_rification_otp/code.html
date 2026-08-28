@@ -40,6 +40,7 @@
 
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     body {
@@ -145,12 +146,24 @@
     const inputs = document.querySelectorAll('.otp-box');
     const userPhone = localStorage.getItem('switch_user_phone') || '+229 01 97 12 34 56';
     const userPhoneRaw = localStorage.getItem('switch_user_phone_raw') || '+2290197123456';
+    const activeOtp = sessionStorage.getItem('switch_active_otp') || localStorage.getItem('switch_active_otp') || '582914';
 
-    // Affichage dynamique du numéro renseigné par l'utilisateur
+    // Affichage dynamique du numéro renseigné et de la bannière OTP à l'écran
     document.addEventListener('DOMContentLoaded', () => {
       const phoneDisplay = document.getElementById('recipient-phone-display');
       if (phoneDisplay) {
         phoneDisplay.textContent = userPhone;
+      }
+
+      // Mise à jour du bouton d'auto-remplissage
+      const pillBtn = document.querySelector('button[onclick="fillTestOtp()"]');
+      if (pillBtn) {
+        pillBtn.innerHTML = `<span class="material-symbols-outlined text-sm font-bold">bolt</span><span>Code test : <b>${activeOtp}</b> (Remplir auto)</span>`;
+      }
+
+      // Affichage du bandeau supérieur flottant si le mode démo est actif
+      if (window.SwitchAPI && window.SwitchAPI.showOnscreenOtp) {
+        window.SwitchAPI.showOnscreenOtp(activeOtp, "Code de Connexion / Inscription");
       }
     });
 
@@ -190,7 +203,7 @@
     });
 
     function fillTestOtp() {
-      const code = '582914';
+      const code = activeOtp;
       code.split('').forEach((char, i) => {
         if (inputs[i]) inputs[i].value = char;
       });

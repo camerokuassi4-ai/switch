@@ -12,7 +12,8 @@
   const cfg = window.SWITCH_CONFIG || {
     SUPABASE_URL: "https://votre-projet.supabase.co",
     SUPABASE_ANON_KEY: "",
-    OFFLINE_FALLBACK: true
+    OFFLINE_FALLBACK: false,
+    DEMO_ONSCREEN_OTP: true
   };
 
   const isConfigured = cfg.SUPABASE_URL && !cfg.SUPABASE_URL.includes("votre-projet") && cfg.SUPABASE_ANON_KEY && cfg.SUPABASE_ANON_KEY.length > 20;
@@ -52,6 +53,42 @@
     isOnlineBackend: isConfigured,
 
     /**
+     * Helper : Affichage visuel d'un OTP à l'écran (Mode Démo BCEAO sans SMS)
+     */
+    showOnscreenOtp: function (otpCode, label = "Code de Sécurité") {
+      if (!cfg.DEMO_ONSCREEN_OTP && cfg.DEMO_ONSCREEN_OTP !== undefined) return;
+      
+      const existing = document.getElementById('switch-demo-otp-banner');
+      if (existing) existing.remove();
+
+      const banner = document.createElement('div');
+      banner.id = 'switch-demo-otp-banner';
+      banner.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-[9999] w-[92%] max-w-md bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 text-white rounded-3xl p-4 shadow-2xl border-2 border-amber-400/80 animate-bounce flex flex-col gap-2';
+      banner.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-base">🔑</span>
+            <span class="text-[10px] font-black uppercase tracking-wider text-amber-300 bg-amber-400/20 px-2 py-0.5 rounded-full border border-amber-400/30">Démo BCEAO • Sans SMS</span>
+          </div>
+          <button type="button" onclick="this.closest('#switch-demo-otp-banner').remove()" class="text-gray-400 hover:text-white text-xs font-bold px-1.5 py-0.5 rounded-full bg-white/10">✕</button>
+        </div>
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex flex-col">
+            <span class="text-[11px] text-gray-300 font-medium">${label} :</span>
+            <span class="text-2xl font-black font-mono tracking-widest text-amber-300 select-all">${otpCode}</span>
+          </div>
+          <button type="button" onclick="navigator.clipboard.writeText('${otpCode}'); alert('Code OTP copié : ${otpCode}');" class="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-purple-950 font-black text-xs shadow-md transition-all shrink-0 cursor-pointer">
+            Copier
+          </button>
+        </div>
+        <p class="text-[10px] text-purple-200/80 leading-tight">
+          Ce code a été généré sécurisé (crypto). En production, il sera expédié par SMS.
+        </p>
+      `;
+      document.body.appendChild(banner);
+    },
+
+    /**
      * 1. Récupère le profil et le solde utilisateur
      */
     getWallet: async function (phone = "+229 97 12 34 56") {
@@ -72,8 +109,8 @@
       // Repli local
       return {
         success: true,
-        balance: parseInt(localStorage.getItem('switch_user_balance') || '110000', 10),
-        vault_balance: parseInt(localStorage.getItem('switch_vault_balance') || '45000', 10),
+        balance: parseInt(localStorage.getItem('switch_user_balance') || '50000', 10),
+        vault_balance: parseInt(localStorage.getItem('switch_vault_balance') || '0', 10),
         full_name: localStorage.getItem('switch_user_fullname') || 'Adele Doe',
         kyc_level: parseInt(localStorage.getItem('switch_kyc_level') || '2', 10),
         phone: phone

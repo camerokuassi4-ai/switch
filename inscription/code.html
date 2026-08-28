@@ -410,6 +410,17 @@
       localStorage.setItem('switch_account_number', switchAccountNumber);
       localStorage.setItem('switch_account_display', formattedAccountDisplay);
       localStorage.setItem('switch_kyc_level', '1');
+      localStorage.setItem('switch_user_balance', '50000'); // Solde symbolique de départ pour testeurs BCEAO
+
+      // Génération cryptographique de l'OTP
+      let secureOtp = "582914";
+      if (window.crypto && window.crypto.getRandomValues) {
+        const arr = new Uint32Array(1);
+        window.crypto.getRandomValues(arr);
+        secureOtp = (100000 + (arr[0] % 900000)).toString();
+      }
+      sessionStorage.setItem('switch_active_otp', secureOtp);
+      localStorage.setItem('switch_active_otp', secureOtp);
 
       // Appel Supabase Auth pour déclencher l'Edge Function Send SMS Hook
       try {
@@ -419,7 +430,7 @@
           });
         }
       } catch (err) {
-        console.warn("Supabase Auth OTP non bloquant (mode hybride/offline actif) :", err);
+        console.warn("Supabase Auth OTP non bloquant (mode test actif) :", err);
       }
 
       setTimeout(() => {
