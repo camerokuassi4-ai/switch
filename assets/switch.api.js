@@ -766,44 +766,58 @@
     },
 
     /**
-     * 18. Gestion Dynamique des Notifications (Client & Agent)
+     * 18. Gestion Dynamique des Notifications en Direct (Synchronisation Cloud Supabase)
      */
-    getClientNotifications: function () {
+    fetchClientNotifications: async function () {
       try {
-        const raw = localStorage.getItem('switch_user_notifications');
-        if (raw) return JSON.parse(raw);
-      } catch (e) {}
-      return [
-        {
-          id: "NOTIF-INIT-1",
-          cat: "trans",
-          title: "Dépôt d'Espèces Reçu avec Succès",
-          time: "À l'instant",
-          unread: true,
-          amount: "+50 000 FCFA",
-          description: "Vous avez reçu un dépôt d'espèces de +50 000 FCFA au Kiosque Switch Saint-Michel (Agent AGT-4092).",
-          extras: {
-            amount: "+50 000 FCFA",
-            source: "Kiosque Switch Saint-Michel (AGT-4092)",
-            ref: "#TRX-DEP-66419",
-            date: "28 août 2026 • 16:05"
-          }
-        },
-        {
-          id: "NOTIF-INIT-2",
+        // 1. Récupérer les données réelles et les transactions depuis Supabase
+        const wallet = await this.getWallet();
+        const txs = (wallet && wallet.transactions) ? wallet.transactions : [];
+
+        const dynamicNotifs = [];
+
+        // 2. Transformer chaque transaction Supabase en notification
+        txs.forEach((t, i) => {
+          const isDeposit = t.category === 'agent_deposit' || (t.amount > 0 && (t.title && t.title.toLowerCase().includes('dépôt')));
+          const amtVal = Math.abs(t.amount || 0);
+          const amtStr = (isDeposit || t.amount > 0 ? "+" : "-") + amtVal.toLocaleString('fr-FR') + " FCFA";
+
+          dynamicNotifs.push({
+            id: t.id || `TX-NOTIF-${i}`,
+            cat: "trans",
+            title: isDeposit ? "Dépôt d'Espèces Reçu avec Succès" : (t.title || "Transaction Switch"),
+            time: t.date || "À l'instant",
+            unread: i === 0, // La dernière transaction est non-lue
+            amount: amtStr,
+            description: isDeposit 
+              ? `Vous avez reçu un dépôt d'espèces de ${amtStr} au Kiosque Switch Saint-Michel (Agent AGT-4092).`
+              : `${t.title || "Opération"}: ${amtStr}. Référence ${t.id}.`,
+            extras: {
+              amount: amtStr,
+              source: isDeposit ? "Kiosque Switch Saint-Michel (AGT-4092)" : "Application Switch Bénin",
+              ref: t.id ? (t.id.startsWith('#') ? t.id : '#' + t.id) : "#TRX-SW",
+              date: t.date || "Aujourd'hui"
+            }
+          });
+        });
+
+        // Ajouter alertes de sécurité & offres
+        dynamicNotifs.push({
+          id: "SEC-NOTIF-1",
           cat: "sec",
           title: "Alerte Sécurité Compte",
-          time: "Il y a 10 min",
-          unread: true,
-          description: "Nouvelle connexion réussie depuis un appareil mobile à Cotonou (Cadjehoun).",
+          time: "Aujourd'hui",
+          unread: false,
+          description: "Connexion sécurisée et conforme enregistrée sur votre compte Switch Bénin.",
           extras: {
             source: "Système de Sécurité Switch Bénin",
             ref: "#SEC-LOG-9148",
             date: "Aujourd'hui"
           }
-        },
-        {
-          id: "NOTIF-INIT-3",
+        });
+
+        dynamicNotifs.push({
+          id: "PROMO-NOTIF-1",
           cat: "promo",
           title: "Dépôts 0% en Kiosques Switch",
           time: "Hier",
@@ -814,8 +828,22 @@
             ref: "#OFFER-0PCT",
             date: "Hier"
           }
-        }
-      ];
+        });
+
+        localStorage.setItem('switch_user_notifications', JSON.stringify(dynamicNotifs));
+        return dynamicNotifs;
+      } catch (e) {
+        console.warn("[SwitchAPI] Erreur synchro notifications cloud :", e.message);
+        return this.getClientNotifications();
+      }
+    },
+
+    getClientNotifications: function () {
+      try {
+        const raw = localStorage.getItem('switch_user_notifications');
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return [];
     },
 
     addClientNotification: function (notif) {

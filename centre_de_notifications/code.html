@@ -7,6 +7,8 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
@@ -276,30 +278,22 @@
   <script>
     let activeNotifs = [];
 
-    function initNotifications() {
+    async function initNotifications() {
+      // 1. Chargement instantané depuis le cache
       if (window.SwitchAPI && window.SwitchAPI.getClientNotifications) {
         activeNotifs = window.SwitchAPI.getClientNotifications();
-      } else {
-        activeNotifs = [
-          {
-            id: "NOTIF-1",
-            cat: "trans",
-            title: "Dépôt d'Espèces Reçu",
-            time: "À l'instant",
-            unread: true,
-            amount: "+50 000 FCFA",
-            description: "Vous avez reçu un dépôt d'espèces de +50 000 FCFA au Kiosque Switch Saint-Michel (Agent AGT-4092).",
-            extras: {
-              amount: "+50 000 FCFA",
-              source: "Kiosque Switch Saint-Michel (AGT-4092)",
-              ref: "#TRX-DEP-66419",
-              date: "28 août 2026 • 16:05"
-            }
-          }
-        ];
+        renderNotificationCards();
       }
 
-      renderNotificationCards();
+      // 2. Synchronisation en direct avec Supabase Cloud
+      if (window.SwitchAPI && window.SwitchAPI.fetchClientNotifications) {
+        try {
+          activeNotifs = await window.SwitchAPI.fetchClientNotifications();
+          renderNotificationCards();
+        } catch (e) {
+          console.info("[Notifications] Synchro Cloud :", e.message);
+        }
+      }
     }
 
     function renderNotificationCards() {
