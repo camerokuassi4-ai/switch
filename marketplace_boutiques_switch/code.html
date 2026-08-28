@@ -36,19 +36,29 @@
     .shadow-soft {
       box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
     }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none !important;
+      scrollbar-width: none !important;
+    }
 
     .cat-pill-active {
       background-color: #5E3BDC !important;
       color: #ffffff !important;
       font-weight: 800 !important;
+      box-shadow: 0 4px 12px rgba(94, 59, 220, 0.3) !important;
     }
 
     .product-card {
       transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s;
     }
     .product-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px -4px rgba(94, 59, 220, 0.15);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px -4px rgba(94, 59, 220, 0.18);
       border-color: rgba(94, 59, 220, 0.4);
     }
     .product-card:active {
@@ -61,19 +71,19 @@
   <!-- Top Header Navigation -->
   <header class="w-full max-w-xl mx-auto px-4 pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/95 backdrop-blur-md">
     <div class="flex items-center gap-3">
-      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-xs flex items-center justify-center text-on-surface hover:text-primary hover:bg-purple-50 active:scale-95 transition-all cursor-pointer">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full bg-purple-100/70 border border-purple-200 shadow-xs flex items-center justify-center text-[#5E3BDC] hover:bg-purple-100 active:scale-95 transition-all cursor-pointer">
         <span class="material-symbols-outlined text-xl">arrow_back</span>
       </button>
       <div>
-        <h1 class="text-base sm:text-lg font-black text-on-surface tracking-tight leading-tight">Shopping & Boutiques</h1>
-        <p class="text-[11px] text-on-surface-variant font-medium">Commandez directement avec votre compte Switch</p>
+        <h1 class="text-base sm:text-lg font-black text-gray-950 tracking-tight leading-tight">Shopping & Boutiques</h1>
+        <p class="text-[11px] text-gray-500 font-medium">Commandez directement avec votre compte Switch</p>
       </div>
     </div>
 
     <!-- User Switch Balance Pill -->
-    <div class="bg-white border border-primary/30 px-3 py-1.5 rounded-full shadow-xs flex items-center gap-1.5">
+    <div class="bg-white border border-purple-200 px-3 py-1.5 rounded-full shadow-xs flex items-center gap-1.5">
       <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-      <span class="text-xs font-mono font-black text-primary" id="header-user-balance">125 000 F</span>
+      <span class="text-xs font-mono font-black text-[#5E3BDC]" id="header-user-balance">125 000 F</span>
     </div>
   </header>
 
@@ -95,13 +105,13 @@
 
       <!-- Quick Search Bar -->
       <div class="relative flex items-center z-10 mt-1">
-        <span class="material-symbols-outlined absolute left-3.5 text-primary text-lg">search</span>
+        <span class="material-symbols-outlined absolute left-3.5 text-[#5E3BDC] text-lg">search</span>
         <input 
           type="text" 
           id="market-search-input" 
           oninput="filterMarketplace()" 
-          placeholder="Rechercher un produit, café, vêtement, boutique..." 
-          class="w-full bg-white text-on-surface placeholder:text-gray-400 rounded-2xl py-3 pl-10 pr-4 text-xs font-bold shadow-md focus:outline-none focus:ring-2 focus:ring-purple-400"
+          placeholder="Rechercher un produit, vêtement, jus..." 
+          class="w-full bg-white text-gray-900 placeholder:text-gray-400 rounded-2xl py-3 pl-10 pr-4 text-xs font-bold shadow-md focus:outline-none focus:ring-2 focus:ring-purple-400 border border-purple-100"
         />
       </div>
 
@@ -109,58 +119,46 @@
       <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
     </div>
 
-    <!-- 2. Category Filter Chips (Rayons Métiers Exhaustifs Bénin) -->
-    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 text-xs font-bold">
-      <button type="button" onclick="setMarketCategory('all', this)" class="mcat-pill cat-pill-active px-3.5 py-2 rounded-xl transition-all cursor-pointer shrink-0 shadow-xs">
+    <!-- 2. Category Filter Chips (Rayons Métiers Exhaustifs Bénin sans scrollbar) -->
+    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 text-xs font-bold scroll-smooth">
+      <button type="button" onclick="setMarketCategory('all', this)" class="mcat-pill cat-pill-active px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0">
         Tous les Rayons
       </button>
-      <button type="button" onclick="setMarketCategory('mode', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
+      <button type="button" onclick="setMarketCategory('mode', this)" class="mcat-pill px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-gray-900 transition-all cursor-pointer shrink-0 shadow-xs">
         👗 Mode & Vêtements
       </button>
-      <button type="button" onclick="setMarketCategory('pharmacie', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
-        💊 Pharmacie & Santé
-      </button>
-      <button type="button" onclick="setMarketCategory('alimentation', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
+      <button type="button" onclick="setMarketCategory('alimentation', this)" class="mcat-pill px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-gray-900 transition-all cursor-pointer shrink-0 shadow-xs">
         🥫 Alimentation & Vivres
       </button>
-      <button type="button" onclick="setMarketCategory('restauration', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
+      <button type="button" onclick="setMarketCategory('pharmacie', this)" class="mcat-pill px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-gray-900 transition-all cursor-pointer shrink-0 shadow-xs">
+        💊 Pharmacie & Santé
+      </button>
+      <button type="button" onclick="setMarketCategory('restauration', this)" class="mcat-pill px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-gray-900 transition-all cursor-pointer shrink-0 shadow-xs">
         🍲 Restauration & Maquis
       </button>
-      <button type="button" onclick="setMarketCategory('tech', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
+      <button type="button" onclick="setMarketCategory('tech', this)" class="mcat-pill px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-gray-900 transition-all cursor-pointer shrink-0 shadow-xs">
         📱 Téléphonie & Tech
       </button>
-      <button type="button" onclick="setMarketCategory('quincaillerie', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
-        🏗️ Quincaillerie & BTP
-      </button>
-      <button type="button" onclick="setMarketCategory('beaute', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
+      <button type="button" onclick="setMarketCategory('beaute', this)" class="mcat-pill px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-gray-900 transition-all cursor-pointer shrink-0 shadow-xs">
         💄 Beauté & Cosmétique
       </button>
-      <button type="button" onclick="setMarketCategory('maison', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
+      <button type="button" onclick="setMarketCategory('maison', this)" class="mcat-pill px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-gray-900 transition-all cursor-pointer shrink-0 shadow-xs">
         🛋️ Meubles & Maison
       </button>
-      <button type="button" onclick="setMarketCategory('auto', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
+      <button type="button" onclick="setMarketCategory('auto', this)" class="mcat-pill px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-gray-900 transition-all cursor-pointer shrink-0 shadow-xs">
         🚗 Auto & Moto
       </button>
-      <button type="button" onclick="setMarketCategory('librairie', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
+      <button type="button" onclick="setMarketCategory('librairie', this)" class="mcat-pill px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-gray-900 transition-all cursor-pointer shrink-0 shadow-xs">
         📚 Librairie & Scolaire
       </button>
-      <button type="button" onclick="setMarketCategory('bebe', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
+      <button type="button" onclick="setMarketCategory('bebe', this)" class="mcat-pill px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-gray-900 transition-all cursor-pointer shrink-0 shadow-xs">
         👶 Bébés & Enfants
       </button>
-      <button type="button" onclick="setMarketCategory('sport', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
+      <button type="button" onclick="setMarketCategory('sport', this)" class="mcat-pill px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-gray-900 transition-all cursor-pointer shrink-0 shadow-xs">
         ⚽ Sport & Loisirs
       </button>
-      <button type="button" onclick="setMarketCategory('agriculture', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
-        🌾 Agriculture & Élevage
-      </button>
-      <button type="button" onclick="setMarketCategory('artisanat', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
-        🎨 Art & Artisanat
-      </button>
-      <button type="button" onclick="setMarketCategory('service', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
+      <button type="button" onclick="setMarketCategory('service', this)" class="mcat-pill px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:text-gray-900 transition-all cursor-pointer shrink-0 shadow-xs">
         💼 Services & Prestations
-      </button>
-      <button type="button" onclick="setMarketCategory('bazar', this)" class="mcat-pill px-3.5 py-2 rounded-xl bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface transition-all cursor-pointer shrink-0">
-        🛍️ Bazar & Quotidien
       </button>
     </div>
 
@@ -535,20 +533,35 @@
       return defaultMarketProducts;
     }
 
+    function getProductPhoto(title, category, img) {
+      if (img && (img.startsWith('http') || img.startsWith('../assets/'))) return img;
+      const t = (title || '').toLowerCase();
+      const c = (category || '').toLowerCase();
+      if (t.includes('jus') || t.includes('ananas') || t.includes('boisson') || t.includes('eau')) return '../assets/images/img_018.jpg';
+      if (t.includes('riz') || t.includes('farine') || t.includes('huile') || c.includes('alim')) return '../assets/images/img_032.jpg';
+      if (t.includes('robe') || t.includes('wax') || t.includes('habit') || c.includes('mode')) return '../assets/images/img_028.jpg';
+      if (t.includes('phone') || t.includes('iphone') || t.includes('samsung') || c.includes('tech')) return '../assets/images/img_020.jpg';
+      if (t.includes('santé') || t.includes('médicament') || c.includes('pharm')) return '../assets/images/img_042.jpg';
+      if (t.includes('plat') || t.includes('poulet') || t.includes('maquis') || c.includes('restau')) return '../assets/images/img_034.jpg';
+      if (t.includes('savon') || t.includes('parfum') || c.includes('beaut')) return '../assets/images/img_035.jpg';
+      if (t.includes('meuble') || t.includes('lit') || c.includes('maison')) return '../assets/images/img_026.jpg';
+      return '../assets/images/img_007.jpg';
+    }
+
     async function syncMarketplaceFromStorage() {
       let liveProducts = [];
       try {
         if (window.SwitchAPI && window.SwitchAPI.getProducts) {
           const res = await window.SwitchAPI.getProducts();
           if (res && res.success && Array.isArray(res.products)) {
-            const defaultStoreName = localStorage.getItem('switch_merchant_business_name') || "Boutique & Restaurant La Plage";
+            const defaultStoreName = localStorage.getItem('switch_merchant_business_name') || "Kiosque Saint-Michel (Bénin)";
             liveProducts = res.products.map(p => ({
               id: p.id,
               title: p.name,
               price: parseFloat(p.price) || 1000,
               stock: p.stock_quantity !== undefined ? p.stock_quantity : 25,
               category: (p.category || "alimentation").toLowerCase(),
-              emoji: "🏪",
+              emoji: "🛍️",
               image: p.image_url || null,
               store: defaultStoreName
             }));
@@ -565,37 +578,37 @@
 
       products.forEach(p => {
         const pStore = p.store || defaultStoreName;
+        const photoUrl = getProductPhoto(p.title, p.category, p.image);
         const card = document.createElement('div');
-        card.className = "product-card market-product-card bg-white rounded-3xl p-3.5 border border-outline-variant/40 shadow-soft flex flex-col justify-between gap-2.5 relative group";
+        card.className = "product-card market-product-card bg-white rounded-2xl sm:rounded-3xl p-3.5 border border-purple-100 shadow-sm flex flex-col justify-between gap-3 relative group";
         card.setAttribute('data-category', p.category);
         card.setAttribute('data-title', p.title.toLowerCase());
         card.setAttribute('data-price', p.price);
 
-        const imgHtml = p.image 
-          ? `<img src="../assets/images/img_032.jpg" alt="${p.title}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>`
-          : `<div class="w-full h-full bg-gradient-to-tr from-purple-100 to-indigo-50 flex items-center justify-center text-4xl">${p.emoji || '🛍️'}</div>`;
-
         card.innerHTML = `
-          <div class="w-full h-28 rounded-2xl bg-gray-50 relative overflow-hidden flex items-center justify-center">
-            ${imgHtml}
-            <span class="absolute top-2 right-2 text-[9px] font-black uppercase ${p.stock > 0 ? 'bg-primary text-white' : 'bg-rose-500 text-white'} px-2 py-0.5 rounded-full shadow-xs">
+          <div class="w-full h-32 rounded-2xl bg-gray-100 relative overflow-hidden flex items-center justify-center">
+            <img src="${photoUrl}" alt="${p.title}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+            <span class="absolute top-2 right-2 text-[10px] font-black uppercase ${p.stock > 0 ? 'bg-[#5E3BDC] text-white' : 'bg-rose-500 text-white'} px-2.5 py-0.5 rounded-full shadow-xs">
               ${p.stock > 0 ? (p.stock + ' dispo') : 'Rupture'}
             </span>
           </div>
 
-          <div>
-            <span class="text-[9px] font-bold text-primary block truncate">${pStore}</span>
-            <h4 class="text-xs font-bold text-on-surface line-clamp-1 mt-0.5">${p.title}</h4>
-            <span class="text-sm font-black font-mono text-primary block mt-0.5">${p.price.toLocaleString('fr-FR')} FCFA</span>
+          <div class="space-y-1">
+            <div class="flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs text-[#5E3BDC]">verified</span>
+              <span class="text-[10px] font-bold text-gray-500 block truncate">${pStore}</span>
+            </div>
+            <h4 class="text-xs sm:text-sm font-extrabold text-gray-900 line-clamp-1">${p.title}</h4>
+            <span class="text-sm sm:text-base font-black font-mono text-[#5E3BDC] block">${p.price.toLocaleString('fr-FR')} FCFA</span>
           </div>
 
-          <div class="grid grid-cols-2 gap-1.5 pt-1">
-            <button onclick="openChatWithSeller('${p.id}')" class="py-2 px-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-primary border border-purple-200 font-bold text-[10px] active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
-              <span class="material-symbols-outlined text-xs">chat</span>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button onclick="openChatWithSeller('${p.id}')" class="py-2.5 px-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#5E3BDC] border border-purple-200 font-bold text-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+              <span class="material-symbols-outlined text-sm">chat</span>
               <span>Discuter</span>
             </button>
-            <button onclick="openOrderModal('${p.id}')" class="py-2 px-2 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-[10px] shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
-              <span class="material-symbols-outlined text-xs">shopping_cart</span>
+            <button onclick="openOrderModal('${p.id}')" class="py-2.5 px-2 rounded-xl bg-[#5E3BDC] hover:bg-[#4D2EC2] text-white font-extrabold text-xs shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+              <span class="material-symbols-outlined text-sm">shopping_cart</span>
               <span>Acheter</span>
             </button>
           </div>
