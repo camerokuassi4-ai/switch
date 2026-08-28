@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
@@ -172,12 +173,21 @@
       alert("🤳 Selfie biométrique validé avec succès !");
     }
 
-    function submitKyc() {
+    async function submitKyc() {
       const npi = document.getElementById('npi-input')?.value;
       if (!npi) {
         alert("Veuillez renseigner votre numéro NPI / CIP.");
         return;
       }
+
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.upgradeKyc) {
+          await window.SwitchAPI.upgradeKyc(2, selectedType, npi);
+        }
+      } catch (e) {
+        console.warn("KYC upgrade info :", e);
+      }
+
       localStorage.setItem('switch_kyc_level', '2');
       if (window.switchNavigate) {
         window.switchNavigate('../succes_verification_niveau2/code.html');

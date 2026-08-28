@@ -7,6 +7,8 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
@@ -190,14 +192,15 @@
   </div>
 
   <script>
-    let vaultTotal = 350000;
+    let vaultTotal = 25000;
 
     window.addEventListener('DOMContentLoaded', () => {
-      if (window.SwitchEngine) {
-        vaultTotal = window.SwitchEngine.getVaultBalance();
-        const totalEl = document.getElementById('vault-total');
-        if (totalEl) totalEl.textContent = vaultTotal.toLocaleString('fr-FR') + ' FCFA';
+      const storedVault = localStorage.getItem('switch_user_vault');
+      if (storedVault) {
+        vaultTotal = parseInt(storedVault) || 25000;
       }
+      const totalEl = document.getElementById('vault-total');
+      if (totalEl) totalEl.textContent = vaultTotal.toLocaleString('fr-FR') + ' FCFA';
     });
 
     function openDepositModal() {
@@ -210,17 +213,33 @@
       openDepositModal();
     }
 
-    function handleDeposit(e) {
+    async function handleDeposit(e) {
       e.preventDefault();
       const amt = parseInt(document.getElementById('deposit-amt').value || 10000);
       
-      if (window.SwitchEngine) {
-        const mainBal = window.SwitchEngine.getMainBalance();
-        if (mainBal < amt) {
-          alert("Solde insuffisant dans votre Compte Principal (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible).");
-          return;
-        }
+      let depositSuccess = false;
+      let errorMessage = "Solde principal insuffisant pour alimenter le coffre.";
 
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.manageVault) {
+          const res = await window.SwitchAPI.manageVault('DEPOSIT', amt, 'Mon Coffre Projet');
+          if (res && res.success) {
+            depositSuccess = true;
+            vaultTotal = res.new_vault_locked_total;
+          } else if (res && res.message) {
+            errorMessage = res.message;
+          }
+        }
+      } catch (err) {
+        errorMessage = err.message || errorMessage;
+      }
+
+      if (!depositSuccess) {
+        alert("❌ Versement rejeté : " + errorMessage);
+        return; // STRICTEMENT BLOQUANT
+      }
+
+      if (window.SwitchEngine) {
         window.SwitchEngine.addTransaction({
           title: "Versement Coffre Switch Vault",
           category: "internal",
@@ -231,14 +250,13 @@
           icon: "savings",
           iconBg: "bg-indigo-50 text-indigo-700"
         });
-
-        vaultTotal = window.SwitchEngine.depositToVault(amt);
-        const totalEl = document.getElementById('vault-total');
-        if (totalEl) totalEl.textContent = vaultTotal.toLocaleString('fr-FR') + ' FCFA';
       }
 
+      const totalEl = document.getElementById('vault-total');
+      if (totalEl) totalEl.textContent = vaultTotal.toLocaleString('fr-FR') + ' FCFA';
+
       closeDepositModal();
-      alert('Dépôt de ' + amt.toLocaleString('fr-FR') + ' FCFA effectué avec succès ! Vos intérêts à 6% démarrent immédiatement.');
+      alert('✅ Dépôt de ' + amt.toLocaleString('fr-FR') + ' FCFA effectué avec succès ! Vos intérêts à 4.5% démarrent immédiatement.');
     }
   </script>
 
