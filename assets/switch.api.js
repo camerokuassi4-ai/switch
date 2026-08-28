@@ -225,7 +225,7 @@
     generateWithdrawalOtp: async function (amount, fee = 0) {
       const otpCode = this._generateSecureCode(6);
       const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
-      const phone = localStorage.getItem('switch_user_phone') || localStorage.getItem('switch_user_phone_raw') || '+229 01 97 12 34 56';
+      const phone = localStorage.getItem('switch_user_phone') || localStorage.getItem('switch_user_phone_raw') || '+229 01 90 75 17 86';
 
       try {
         await supabaseFetch('cash_operations', {
@@ -256,6 +256,89 @@
         fee: fee,
         expires_at: expiresAt
       };
+    },
+
+    /**
+     * 3.1 Demande de Retrait initiée par l'Agent vers le Compte Client (Envoi OTP Sécurisé)
+     */
+    requestWithdrawalOtp: async function (clientIdentifier, amount) {
+      const otpCode = this._generateSecureCode(6);
+      const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+
+      try {
+        await supabaseFetch('cash_operations', {
+          method: 'POST',
+          body: JSON.stringify({
+            otp_code: otpCode,
+            client_phone: clientIdentifier,
+            amount: amount,
+            fee: Math.max(50, Math.round(amount * 0.005)),
+            op_type: 'WITHDRAWAL',
+            status: 'pending',
+            expires_at: expiresAt
+          })
+        });
+      } catch (e) {
+        console.warn("[SwitchAPI] Enregistrement demande retrait OTP :", e.message);
+      }
+
+      // Notification immédiate pour le client
+      this.addClientNotification({
+        id: `OTP-REQ-${Date.now()}`,
+        cat: 'sec',
+        title: `Code Secret de Retrait : ${otpCode}`,
+        time: "À l'instant",
+        amount: `-${amount.toLocaleString('fr-FR')} FCFA`,
+        description: `Un agent a initié un retrait de ${amount.toLocaleString('fr-FR')} FCFA au Guichet Switch Saint-Michel. Communiquez votre code secret ${otpCode} à l'agent.`,
+        extras: {
+          amount: `${amount.toLocaleString('fr-FR')} FCFA`,
+          source: "Kiosque Switch Saint-Michel (AGT-4092)",
+          ref: `OTP #${otpCode}`,
+          date: "À l'instant"
+        }
+      });
+
+      localStorage.setItem('switch_active_withdrawal_otp', otpCode);
+      localStorage.setItem('switch_active_withdrawal_amt', amount.toString());
+      localStorage.setItem('switch_active_withdrawal_target', clientIdentifier);
+
+      return {
+        success: true,
+        otp_code: otpCode,
+        amount: amount,
+        client: clientIdentifier
+      };
+    },
+
+    /**
+     * 3.2 Vérifie si une demande de retrait OTP est en attente pour le client
+     */
+    checkPendingWithdrawalForClient: async function (clientPhone) {
+      const targetPhone = clientPhone || localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_account_number') || '+229 01 90 75 17 86';
+      const cleanDigits = targetPhone.replace(/\D/g, '');
+      const core8 = cleanDigits.slice(-8);
+
+      try {
+        const rows = await supabaseFetch(`cash_operations?status=eq.pending&order=created_at.desc&limit=1`);
+        if (rows && rows.length > 0) {
+          const op = rows[0];
+          return { success: true, hasPending: true, ...op };
+        }
+      } catch (e) {
+        console.info("[SwitchAPI] Info check pending withdrawal :", e.message);
+      }
+
+      const localOtp = localStorage.getItem('switch_active_withdrawal_otp');
+      if (localOtp) {
+        return {
+          success: true,
+          hasPending: true,
+          otp_code: localOtp,
+          amount: parseInt(localStorage.getItem('switch_active_withdrawal_amt') || '10000', 10)
+        };
+      }
+
+      return { success: true, hasPending: false };
     },
 
     /**

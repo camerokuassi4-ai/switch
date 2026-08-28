@@ -570,11 +570,61 @@
           }
           const refreshedName = localStorage.getItem('switch_user_fullname');
           if (refreshedName && uEl) uEl.textContent = refreshedName;
+
+          // Vérification des demandes de retrait en cours
+          if (window.SwitchAPI.checkPendingWithdrawalForClient) {
+            const pendingOp = await window.SwitchAPI.checkPendingWithdrawalForClient();
+            if (pendingOp && pendingOp.hasPending && pendingOp.otp_code) {
+              showWithdrawalRequestModal(pendingOp.otp_code, pendingOp.amount || 10000);
+            }
+          }
         } catch (e) {
           console.info("[Dashboard] Synchro wallet live :", e.message);
         }
       }
     };
+
+    function showWithdrawalRequestModal(otp, amount) {
+      const existing = document.getElementById('switch-withdraw-request-modal');
+      if (existing) existing.remove();
+
+      const modal = document.createElement('div');
+      modal.id = 'switch-withdraw-request-modal';
+      modal.style.cssText = 'position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.75); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:16px; font-family:sans-serif;';
+      modal.innerHTML = `
+        <div style="background:#ffffff; border-radius:28px; width:100%; max-width:400px; padding:24px; box-shadow:0 24px 48px rgba(0,0,0,0.3); display:flex; flex-direction:column; gap:16px; animation: slideUp 0.3s ease-out;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="width:40px; height:40px; border-radius:12px; background:#FEF3C7; color:#D97706; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold;">🛡️</div>
+              <div>
+                <h3 style="font-size:15px; font-weight:900; color:#1C1A24; margin:0;">Demande de Retrait Guichet</h3>
+                <span style="font-size:11px; color:#6B7280; font-weight:600;">Kiosque Switch Saint-Michel</span>
+              </div>
+            </div>
+            <button onclick="document.getElementById('switch-withdraw-request-modal').remove()" style="background:#F3F4F6; border:none; border-radius:50%; width:32px; height:32px; cursor:pointer; font-weight:bold; color:#4B5563;">✕</button>
+          </div>
+
+          <div style="background:#F8F9FD; border:1px solid #E5E7EB; border-radius:20px; padding:16px; text-align:center;">
+            <span style="font-size:11px; font-weight:700; color:#6B7280; text-transform:uppercase; letter-spacing:0.5px;">Montant à Décaisser</span>
+            <div style="font-size:24px; font-weight:900; color:#5E3BDC; font-family:monospace; margin:4px 0 12px 0;">${amount.toLocaleString('fr-FR')} FCFA</div>
+            
+            <span style="font-size:11px; font-weight:700; color:#374151;">Votre Code Secret de Confirmation :</span>
+            <div style="font-size:32px; font-weight:900; letter-spacing:6px; color:#10B981; font-family:monospace; background:#ECFDF5; border:2px dashed #059669; border-radius:16px; padding:10px; margin-top:6px;">
+              ${otp}
+            </div>
+          </div>
+
+          <p style="font-size:11px; color:#6B7280; margin:0; line-height:1.4; text-align:center;">
+            ⚠️ <b>Sécurité BCEAO :</b> Ne donnez ce code à l'agent que si vous êtes physiquement devant son guichet pour récupérer vos espèces en mains propres.
+          </p>
+
+          <button onclick="document.getElementById('switch-withdraw-request-modal').remove()" style="width:100%; background:#5E3BDC; color:white; font-weight:800; font-size:13px; padding:14px; border-radius:20px; border:none; cursor:pointer; box-shadow:0 8px 16px rgba(94,59,220,0.3);">
+            J'ai communiqué le code à l'agent
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
 
     function showDepositNotification(amount) {
       const existing = document.getElementById('switch-deposit-toast');

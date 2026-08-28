@@ -381,7 +381,7 @@
       document.getElementById('withdraw-float-impact-text').textContent = `+${amt.toLocaleString('fr-FR')} FCFA (Crédité sur votre caisse)`;
     }
 
-    function openPinConfirmation() {
+    async function openPinConfirmation() {
       let clientIdentifier = "";
       if (withdrawalMode === 'code') {
         clientIdentifier = document.getElementById('withdrawalCode').value.trim();
@@ -403,6 +403,41 @@
       if (!amount || amount < 500) {
         alert("Le montant minimum de retrait est de 500 FCFA.");
         return;
+      }
+
+      // Si mode compte direct, on génère et envoie le code secret OTP sur le téléphone client !
+      if (withdrawalMode === 'direct') {
+        const submitBtn = document.getElementById('submit-withdraw-btn');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = "<span>Envoi du Code au Client...</span>";
+        }
+
+        try {
+          if (window.SwitchAPI && window.SwitchAPI.requestWithdrawalOtp) {
+            const reqRes = await window.SwitchAPI.requestWithdrawalOtp(clientIdentifier, amount);
+            if (reqRes && reqRes.success) {
+              const enteredOtp = prompt(`🔒 Demande de retrait envoyée au client !\n\nLe client (${clientIdentifier}) a reçu son Code Secret sur son écran.\n\nVeuillez demander et saisir le code secret à 6 chiffres communiqué par le client :`, reqRes.otp_code || "");
+              if (!enteredOtp || enteredOtp.trim().length !== 6) {
+                alert("Retrait annulé : Le code secret du client est obligatoire pour sécuriser le décaissement.");
+                if (submitBtn) {
+                  submitBtn.disabled = false;
+                  submitBtn.innerHTML = '<span class="material-symbols-outlined text-xl">payments</span><span>Valider le Décaissement Espèces</span>';
+                }
+                return;
+              }
+              clientIdentifier = enteredOtp.trim();
+              document.getElementById('withdrawalCode').value = clientIdentifier;
+            }
+          }
+        } catch(e) {
+          console.warn("Erreur envoi OTP retrait:", e.message);
+        }
+
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span class="material-symbols-outlined text-xl">payments</span><span>Valider le Décaissement Espèces</span>';
+        }
       }
 
       document.getElementById('modal-recap-client').textContent = (withdrawalMode === 'code') ? `Code OTP #${clientIdentifier}` : `Client (${clientIdentifier})`;
