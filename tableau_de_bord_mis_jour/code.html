@@ -112,7 +112,7 @@
       <!-- Balance Amount -->
       <div class="relative z-10 my-3">
         <h2 id="main-balance-text" data-hidden="false" class="text-3xl sm:text-4xl font-black tracking-tight font-mono">
-          234 980 <span class="text-lg sm:text-xl font-bold font-sans text-purple-200">FCFA</span>
+          50 000 <span class="text-lg sm:text-xl font-bold font-sans text-purple-200">FCFA</span>
         </h2>
       </div>
 
@@ -120,7 +120,7 @@
       <div class="relative z-10 flex items-center justify-between pt-2.5 border-t border-white/15 text-xs text-purple-200 gap-2">
         <div class="flex items-center gap-1.5 font-mono bg-white/15 px-2.5 py-1 rounded-xl border border-white/15 text-white whitespace-nowrap shrink-0">
           <span class="material-symbols-outlined text-xs shrink-0">badge</span>
-          <span class="font-bold text-[11px] sm:text-xs whitespace-nowrap tracking-tight" id="dashboard-account-number">N° Compte : 01 22 90 19 07 • 8492</span>
+          <span class="font-bold text-[11px] sm:text-xs whitespace-nowrap tracking-tight" id="dashboard-account-number">N° Compte : Chargement...</span>
           <button onclick="copyDashboardAccountNumber()" class="text-purple-200 hover:text-white cursor-pointer ml-0.5 shrink-0 flex items-center" title="Copier mon numéro de compte">
             <span class="material-symbols-outlined text-xs">content_copy</span>
           </button>
@@ -635,6 +635,11 @@
     window.addEventListener("storage", () => {
       window.applyKycLevel();
     });
+
+    // Exécution immédiate
+    if (window.applyKycLevel) {
+      window.applyKycLevel();
+    }
   </script>
 
   <script src="../assets/switch.router.js"></script>
