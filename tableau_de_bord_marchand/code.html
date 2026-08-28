@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
@@ -441,17 +442,36 @@
 
   <script>
     let isBalanceHidden = false;
-    const realBalanceText = "2 450 000 FCFA";
+    let currentShopBalance = 285000;
     const hiddenBalanceText = "•••••••• FCFA";
 
-    document.addEventListener("DOMContentLoaded", function () {
-      // Dynamic store name from localStorage
-      const registeredName = localStorage.getItem('switch_merchant_business_name');
-      if (registeredName) {
-        const storeNameEl = document.getElementById('merchant-store-name');
-        if (storeNameEl) storeNameEl.textContent = registeredName;
+    async function loadMerchantData() {
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.getMerchantDashboard) {
+          const data = await window.SwitchAPI.getMerchantDashboard();
+          if (data && data.success) {
+            currentShopBalance = parseInt(data.shop_balance) || 285000;
+            const balanceEl = document.getElementById('merchant-balance-amount');
+            const storeNameEl = document.getElementById('merchant-store-name');
+            const posIdEl = document.getElementById('merchant-pos-id');
+
+            if (balanceEl && !isBalanceHidden) {
+              balanceEl.innerHTML = `${currentShopBalance.toLocaleString('fr-FR')} <span class="text-xl sm:text-2xl font-bold font-sans">FCFA</span>`;
+            }
+            if (storeNameEl && data.business_name) {
+              storeNameEl.textContent = data.business_name;
+            }
+            if (posIdEl && data.qr_code_id) {
+              posIdEl.textContent = `N° POS : ${data.qr_code_id}`;
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Chargement Marchand info :", err);
       }
-    });
+    }
+
+    document.addEventListener("DOMContentLoaded", loadMerchantData);
 
     function switchToPersonalAccount() {
       const hasPersonalAccount = localStorage.getItem('switch_user_registered') === 'true' || localStorage.getItem('switch_user_profile') !== null;
@@ -476,7 +496,7 @@
         balanceEl.textContent = hiddenBalanceText;
         iconEl.textContent = "visibility_off";
       } else {
-        balanceEl.innerHTML = `2 450 000 <span class="text-xl sm:text-2xl font-bold font-sans">FCFA</span>`;
+        balanceEl.innerHTML = `${currentShopBalance.toLocaleString('fr-FR')} <span class="text-xl sm:text-2xl font-bold font-sans">FCFA</span>`;
         iconEl.textContent = "visibility";
       }
     }

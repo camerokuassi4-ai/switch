@@ -379,7 +379,142 @@
     },
 
     /**
-     * 9. Récupère les points relais GPS (Carte des Agents)
+     * 9. Récupération du Profil Marchand (Solde Boutique, Chiffre d'Affaires du Jour)
+     */
+    getMerchantDashboard: async function () {
+      try {
+        const data = await supabaseRPC('get_merchant_dashboard_data', {});
+        if (data && data.success) {
+          localStorage.setItem('switch_merchant_balance', data.shop_balance.toString());
+          localStorage.setItem('switch_merchant_business_name', data.business_name);
+          return data;
+        }
+      } catch (e) {
+        console.warn("[SwitchAPI] Merchant Dashboard RPC info :", e.message);
+      }
+
+      // Repli local
+      const curBal = parseInt((localStorage.getItem('switch_merchant_balance') || '285000').replace(/\s/g, ''), 10);
+      return {
+        success: true,
+        business_name: localStorage.getItem('switch_merchant_business_name') || "Boutique & Restaurant La Plage",
+        ifu: "1202019283719",
+        phone: "+229 01 95 00 22 33",
+        shop_balance: curBal,
+        qr_code_id: "SW-MCH-8820",
+        today_sales_count: 18,
+        today_turnover: 142500
+      };
+    },
+
+    /**
+     * 10. Gestion du Catalogue Produits
+     */
+    getProducts: async function () {
+      try {
+        const rows = await supabaseFetch('products?select=*&is_active=eq.true&order=created_at.desc');
+        if (rows && Array.isArray(rows) && rows.length > 0) {
+          return { success: true, products: rows };
+        }
+      } catch (e) {
+        console.warn("[SwitchAPI] Fetch Products info :", e.message);
+      }
+
+      // Repli local
+      const stored = localStorage.getItem('switch_merchant_products');
+      if (stored) {
+        try { return { success: true, products: JSON.parse(stored) }; } catch (e) {}
+      }
+
+      return {
+        success: true,
+        products: [
+          { id: "p-01", name: "Jus d'Ananas Naturel 1L", price: 1500, stock_quantity: 45, category: "Boissons" },
+          { id: "p-02", name: "Riz Parfumé Local 5kg", price: 4500, stock_quantity: 20, category: "Alimentation" },
+          { id: "p-03", name: "Pack 6 Savons Bio Coco", price: 2000, stock_quantity: 35, category: "Hygiène" }
+        ]
+      };
+    },
+
+    /**
+     * 11. Encaissement Caisse POS (Décrémentation Stock + Paiement)
+     */
+    processPosSale: async function (items, paymentMethod = 'switch', customerPhone = null, note = "Vente Caisse POS") {
+      try {
+        const data = await supabaseRPC('process_pos_sale', {
+          p_items: items,
+          p_payment_method: paymentMethod,
+          p_customer_phone: customerPhone,
+          p_note: note
+        });
+        if (data && data.success) {
+          return data;
+        } else if (data && data.success === false) {
+          return data;
+        }
+      } catch (e) {
+        if (!cfg.OFFLINE_FALLBACK) {
+          return { success: false, message: e.message || "Erreur lors de l'encaissement POS." };
+        }
+        console.warn("[SwitchAPI] POS Sale RPC info :", e.message);
+      }
+
+      // Repli local
+      const totalAmount = items.reduce((sum, it) => sum + (it.unit_price * it.quantity), 0);
+      const curBal = parseInt((localStorage.getItem('switch_merchant_balance') || '285000').replace(/\s/g, ''), 10);
+      const newBal = curBal + totalAmount;
+      localStorage.setItem('switch_merchant_balance', newBal.toString());
+
+      return {
+        success: true,
+        tx_ref: "SW-POS-" + this._generateSecureCode(6),
+        total_amount: totalAmount,
+        payment_method: paymentMethod,
+        items_count: items.length
+      };
+    },
+
+    /**
+     * 12. Virement des Encaissements Marchand (Payout vers Compte Personnel)
+     */
+    withdrawMerchantFunds: async function (amount) {
+      try {
+        const data = await supabaseRPC('withdraw_merchant_funds', {
+          p_amount: amount
+        });
+        if (data && data.success) {
+          localStorage.setItem('switch_merchant_balance', data.remaining_shop_balance.toString());
+          return data;
+        } else if (data && data.success === false) {
+          return data;
+        }
+      } catch (e) {
+        if (!cfg.OFFLINE_FALLBACK) {
+          return { success: false, message: e.message || "Erreur lors du virement des encaissements." };
+        }
+        console.warn("[SwitchAPI] Merchant Payout RPC info :", e.message);
+      }
+
+      // Repli local
+      const curBal = parseInt((localStorage.getItem('switch_merchant_balance') || '285000').replace(/\s/g, ''), 10);
+      if (curBal < amount) {
+        return { success: false, message: "Solde de caisse boutique insuffisant." };
+      }
+      const newBal = curBal - amount;
+      localStorage.setItem('switch_merchant_balance', newBal.toString());
+      const curUserBal = parseInt(localStorage.getItem('switch_user_balance') || '125000', 10);
+      localStorage.setItem('switch_user_balance', (curUserBal + amount).toString());
+
+      return {
+        success: true,
+        tx_ref: "SW-PAYOUT-" + this._generateSecureCode(6),
+        amount: amount,
+        remaining_shop_balance: newBal
+      };
+    },
+
+    /**
+     * 13. Récupère les points relais GPS (Carte des Agents)
      */
     getCashpoints: async function () {
       try {

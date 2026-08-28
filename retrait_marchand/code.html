@@ -7,6 +7,8 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
@@ -280,12 +282,41 @@
       }
     }
 
-    function executeWithdrawal() {
+    async function executeWithdrawal() {
       const amt = parseInt(document.getElementById('settle-amount-input').value, 10) || 0;
       const dest = document.querySelector('input[name="settle-destination"]:checked').value;
+      
+      let opSuccess = false;
+      let txRef = "";
+      let errorMessage = "Échec du virement. Solde boutique insuffisant.";
+
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.withdrawMerchantFunds) {
+          const res = await window.SwitchAPI.withdrawMerchantFunds(amt);
+          if (res && res.success) {
+            opSuccess = true;
+            txRef = res.tx_ref;
+          } else if (res && res.message) {
+            errorMessage = res.message;
+          }
+        }
+      } catch (err) {
+        errorMessage = err.message || errorMessage;
+      }
+
+      if (!opSuccess) {
+        alert("❌ Virement des encaissements rejeté : " + errorMessage);
+        closePinModal();
+        return; // STRICTEMENT BLOQUANT : Refus de redirection en cas d'erreur !
+      }
+
       closePinModal();
-      alert("✅ Virement de " + amt.toLocaleString('fr-FR') + " FCFA vers votre compte " + dest + " effectué avec succès ! Les fonds sont arrivés.");
-      window.location.href = '../tableau_de_bord_marchand/code.html';
+      alert("✅ Virement de " + amt.toLocaleString('fr-FR') + " FCFA vers votre compte " + dest + " effectué avec succès ! (Réf: " + (txRef || "SW-PAYOUT") + ")");
+      if (window.switchNavigate) {
+        window.switchNavigate('../tableau_de_bord_marchand/code.html');
+      } else {
+        window.location.href = '../tableau_de_bord_marchand/code.html';
+      }
     }
   </script>
 

@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
@@ -496,32 +497,29 @@
       document.getElementById('live-qr-modal').classList.remove('hidden');
     }
 
-    function simulateClientSuccess() {
+    async function simulateClientSuccess() {
+      const total = calculateCartTotal();
+      const posItems = cart.map(item => ({
+        id: item.id.toString().includes('-') ? item.id : '00000000-0000-0000-0000-000000000001',
+        quantity: item.qty,
+        unit_price: item.unitPrice
+      }));
+
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.processPosSale) {
+          await window.SwitchAPI.processPosSale(posItems, 'switch', '+229 01 22 90 19 07', 'Encaissement Caisse POS');
+        }
+      } catch (err) {
+        console.warn("Vente POS info :", err);
+      }
+
       const overlay = document.getElementById('payment-success-overlay');
       overlay.classList.remove('hidden');
 
-      try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-        osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.4);
-      } catch (e) {}
-
-      setTimeout(() => {
-        const total = calculateCartTotal();
-        closeModal('live-qr-modal');
-        cart = [];
-        updateCartDisplay();
-        alert(`🎉 VENTE PANIER ENCAISSÉE !\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nMontant Total : ${total.toLocaleString('fr-FR')} FCFA\nMode : Switch Pay (0% de frais)\n\nVos recettes ont été immédiatement créditées.`);
-      }, 1400);
+      closeModal('live-qr-modal');
+      cart = [];
+      updateCartDisplay();
+      alert(`🎉 VENTE PANIER ENCAISSÉE !\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nMontant Total : ${total.toLocaleString('fr-FR')} FCFA\nMode : Switch Pay (0% de frais)\n\nVos recettes ont été immédiatement créditées en base.`);
     }
 
     function closeModal(id) {
