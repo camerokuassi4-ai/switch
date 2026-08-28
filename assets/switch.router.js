@@ -412,8 +412,17 @@
       actions: { "Générer": ROOT + "g_n_rer_qr_code_de_r_ception/code.html", "Partager": ROOT + "g_n_rer_qr_code_de_r_ception/code.html", "Télécharger": ROOT + "g_n_rer_qr_code_de_r_ception/code.html" }
     },
     "catalogue_produits_services": {
-      space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: null,
-      actions: { "Ajouter": ROOT + "catalogue_produits_services/code.html", "Modifier": ROOT + "catalogue_produits_services/code.html" }
+      space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: "m-catalog",
+      actions: {
+        "Marketplace": ROOT + "marketplace_boutiques_switch/code.html",
+        "Accueil": ROOT + "tableau_de_bord_marchand/code.html"
+      }
+    },
+    "caisse_marchand_pos": {
+      space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: "m-pos",
+      actions: {
+        "Accueil": ROOT + "tableau_de_bord_marchand/code.html"
+      }
     },
     "retrait_marchand": {
       space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: null,
@@ -457,6 +466,22 @@
         "Historique": ROOT + "historique_des_op_rations_agent/code.html",
       }
     },
+    "tableau_de_bord_agent_simple": {
+      space: "agent", back: null, nav: "a-home",
+      actions: {
+        "Dépôt": ROOT + "d_p_t_de_fonds_mis_jour_agent/code.html",
+        "Retrait": ROOT + "retrait_de_fonds_mis_jour_agent/code.html",
+        "Valider": ROOT + "valider_une_op_ration_client/code.html"
+      }
+    },
+    "services_factures_agent": {
+      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: "a-services",
+      actions: { "Accueil": ROOT + "tableau_de_bord_agent/code.html" }
+    },
+    "cloture_de_caisse_agent": {
+      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: "a-caisse",
+      actions: { "Accueil": ROOT + "tableau_de_bord_agent/code.html" }
+    },
     "historique_des_op_rations_agent": { space: "agent", back: "javascript:history.back()", nav: "a-history", actions: {} },
     "d_p_t_de_fonds_mis_jour_agent": {
       space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
@@ -493,6 +518,14 @@
         "Guichet": ROOT + "tableau_de_bord_agent/code.html",
         "Agent": ROOT + "tableau_de_bord_agent/code.html"
       }
+    },
+    "services_factures_hybride": {
+      space: "hybrid", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "h-kiosk",
+      actions: { "Accueil": ROOT + "tableau_de_bord_agent_mixte/code.html" }
+    },
+    "cloture_de_caisse_hybride": {
+      space: "hybrid", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "h-caisse",
+      actions: { "Accueil": ROOT + "tableau_de_bord_agent_mixte/code.html" }
     },
     "param_tres_et_profil_hybride": {
       space: "hybrid", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "h-profile",
@@ -544,7 +577,7 @@
   function navHTML(space, activeTab) {
     if (space === "user") {
       return `
-<nav id="switch-nav" role="navigation" aria-label="Navigation principale">
+<nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="${NAV_BAR_STYLE}">
   ${navItemHTML(ROOT + "tableau_de_bord_mis_jour/code.html", "home", "Accueil", activeTab === "home")}
   ${navItemHTML(ROOT + "achats_en_ligne_cartes_virtuelles/code.html", "credit_card", "Cartes", activeTab === "cards" || activeTab === "wallet")}
   ${navCenterItemHTML(ROOT + "scanner_qr_code/code.html", "qr_code_scanner", "Payer QR", activeTab === "qr")}
@@ -554,7 +587,7 @@
     }
     if (space === "merchant") {
       return `
-<nav id="switch-nav" role="navigation" aria-label="Navigation Marchand Pur">
+<nav id="switch-nav" role="navigation" aria-label="Navigation Marchand Pur" style="${NAV_BAR_STYLE}">
   ${navItemHTML(ROOT + "tableau_de_bord_marchand/code.html", "home", "Accueil", activeTab === "m-home")}
   ${navItemHTML(ROOT + "catalogue_produits_services/code.html", "storefront", "Vitrine", activeTab === "m-catalog" || activeTab === "m-sales")}
   ${navCenterItemHTML(ROOT + "caisse_marchand_pos/code.html", "point_of_sale", "Caisse POS", activeTab === "m-pos" || activeTab === "m-qr")}
@@ -564,7 +597,7 @@
     }
     if (space === "hybrid") {
       return `
-<nav id="switch-nav" role="navigation" aria-label="Navigation Hybride">
+<nav id="switch-nav" role="navigation" aria-label="Navigation Hybride" style="${NAV_BAR_STYLE}">
   ${navItemHTML(ROOT + "tableau_de_bord_agent_mixte/code.html", "home", "Accueil", activeTab === "h-home" || activeTab === "m-home")}
   ${navItemHTML(ROOT + "services_factures_hybride/code.html", "apps", "Guichet", activeTab === "h-kiosk")}
   ${navCenterItemHTML(ROOT + "caisse_marchand_pos/code.html", "point_of_sale", "Caisse", activeTab === "h-shop" || activeTab === "m-pos")}
@@ -577,7 +610,7 @@
       const isHybrid = localStorage.getItem("switch_is_hybrid") === "true";
       const agentHomeUrl = isHybrid ? (ROOT + "tableau_de_bord_agent/code.html") : (ROOT + "tableau_de_bord_agent_simple/code.html");
       return `
-<nav id="switch-nav" role="navigation" aria-label="Navigation Agent">
+<nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="${NAV_BAR_STYLE}">
   ${navItemHTML(agentHomeUrl, "dashboard", "Accueil", activeTab === "a-home")}
   ${navItemHTML(ROOT + "services_factures_agent/code.html", "apps", "Services", activeTab === "a-services")}
   ${navCenterItemHTML(ROOT + "valider_une_op_ration_client/code.html", "qr_code_scanner", "Servir", activeTab === "a-serve")}
