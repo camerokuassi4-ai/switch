@@ -109,11 +109,11 @@
         </div>
         <div class="flex items-center justify-between">
           <span class="text-on-surface-variant font-medium">Agent Guichet :</span>
-          <span class="font-bold text-on-surface">Adèle K. (ID: AGT-4092)</span>
+          <span id="ticket-agent" class="font-bold text-on-surface">Kiosque Switch Saint-Michel (AGT-4092)</span>
         </div>
         <div class="flex items-center justify-between">
           <span class="text-on-surface-variant font-medium">Date & Heure :</span>
-          <span id="ticket-date" class="font-mono text-on-surface">25 Août 2026 • 15:30</span>
+          <span id="ticket-date" class="font-mono text-on-surface">--</span>
         </div>
 
         <!-- Commission Agent Box -->
@@ -126,14 +126,14 @@
             </div>
           </div>
           <span id="ticket-commission" class="text-sm font-black font-mono text-emerald-700 bg-white px-2.5 py-1 rounded-xl border border-emerald-200 shadow-2xs">
-            +175 FCFA
+            +100 FCFA
           </span>
         </div>
 
         <!-- Remaining Float Box -->
         <div class="flex items-center justify-between text-[11px] text-gray-500 pt-1">
           <span>Solde Float restant en caisse :</span>
-          <b id="ticket-float" class="font-mono text-primary font-bold">1 475 000 FCFA</b>
+          <b id="ticket-float" class="font-mono text-primary font-bold">1 500 000 FCFA</b>
         </div>
       </div>
     </div>
@@ -178,8 +178,20 @@
 
   <!-- Interactive Logic -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    function renderAgentReceipt() {
       const savedData = localStorage.getItem('switch_last_transaction');
+      const agentName = localStorage.getItem('switch_agent_name') || localStorage.getItem('switch_agent_code') || "Kiosque Switch Saint-Michel (AGT-4092)";
+      const agentFloat = parseInt((localStorage.getItem('switch_agent_float') || '1500000').replace(/\s/g, ''), 10);
+      
+      const agentEl = document.getElementById('ticket-agent');
+      if (agentEl) agentEl.textContent = agentName;
+
+      const now = new Date();
+      const dateEl = document.getElementById('ticket-date');
+      if (dateEl) {
+        dateEl.textContent = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      }
+
       if (savedData) {
         try {
           const trx = JSON.parse(savedData);
@@ -196,6 +208,11 @@
           if (trx.date) document.getElementById('ticket-date').textContent = trx.date;
           if (trx.commission) document.getElementById('ticket-commission').textContent = trx.commission;
 
+          const floatEl = document.getElementById('ticket-float');
+          if (floatEl) {
+            floatEl.textContent = `${agentFloat.toLocaleString('fr-FR')} FCFA`;
+          }
+
           // Float Request Customization
           if (trx.title && trx.title.includes("Float")) {
             if (titleEl) titleEl.textContent = "Demande de Float Transmise !";
@@ -203,9 +220,7 @@
             if (amountLabelEl) amountLabelEl.textContent = "Montant de la Recharge Demandée";
             if (primaryBtn) primaryBtn.href = "../demande_de_r_approvisionnement_float/code.html";
             if (primaryBtnLabel) primaryBtnLabel.textContent = "Nouvelle Demande de Float";
-
-            const newFloat = 1500000 + (parseInt(trx.amount) || 500000);
-            document.getElementById('ticket-float').textContent = `${newFloat.toLocaleString('fr-FR')} FCFA (En attente)`;
+            if (floatEl) floatEl.textContent = `${(agentFloat + (parseInt(trx.amount) || 0)).toLocaleString('fr-FR')} FCFA (En attente)`;
           }
           // Cash-Out Withdrawal Customization
           else if (trx.title && trx.title.includes("Retrait")) {
@@ -214,20 +229,16 @@
             if (amountLabelEl) amountLabelEl.textContent = "Montant Espèces Décaissé";
             if (primaryBtn) primaryBtn.href = "../retrait_de_fonds_mis_jour_agent/code.html";
             if (primaryBtnLabel) primaryBtnLabel.textContent = "Servir un Autre Retrait Client";
-
-            const newFloat = 1500000 + (parseInt(trx.amount) || 25000);
-            document.getElementById('ticket-float').textContent = `${newFloat.toLocaleString('fr-FR')} FCFA`;
-          }
-          // Default Cash-In Deposit
-          else {
-            const remainingFloat = Math.max(0, 1500000 - (parseInt(trx.amount) || 25000));
-            document.getElementById('ticket-float').textContent = `${remainingFloat.toLocaleString('fr-FR')} FCFA`;
           }
         } catch (e) {
           console.error("Error loading agent transaction data", e);
         }
       }
-    });
+    }
+
+    document.addEventListener('DOMContentLoaded', renderAgentReceipt);
+    window.addEventListener('pageshow', renderAgentReceipt);
+    renderAgentReceipt();
 
     function navigateAgentHome() {
       if (window.switchNavigate) {
