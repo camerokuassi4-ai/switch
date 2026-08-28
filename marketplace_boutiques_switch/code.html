@@ -513,7 +513,7 @@
         price: 1500,
         stock: 28,
         category: "restauration",
-        image: "../assets/images/img_034.jpg",
+        image: "../assets/images/prod_cafe_espresso.jpg",
         store: "Boutique & Restaurant La Plage"
       },
       {
@@ -522,7 +522,7 @@
         price: 800,
         stock: 15,
         category: "restauration",
-        image: "../assets/images/img_006.jpg",
+        image: "../assets/images/prod_croissant.jpg",
         store: "Boutique & Restaurant La Plage"
       },
       {
@@ -531,7 +531,7 @@
         price: 25000,
         stock: 12,
         category: "mode",
-        image: "../assets/images/img_028.jpg",
+        image: "../assets/images/prod_robe_wax.jpg",
         store: "Boutique & Restaurant La Plage"
       },
       {
@@ -540,7 +540,7 @@
         price: 65000,
         stock: 8,
         category: "tech",
-        image: "../assets/images/img_020.jpg",
+        image: "../assets/images/prod_smartphone.jpg",
         store: "Tech Plus Cotonou"
       },
       {
@@ -549,7 +549,7 @@
         price: 800,
         stock: 50,
         category: "pharmacie",
-        image: "../assets/images/img_042.jpg",
+        image: "../assets/images/prod_jus_ananas.jpg",
         store: "Pharmacie du Centre"
       },
       {
@@ -558,7 +558,7 @@
         price: 15000,
         stock: 99,
         category: "service",
-        image: "../assets/images/img_007.jpg",
+        image: "../assets/images/prod_smartphone.jpg",
         store: "Cabinet Conseil Switch"
       }
     ];
@@ -617,7 +617,7 @@
     }
 
     function getProductPhoto(title, category, img) {
-      if (img && !img.includes('img_018') && !img.includes('img_032') && !img.includes('img_001') && !img.includes('img_002') && (img.startsWith('http') || img.startsWith('../assets/images/prod_'))) {
+      if (img && img.startsWith('../assets/images/prod_')) {
         return img;
       }
       const t = (title || '').toLowerCase();
@@ -625,11 +625,10 @@
       if (t.includes('jus') || t.includes('ananas') || t.includes('boisson') || t.includes('eau')) return '../assets/images/prod_jus_ananas.jpg';
       if (t.includes('riz') || t.includes('farine') || t.includes('huile') || c.includes('alim')) return '../assets/images/prod_riz_parfume.jpg';
       if (t.includes('savon') || t.includes('coco') || t.includes('parfum') || c.includes('beaut')) return '../assets/images/prod_savons_coco.jpg';
-      if (t.includes('café') || t.includes('espresso') || t.includes('croissant') || t.includes('plat') || c.includes('restau')) return '../assets/images/img_034.jpg';
-      if (t.includes('robe') || t.includes('wax') || t.includes('habit') || c.includes('mode')) return '../assets/images/img_028.jpg';
-      if (t.includes('phone') || t.includes('iphone') || t.includes('samsung') || c.includes('tech')) return '../assets/images/img_020.jpg';
-      if (t.includes('santé') || t.includes('médicament') || t.includes('paracétamol') || c.includes('pharm')) return '../assets/images/img_042.jpg';
-      if (t.includes('meuble') || t.includes('lit') || c.includes('maison')) return '../assets/images/img_026.jpg';
+      if (t.includes('café') || t.includes('espresso') || t.includes('coffee')) return '../assets/images/prod_cafe_espresso.jpg';
+      if (t.includes('croissant') || t.includes('pain') || t.includes('boulangerie') || t.includes('plat') || c.includes('restau')) return '../assets/images/prod_croissant.jpg';
+      if (t.includes('robe') || t.includes('wax') || t.includes('habit') || c.includes('mode')) return '../assets/images/prod_robe_wax.jpg';
+      if (t.includes('phone') || t.includes('iphone') || t.includes('samsung') || t.includes('smartphone') || c.includes('tech')) return '../assets/images/prod_smartphone.jpg';
       return '../assets/images/prod_jus_ananas.jpg';
     }
 
