@@ -72,38 +72,38 @@
     
     <!-- Filter Tabs (Toutes, Transactions, Sécurité, Offres) -->
     <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-      <button type="button" onclick="filterNotifs('all')" id="tab-all" class="px-4 py-2 rounded-full text-xs font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap flex items-center gap-1.5">
+      <button type="button" onclick="filterNotifs('all')" id="tab-all" class="px-3.5 py-2 rounded-full text-xs font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap shrink-0 flex items-center gap-1.5">
         <span>Toutes</span>
-        <span id="badge-all" class="bg-white/20 px-1.5 py-0.2 rounded-full text-[10px]">2</span>
+        <span id="badge-all" class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px]">2</span>
       </button>
-      <button type="button" onclick="filterNotifs('trans')" id="tab-trans" class="px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap flex items-center gap-1.5">
-        <span>Transactions 💸</span>
-        <span id="badge-trans" class="bg-purple-100 text-primary px-1.5 py-0.2 rounded-full text-[10px]">1</span>
+      <button type="button" onclick="filterNotifs('trans')" id="tab-trans" class="px-3.5 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap shrink-0 flex items-center gap-1.5">
+        <span>Transactions</span>
+        <span id="badge-trans" class="bg-purple-100 text-primary px-1.5 py-0.5 rounded-full text-[10px]">1</span>
       </button>
-      <button type="button" onclick="filterNotifs('sec')" id="tab-sec" class="px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap flex items-center gap-1.5">
-        <span>Sécurité 🛡️</span>
-        <span id="badge-sec" class="bg-rose-100 text-rose-700 px-1.5 py-0.2 rounded-full text-[10px]">1</span>
+      <button type="button" onclick="filterNotifs('sec')" id="tab-sec" class="px-3.5 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap shrink-0 flex items-center gap-1.5">
+        <span>Sécurité</span>
+        <span id="badge-sec" class="bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded-full text-[10px]">1</span>
       </button>
-      <button type="button" onclick="filterNotifs('promo')" id="tab-promo" class="px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap">
-        <span>Offres & Actualités 🎉</span>
+      <button type="button" onclick="filterNotifs('promo')" id="tab-promo" class="px-3.5 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap shrink-0">
+        <span>Offres & Kiosques</span>
       </button>
     </div>
 
     <!-- Notifications List Section -->
     <div class="flex flex-col gap-3" id="notifs-list">
 
-      <!-- 1. Transfert reçu (Transaction) -->
+      <!-- 1. Dépôt / Transfert reçu (Transaction) -->
       <div id="notif-item-1" data-cat="trans" onclick="openNotifDetail(1)" class="notif-card bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md">
         <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shrink-0">
           <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">arrow_downward</span>
         </div>
         <div class="flex-1 space-y-1">
           <div class="flex items-center justify-between">
-            <h3 class="font-extrabold text-sm text-on-surface">Transfert reçu avec succès</h3>
+            <h3 class="font-extrabold text-sm text-on-surface">Dépôt d'Espèces Reçu</h3>
             <span class="text-[11px] text-gray-400 font-medium">À l'instant</span>
           </div>
           <p class="text-xs text-on-surface-variant leading-relaxed">
-            Vous avez reçu <b class="text-emerald-700 font-mono">+50 000 FCFA</b> de <b>Jean Doe</b> via MTN MoMo Bénin.
+            Vous avez reçu <b class="text-emerald-700 font-mono">+50 000 FCFA</b> par Dépôt d'Espèces au <b>Kiosque Switch Saint-Michel</b>.
           </p>
         </div>
         <span id="dot-1" class="w-2.5 h-2.5 rounded-full bg-primary shrink-0 mt-1.5 unread-dot"></span>
@@ -278,18 +278,18 @@
   <script>
     const notifsData = {
       1: {
-        title: "Transfert reçu avec succès",
-        time: "Aujourd'hui à 15:28 • Réseau MTN MoMo",
+        title: "Dépôt d'Espèces Reçu avec Succès",
+        time: "Aujourd'hui à 15:28 • Kiosque Switch Saint-Michel",
         icon: "arrow_downward",
         iconClass: "bg-emerald-50 text-emerald-600",
-        description: "Vous avez reçu un virement entrant de +50 000 FCFA en provenance de Jean Doe (+229 97 45 67 89). Les fonds sont immédiatement disponibles sur votre solde Switch.",
+        description: "Vous avez reçu un dépôt d'espèces de +50 000 FCFA effectué au Guichet Switch Saint-Michel (Agent AGT-4092). Les fonds sont immédiatement disponibles sur votre solde Switch.",
         extras: `
           <div class="flex justify-between"><span>Montant crédité :</span><b class="text-emerald-700 font-mono">+50 000 FCFA</b></div>
-          <div class="flex justify-between"><span>Émetteur :</span><b>Jean Doe (MTN MoMo)</b></div>
-          <div class="flex justify-between"><span>Réf. Transaction :</span><b class="font-mono">#TRX-89421-BJ</b></div>
+          <div class="flex justify-between"><span>Guichet Émetteur :</span><b>Kiosque Switch Saint-Michel (AGT-4092)</b></div>
+          <div class="flex justify-between"><span>Réf. Transaction :</span><b class="font-mono">#TRX-DEP-66419</b></div>
         `,
-        actionLabel: "Voir le Reçu Détaillé",
-        actionUrl: "../d_tail_de_transaction/code.html"
+        actionLabel: "Voir mon Tableau de Bord",
+        actionUrl: "../tableau_de_bord_mis_jour/code.html"
       },
       2: {
         title: "Alerte Sécurité Compte",
