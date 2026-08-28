@@ -241,11 +241,11 @@
         </div>
 
         <!-- Déconnexion -->
-        <a href="../accueil_splash_mis_jour/code.html"
-            class="mt-2 w-full py-4 rounded-3xl text-rose-600 font-bold bg-rose-50 hover:bg-rose-100 transition-colors border border-rose-200 flex items-center justify-center gap-2 no-underline cursor-pointer text-sm">
+        <button onclick="switchLogout()"
+            class="mt-2 w-full py-4 rounded-3xl text-rose-600 font-bold bg-rose-50 hover:bg-rose-100 transition-colors border border-rose-200 flex items-center justify-center gap-2 cursor-pointer text-sm active:scale-98 shadow-xs">
             <span class="material-symbols-outlined" data-icon="logout">logout</span>
             <span data-i18n="logout">Se déconnecter</span>
-        </a>
+        </button>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const savedFullname = localStorage.getItem('switch_user_fullname');

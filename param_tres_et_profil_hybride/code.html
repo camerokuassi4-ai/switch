@@ -701,8 +701,15 @@
     }
 
     function logoutMerchantSession() {
-      if (confirm("Voulez-vous fermer votre session Caisse Marchand Switch ?")) {
-        window.location.href = "../tableau_de_bord_agent_mixte/code.html";
+      if (window.switchLogout) {
+        window.switchLogout("Voulez-vous vraiment fermer votre session Espace Hybride (Boutique & Guichet) ?");
+      } else {
+        if (confirm("Voulez-vous fermer votre session Caisse Marchand Switch ?")) {
+          sessionStorage.clear();
+          localStorage.removeItem('switch_merchant_session_active');
+          localStorage.removeItem('switch_agent_session_active');
+          window.location.href = "../accueil_splash_mis_jour/code.html";
+        }
       }
     }
 

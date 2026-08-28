@@ -371,8 +371,15 @@
     }
 
     function logoutAgent() {
-      localStorage.removeItem('switch_agent_session_active');
-      window.location.href = '../accueil_splash_mis_jour/code.html';
+      if (window.switchLogout) {
+        window.switchLogout("Voulez-vous vraiment fermer votre session Espace Agent Distributeur ?");
+      } else {
+        if (confirm("Voulez-vous vraiment fermer votre session Agent ?")) {
+          sessionStorage.clear();
+          localStorage.removeItem('switch_agent_session_active');
+          window.location.href = '../accueil_splash_mis_jour/code.html';
+        }
+      }
     }
 
     document.addEventListener('DOMContentLoaded', function () {

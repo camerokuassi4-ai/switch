@@ -333,10 +333,12 @@
     }
 
     function logoutMerchant() {
-      if (confirm("Voulez-vous vraiment vous déconnecter de l'Espace Marchand ?")) {
-        if (window.switchNavigate) {
-          window.switchNavigate('../accueil_splash_mis_jour/code.html');
-        } else {
+      if (window.switchLogout) {
+        window.switchLogout("Voulez-vous vraiment vous déconnecter de l'Espace Marchand ?");
+      } else {
+        if (confirm("Voulez-vous vraiment vous déconnecter de l'Espace Marchand ?")) {
+          sessionStorage.clear();
+          localStorage.removeItem('switch_merchant_session_active');
           window.location.href = '../accueil_splash_mis_jour/code.html';
         }
       }

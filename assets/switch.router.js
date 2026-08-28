@@ -910,6 +910,20 @@
     }
   }
 
+  window.switchLogout = function (confirmMsg) {
+    const msg = confirmMsg || "Voulez-vous vraiment vous déconnecter de votre compte Switch ?";
+    if (window.confirm(msg)) {
+      sessionStorage.clear();
+      localStorage.removeItem('switch_agent_session_active');
+      localStorage.removeItem('switch_agent_auth_token');
+      localStorage.removeItem('switch_merchant_session_active');
+      localStorage.removeItem('switch_user_logged_in');
+      localStorage.removeItem('switch_active_role');
+      localStorage.removeItem('switch_auth_token');
+      window.location.href = ROOT + "accueil_splash_mis_jour/code.html";
+    }
+  };
+
   function getCurrentScreen() {
     let path = window.location.pathname || "";
     try { path = decodeURIComponent(path); } catch (e) {}
