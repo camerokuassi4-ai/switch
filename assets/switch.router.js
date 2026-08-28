@@ -432,16 +432,16 @@
       space: "merchant", back: ROOT + "profil_de_l_entreprise/code.html", nav: null, actions: {}
     },
     "support_marchand": { space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: "m-support", actions: {} },
-    "messagerie_marchand_clients": { space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-messages", actions: {} },
-    "liens_de_paiement_marchand": { space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-sales", actions: {} },
-    "carnet_de_dettes_marchand": { space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-debt", actions: {} },
+    "messagerie_marchand_clients": { space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: "m-messages", actions: {} },
+    "liens_de_paiement_marchand": { space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: "m-sales", actions: {} },
+    "carnet_de_dettes_marchand": { space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: "m-debt", actions: {} },
 
     "inscription_agent_switch": {
       space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
       actions: { "Soumettre": ROOT + "agent_verification_caution/code.html", "Continuer": ROOT + "agent_verification_caution/code.html", "S'inscrire": ROOT + "agent_verification_caution/code.html", "Terminer": ROOT + "agent_verification_caution/code.html" }
     },
     "connexion_agent": {
-      space: "agent", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: null, actions: {}
+      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {}
     },
     "tableau_de_bord_agent": {
       space: "agent", back: null, nav: "a-home",
@@ -483,44 +483,19 @@
       actions: { "Enregistrer": ROOT + "tableau_de_bord_agent/code.html" }
     },
     "tableau_de_bord_agent_mixte": {
-      space: "merchant", back: null, nav: "m-home",
+      space: "hybrid", back: null, nav: "h-home",
       actions: {
         "Vitrine": ROOT + "catalogue_produits_services/code.html",
         "Catalogue": ROOT + "catalogue_produits_services/code.html",
         "Caisse": ROOT + "caisse_marchand_pos/code.html",
         "Ventes": ROOT + "historique_des_ventes/code.html",
-        "Messages": ROOT + "catalogue_produits_services/code.html?tab=messages",
+        "Messages": ROOT + "messagerie_marchand_clients/code.html",
         "Guichet": ROOT + "tableau_de_bord_agent/code.html",
         "Agent": ROOT + "tableau_de_bord_agent/code.html"
       }
     },
-    "catalogue_produits_services": {
-      space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-catalog",
-      actions: {
-        "Marketplace": ROOT + "marketplace_boutiques_switch/code.html",
-        "Accueil": ROOT + "tableau_de_bord_agent_mixte/code.html"
-      }
-    },
-    "caisse_marchand_pos": {
-      space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-pos",
-      actions: {
-        "Accueil": ROOT + "tableau_de_bord_agent_mixte/code.html"
-      }
-    },
-    "carnet_de_dettes_marchand": {
-      space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-debt",
-      actions: {
-        "Accueil": ROOT + "tableau_de_bord_agent_mixte/code.html"
-      }
-    },
     "param_tres_et_profil_hybride": {
-      space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-profile",
-      actions: {
-        "Accueil": ROOT + "tableau_de_bord_agent_mixte/code.html"
-      }
-    },
-    "historique_des_ventes": {
-      space: "merchant", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "m-sales",
+      space: "hybrid", back: ROOT + "tableau_de_bord_agent_mixte/code.html", nav: "h-profile",
       actions: {
         "Accueil": ROOT + "tableau_de_bord_agent_mixte/code.html"
       }
@@ -533,41 +508,37 @@
     "margin-left:auto", "margin-right:auto",
     "transform:none", "-webkit-transform:none",
     "width:100%", "max-width:576px",
-    "height:64px",
-    "z-index:90", "display:flex", "align-items:center",
-    "justify-content:space-around", "padding:6px 10px",
-    "padding-bottom:max(8px, env(safe-area-inset-bottom, 8px))",
-    "background:rgba(255, 255, 255, 0.98)",
-    "backdrop-filter:blur(12px)",
-    "-webkit-backdrop-filter:blur(12px)",
-    "border-top:1px solid #ECE6F0",
-    "border-left:1px solid #ECE6F0",
-    "border-right:1px solid #ECE6F0",
-    "border-top-left-radius:24px",
-    "border-top-right-radius:24px",
-    "box-shadow:0 -4px 20px rgba(0,0,0,0.08)",
-    "box-sizing:border-box",
-  ].join(";");
+    "background-color:#ffffff",
+    "border-top:1px solid #E8E5EC",
+    "box-shadow:0 -2px 12px rgba(0,0,0,0.06)",
+    "z-index:9999",
+    "display:flex", "align-items:center", "justify-content:space-around",
+    "padding:6px 0", "height:64px",
+    "box-sizing:border-box"
+  ].join("; ");
 
-  function navItemHTML(href, icon, label, active, badgeCount) {
-    const color = active ? "#5e3bdc" : "#79747E";
-    const badgeHTML = badgeCount ? `<span style="position:absolute;top:-2px;right:calc(50% - 15px);background:#EF4444;color:#ffffff;font-size:9px;font-weight:900;border-radius:99px;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;padding:0 3px;border:1.5px solid #ffffff;box-shadow:0 2px 4px rgba(239,68,68,0.4);">${badgeCount}</span>` : "";
+  function navItemHTML(url, icon, label, isActive, badge) {
+    const activeColor = "#5E3BDC";
+    const inactiveColor = "#79747E";
+    const fillStyle = isActive ? "font-variation-settings: 'FILL' 1;" : "";
+    const badgeHTML = badge ? `<span style="position:absolute;top:2px;right:22%;background:#EF4444;color:#fff;font-size:9px;font-weight:900;border-radius:10px;padding:1px 5px;line-height:1.2;">${badge}</span>` : "";
+
     return `
-  <a href="${href}" data-spa="true" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:${color};text-decoration:none;flex:1;position:relative;">
-    ${badgeHTML}
-    <span class="material-symbols-outlined" style="font-size:22px;${active ? "font-variation-settings:'FILL' 1;" : ""}">${icon}</span>
-    <span class="nav-label" style="font-size:10px;font-weight:${active ? "700" : "500"};color:${color};">${label}</span>
-  </a>`;
+<a href="${url}" class="nav-item" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;padding:4px 8px;border-radius:16px;color:${isActive ? activeColor : inactiveColor};flex:1;min-width:0;">
+  <span class="material-symbols-outlined nav-icon" style="font-size:22px;line-height:1;margin-bottom:2px;${fillStyle}">${icon}</span>
+  <span class="nav-label" style="font-size:10px;font-weight:${isActive ? "800" : "500"};line-height:1.2;white-space:nowrap;">${label}</span>
+  ${badgeHTML}
+</a>`;
   }
 
-  function navCenterItemHTML(href, icon, label, active) {
+  function navCenterItemHTML(url, icon, label, isActive) {
     return `
-  <a href="${href}" data-spa="true" style="display:flex;flex-direction:column;align-items:center;text-decoration:none;position:relative;top:-10px;margin:0 2px;flex:1;">
-    <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.35);transition:transform 0.15s ease;">
-      <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">${icon}</span>
-    </div>
-    <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:1px;">${label}</span>
-  </a>`;
+<a href="${url}" class="nav-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;padding:2px 8px;position:relative;top:-6px;flex:1;min-width:0;">
+  <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.35);">
+    <span class="material-symbols-outlined" style="font-size:22px;line-height:1;">${icon}</span>
+  </div>
+  <span class="nav-label" style="font-size:10px;font-weight:700;line-height:1.2;color:#5E3BDC;margin-top:2px;white-space:nowrap;">${label}</span>
+</a>`;
   }
 
   function navHTML(space, activeTab) {
@@ -581,14 +552,24 @@
   ${navItemHTML(ROOT + "param_tres_g_n_raux/code.html", "settings", "Paramètres", activeTab === "settings" || activeTab === "profile")}
 </nav>`;
     }
-    if (space === "merchant" || space === "hybrid") {
+    if (space === "merchant") {
       return `
-<nav id="switch-nav" role="navigation" aria-label="Navigation Marchand Boutique">
-  ${navItemHTML(ROOT + "tableau_de_bord_agent_mixte/code.html", "home", "Accueil", activeTab === "m-home" || activeTab === "h-home")}
-  ${navItemHTML(ROOT + "catalogue_produits_services/code.html", "storefront", "Vitrine", activeTab === "m-catalog" || activeTab === "m-sales" || activeTab === "m-history")}
-  ${navCenterItemHTML(ROOT + "caisse_marchand_pos/code.html", "point_of_sale", "Caisse POS", activeTab === "m-pos" || activeTab === "m-qr" || activeTab === "h-shop")}
+<nav id="switch-nav" role="navigation" aria-label="Navigation Marchand Pur">
+  ${navItemHTML(ROOT + "tableau_de_bord_marchand/code.html", "home", "Accueil", activeTab === "m-home")}
+  ${navItemHTML(ROOT + "catalogue_produits_services/code.html", "storefront", "Vitrine", activeTab === "m-catalog" || activeTab === "m-sales")}
+  ${navCenterItemHTML(ROOT + "caisse_marchand_pos/code.html", "point_of_sale", "Caisse POS", activeTab === "m-pos" || activeTab === "m-qr")}
   ${navItemHTML(ROOT + "messagerie_marchand_clients/code.html", "chat", "Messages", activeTab === "m-messages" || activeTab === "m-chat", 3)}
-  ${navItemHTML(ROOT + "param_tres_et_profil_hybride/code.html", "manage_accounts", "Profil", activeTab === "m-profile" || activeTab === "h-profile")}
+  ${navItemHTML(ROOT + "profil_de_l_entreprise/code.html", "manage_accounts", "Profil", activeTab === "m-profile")}
+</nav>`;
+    }
+    if (space === "hybrid") {
+      return `
+<nav id="switch-nav" role="navigation" aria-label="Navigation Hybride">
+  ${navItemHTML(ROOT + "tableau_de_bord_agent_mixte/code.html", "home", "Accueil", activeTab === "h-home" || activeTab === "m-home")}
+  ${navItemHTML(ROOT + "services_factures_hybride/code.html", "apps", "Guichet", activeTab === "h-kiosk")}
+  ${navCenterItemHTML(ROOT + "caisse_marchand_pos/code.html", "point_of_sale", "Caisse", activeTab === "h-shop" || activeTab === "m-pos")}
+  ${navItemHTML(ROOT + "cloture_de_caisse_hybride/code.html", "point_of_sale", "Clôture", activeTab === "h-caisse")}
+  ${navItemHTML(ROOT + "param_tres_et_profil_hybride/code.html", "manage_accounts", "Profil", activeTab === "h-profile")}
 </nav>`;
     }
 

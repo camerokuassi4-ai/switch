@@ -145,8 +145,8 @@
         </div>
       </div>
 
-      <!-- Bandeau d'affiliation Boutique & Guichet Hybride -->
-      <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-purple-950 rounded-3xl p-4 text-white shadow-md flex items-center justify-between gap-3 border border-indigo-800/40 relative overflow-hidden">
+      <!-- Bandeau d'affiliation Boutique & Guichet Hybride (Actif uniquement si compte hybride) -->
+      <div id="agent-hybrid-affiliation-banner" class="hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-purple-950 rounded-3xl p-4 text-white shadow-md flex items-center justify-between gap-3 border border-indigo-800/40 relative overflow-hidden">
         <div class="absolute -right-8 -bottom-8 w-28 h-28 bg-indigo-500/10 rounded-full blur-xl pointer-events-none"></div>
         
         <div class="flex items-center gap-3 z-10">
@@ -558,6 +558,12 @@
       if (agentFloat) {
         const floatEl = document.getElementById('float-balance-amount');
         if (floatEl) floatEl.textContent = parseInt(agentFloat).toLocaleString('fr-FR');
+      }
+
+      const isHybrid = localStorage.getItem('switch_is_hybrid') === 'true';
+      const hybBanner = document.getElementById('agent-hybrid-affiliation-banner');
+      if (hybBanner && isHybrid) {
+        hybBanner.classList.remove('hidden');
       }
     });
   </script>
