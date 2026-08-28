@@ -8,14 +8,41 @@
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
 
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#5E3BDC',
+            'primary-hover': '#4D2EC2',
+            'primary-container': '#EADDFF',
+            'on-primary': '#FFFFFF',
+            surface: '#FFFFFF',
+            'on-surface': '#1C1A24',
+            'on-surface-variant': '#5D5A68',
+            'surface-container': '#F3EEFF',
+            'outline': '#79747E',
+            'outline-variant': '#CAC4D0',
+          },
+          spacing: {
+            'container-margin': '16px',
+          }
+        }
+      }
+    };
+  </script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
     body {
       font-family: 'Hanken Grotesk', sans-serif;
-      min-height: max(884px, 100dvh);
-      background-color: #F8F9FD;
-      color: #1C1A24;
+      min-height: 100vh !important;
+      min-height: 100dvh !important;
+      background-color: #F8F9FD !important;
+      color: #1C1A24 !important;
       -webkit-font-smoothing: antialiased;
+      padding-bottom: 24px !important;
     }
 
     .pin-input {
@@ -23,36 +50,36 @@
     }
     .pin-input:focus {
       border-color: #5E3BDC;
-      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.18);
+      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.25);
       background-color: #FFFFFF;
       outline: none;
     }
   </style>
 </head>
-<body class="min-h-screen pb-12 flex flex-col justify-between antialiased selection:bg-primary-fixed">
+<body class="min-h-screen flex flex-col justify-between antialiased">
 
   <!-- Top App Bar -->
   <header class="w-full max-w-lg mx-auto px-container-margin pt-6 pb-2 flex items-center justify-between z-30">
-    <div class="w-10 h-10 rounded-full flex items-center justify-center bg-primary/10 border border-primary/20 text-primary">
-      <span class="material-symbols-outlined text-xl">login</span>
-    </div>
+    <a href="../accueil_splash_mis_jour/code.html" class="w-10 h-10 rounded-full flex items-center justify-center bg-purple-100/70 border border-purple-200 text-[#5E3BDC] shadow-sm hover:bg-purple-100 transition-colors">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </a>
     <div class="text-center">
-      <span class="text-xs font-black uppercase text-primary tracking-wider">Switch Bénin</span>
+      <span class="text-xs font-black uppercase text-[#5E3BDC] tracking-wider">Switch Bénin</span>
     </div>
     <div class="w-10"></div>
   </header>
 
   <!-- Main Content Canvas -->
-  <main class="w-full max-w-lg mx-auto px-container-margin flex flex-col items-center text-center gap-4 pt-2 flex-1 justify-center">
+  <main class="w-full max-w-lg mx-auto px-container-margin flex flex-col items-center text-center gap-3 pt-2 flex-1 justify-center">
     
     <!-- Logo & Welcome -->
-    <div class="flex flex-col items-center gap-2.5 mb-1">
-      <div class="w-12 h-12 rounded-2xl bg-white p-1.5 shadow-sm border border-outline-variant/40 flex items-center justify-center">
+    <div class="flex flex-col items-center gap-2 mb-1">
+      <div class="w-14 h-14 rounded-2xl bg-white p-2 shadow-md border border-purple-100 flex items-center justify-center">
         <img src="../assets/images/img_003.jpg" alt="Logo Switch" class="w-full h-full object-contain rounded-xl"/>
       </div>
-      <div class="space-y-0.5 max-w-xs">
-        <h1 class="text-2xl font-black text-on-surface tracking-tight">Bon retour ! 👋</h1>
-        <p class="text-xs text-on-surface-variant font-medium">
+      <div class="space-y-1 max-w-xs">
+        <h1 class="text-2xl sm:text-3xl font-black text-[#1C1A24] tracking-tight">Bon retour ! 👋</h1>
+        <p class="text-xs sm:text-sm text-[#5D5A68] font-medium leading-relaxed">
           Connectez-vous pour gérer vos transferts et comptes Switch.
         </p>
       </div>
@@ -173,15 +200,17 @@
       el.value = formatted;
     }
 
-    // Préremplissage si utilisateur déjà existant en mémoire
+    // Préremplissage si utilisateur déjà existant en mémoire ou compte test
     document.addEventListener('DOMContentLoaded', () => {
-      const savedPhone = localStorage.getItem('switch_user_phone');
+      const savedPhone = localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_account_number') || localStorage.getItem('switch_user_phone') || '01 90 75 17 86';
       const phoneInp = document.getElementById('login-phone');
-      if (savedPhone && phoneInp && !phoneInp.value) {
+      if (phoneInp && !phoneInp.value) {
         let digits = savedPhone.replace(/\D/g, '');
         if (digits.startsWith('229')) digits = digits.slice(3);
         if (digits.length >= 10) {
-          phoneInp.value = '01 ' + digits.slice(2,4) + ' ' + digits.slice(4,6) + ' ' + digits.slice(6,8) + ' ' + digits.slice(8,10);
+          phoneInp.value = digits.slice(0,2) + ' ' + digits.slice(2,4) + ' ' + digits.slice(4,6) + ' ' + digits.slice(6,8) + ' ' + digits.slice(8,10);
+        } else {
+          phoneInp.value = '01 90 75 17 86';
         }
       }
     });
