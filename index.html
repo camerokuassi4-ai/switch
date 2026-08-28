@@ -55,8 +55,8 @@
     }
 
     .space-card {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(202, 190, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(202, 190, 255, 0.25);
       border-radius: 20px;
       padding: clamp(14px, 2.5vw, 20px);
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -65,50 +65,52 @@
     }
 
     .space-card:hover {
-      background: rgba(94, 59, 220, 0.22);
-      border-color: rgba(202, 190, 255, 0.45);
+      background: rgba(94, 59, 220, 0.3);
+      border-color: rgba(202, 190, 255, 0.6);
       transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(94, 59, 220, 0.2);
+      box-shadow: 0 12px 30px rgba(94, 59, 220, 0.35);
     }
 
     .screen-link {
-      display: block;
-      color: rgba(202, 190, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #F3EEFF !important;
       font-size: 13px;
-      padding: 7px 10px;
-      border-radius: 10px;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 12px;
       text-decoration: none;
       transition: all 0.15s ease;
-      border: 1px solid transparent;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(202, 190, 255, 0.15);
+      margin-bottom: 2px;
     }
 
     .screen-link:hover {
-      background: rgba(94, 59, 220, 0.35);
-      color: #ffffff;
-      border-color: rgba(202, 190, 255, 0.3);
-      padding-left: 14px;
+      background: rgba(94, 59, 220, 0.6) !important;
+      color: #ffffff !important;
+      border-color: rgba(202, 190, 255, 0.5);
+      transform: translateX(3px);
     }
 
     .screens-grid {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      max-height: 240px;
+      gap: 5px;
+      max-height: 260px;
       overflow-y: auto;
-      padding: 4px 2px;
+      padding: 6px 2px;
     }
 
     .screens-grid::-webkit-scrollbar { width: 5px; }
     .screens-grid::-webkit-scrollbar-track { background: transparent; }
-    .screens-grid::-webkit-scrollbar-thumb { background: rgba(202, 190, 255, 0.3); border-radius: 4px; }
+    .screens-grid::-webkit-scrollbar-thumb { background: rgba(202, 190, 255, 0.4); border-radius: 4px; }
 
     .badge {
       display: inline-block;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.04em;
       padding: 3px 9px;
       border-radius: 999px;
@@ -122,14 +124,13 @@
       justify-content: center;
       gap: 10px;
       width: 100%;
-      max-width: 440px;
-      margin: 0 auto;
-      padding: 16px 28px;
+      padding: 14px 20px;
       border-radius: 9999px;
-      font-size: 16px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 800;
       text-decoration: none;
       transition: all 0.25s;
+      cursor: pointer;
     }
 
     .launch-btn-primary {
@@ -143,6 +144,28 @@
       transform: translateY(-2px);
       box-shadow: 0 14px 34px rgba(94, 59, 220, 0.6);
     }
+
+    .launch-btn-agent {
+      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+      color: #ffffff;
+      box-shadow: 0 10px 28px rgba(249, 115, 22, 0.35);
+    }
+
+    .launch-btn-agent:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px rgba(249, 115, 22, 0.5);
+    }
+
+    .launch-btn-merchant {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      box-shadow: 0 10px 28px rgba(16, 185, 129, 0.35);
+    }
+
+    .launch-btn-merchant:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px rgba(16, 185, 129, 0.5);
+    }
   </style>
 </head>
 <body>
@@ -152,27 +175,35 @@
 
     <!-- En-tête / Logo -->
     <div style="text-align: center; margin-bottom: 24px;">
-      <div style="width: 68px; height: 68px; background: rgba(94, 59, 220, 0.35); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; border: 1px solid rgba(202, 190, 255, 0.35); box-shadow: 0 8px 24px rgba(94, 59, 220, 0.3);">
+      <div style="width: 68px; height: 68px; background: rgba(94, 59, 220, 0.45); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; border: 1px solid rgba(202, 190, 255, 0.5); box-shadow: 0 8px 24px rgba(94, 59, 220, 0.4);">
         <span class="material-symbols-outlined" style="font-size: 36px; color: #cabeff;">swap_horiz</span>
       </div>
-      <h1 style="color: #ffffff; font-size: clamp(24px, 4vw, 32px); font-weight: 800; margin: 0 0 6px; letter-spacing: -0.02em;">Switch Bénin</h1>
-      <p style="color: rgba(202, 190, 255, 0.8); font-size: clamp(13px, 2vw, 15px); margin: 0;">
-        Application Fintech Multi-Écrans (Android, iPhone, iPad & Tablettes) · 65 écrans
+      <h1 style="color: #ffffff; font-size: clamp(24px, 4vw, 34px); font-weight: 900; margin: 0 0 6px; letter-spacing: -0.02em;">Switch Bénin 🇧🇯</h1>
+      <p style="color: #E2D9FF; font-size: clamp(13px, 2vw, 15px); margin: 0; font-weight: 500;">
+        Application Fintech Nationale Multi-Écrans · Connectée en direct à Supabase Cloud
       </p>
     </div>
 
-    <!-- Bouton lancement principal -->
-    <div style="text-align: center; margin-bottom: 24px;">
-      <a href="accueil_splash_mis_jour/code.html" class="launch-btn launch-btn-primary">
-        <span class="material-symbols-outlined" style="font-size: 22px;">rocket_launch</span>
-        <span>Lancer l'application mobile</span>
+    <!-- 3 Boutons d'accès directs par Espace -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 28px;">
+      <a href="tableau_de_bord_mis_jour/code.html" class="launch-btn launch-btn-primary">
+        <span class="material-symbols-outlined" style="font-size: 20px;">account_balance_wallet</span>
+        <span>Espace Client (Particulier)</span>
+      </a>
+      <a href="tableau_de_bord_agent/code.html" class="launch-btn launch-btn-agent">
+        <span class="material-symbols-outlined" style="font-size: 20px;">support_agent</span>
+        <span>Espace Agent Guichet</span>
+      </a>
+      <a href="tableau_de_bord_marchand/code.html" class="launch-btn launch-btn-merchant">
+        <span class="material-symbols-outlined" style="font-size: 20px;">storefront</span>
+        <span>Espace Marchand & POS</span>
       </a>
     </div>
 
     <!-- Séparateur -->
-    <div style="border-top: 1px solid rgba(202, 190, 255, 0.15); padding-top: 18px;">
-      <p style="color: rgba(202, 190, 255, 0.6); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; margin: 0 0 16px; text-align: center;">
-        Navigation directe par espace
+    <div style="border-top: 1px solid rgba(202, 190, 255, 0.2); padding-top: 18px;">
+      <p style="color: #D2C4FF; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 800; margin: 0 0 16px; text-align: center;">
+        Catalogue Complet des Écrans par Espace
       </p>
 
       <!-- Grille responsive des 3 espaces (1 colonne sur phone, 3 colonnes sur tablette/iPad) -->
@@ -180,24 +211,41 @@
 
         <!-- 1. Espace Utilisateur -->
         <div class="space-card">
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(202,190,255,0.1);">
-            <div style="width: 32px; height: 32px; border-radius: 10px; background: rgba(94, 59, 220, 0.4); display: flex; align-items: center; justify-content: center;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(202,190,255,0.2);">
+            <div style="width: 32px; height: 32px; border-radius: 10px; background: rgba(94, 59, 220, 0.5); display: flex; align-items: center; justify-content: center;">
               <span class="material-symbols-outlined" style="color: #cabeff; font-size: 18px;">person</span>
             </div>
-            <span style="color: #fff; font-weight: 700; font-size: 15px;">Utilisateur</span>
-            <span class="badge" style="background: rgba(94, 59, 220, 0.4); color: #cabeff;">33 écrans</span>
+            <span style="color: #fff; font-weight: 800; font-size: 15px;">Utilisateur</span>
+            <span class="badge" style="background: rgba(94, 59, 220, 0.5); color: #cabeff;">33 écrans</span>
           </div>
           <div class="screens-grid">
-            <a class="screen-link" href="accueil_splash_mis_jour/code.html">Accueil Splash</a>
-            <a class="screen-link" href="choix_type_compte/code.html">Choix profil</a>
+            <a class="screen-link" href="tableau_de_bord_mis_jour/code.html"><b>Tableau de bord Client ⭐</b></a>
+            <a class="screen-link" href="d_p_t_de_fonds/code.html">Dépôt d'espèces</a>
+            <a class="screen-link" href="retrait_de_fonds/code.html">Retrait d'espèces (Code OTP)</a>
+            <a class="screen-link" href="transfert_switch_switch/code.html">Transfert Switch à Switch</a>
+            <a class="screen-link" href="centre_de_notifications/code.html">Centre de Notifications</a>
+            <a class="screen-link" href="historique_des_transactions/code.html">Historique des Transactions</a>
+            <a class="screen-link" href="marketplace_boutiques_switch/code.html">Marketplace & Shopping</a>
+            <a class="screen-link" href="paiement_sbee_electricite/code.html">Recharge Électricité SBEE</a>
+            <a class="screen-link" href="paiement_soneb_eau/code.html">Facture d'Eau SONEB</a>
+            <a class="screen-link" href="recharge_credit_data/code.html">Crédit & Forfaits Data</a>
+            <a class="screen-link" href="scanner_qr_code/code.html">Payer par Scanner QR</a>
+            <a class="screen-link" href="coffre_epargne_vault/code.html">Coffre Épargne (Vault)</a>
+            <a class="screen-link" href="mes_tontines/code.html">Tontines Digitales</a>
+            <a class="screen-link" href="mes_cagnottes/code.html">Cagnottes en Ligne</a>
+            <a class="screen-link" href="achats_en_ligne_cartes_virtuelles/code.html">Cartes Bancaires Virtuelles</a>
+            <a class="screen-link" href="carte_agents_guichets/code.html">Carte des Agents GPS</a>
+            <a class="screen-link" href="accueil_splash_mis_jour/code.html">Écran Splash Accueil</a>
+            <a class="screen-link" href="choix_type_compte/code.html">Choix du Profil</a>
             <a class="screen-link" href="connexion/code.html">Connexion</a>
             <a class="screen-link" href="inscription/code.html">Inscription</a>
-            <a class="screen-link" href="v_rification_otp/code.html">Vérif. OTP</a>
-            <a class="screen-link" href="cr_ation_code_pin/code.html">Création PIN</a>
-            <a class="screen-link" href="verrouillage_pin/code.html">Verrou PIN</a>
-            <a class="screen-link" href="reinitialisation_code_pin/code.html">PIN oublié (OTP)</a>
-            <a class="screen-link" href="succes_reinitialisation_pin/code.html">Succès PIN</a>
-            <a class="screen-link" href="modification_du_code_pin/code.html">Modifier PIN</a>
+            <a class="screen-link" href="v_rification_otp/code.html">Vérification OTP SMS</a>
+            <a class="screen-link" href="cr_ation_code_pin/code.html">Création Code PIN</a>
+            <a class="screen-link" href="verrouillage_pin/code.html">Écran de Verrouillage PIN</a>
+            <a class="screen-link" href="reinitialisation_code_pin/code.html">Réinitialiser Code PIN</a>
+            <a class="screen-link" href="kyc_verification_identite/code.html">Vérification KYC (CIP/CNI)</a>
+            <a class="screen-link" href="profil_utilisateur/code.html">Mon Profil Utilisateur</a>
+            <a class="screen-link" href="support_aide/code.html">Centre d'Assistance & Aide</a>
             <a class="screen-link" href="bienvenue_succes_onboarding/code.html">Bienvenue (Niv 1)</a>
             <a class="screen-link" href="tableau_de_bord_mis_jour/code.html">Tableau de bord</a>
             <a class="screen-link" href="historique_des_transactions/code.html">Historique</a>
