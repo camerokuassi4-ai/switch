@@ -79,13 +79,26 @@
     <form onsubmit="handleTransferSubmit(event)" class="bg-white p-5 rounded-3xl shadow-sm border border-outline-variant/40 flex flex-col gap-4">
       <!-- Phone Number Input -->
       <div class="flex flex-col gap-1.5">
-        <label class="text-xs font-bold text-on-surface-variant uppercase" for="phone">Numéro du Bénéficiaire</label>
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-bold text-on-surface-variant uppercase" for="phone">Numéro du Bénéficiaire (10 chiffres)</label>
+          <span id="detected-op-badge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">🟡 MTN MoMo</span>
+        </div>
         <div class="flex items-center rounded-2xl border border-outline-variant bg-surface-container-low focus-within:border-primary focus-within:bg-white transition-all overflow-hidden">
           <div class="pl-4 pr-3 py-3.5 bg-surface-container text-on-surface-variant font-bold text-sm flex items-center gap-1.5 border-r border-outline-variant">
             <span>🇧🇯</span>
-            <span class="font-mono text-xs">+229</span>
+            <span class="font-mono text-xs font-bold">+229</span>
           </div>
-          <input class="flex-1 bg-transparent border-none py-3 px-4 text-base font-mono font-bold text-on-surface focus:ring-0 outline-none" id="phone" placeholder="97 00 00 00" type="tel" required value="97 55 44 33"/>
+          <input 
+            class="flex-1 bg-transparent border-none py-3 px-4 text-base font-mono font-extrabold text-on-surface focus:ring-0 outline-none" 
+            id="phone" 
+            placeholder="01 97 00 00 00" 
+            type="tel" 
+            maxlength="14"
+            required 
+            value="01 97 55 44 33"
+            oninput="handleTransferPhoneInput(this)"
+            onfocus="if(!this.value) this.value='01 ';"
+          />
         </div>
       </div>
 
@@ -141,6 +154,42 @@
         }
       });
       document.getElementById('btn-op-label').textContent = op;
+      
+      const badge = document.getElementById('detected-op-badge');
+      if (op === 'MTN MoMo') {
+        badge.className = "text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300";
+        badge.textContent = "🟡 MTN MoMo";
+      } else if (op === 'Moov Money') {
+        badge.className = "text-[10px] font-black px-2 py-0.5 rounded-full bg-blue-100 text-blue-900 border border-blue-300";
+        badge.textContent = "🔵 Moov Money";
+      } else if (op === 'Celtiis Cash') {
+        badge.className = "text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300";
+        badge.textContent = "🟢 Celtiis Cash";
+      }
+    }
+
+    function handleTransferPhoneInput(input) {
+      let raw = input.value.replace(/\D/g, '');
+      if (raw.length > 10) raw = raw.substring(0, 10);
+
+      // Auto-format as 01 XX XX XX XX
+      let formatted = '';
+      for (let i = 0; i < raw.length; i++) {
+        if (i === 2 || i === 4 || i === 6 || i === 8) formatted += ' ';
+        formatted += raw[i];
+      }
+      input.value = formatted;
+
+      if (raw.length >= 4) {
+        const prefix = raw.substring(0, 4);
+        if (/^01(96|97|61|62|51|52|53|54|66|67|42|46)/.test(prefix)) {
+          selectOperator('MTN MoMo');
+        } else if (/^01(95|94|60|63|64|65|68|98)/.test(prefix)) {
+          selectOperator('Moov Money');
+        } else if (/^01(40|41|43|44|45|47|48|49|90|91)/.test(prefix)) {
+          selectOperator('Celtiis Cash');
+        }
+      }
     }
 
     function updateFee() {
@@ -158,8 +207,8 @@
       const fee = Math.max(50, Math.round(amt * 0.01));
       const total = amt + fee;
 
-      if (!phone) {
-        alert("Veuillez saisir un numéro de téléphone valide.");
+      if (!phone || phone.replace(/\D/g, '').length < 10) {
+        alert("Veuillez saisir un numéro de téléphone Bénin valide à 10 chiffres (commençant par 01).");
         return;
       }
       if (amt < 500) {
