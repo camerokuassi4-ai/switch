@@ -325,15 +325,15 @@
 
       <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-soft divide-y divide-outline-variant/30 overflow-hidden">
         
-        <!-- Opération 1 : Dépôt MTN MoMo -->
+        <!-- Opération 1 : Dépôt Espèces Client Switch -->
         <div class="p-3.5 flex items-center justify-between hover:bg-surface-container-low/40 transition-colors">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-700 flex items-center justify-center font-bold text-sm">
+            <div class="w-10 h-10 rounded-2xl bg-purple-50 text-indigo-700 flex items-center justify-center font-bold text-sm">
               <span class="material-symbols-outlined text-lg">arrow_downward</span>
             </div>
             <div>
-              <h4 class="text-xs font-bold text-gray-900">Dépôt Client MTN MoMo</h4>
-              <p class="text-[10px] text-gray-500 font-mono">Client : +229 97 •• •• 89 • Il y a 12 min</p>
+              <h4 class="text-xs font-bold text-gray-900">Dépôt Espèces Client Switch</h4>
+              <p class="text-[10px] text-gray-500 font-mono">Client : Compte Switch • Il y a 12 min</p>
             </div>
           </div>
           <div class="text-right">
@@ -645,6 +645,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', loadAgentDashboardData);
+    window.addEventListener('pageshow', loadAgentDashboardData);
+    window.addEventListener('storage', loadAgentDashboardData);
+    loadAgentDashboardData();
   </script>
 
   <script src="../assets/switch.router.js"></script>

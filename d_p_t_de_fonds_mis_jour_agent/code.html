@@ -38,7 +38,6 @@
       box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.12);
     }
 
-    /* Modal Animation */
     .modal-enter {
       animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
@@ -48,7 +47,6 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    /* Quick pill transition */
     .pill-active {
       background-color: #5E3BDC !important;
       color: #FFFFFF !important;
@@ -85,125 +83,75 @@
     <!-- Form Container -->
     <form id="deposit-form" onsubmit="event.preventDefault(); openPinConfirmation();" class="flex flex-col gap-4">
 
-      <!-- 1. Réseau de Destination -->
+      <!-- 1. Identification du Bénéficiaire (Compte Switch Bénin) -->
       <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
         <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
           <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-lg">account_balance_wallet</span>
-            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">1. Réseau de destination</h2>
-          </div>
-          <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Sans frais client</span>
-        </div>
-
-        <!-- Network Selector Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          
-          <!-- Switch Bénin (Recommandé) -->
-          <div onclick="selectNetwork('switch')" id="net-card-switch" class="p-3 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center shadow-xs">
-            <div class="w-9 h-9 rounded-xl bg-primary text-white flex items-center justify-center font-black text-xs">
-              SW
-            </div>
-            <span class="text-xs font-bold text-on-surface">Switch Bénin</span>
-            <span class="text-[9px] font-black text-primary bg-white px-1.5 py-0.2 rounded-md border border-primary/20">Com. Max</span>
-          </div>
-
-          <!-- MTN MoMo -->
-          <div onclick="selectNetwork('mtn')" id="net-card-mtn" class="p-3 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-yellow-400 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center">
-            <div class="w-9 h-9 rounded-xl bg-yellow-400 text-black flex items-center justify-center font-black text-xs shadow-xs">
-              MoMo
-            </div>
-            <span class="text-xs font-bold text-on-surface">MTN MoMo</span>
-            <span class="text-[9px] font-bold text-gray-500">Bénin</span>
-          </div>
-
-          <!-- Moov Money -->
-          <div onclick="selectNetwork('moov')" id="net-card-moov" class="p-3 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-blue-500 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center">
-            <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-xs shadow-xs">
-              Moov
-            </div>
-            <span class="text-xs font-bold text-on-surface">Moov Money</span>
-            <span class="text-[9px] font-bold text-gray-500">Flooz</span>
-          </div>
-
-          <!-- Celtiis Cash -->
-          <div onclick="selectNetwork('celtiis')" id="net-card-celtiis" class="p-3 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-emerald-500 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center">
-            <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-xs shadow-xs">
-              Celtiis
-            </div>
-            <span class="text-xs font-bold text-on-surface">Celtiis Cash</span>
-            <span class="text-[9px] font-bold text-gray-500">SBIN</span>
-          </div>
-
-        </div>
-        <input type="hidden" id="selectedNetwork" value="switch"/>
-      </section>
-
-      <!-- 2. Identification du Bénéficiaire (Numéro de Compte Switch 10 chiffres) -->
-      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
-        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-lg" id="id-section-icon">account_balance</span>
-            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider" id="id-section-title">2. Numéro de Compte Switch (10 chiffres)</h2>
+            <span class="material-symbols-outlined text-primary text-lg">account_balance</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">1. Compte Switch du Client</h2>
           </div>
           <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-            Recherche Instantanée
+            Switch Bénin 🇧🇯
           </span>
         </div>
 
         <!-- Input Container -->
-        <div class="flex flex-col gap-1.5">
-          
-          <!-- Numéro de Compte Switch 10 chiffres Input -->
+        <div class="flex flex-col gap-2">
+          <label class="text-[11px] font-semibold text-gray-600">Numéro de Téléphone (10 chiffres) ou Numéro de Compte Switch :</label>
           <div id="rib-input-wrapper" class="input-focus flex items-center rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 overflow-hidden">
             <div class="flex items-center gap-1.5 px-3.5 py-3.5 bg-purple-50 border-r border-outline-variant/50 text-xs font-bold text-primary select-none shrink-0">
-              <span class="material-symbols-outlined text-base">account_balance</span>
-              <span class="font-mono font-bold">N° Compte</span>
+              <span class="material-symbols-outlined text-base">person_search</span>
+              <span class="font-mono font-bold">Client</span>
             </div>
-            <input type="text" id="clientRib" value="9500000012" maxlength="10" oninput="handleRibInput(this.value)" placeholder="Ex: 9500000012" class="w-full bg-transparent border-0 py-3 px-3.5 text-sm sm:text-base font-mono font-black text-primary placeholder:text-gray-400 focus:ring-0 focus:outline-none"/>
-            <button type="button" onclick="pickDemoClientRib('9500000012', 'Koffi MENSAH')" class="px-3 py-1.5 mr-2 rounded-xl bg-purple-50 text-primary text-[10px] font-bold hover:bg-purple-100 transition-colors shrink-0 cursor-pointer" title="Remplir un client test">
-              Récent
-            </button>
+            <input 
+              type="tel" 
+              id="clientIdentifier" 
+              value="" 
+              maxlength="16" 
+              oninput="handleClientLookup(this.value)" 
+              placeholder="Ex: 01 97 12 34 56" 
+              required
+              class="w-full bg-transparent border-0 py-3 px-3.5 text-sm sm:text-base font-mono font-black text-primary placeholder:text-gray-400 focus:ring-0 focus:outline-none"
+            />
           </div>
 
-          <!-- Verified Client Card / Badge -->
-          <div id="verified-client-box" class="p-3 rounded-2xl bg-emerald-50/80 border border-emerald-200/80 flex items-center justify-between transition-all">
-            <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-emerald-700 text-lg">verified_user</span>
+          <!-- Verified Client Card / Badge (Appears dynamically upon valid input) -->
+          <div id="verified-client-box" class="hidden p-3.5 rounded-2xl bg-emerald-50/90 border border-emerald-200 flex items-center justify-between transition-all">
+            <div class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-emerald-700 text-xl">verified_user</span>
               <div class="flex flex-col">
-                <span id="verified-client-name" class="text-xs font-black text-emerald-900">Koffi MENSAH</span>
-                <span id="verified-client-desc" class="text-[10px] text-emerald-700 font-mono">Compte Switch Vérifié • N° Compte : 9500000012</span>
+                <span id="verified-client-name" class="text-xs font-black text-emerald-950">Client Switch</span>
+                <span id="verified-client-desc" class="text-[10px] text-emerald-700 font-mono">Compte Particulier Switch Actif</span>
               </div>
             </div>
-            <span class="text-[10px] font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-full border border-emerald-200">Actif 🟢</span>
-          </div>
-
-          <!-- Quick Recent Clients Pills -->
-          <div id="recent-pills-row" class="flex items-center gap-1.5 pt-1 overflow-x-auto pb-1 text-[10px]">
-            <span class="text-gray-400 font-medium shrink-0">Récents :</span>
-            <button type="button" onclick="pickDemoClientRib('9500000012', 'Koffi MENSAH')" class="px-2.5 py-1 rounded-full bg-gray-100 hover:bg-purple-50 hover:text-primary text-gray-700 font-bold shrink-0 cursor-pointer font-mono">
-              Koffi M. (9500000012)
-            </button>
-            <button type="button" onclick="pickDemoClientRib('9700112248', 'Mariam SANNI')" class="px-2.5 py-1 rounded-full bg-gray-100 hover:bg-purple-50 hover:text-primary text-gray-700 font-bold shrink-0 cursor-pointer font-mono">
-              Mariam S. (9700112248)
-            </button>
+            <span class="text-[10px] font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-full border border-emerald-200">Vérifié 🟢</span>
           </div>
         </div>
       </section>
 
-      <!-- 3. Montant du Dépôt en Espèces -->
+      <!-- 2. Montant du Dépôt en Espèces -->
       <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
         <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
           <div class="flex items-center gap-2">
             <span class="material-symbols-outlined text-primary text-lg">payments</span>
-            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">3. Montant remis en espèces (Cash)</h2>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">2. Montant remis en espèces (Cash)</h2>
           </div>
           <span class="text-[10px] font-mono text-gray-500 font-bold">Min: 500 F</span>
         </div>
 
-        <!-- Big Amount Display Input -->
+        <!-- Amount Input -->
         <div class="flex flex-col gap-2">
           <div class="input-focus flex items-center justify-between rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 px-4 py-3.5">
-            <input type="number" id="depositAmount" required oninput="calculateCommission(this.value)" value="25000" min="500" max="1500000" class="w-full bg-transparent border-0 p-0 text-2xl sm:text-3xl font-mono font-black text-on-surface placeholder:text-gray-300 focus:ring-0 focus:outline-none"/>
+            <input 
+              type="number" 
+              id="depositAmount" 
+              required 
+              oninput="calculateCommission(this.value)" 
+              value="25000" 
+              min="500" 
+              max="5000000" 
+              class="w-full bg-transparent border-0 p-0 text-2xl sm:text-3xl font-mono font-black text-on-surface placeholder:text-gray-300 focus:ring-0 focus:outline-none"
+            />
             <span class="text-base sm:text-lg font-extrabold text-primary shrink-0 ml-2">FCFA</span>
           </div>
 
@@ -240,7 +188,7 @@
 
           <!-- Impact Float -->
           <div class="flex items-center justify-between text-xs pt-2 border-t border-purple-200/60">
-            <span class="text-gray-600 font-medium">Votre Float après opération :</span>
+            <span class="text-gray-600 font-medium">Votre Float restant après opération :</span>
             <span id="remaining-float-text" class="font-mono font-black text-primary text-xs">
               1 475 000 FCFA
             </span>
@@ -291,11 +239,11 @@
       <div class="p-3.5 rounded-2xl bg-surface-container-low/60 border border-outline-variant/60 flex flex-col gap-2">
         <div class="flex items-center justify-between text-xs">
           <span class="text-gray-500 font-medium">Bénéficiaire :</span>
-          <b id="modal-recap-client" class="text-on-surface font-bold">Koffi MENSAH (+229 97 45 67 89)</b>
+          <b id="modal-recap-client" class="text-on-surface font-bold">Client Switch</b>
         </div>
         <div class="flex items-center justify-between text-xs">
           <span class="text-gray-500 font-medium">Réseau :</span>
-          <b id="modal-recap-network" class="text-primary font-bold">Switch Bénin</b>
+          <b class="text-primary font-bold">Compte Switch Bénin 🇧🇯</b>
         </div>
         <div class="flex items-center justify-between text-xs pt-1.5 border-t border-outline-variant/40">
           <span class="text-gray-700 font-bold">Montant à créditer :</span>
@@ -337,61 +285,13 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- MODAL : Succès du Dépôt & Reçu Imprimable -->
-  <!-- ============================================================ -->
-  <div id="success-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl modal-enter flex flex-col items-center text-center gap-4">
-      
-      <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center animate-bounce">
-        <span class="material-symbols-outlined text-3xl">check_circle</span>
-      </div>
-
-      <div>
-        <h3 class="text-lg font-black text-on-surface">Dépôt Réussi !</h3>
-        <p class="text-xs text-on-surface-variant mt-0.5">Le compte client a été crédité avec succès.</p>
-      </div>
-
-      <div class="w-full bg-gray-50 rounded-2xl p-4 border border-gray-200 flex flex-col gap-2 text-xs">
-        <div class="flex justify-between text-gray-500">
-          <span>Réf. Transaction :</span>
-          <b id="receipt-ref" class="text-gray-800 font-mono">TRX-DEP-84920</b>
-        </div>
-        <div class="flex justify-between text-gray-500">
-          <span>Client :</span>
-          <b id="receipt-client" class="text-gray-800 font-bold">Koffi MENSAH</b>
-        </div>
-        <div class="flex justify-between text-gray-500">
-          <span>Montant crédité :</span>
-          <b id="receipt-amount" class="text-primary font-mono font-black text-sm">25 000 FCFA</b>
-        </div>
-        <div class="flex justify-between text-emerald-700 font-bold pt-2 border-t border-gray-200">
-          <span>Commission perçue :</span>
-          <span id="receipt-commission" class="font-mono">+175 FCFA</span>
-        </div>
-      </div>
-
-      <div class="w-full flex flex-col gap-2 pt-1">
-        <button onclick="window.print()" class="w-full py-3 rounded-full bg-surface-container text-on-surface font-bold text-xs hover:bg-surface-container-high transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
-          <span class="material-symbols-outlined text-base">print</span>
-          <span>Imprimer le Reçu Client</span>
-        </button>
-        <button onclick="finishDeposit()" class="w-full py-3.5 rounded-full bg-primary text-white font-bold text-xs hover:opacity-90 transition-opacity cursor-pointer">
-          Retour au Tableau de Bord
-        </button>
-      </div>
-
-    </div>
-  </div>
-
   <!-- Router Script -->
   <script src="../assets/switch.router.js"></script>
 
   <!-- Interactive Terminal Logic -->
   <script>
-    let initialFloat = 1500000;
+    let currentAgentFloat = parseInt((localStorage.getItem('switch_agent_float') || '1500000').replace(/\s/g, ''), 10);
     let pinCode = "";
-    let switchIdMode = "rib"; // 'rib' or 'phone'
 
     function goBack() {
       if (window.history.length > 1) {
@@ -401,98 +301,8 @@
       }
     }
 
-    // 1. Sélection du Réseau
-    function selectNetwork(netKey) {
-      document.getElementById('selectedNetwork').value = netKey;
-      const nets = ['switch', 'mtn', 'moov', 'celtiis'];
-      
-      nets.forEach(n => {
-        const card = document.getElementById(`net-card-${n}`);
-        if (card) {
-          if (n === netKey) {
-            card.className = "p-3 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center shadow-xs";
-          } else {
-            card.className = "p-3 rounded-2xl border border-outline-variant/60 bg-surface-container-low/40 hover:border-gray-300 cursor-pointer transition-all flex flex-col items-center gap-1.5 text-center";
-          }
-        }
-      });
-
-      const toggle = document.getElementById('switch-id-toggle');
-      const sectionTitle = document.getElementById('id-section-title');
-      const sectionIcon = document.getElementById('id-section-icon');
-
-      if (netKey === 'switch') {
-        toggle.classList.remove('hidden');
-        sectionTitle.textContent = "2. RIB Compte Switch Bénin";
-        sectionIcon.textContent = "account_balance";
-        setSwitchIdMode(switchIdMode);
-      } else {
-        toggle.classList.add('hidden');
-        const netName = (netKey === 'mtn') ? 'MTN MoMo' : (netKey === 'moov' ? 'Moov Money' : 'Celtiis Cash');
-        sectionTitle.textContent = `2. Numéro ${netName} (+229)`;
-        sectionIcon.textContent = "phone_android";
-        showPhoneInputOnly();
-      }
-
-      calculateCommission(document.getElementById('depositAmount').value);
-    }
-
-    // 2. Bascule Mode RIB vs Téléphone pour Switch
-    function setSwitchIdMode(mode) {
-      switchIdMode = mode;
-      const btnRib = document.getElementById('toggle-btn-rib');
-      const btnPhone = document.getElementById('toggle-btn-phone');
-      const ribWrap = document.getElementById('rib-input-wrapper');
-      const phoneWrap = document.getElementById('phone-input-wrapper');
-      const pillsRow = document.getElementById('recent-pills-row');
-
-      if (mode === 'rib') {
-        btnRib.className = "px-2.5 py-1 rounded-lg bg-white text-primary shadow-xs transition-all cursor-pointer";
-        btnPhone.className = "px-2.5 py-1 rounded-lg text-gray-500 hover:text-on-surface transition-all cursor-pointer";
-        ribWrap.classList.remove('hidden');
-        phoneWrap.classList.add('hidden');
-        pillsRow.innerHTML = `
-          <span class="text-gray-400 font-medium shrink-0">Récents :</span>
-          <button type="button" onclick="pickDemoClientRib('BJ062 01001 12345678901 45', 'Koffi MENSAH')" class="px-2.5 py-1 rounded-full bg-gray-100 hover:bg-purple-50 hover:text-primary text-gray-700 font-bold shrink-0 cursor-pointer font-mono">
-            Koffi M. (BJ062 •••• 45)
-          </button>
-          <button type="button" onclick="pickDemoClientRib('BJ062 01001 98765432109 12', 'Mariam SANNI')" class="px-2.5 py-1 rounded-full bg-gray-100 hover:bg-purple-50 hover:text-primary text-gray-700 font-bold shrink-0 cursor-pointer font-mono">
-            Mariam S. (BJ062 •••• 12)
-          </button>
-        `;
-      } else {
-        btnPhone.className = "px-2.5 py-1 rounded-lg bg-white text-primary shadow-xs transition-all cursor-pointer";
-        btnRib.className = "px-2.5 py-1 rounded-lg text-gray-500 hover:text-on-surface transition-all cursor-pointer";
-        ribWrap.classList.add('hidden');
-        phoneWrap.classList.remove('hidden');
-        pillsRow.innerHTML = `
-          <span class="text-gray-400 font-medium shrink-0">Récents :</span>
-          <button type="button" onclick="pickDemoClientPhone('97456789', 'Koffi MENSAH')" class="px-2.5 py-1 rounded-full bg-gray-100 hover:bg-purple-50 hover:text-primary text-gray-700 font-bold shrink-0 cursor-pointer">
-            Koffi M. (97 45 67 89)
-          </button>
-          <button type="button" onclick="pickDemoClientPhone('95123456', 'Mariam SANNI')" class="px-2.5 py-1 rounded-full bg-gray-100 hover:bg-purple-50 hover:text-primary text-gray-700 font-bold shrink-0 cursor-pointer">
-            Mariam S. (95 12 34 56)
-          </button>
-        `;
-      }
-    }
-
-    function showPhoneInputOnly() {
-      document.getElementById('rib-input-wrapper').classList.add('hidden');
-      document.getElementById('phone-input-wrapper').classList.remove('hidden');
-      document.getElementById('recent-pills-row').innerHTML = `
-        <span class="text-gray-400 font-medium shrink-0">Récents :</span>
-        <button type="button" onclick="pickDemoClientPhone('97456789', 'Koffi MENSAH')" class="px-2.5 py-1 rounded-full bg-gray-100 hover:bg-purple-50 hover:text-primary text-gray-700 font-bold shrink-0 cursor-pointer">
-          Koffi M. (97 45 67 89)
-        </button>
-        <button type="button" onclick="pickDemoClientPhone('95123456', 'Mariam SANNI')" class="px-2.5 py-1 rounded-full bg-gray-100 hover:bg-purple-50 hover:text-primary text-gray-700 font-bold shrink-0 cursor-pointer">
-          Mariam S. (95 12 34 56)
-        </button>
-      `;
-    }
-
-    // 3. Détection & Recherche Client
-    function handleRibInput(val) {
+    // 1. Détection & Recherche Client Dynamique
+    function handleClientLookup(val) {
       const clean = val.replace(/\s+/g, '');
       const clientBox = document.getElementById('verified-client-box');
       const clientName = document.getElementById('verified-client-name');
@@ -500,55 +310,24 @@
 
       if (clean.length >= 6) {
         clientBox.classList.remove('hidden');
-        if (clean.includes('1234')) {
-          clientName.textContent = "Koffi MENSAH";
-          clientDesc.textContent = "Compte Switch N2 • Titulaire Vérifié (RIB: BJ062...45)";
-        } else if (clean.includes('9876')) {
-          clientName.textContent = "Mariam SANNI";
-          clientDesc.textContent = "Compte Switch N2 • Titulaire Vérifié (RIB: BJ062...12)";
+        
+        // Recherche dans le stockage local si utilisateur test en cours
+        const localUserPhone = (localStorage.getItem('switch_user_phone') || '').replace(/\D/g, '');
+        const localUserName = localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name');
+        
+        if (localUserPhone && clean.includes(localUserPhone.slice(-6)) && localUserName) {
+          clientName.textContent = localUserName;
+          clientDesc.textContent = "Compte Switch Vérifié • N° " + clean;
         } else {
-          clientName.textContent = "Client Switch Enregistré";
-          clientDesc.textContent = "Compte Particulier Switch Bénin";
+          clientName.textContent = "Compte Switch Bénéficiaire";
+          clientDesc.textContent = "Compte Particulier Switch Bénin • " + val;
         }
+      } else {
+        clientBox.classList.add('hidden');
       }
     }
 
-    function handlePhoneInput(val) {
-      const clean = val.replace(/\s+/g, '');
-      const clientBox = document.getElementById('verified-client-box');
-      const clientName = document.getElementById('verified-client-name');
-      const clientDesc = document.getElementById('verified-client-desc');
-
-      if (clean.length >= 8) {
-        clientBox.classList.remove('hidden');
-        if (clean.includes('97')) {
-          clientName.textContent = "Koffi MENSAH";
-          clientDesc.textContent = "Titulaire Mobile Money Vérifié (+229 97...)";
-        } else if (clean.includes('95')) {
-          clientName.textContent = "Mariam SANNI";
-          clientDesc.textContent = "Titulaire Mobile Money Vérifié (+229 95...)";
-        } else {
-          clientName.textContent = "Client Bénéficiaire";
-          clientDesc.textContent = "Numéro Mobile Money Bénin";
-        }
-      }
-    }
-
-    function pickDemoClientRib(rib, name) {
-      document.getElementById('clientRib').value = rib;
-      document.getElementById('verified-client-name').textContent = name;
-      document.getElementById('verified-client-desc').textContent = `Compte Switch N2 • Titulaire Vérifié (RIB: ${rib.slice(-4)})`;
-      document.getElementById('verified-client-box').classList.remove('hidden');
-    }
-
-    function pickDemoClientPhone(phone, name) {
-      document.getElementById('clientPhone').value = phone;
-      document.getElementById('verified-client-name').textContent = name;
-      document.getElementById('verified-client-desc').textContent = `Titulaire Mobile Money Vérifié (+229 ${phone})`;
-      document.getElementById('verified-client-box').classList.remove('hidden');
-    }
-
-    // 4. Montant & Calcul Commissions
+    // 2. Montant & Calcul Commissions
     function setDepositAmount(amt) {
       document.getElementById('depositAmount').value = amt;
       
@@ -566,56 +345,37 @@
 
     function calculateCommission(amount) {
       const amt = parseInt(amount) || 0;
-      const net = document.getElementById('selectedNetwork').value;
-      
-      let rate = (net === 'switch') ? 0.007 : 0.005;
-      let commission = Math.max(50, Math.round(amt * rate));
+      const commission = Math.max(100, Math.round(amt * 0.007));
       
       document.getElementById('agent-commission-text').textContent = `+${commission.toLocaleString('fr-FR')} FCFA`;
       
-      const rem = Math.max(0, initialFloat - amt);
+      const rem = Math.max(0, currentAgentFloat - amt);
       document.getElementById('remaining-float-text').textContent = `${rem.toLocaleString('fr-FR')} FCFA`;
     }
 
-    // 5. Modale PIN
+    // 3. Modale PIN
     function openPinConfirmation() {
-      const net = document.getElementById('selectedNetwork').value;
-      let clientIdentifier = "";
-      
-      if (net === 'switch') {
-        if (switchIdMode === 'rib') {
-          clientIdentifier = document.getElementById('clientRib').value.trim();
-          if (!clientIdentifier || clientIdentifier.length < 5) {
-            alert("Veuillez saisir le RIB du compte Switch Bénin.");
-            return;
-          }
-        } else {
-          clientIdentifier = document.getElementById('clientPhone').value.trim();
-          if (!clientIdentifier || clientIdentifier.length < 8) {
-            alert("Veuillez saisir un numéro de téléphone client valide (+229).");
-            return;
-          }
-        }
-      } else {
-        clientIdentifier = document.getElementById('clientPhone').value.trim();
-        if (!clientIdentifier || clientIdentifier.length < 8) {
-          alert("Veuillez saisir un numéro de téléphone Mobile Money valide (+229).");
-          return;
-        }
+      const clientIdentifier = document.getElementById('clientIdentifier').value.trim();
+      if (!clientIdentifier || clientIdentifier.length < 6) {
+        alert("Veuillez saisir le numéro de téléphone ou compte Switch du client.");
+        document.getElementById('clientIdentifier').focus();
+        return;
       }
 
-      const amount = document.getElementById('depositAmount').value;
+      const amount = parseInt(document.getElementById('depositAmount').value, 10);
       if (!amount || amount < 500) {
         alert("Le montant minimum de dépôt est de 500 FCFA.");
         return;
       }
 
+      if (currentAgentFloat < amount) {
+        alert(`❌ Float agent insuffisant (${currentAgentFloat.toLocaleString('fr-FR')} FCFA disponible) pour effectuer ce dépôt de ${amount.toLocaleString('fr-FR')} FCFA.`);
+        return;
+      }
+
       const clientName = document.getElementById('verified-client-name').textContent;
       document.getElementById('modal-recap-client').textContent = `${clientName} (${clientIdentifier})`;
-      
-      const netUpper = net.toUpperCase();
-      document.getElementById('modal-recap-network').textContent = (netUpper === 'SWITCH') ? 'Switch Bénin' : netUpper;
-      document.getElementById('modal-recap-amount').textContent = `${parseInt(amount).toLocaleString('fr-FR')} FCFA`;
+      document.getElementById('modal-recap-amount').textContent = `${amount.toLocaleString('fr-FR')} FCFA`;
 
       pinCode = "";
       updatePinDots();
@@ -644,7 +404,6 @@
     }
 
     function pressBiometric() {
-      // Validation biométrique sécurisée (Empreinte certifiée)
       pinCode = "••••";
       updatePinDots();
       setTimeout(executeDeposit, 300);
@@ -661,27 +420,19 @@
       }
     }
 
-    // 6. Exécution du Dépôt & Redirection vers recu_operation_agent
+    // 4. Exécution du Dépôt Switch (Strictement bloquant)
     async function executeDeposit() {
-      const amount = parseInt(document.getElementById('depositAmount').value) || 25000;
+      const amount = parseInt(document.getElementById('depositAmount').value, 10) || 25000;
       const client = document.getElementById('verified-client-name').textContent;
-      const net = document.getElementById('selectedNetwork').value;
-      const netLabel = (net === 'switch') ? 'Switch Bénin' : (net === 'mtn' ? 'MTN MoMo' : (net === 'moov' ? 'Moov Money' : 'Celtiis Cash'));
-      
-      let identifier = "";
-      if (net === 'switch') {
-        identifier = (switchIdMode === 'rib') ? document.getElementById('clientRib').value.trim() : document.getElementById('clientPhone').value.trim();
-      } else {
-        identifier = document.getElementById('clientPhone').value.trim();
-      }
+      const identifier = document.getElementById('clientIdentifier').value.trim();
 
       let opSuccess = false;
       let txRef = "";
-      let errorMessage = "Échec du dépôt. Float agent insuffisant ou client introuvable.";
+      let errorMessage = "Échec du dépôt. Float agent insuffisant ou compte introuvable.";
 
       try {
         if (window.SwitchAPI && window.SwitchAPI.processAgentCash) {
-          const res = await window.SwitchAPI.processAgentCash(identifier || "+229 01 22 90 19 07", amount, 'DEPOSIT');
+          const res = await window.SwitchAPI.processAgentCash(identifier, amount, 'DEPOSIT');
           if (res && res.success) {
             opSuccess = true;
             txRef = res.tx_ref;
@@ -698,7 +449,7 @@
         pinCode = "";
         updatePinDots();
         closePinModal();
-        return; // STRICTEMENT BLOQUANT : Ne pas rediriger vers le reçu !
+        return; // Strictement bloquant
       }
 
       closePinModal();
@@ -715,7 +466,7 @@
         amount: amount,
         fee: "0 FCFA",
         beneficiary: `${client} (${identifier})`,
-        network: netLabel,
+        network: "Compte Switch Bénin",
         commission: commText,
         source: "Trésorerie Float Agent",
         ref: txRef || `TRX-DEP-${Date.now().toString().slice(-5)}`,
@@ -734,9 +485,18 @@
     }
 
     // Initialisation
-    document.addEventListener('DOMContentLoaded', () => {
+    function initAgentDeposit() {
+      const storedFloat = localStorage.getItem('switch_agent_float');
+      if (storedFloat) {
+        currentAgentFloat = parseInt(storedFloat.replace(/\s/g, ''), 10);
+      }
+      const floatBadge = document.getElementById('current-float-badge');
+      if (floatBadge) floatBadge.textContent = currentAgentFloat.toLocaleString('fr-FR') + ' F';
       calculateCommission(25000);
-    });
+    }
+
+    document.addEventListener('DOMContentLoaded', initAgentDeposit);
+    initAgentDeposit();
   </script>
 
 </body>

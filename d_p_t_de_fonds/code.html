@@ -51,35 +51,17 @@
           <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
             <span class="material-symbols-outlined text-2xl">storefront</span>
           </div>
-          <span class="text-xs font-bold text-primary">Agence Switch</span>
+          <span class="text-xs font-bold text-primary">Agence / Agent Switch</span>
           <span class="text-[10px] text-emerald-700 font-extrabold bg-emerald-100 px-2 py-0.5 rounded-full">0% Frais (Gratuit)</span>
         </button>
 
-        <!-- 2. MTN MoMo -->
-        <button type="button" onclick="selectDepositSource('mtn')" id="btn-dep-mtn" class="relative bg-white rounded-3xl p-4.5 flex flex-col items-center justify-center gap-2 border border-outline-variant/40 hover:border-primary transition-all shadow-sm focus:outline-none cursor-pointer opacity-75">
-          <div class="w-12 h-12 rounded-2xl bg-[#FFCC00] flex items-center justify-center font-black text-black text-sm">
-            MTN
+        <!-- 2. Carte Bancaire Visa / Mastercard -->
+        <button type="button" onclick="selectDepositSource('card')" id="btn-dep-card" class="relative bg-white rounded-3xl p-4.5 flex flex-col items-center justify-center gap-2 border border-outline-variant/40 hover:border-primary transition-all shadow-sm focus:outline-none cursor-pointer">
+          <div class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined text-2xl">credit_card</span>
           </div>
-          <span class="text-xs font-bold text-on-surface">MTN MoMo</span>
-          <span class="text-[10px] text-on-surface-variant font-medium">Instantané</span>
-        </button>
-
-        <!-- 3. Moov Money -->
-        <button type="button" onclick="selectDepositSource('moov')" id="btn-dep-moov" class="relative bg-white rounded-3xl p-4.5 flex flex-col items-center justify-center gap-2 border border-outline-variant/40 hover:border-primary transition-all shadow-sm focus:outline-none cursor-pointer opacity-75">
-          <div class="w-12 h-12 rounded-2xl bg-[#005A9C] flex items-center justify-center font-black text-white text-sm">
-            Moov
-          </div>
-          <span class="text-xs font-bold text-on-surface">Moov Money</span>
-          <span class="text-[10px] text-on-surface-variant font-medium">Instantané</span>
-        </button>
-
-        <!-- 4. Celtiis / Carte Bancaire -->
-        <button type="button" onclick="selectDepositSource('celtiis')" id="btn-dep-celtiis" class="relative bg-white rounded-3xl p-4.5 flex flex-col items-center justify-center gap-2 border border-outline-variant/40 hover:border-primary transition-all shadow-sm focus:outline-none cursor-pointer opacity-75">
-          <div class="w-12 h-12 rounded-2xl bg-black text-white flex items-center justify-center font-black text-xs">
-            Celtiis
-          </div>
-          <span class="text-xs font-bold text-on-surface">Celtiis / Carte</span>
-          <span class="text-[10px] text-on-surface-variant font-medium">Instantané</span>
+          <span class="text-xs font-bold text-on-surface">Carte Bancaire</span>
+          <span class="text-[10px] text-on-surface-variant font-medium">Visa • Mastercard</span>
         </button>
       </div>
 
