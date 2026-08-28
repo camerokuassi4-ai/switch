@@ -63,7 +63,7 @@ body {
   padding-top: var(--sat) !important;
   padding-left: var(--sal) !important;
   padding-right: var(--sar) !important;
-  padding-bottom: calc(100px + var(--sab)) !important; /* Dégage toujours le bas pour la nav */
+  padding-bottom: calc(100px + var(--sab)) !important; /* Dégage le bas pour la barre de navigation */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   touch-action: manipulation;
@@ -74,6 +74,11 @@ body {
   overflow-y: visible !important;
   display: flex !important;
   flex-direction: column !important;
+}
+
+/* Sur les pages sans barre de navigation basse (Auth, Splash, Onboarding, PIN, etc.), pas de vide inutile */
+body:not(:has(nav)):not(:has(#bottom-nav)):not(:has(.bottom-nav)):not(:has([id*="bottom-nav"])) {
+  padding-bottom: calc(24px + var(--sab)) !important;
 }
 
 main {
