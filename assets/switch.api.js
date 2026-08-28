@@ -89,74 +89,58 @@
     },
 
     /**
-     * 1. Récupère le profil et le solde utilisateur (Synchronisation Supabase en temps réel)
+     * 1. Récupère le profil et le solde utilisateur (Synchronisation Supabase RPC en temps réel)
      */
     getWallet: async function (phone) {
       const rawUserPhone = phone || localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone') || localStorage.getItem('switch_account_number') || "+229 01 90 75 17 86";
-      const cleanDigits = rawUserPhone.replace(/\D/g, '');
-      
-      // Extraction des 8 chiffres pivots du numéro béninois (ex: 90751786)
-      let core8 = "";
-      if (cleanDigits.length === 14 && cleanDigits.startsWith("01")) {
-        core8 = cleanDigits.slice(2, 10); // 14 chiffres: 01 + 8 chiffres + 4 suffixe
-      } else if (cleanDigits.length >= 8) {
-        core8 = cleanDigits.slice(-8);
-      } else {
-        core8 = cleanDigits;
+
+      // 1. Appel RPC sécurisé direct PostgreSQL
+      try {
+        const rpcData = await supabaseRPC('get_user_wallet_data', {
+          p_phone: rawUserPhone
+        });
+        if (rpcData && rpcData.success) {
+          if (rpcData.balance !== undefined && rpcData.balance !== null) {
+            localStorage.setItem('switch_user_balance', rpcData.balance.toString());
+          }
+          if (rpcData.vault_balance !== undefined && rpcData.vault_balance !== null) {
+            localStorage.setItem('switch_vault_balance', rpcData.vault_balance.toString());
+          }
+          if (rpcData.full_name) {
+            localStorage.setItem('switch_user_fullname', rpcData.full_name);
+            localStorage.setItem('switch_user_name', rpcData.full_name);
+          }
+          if (rpcData.kyc_level) {
+            localStorage.setItem('switch_kyc_level', rpcData.kyc_level.toString());
+          }
+          if (rpcData.transactions && Array.isArray(rpcData.transactions) && rpcData.transactions.length > 0) {
+            localStorage.setItem('switch_transactions', JSON.stringify(rpcData.transactions));
+          }
+          return rpcData;
+        }
+      } catch (eRpc) {
+        console.warn("[SwitchAPI] Synchro RPC get_user_wallet_data info :", eRpc.message);
       }
 
+      // 2. Requête REST directe de repli
+      const cleanDigits = rawUserPhone.replace(/\D/g, '');
+      let core8 = cleanDigits.length === 14 && cleanDigits.startsWith("01") ? cleanDigits.slice(2, 10) : cleanDigits.slice(-8);
+
       try {
-        let query = `profiles?select=*&order=updated_at.desc&limit=1`;
-        if (core8.length >= 6) {
-          query = `profiles?or=(phone.ilike.*${core8}*,phone.eq.${encodeURIComponent(rawUserPhone)},phone.eq.${encodeURIComponent(cleanDigits)})&order=updated_at.desc&limit=1&select=*`;
-        }
-        const rows = await supabaseFetch(query);
+        const rows = await supabaseFetch(`profiles?select=*&order=balance.desc&limit=1`);
         if (rows && rows.length > 0) {
           const user = rows[0];
           if (user.balance !== undefined && user.balance !== null) {
             localStorage.setItem('switch_user_balance', user.balance.toString());
           }
-          if (user.vault_balance !== undefined && user.vault_balance !== null) {
-            localStorage.setItem('switch_vault_balance', user.vault_balance.toString());
-          }
           if (user.full_name) {
             localStorage.setItem('switch_user_fullname', user.full_name);
             localStorage.setItem('switch_user_name', user.full_name);
           }
-          if (user.kyc_level) {
-            localStorage.setItem('switch_kyc_level', user.kyc_level.toString());
-          }
-
-          // Récupération automatique des dernières transactions Supabase
-          try {
-            const txQuery = `transactions?or=(sender_id.eq.${user.id},receiver_id.eq.${user.id},recipient_phone.ilike.*${core8}*)&order=created_at.desc&limit=10&select=*`;
-            const txRows = await supabaseFetch(txQuery);
-            if (txRows && txRows.length > 0) {
-              const mappedTxs = txRows.map(t => {
-                const isPositive = (t.receiver_id === user.id || t.transaction_type === 'agent_deposit' || (t.recipient_phone && t.recipient_phone.includes(core8)));
-                return {
-                  id: t.tx_ref || 'SW-TX',
-                  title: t.note || (t.transaction_type === 'agent_deposit' ? "Dépôt d'espèces (Guichet)" : (t.transaction_type === 'agent_withdrawal' ? "Retrait d'espèces" : "Transfert Switch")),
-                  category: t.transaction_type || 'transfer',
-                  amount: isPositive ? Math.abs(t.amount) : -Math.abs(t.amount),
-                  fee: t.fee || 0,
-                  date: new Date(t.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }) + ' • ' + new Date(t.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
-                  timestamp: new Date(t.created_at).getTime(),
-                  status: t.status || 'completed',
-                  icon: (t.transaction_type === 'agent_deposit' || isPositive) ? 'storefront' : (t.transaction_type === 'agent_withdrawal' ? 'payments' : 'swap_horiz'),
-                  iconBg: isPositive ? 'bg-emerald-50 text-emerald-700' : 'bg-purple-50 text-primary'
-                };
-              });
-              localStorage.setItem('switch_transactions', JSON.stringify(mappedTxs));
-            }
-          } catch(errTx) {
-            console.warn("[SwitchAPI] Transactions live sync info :", errTx.message);
-          }
-
           return { success: true, ...user };
         }
       } catch (e) {
-        console.info("[SwitchAPI] Synchro live Supabase info :", e.message);
+        console.info("[SwitchAPI] Synchro REST live info :", e.message);
       }
 
       // Repli local
