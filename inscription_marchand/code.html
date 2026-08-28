@@ -332,13 +332,32 @@
 
           <!-- Téléphone Compte Marchand Switch -->
           <div class="flex flex-col gap-1.5">
-            <label for="merchantPhone" class="text-xs font-bold text-on-surface">
-              Numéro de téléphone du Compte Marchand Switch (10 chiffres commençant par 01) <span class="text-rose-500">*</span>
-            </label>
-            <div class="relative flex items-center">
-              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">smartphone</span>
-              <span class="absolute left-10 text-xs font-bold font-mono text-gray-500 border-r border-gray-300 pr-2">+229</span>
-              <input type="tel" id="merchantPhone" value="" maxlength="14" inputmode="numeric" placeholder="01 97 12 34 56" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-24 pr-4 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 placeholder:font-normal" onfocus="if(!this.value) this.value='01 ';"/>
+            <div class="flex items-center justify-between">
+              <label for="merchantPhone" class="text-xs font-bold text-on-surface">
+                Numéro de téléphone Switch (10 chiffres commençant par 01) <span class="text-rose-500">*</span>
+              </label>
+              <!-- Dynamic Operator Badge -->
+              <div id="operator-badge" class="hidden items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black">
+                <span id="operator-name">Bénin 01</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2.5 bg-surface-container-low/50 rounded-2xl px-3.5 py-3 border border-outline-variant/60 focus-within:bg-white focus-within:border-emerald-600 transition-all">
+              <div class="flex items-center gap-1.5 shrink-0 border-r border-gray-300 pr-2.5 font-bold text-xs text-gray-800">
+                <span class="text-base leading-none">🇧🇯</span>
+                <span class="font-mono font-black">+229</span>
+              </div>
+              <input 
+                type="tel" 
+                id="merchantPhone" 
+                value="" 
+                maxlength="14" 
+                inputmode="numeric" 
+                placeholder="01 97 12 34 56" 
+                class="w-full bg-transparent border-none p-0 font-mono text-sm sm:text-base font-extrabold text-gray-950 focus:ring-0 outline-none placeholder:text-gray-400" 
+                oninput="handleMerchantPhoneInput(this)"
+                onfocus="if(!this.value) this.value='01 ';"
+              />
+              <span class="material-symbols-outlined text-emerald-600 text-lg">smartphone</span>
             </div>
             <p class="text-[10px] text-on-surface-variant">Tous les paiements QR et ventes des clients sont crédités instantanément sur votre solde Marchand Switch.</p>
           </div>
@@ -588,6 +607,50 @@
       const file = event.target.files[0];
       if (file) {
         document.getElementById('storefront-filename').textContent = `📷 ${file.name} (Prêt à l'envoi)`;
+      }
+    }
+
+    function handleMerchantPhoneInput(input) {
+      let raw = input.value.replace(/\D/g, '');
+      if (raw.length > 10) raw = raw.substring(0, 10);
+
+      // Auto-format as 01 XX XX XX XX
+      let formatted = '';
+      for (let i = 0; i < raw.length; i++) {
+        if (i === 2 || i === 4 || i === 6 || i === 8) formatted += ' ';
+        formatted += raw[i];
+      }
+      input.value = formatted;
+
+      const badge = document.getElementById('operator-badge');
+      const name = document.getElementById('operator-name');
+
+      if (raw.length >= 4) {
+        badge.classList.remove('hidden');
+        badge.classList.add('flex');
+        const prefix = raw.substring(0, 4);
+        
+        // MTN Bénin (01 97, 01 96, 01 61, 01 62, 01 51, 01 52, 01 53, 01 54, 01 66, 01 67)
+        if (/^01(96|97|61|62|51|52|53|54|66|67|42|46)/.test(prefix)) {
+          badge.className = "operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300";
+          name.textContent = "🟡 MTN Bénin";
+        }
+        // Moov Money Bénin (01 95, 01 94, 01 60, 01 63, 01 64, 01 65, 01 68)
+        else if (/^01(95|94|60|63|64|65|68|98)/.test(prefix)) {
+          badge.className = "operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-blue-100 text-blue-900 border border-blue-300";
+          name.textContent = "🔵 Moov Money";
+        }
+        // Celtiis Bénin (01 40, 01 41, 01 43, 01 44, 01 45, 01 47, 01 48, 01 49)
+        else if (/^01(40|41|43|44|45|47|48|49|90|91)/.test(prefix)) {
+          badge.className = "operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300";
+          name.textContent = "🟢 Celtiis Bénin";
+        } else {
+          badge.className = "operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-purple-100 text-purple-900 border border-purple-300";
+          name.textContent = "🇧🇯 Bénin 01";
+        }
+      } else {
+        badge.classList.add('hidden');
+        badge.classList.remove('flex');
       }
     }
   </script>
