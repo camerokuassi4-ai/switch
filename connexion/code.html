@@ -89,59 +89,79 @@
     <form class="w-full max-w-sm flex flex-col gap-4 mt-2" onsubmit="event.preventDefault(); handleLogin();">
       
       <!-- 1. Phone Number Input Field -->
-      <div class="bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex flex-col gap-2 text-left">
-        <label class="text-xs font-black uppercase tracking-wider text-on-surface-variant" for="login-phone">Numéro de Téléphone</label>
-        <div class="flex items-center gap-2 bg-surface-container/60 rounded-2xl px-4 py-3 border border-outline-variant/50 focus-within:border-primary focus-within:bg-white transition-all">
-          <div class="flex items-center gap-1.5 shrink-0 border-r border-outline-variant/50 pr-2.5">
-            <span class="text-base">🇧🇯</span>
-            <span class="text-xs font-black text-on-surface font-mono">+229</span>
-          </div>
-          <input type="tel" id="login-phone" value="" placeholder="01 97 12 34 56" maxlength="14" class="w-full bg-transparent border-none p-0 text-sm font-bold font-mono text-on-surface focus:ring-0 outline-none" oninput="formatLoginPhone(this)" onfocus="if(!this.value) this.value='01 ';"/>
+      <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-gray-200/90 shadow-sm flex flex-col gap-2.5 text-left">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-1.5" for="login-phone">
+            <span class="material-symbols-outlined text-[#5E3BDC] text-base">smartphone</span>
+            <span>Numéro de Téléphone</span>
+          </label>
+          <span class="text-[10px] font-black uppercase text-[#5E3BDC] bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100" id="phone-op-badge">Bénin 01</span>
         </div>
-        <p class="text-[10px] text-gray-400 pl-1">Format 10 chiffres commençant par <b>01</b>.</p>
+
+        <div class="flex items-center gap-2.5 bg-gray-50 rounded-2xl px-3.5 py-3 border border-gray-200 focus-within:bg-white focus-within:border-[#5E3BDC] focus-within:ring-2 focus-within:ring-purple-100 transition-all">
+          <div class="flex items-center gap-1.5 shrink-0 border-r border-gray-300 pr-2.5">
+            <span class="text-lg leading-none">🇧🇯</span>
+            <span class="text-xs font-black text-gray-900 font-mono">+229</span>
+          </div>
+          <input 
+            type="tel" 
+            id="login-phone" 
+            placeholder="01 97 12 34 56" 
+            maxlength="14" 
+            autocomplete="tel"
+            class="w-full bg-transparent border-none p-0 text-base sm:text-lg font-extrabold font-mono text-gray-900 focus:ring-0 outline-none placeholder:text-gray-400 placeholder:font-normal" 
+            oninput="formatLoginPhone(this)"
+          />
+        </div>
+        <p class="text-[11px] text-gray-500 font-medium pl-1">
+          Plan national à 10 chiffres (ex: <b>01 90 75 17 86</b>).
+        </p>
       </div>
 
       <!-- 2. 4-Digit Secret PIN Boxes -->
-      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+      <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-gray-200/90 shadow-sm flex flex-col gap-3 text-left">
         <div class="flex items-center justify-between">
-          <label class="text-xs font-black uppercase tracking-wider text-on-surface-variant">Code PIN Secret (4 Chiffres)</label>
-          <button type="button" onclick="togglePinEye()" class="text-[11px] font-bold text-on-surface-variant hover:text-primary flex items-center gap-1 cursor-pointer">
+          <label class="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[#5E3BDC] text-base">lock</span>
+            <span>Code PIN Secret (4 Chiffres)</span>
+          </label>
+          <button type="button" onclick="togglePinEye()" class="text-[11px] font-bold text-gray-500 hover:text-[#5E3BDC] flex items-center gap-1 cursor-pointer">
             <span class="material-symbols-outlined text-sm" id="eye-icon">visibility</span>
             <span id="eye-text">Afficher</span>
           </button>
         </div>
 
         <div class="flex justify-center gap-3 pt-1">
-          <input aria-label="PIN Chiffre 1" class="pin-input w-12 h-14 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="pin-0" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password" autofocus/>
-          <input aria-label="PIN Chiffre 2" class="pin-input w-12 h-14 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="pin-1" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
-          <input aria-label="PIN Chiffre 3" class="pin-input w-12 h-14 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="pin-2" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
-          <input aria-label="PIN Chiffre 4" class="pin-input w-12 h-14 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-primary" id="pin-3" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="PIN Chiffre 1" class="pin-input w-12 h-14 text-center font-mono font-black text-2xl rounded-2xl bg-gray-50 border border-gray-200 shadow-xs text-[#5E3BDC]" id="pin-0" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password" autofocus/>
+          <input aria-label="PIN Chiffre 2" class="pin-input w-12 h-14 text-center font-mono font-black text-2xl rounded-2xl bg-gray-50 border border-gray-200 shadow-xs text-[#5E3BDC]" id="pin-1" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="PIN Chiffre 3" class="pin-input w-12 h-14 text-center font-mono font-black text-2xl rounded-2xl bg-gray-50 border border-gray-200 shadow-xs text-[#5E3BDC]" id="pin-2" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="PIN Chiffre 4" class="pin-input w-12 h-14 text-center font-mono font-black text-2xl rounded-2xl bg-gray-50 border border-gray-200 shadow-xs text-[#5E3BDC]" id="pin-3" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
         </div>
 
         <div class="flex justify-end pt-1">
-          <a href="../reinitialisation_code_pin/code.html" class="text-xs font-bold text-primary hover:underline">
+          <a href="../reinitialisation_code_pin/code.html" class="text-xs font-bold text-[#5E3BDC] hover:underline">
             Code PIN oublié ?
           </a>
         </div>
       </div>
 
       <!-- 3. Primary Action Button -->
-      <button type="submit" class="w-full bg-primary text-white py-4 rounded-full font-bold text-base shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1">
+      <button type="submit" class="w-full bg-[#5E3BDC] text-white py-4 rounded-full font-extrabold text-base shadow-lg shadow-purple-500/25 hover:bg-[#4D2EC2] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1">
         <span>Se connecter</span>
         <span class="material-symbols-outlined text-xl">login</span>
       </button>
 
       <!-- 4. Biometric Quick Login Button -->
-      <button type="button" onclick="triggerBiometrics()" class="w-full bg-white border border-outline-variant/50 hover:bg-surface-container py-3.5 rounded-full font-bold text-xs shadow-sm flex items-center justify-center gap-2 cursor-pointer text-on-surface transition-all">
-        <span class="material-symbols-outlined text-xl text-primary">fingerprint</span>
+      <button type="button" onclick="triggerBiometrics()" class="w-full bg-white border border-gray-200 hover:bg-gray-50 py-3.5 rounded-full font-bold text-xs shadow-xs flex items-center justify-center gap-2 cursor-pointer text-gray-800 transition-all">
+        <span class="material-symbols-outlined text-xl text-[#5E3BDC]">fingerprint</span>
         <span>Connexion rapide par Empreinte / Face ID</span>
       </button>
 
       <!-- 5. Register Link -->
       <div class="pt-2 text-center">
-        <p class="text-xs text-on-surface-variant font-medium">
+        <p class="text-xs text-gray-600 font-medium">
           Nouveau sur Switch Bénin ? 
-          <a href="../choix_type_compte/code.html" class="text-primary font-black hover:underline ml-1">
+          <a href="../choix_type_compte/code.html" class="text-[#5E3BDC] font-black hover:underline ml-1">
             Créer un compte
           </a>
         </p>
@@ -198,6 +218,22 @@
         formatted += raw[i];
       }
       el.value = formatted;
+
+      const badge = document.getElementById('phone-op-badge');
+      if (badge) {
+        if (raw.startsWith('0197') || raw.startsWith('0196') || raw.startsWith('0161') || raw.startsWith('0162') || raw.startsWith('0151') || raw.startsWith('0152')) {
+          badge.textContent = "MTN Bénin 🟡";
+          badge.className = "text-[10px] font-black uppercase text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200";
+        } else if (raw.startsWith('0195') || raw.startsWith('0194') || raw.startsWith('0164') || raw.startsWith('0165')) {
+          badge.textContent = "Moov Africa 🔵";
+          badge.className = "text-[10px] font-black uppercase text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200";
+        } else if (raw.startsWith('0140') || raw.startsWith('0141') || raw.startsWith('0190') || raw.startsWith('0191')) {
+          badge.textContent = "Celtiis Bénin 🟢";
+          badge.className = "text-[10px] font-black uppercase text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200";
+        } else {
+          badge.textContent = "Bénin 01";
+          badge.className = "text-[10px] font-black uppercase text-[#5E3BDC] bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100";
+      }
     }
 
     // Préremplissage si utilisateur déjà existant en mémoire ou compte test
