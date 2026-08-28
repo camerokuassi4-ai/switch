@@ -87,8 +87,8 @@
       <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
         <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
           <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-lg">account_balance</span>
-            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">1. Compte Switch du Client</h2>
+            <span class="material-symbols-outlined text-primary text-lg">badge</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">1. Numéro de Compte Switch du Client (14 chiffres)</h2>
           </div>
           <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
             Switch Bénin 🇧🇯
@@ -97,19 +97,19 @@
 
         <!-- Input Container -->
         <div class="flex flex-col gap-2">
-          <label class="text-[11px] font-semibold text-gray-600">Numéro de Téléphone (10 chiffres) ou Numéro de Compte Switch :</label>
+          <label class="text-[11px] font-semibold text-gray-600">Numéro de Compte Switch (14 chiffres) :</label>
           <div id="rib-input-wrapper" class="input-focus flex items-center rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 overflow-hidden">
             <div class="flex items-center gap-1.5 px-3.5 py-3.5 bg-purple-50 border-r border-outline-variant/50 text-xs font-bold text-primary select-none shrink-0">
-              <span class="material-symbols-outlined text-base">person_search</span>
-              <span class="font-mono font-bold">Client</span>
+              <span class="material-symbols-outlined text-base">badge</span>
+              <span class="font-mono font-bold">N° Compte</span>
             </div>
             <input 
-              type="tel" 
+              type="text" 
               id="clientIdentifier" 
               value="" 
-              maxlength="16" 
+              maxlength="20" 
               oninput="handleClientLookup(this.value)" 
-              placeholder="Ex: 01 97 12 34 56" 
+              placeholder="Ex: 01 97 12 34 56 • 8492" 
               required
               class="w-full bg-transparent border-0 py-3 px-3.5 text-sm sm:text-base font-mono font-black text-primary placeholder:text-gray-400 focus:ring-0 focus:outline-none"
             />
