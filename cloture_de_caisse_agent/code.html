@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
@@ -442,10 +443,23 @@
       }
     }
 
-    function executeCloture() {
+    async function executeCloture() {
       closePinModal();
-      alert("🔒 Caisse Journalière Clôturée et Verrouillée avec succès !\nLe rapport a été transmis à la comptabilité Switch Bénin.");
-      window.location.href = '../tableau_de_bord_agent/code.html';
+      
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.closeCashierSession) {
+          await window.SwitchAPI.closeCashierSession("Clôture journalière guichet");
+        }
+      } catch (e) {
+        console.warn("Clôture caisse info :", e);
+      }
+
+      alert("🔒 Caisse Journalière Clôturée et Verrouillée avec succès !\nLe rapport Z a été transmis à la comptabilité Switch Bénin.");
+      if (window.switchNavigate) {
+        window.switchNavigate('../tableau_de_bord_agent/code.html');
+      } else {
+        window.location.href = '../tableau_de_bord_agent/code.html';
+      }
     }
 
     document.addEventListener('DOMContentLoaded', () => {

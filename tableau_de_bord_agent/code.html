@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
@@ -616,15 +617,33 @@
       </div>
       <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-4px;">Servir</span>
     </a>
-    <a href="../cloture_de_caisse_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-      <span class="material-symbols-outlined" style="font-size:22px;">point_of_sale</span>
-      <span class="nav-label" style="font-size:10px;font-weight:500;">Caisse</span>
-    </a>
-    <a href="../param_tres_et_profil_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
-      <span class="material-symbols-outlined" style="font-size:22px;">manage_accounts</span>
-      <span class="nav-label" style="font-size:10px;font-weight:500;">Profil</span>
-    </a>
   </nav>
 
+  <script>
+    async function loadAgentDashboardData() {
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.getAgentDashboard) {
+          const data = await window.SwitchAPI.getAgentDashboard();
+          if (data && data.success) {
+            const floatEl = document.getElementById('float-balance-amount');
+            const commEl = document.getElementById('commission-balance-amount');
+            const codeEl = document.getElementById('agent-account-display');
+            const nameEl = document.getElementById('agent-name');
+
+            if (floatEl) floatEl.textContent = parseInt(data.float_balance).toLocaleString('fr-FR');
+            if (commEl) commEl.textContent = parseInt(data.commissions_balance).toLocaleString('fr-FR');
+            if (codeEl) codeEl.textContent = `Code : ${data.agent_code}`;
+            if (nameEl && data.business_name) nameEl.textContent = data.business_name;
+          }
+        }
+      } catch (err) {
+        console.warn("Chargement Agent info :", err);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAgentDashboardData);
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
 </body>
 </html>
