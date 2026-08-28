@@ -392,13 +392,28 @@
 
           <!-- Numéro Téléphone Terminal Agent -->
           <div class="flex flex-col gap-1">
-            <label for="agentPhone" class="text-[11px] font-bold text-on-surface-variant">Numéro de téléphone du terminal Agent (10 chiffres commençant par 01) *</label>
+            <div class="flex items-center justify-between">
+              <label for="agentPhone" class="text-[11px] font-bold text-on-surface-variant">Numéro de téléphone du terminal Agent (10 chiffres commençant par 01) *</label>
+              <!-- Dynamic Operator Badge -->
+              <div id="operator-badge" class="hidden items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black">
+                <span id="operator-name">Bénin 01</span>
+              </div>
+            </div>
             <div class="flex items-center rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
               <div class="flex items-center gap-1.5 px-3.5 py-3 bg-gray-100/80 border-r border-outline-variant/50 text-xs font-bold text-on-surface select-none shrink-0">
                 <span class="text-base leading-none">🇧🇯</span>
                 <span class="font-mono text-gray-700 font-bold">+229</span>
               </div>
-              <input type="tel" id="agentPhone" value="" placeholder="01 97 00 00 00" maxlength="14" class="w-full bg-transparent border-0 py-3 px-3.5 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none" onfocus="if(!this.value) this.value='01 ';"/>
+              <input 
+                type="tel" 
+                id="agentPhone" 
+                value="" 
+                placeholder="01 97 00 00 00" 
+                maxlength="14" 
+                class="w-full bg-transparent border-0 py-3 px-3.5 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none" 
+                oninput="handleAgentPhoneInput(this)"
+                onfocus="if(!this.value) this.value='01 ';"
+              />
             </div>
             <p class="text-[10px] text-on-surface-variant ml-1">Ce numéro recevra le code SMS d'activation obligatoire.</p>
           </div>
@@ -714,6 +729,50 @@
         if (box) {
           box.className = "border-2 border-emerald-400 rounded-2xl p-3.5 bg-emerald-50/40 transition-all cursor-pointer flex items-center justify-between group";
         }
+      }
+    }
+
+    function handleAgentPhoneInput(input) {
+      let raw = input.value.replace(/\D/g, '');
+      if (raw.length > 10) raw = raw.substring(0, 10);
+
+      // Auto-format as 01 XX XX XX XX
+      let formatted = '';
+      for (let i = 0; i < raw.length; i++) {
+        if (i === 2 || i === 4 || i === 6 || i === 8) formatted += ' ';
+        formatted += raw[i];
+      }
+      input.value = formatted;
+
+      const badge = document.getElementById('operator-badge');
+      const name = document.getElementById('operator-name');
+
+      if (raw.length >= 4) {
+        badge.classList.remove('hidden');
+        badge.classList.add('flex');
+        const prefix = raw.substring(0, 4);
+        
+        // MTN Bénin (01 97, 01 96, 01 61, 01 62, 01 51, 01 52, 01 53, 01 54, 01 66, 01 67)
+        if (/^01(96|97|61|62|51|52|53|54|66|67|42|46)/.test(prefix)) {
+          badge.className = "operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300";
+          name.textContent = "🟡 MTN Bénin";
+        }
+        // Moov Money Bénin (01 95, 01 94, 01 60, 01 63, 01 64, 01 65, 01 68)
+        else if (/^01(95|94|60|63|64|65|68|98)/.test(prefix)) {
+          badge.className = "operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-blue-100 text-blue-900 border border-blue-300";
+          name.textContent = "🔵 Moov Money";
+        }
+        // Celtiis Bénin (01 40, 01 41, 01 43, 01 44, 01 45, 01 47, 01 48, 01 49)
+        else if (/^01(40|41|43|44|45|47|48|49|90|91)/.test(prefix)) {
+          badge.className = "operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300";
+          name.textContent = "🟢 Celtiis Bénin";
+        } else {
+          badge.className = "operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-purple-100 text-purple-900 border border-purple-300";
+          name.textContent = "🇧🇯 Bénin 01";
+        }
+      } else {
+        badge.classList.add('hidden');
+        badge.classList.remove('flex');
       }
     }
   </script>
