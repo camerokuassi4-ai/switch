@@ -9,12 +9,36 @@
   <script src="../assets/switch.config.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
     body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); }
-    .card-preview-purple { background: linear-gradient(135deg, #7B5CFA 0%, #5E3BDC 50%, #2A1175 100%); }
-    .card-preview-black { background: linear-gradient(135deg, #2A2A2E 0%, #17161A 50%, #000000 100%); }
+    .card-preview-purple { background: linear-gradient(135deg, #1C0F4A 0%, #30177A 35%, #4C24BC 70%, #6E45E8 100%); }
+    .card-preview-black { background: linear-gradient(135deg, #2D2C34 0%, #1A1920 100%); }
     .card-preview-gold { background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 50%, #5B4002 100%); }
-    .card-preview-emerald { background: linear-gradient(135deg, #10B981 0%, #059669 50%, #064E3B 100%); }
+    .card-preview-emerald { background: linear-gradient(135deg, #064E3B 0%, #059669 50%, #10B981 100%); }
+    
+    .emv-chip {
+      background: linear-gradient(135deg, #FDE68A 0%, #D4AF37 40%, #B45309 80%, #F59E0B 100%);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+    .emv-chip::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border: 1px solid rgba(115, 60, 5, 0.55);
+      border-radius: 4px;
+    }
+    .emv-chip::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(115, 60, 5, 0.55);
+    }
   </style>
 </head>
 <body class="bg-background text-on-background min-h-screen pb-32 flex flex-col antialiased">
@@ -35,27 +59,51 @@
   <!-- Main Content -->
   <main class="px-container-margin max-w-xl mx-auto w-full pt-2 flex flex-col gap-6">
 
-    <!-- Live Card Visual Preview -->
-    <div id="card-preview" class="card-preview-purple rounded-3xl p-6 text-white shadow-2xl flex flex-col justify-between min-h-[210px] relative overflow-hidden transition-all duration-300">
-      <div class="flex justify-between items-start">
-        <div>
-          <span class="text-[11px] font-bold text-white/80 uppercase tracking-wider block" id="preview-label">Achats en ligne</span>
-          <span class="text-xs font-semibold text-white/90" id="preview-type">Carte Multi-usage</span>
+    <!-- Live Card Visual Preview Ultra-HD avec Logo Switch -->
+    <div id="card-preview" class="card-preview-purple rounded-[32px] p-6 text-white shadow-2xl flex flex-col justify-between min-h-[235px] relative overflow-hidden transition-all duration-300 border border-white/20">
+      
+      <!-- Top Row : Switch Logo -->
+      <div class="flex justify-between items-start z-10">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-400 via-purple-300 to-white flex items-center justify-center shadow-md p-0.5">
+            <div class="w-full h-full bg-[#1C0F4A] rounded-[10px] flex items-center justify-center">
+              <span class="text-xs font-black text-amber-400 font-sans tracking-tighter">SW</span>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-sm font-black tracking-widest font-sans text-white">SWITCH</span>
+              <span class="text-[9px] font-black uppercase tracking-wider bg-amber-400/30 text-amber-300 border border-amber-300/40 px-1.5 py-0.2 rounded-md">VIRTUAL</span>
+            </div>
+            <span class="text-[11px] font-bold text-purple-200 block" id="preview-label">Achats en ligne</span>
+          </div>
         </div>
-        <span class="material-symbols-outlined text-3xl opacity-90">contactless</span>
+
+        <div class="flex items-center gap-1.5 text-[10px] font-bold font-mono text-purple-200 bg-black/20 px-2.5 py-1 rounded-full border border-white/10">
+          <span class="material-symbols-outlined text-xs text-amber-300">verified_user</span>
+          <span>3D-SECURE</span>
+        </div>
       </div>
 
-      <div class="my-2">
-        <span class="text-xl sm:text-2xl font-mono font-bold tracking-widest block">4289 •••• •••• 7719</span>
-        <div class="flex gap-4 mt-2 text-xs text-white/80">
-          <span>EXP: <b>08/28</b></span>
-          <span>CVV: <b>•••</b></span>
+      <!-- Middle Row : EMV Chip & NFC -->
+      <div class="flex items-center gap-3 my-2 z-10">
+        <div class="w-10 h-7.5 emv-chip shrink-0"></div>
+        <span class="material-symbols-outlined text-2xl text-purple-200/90 -rotate-90">wifi</span>
+      </div>
+
+      <!-- Card Number -->
+      <div class="my-1 z-10">
+        <span class="text-xl sm:text-2xl font-mono font-black tracking-widest block text-white">4289 •••• •••• 7719</span>
+        <div class="flex gap-4 mt-2 text-xs text-purple-200">
+          <span>EXP: <b class="text-white font-mono">08/28</b></span>
+          <span>CVV: <b class="text-white font-mono">•••</b></span>
         </div>
       </div>
 
-      <div class="flex justify-between items-end">
-        <span class="text-xs font-bold uppercase tracking-wider text-white">ADELE DOE</span>
-        <span class="text-xl font-black italic tracking-wider">VISA</span>
+      <!-- Bottom Row : Holder & VISA -->
+      <div class="flex justify-between items-end pt-2 border-t border-white/15 z-10">
+        <span id="preview-holder-name" class="text-xs font-black uppercase tracking-wider text-white">CAMERO KUASSIS</span>
+        <span class="text-2xl font-black italic tracking-wider text-white font-sans bg-clip-text text-transparent bg-gradient-to-r from-white via-amber-200 to-white">VISA</span>
       </div>
     </div>
 
