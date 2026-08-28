@@ -490,8 +490,27 @@
 
     function getProducts() {
       const merchantProducts = [];
+      const rawCustom = localStorage.getItem('switch_merchant_custom_products');
       const rawMerchant = localStorage.getItem('switch_merchant_published_products');
-      const storeName = localStorage.getItem('switch_merchant_business_name') || "Kiosque & Boutique Saint-Michel";
+      const storeName = localStorage.getItem('switch_merchant_business_name') || "Boutique Partenaire Switch";
+
+      if (rawCustom) {
+        try {
+          const parsed = JSON.parse(rawCustom);
+          parsed.forEach(p => {
+            merchantProducts.push({
+              id: p.id,
+              title: p.title || p.name,
+              price: p.price,
+              stock: p.stock !== undefined ? p.stock : 25,
+              category: (p.category || "mode").toLowerCase(),
+              emoji: "🛍️",
+              image: p.image || p.image_url || null,
+              store: p.store || storeName
+            });
+          });
+        } catch (e) {}
+      }
 
       if (rawMerchant) {
         try {
@@ -658,13 +677,66 @@
       document.getElementById('modal-total-price').textContent = total.toLocaleString('fr-FR') + " FCFA";
     }
 
-    function confirmOrder() {
+    async function confirmOrder() {
       const pin = prompt("🔐 Entrez votre code secret PIN Switch (4 chiffres) pour confirmer la commande :");
       if (pin && pin.length >= 4) {
         const isDelivery = document.querySelector('input[name="delivery-mode"]:checked').value === 'delivery';
         const deliveryFee = isDelivery ? 1000 : 0;
         const total = (currentSelectedProduct.price * currentQty) + deliveryFee;
-        const storeName = currentSelectedProduct.store || "Boutique Partenaire";
+        const storeName = currentSelectedProduct.store || "Boutique Partenaire Switch";
+
+        let paySuccess = false;
+        let txRef = "";
+        let errMsg = "Solde insuffisant dans votre Compte Switch.";
+
+        try {
+          if (window.SwitchAPI && window.SwitchAPI.payMerchant) {
+            const res = await window.SwitchAPI.payMerchant(storeName, total, `Achat Marketplace: ${currentQty}x ${currentSelectedProduct.title}`);
+            if (res && res.success) {
+              paySuccess = true;
+              txRef = res.tx_ref;
+            } else if (res && res.message) {
+              errMsg = res.message;
+            }
+          }
+        } catch (e) {
+          errMsg = e.message || errMsg;
+        }
+
+        if (!paySuccess) {
+          alert("❌ Paiement commande refusé : " + errMsg);
+          return;
+        }
+
+        if (window.SwitchEngine) {
+          window.SwitchEngine.addTransaction({
+            title: `Achat ${currentSelectedProduct.title} (${storeName})`,
+            category: "merchant",
+            amount: -total,
+            fee: 0,
+            recipient: storeName,
+            note: `Commande ${currentQty} article(s)`,
+            icon: "shopping_bag",
+            iconBg: "bg-purple-50 text-primary"
+          });
+        }
+
+        if (window.SwitchAPI && window.SwitchAPI.addClientNotification) {
+          window.SwitchAPI.addClientNotification({
+            id: `ORD-${Date.now()}`,
+            cat: "trans",
+            title: `Commande Confirmée : ${currentSelectedProduct.title}`,
+            time: "À l'instant",
+            amount: `-${total.toLocaleString('fr-FR')} FCFA`,
+            description: `Votre paiement de ${total.toLocaleString('fr-FR')} FCFA a été validé avec succès par ${storeName}.`,
+            extras: {
+              amount: `${total.toLocaleString('fr-FR')} FCFA`,
+              source: storeName,
+              ref: txRef || `#ORD-${Date.now().toString().slice(-6)}`,
+              date: "À l'instant"
+            }
+          });
+        }
 
         closeOrderModal();
         alert("🎉 Félicitations ! Votre commande de " + currentQty + "x " + currentSelectedProduct.title + " (" + total.toLocaleString('fr-FR') + " FCFA) a été payée avec succès depuis votre compte Switch et transmise à " + storeName + " !");

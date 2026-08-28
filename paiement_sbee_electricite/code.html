@@ -57,7 +57,7 @@
           <span class="material-symbols-outlined absolute left-4 text-on-surface-variant text-xl select-none">electric_meter</span>
           <input type="text" id="meter-number" required placeholder="Ex: 1423 8890 123" maxlength="16" class="w-full bg-surface-container border border-outline-variant rounded-2xl pl-12 pr-4 py-3.5 text-base font-mono font-semibold focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" oninput="formatMeter(this)"/>
         </div>
-        <p class="text-xs text-on-surface-variant" id="meter-owner">Titulaire : <span class="font-semibold text-on-surface">Adele Doe (Cotonou - Haie Vive)</span></p>
+        <p class="text-xs text-on-surface-variant" id="meter-owner">Titulaire : <span class="font-semibold text-on-surface" id="meter-owner-name">Camero Kuassis (Cotonou - Haie Vive)</span></p>
       </div>
 
       <!-- Montant en FCFA -->
@@ -174,7 +174,8 @@
 
     function pasteRecentMeter() {
       document.getElementById('meter-number').value = '1423 8890 1234';
-      document.getElementById('meter-owner').innerHTML = 'Titulaire : <span class="font-semibold text-on-surface">Adele Doe (Cotonou - Haie Vive)</span>';
+      const uName = localStorage.getItem('switch_user_fullname') || 'Camero Kuassis';
+      document.getElementById('meter-owner').innerHTML = 'Titulaire : <span class="font-semibold text-on-surface">' + uName + ' (Cotonou - Haie Vive)</span>';
     }
 
     function setQuickAmount(amt) {
@@ -199,6 +200,7 @@
       
       let paySuccess = false;
       let generatedToken = "";
+      let txRef = "";
       let errorMessage = "Solde insuffisant dans votre Compte Switch.";
 
       try {
@@ -207,6 +209,7 @@
           if (res && res.success) {
             paySuccess = true;
             generatedToken = res.token;
+            txRef = res.tx_ref;
           } else if (res && res.message) {
             errorMessage = res.message;
           }
@@ -219,6 +222,26 @@
         alert("❌ Règlement SBEE rejeté : " + errorMessage);
         return; // STRICTEMENT BLOQUANT
       }
+
+      const uName = localStorage.getItem('switch_user_fullname') || 'Camero Kuassis';
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+      const receiptData = {
+        title: "Recharge Électricité SBEE",
+        amount: amt,
+        fee: "0 FCFA",
+        token: generatedToken,
+        kwh: kwh + " kWh",
+        meter: meter,
+        subscriber: uName,
+        ref: txRef || `TRX-SBEE-${Date.now().toString().slice(-6)}`,
+        date: dateStr,
+        source: "Compte Switch Principal",
+        returnUrl: "../tableau_de_bord_mis_jour/code.html",
+        returnLabel: "Retour à l'Accueil"
+      };
+      localStorage.setItem('switch_last_transaction', JSON.stringify(receiptData));
 
       if (window.SwitchEngine) {
         window.SwitchEngine.addTransaction({

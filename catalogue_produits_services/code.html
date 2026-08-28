@@ -13,6 +13,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../assets/switch.css"/>
   <link rel="manifest" href="../manifest.json"/>
+  <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <script>
     tailwind.config = {
@@ -1299,13 +1302,46 @@
       grid.insertBefore(newCard, grid.firstChild);
       closePublishModal();
 
+      const storeName = localStorage.getItem('switch_merchant_business_name') || "Boutique Partenaire Switch";
+      const newProductData = {
+        id: uniqueId,
+        title: name,
+        name: name,
+        price: price,
+        category: categorySlug,
+        categoryName: displayCategoryName,
+        desc: desc,
+        photos: [p1, p2, p3, p4],
+        image: p1,
+        image_url: p1,
+        stock: 25,
+        store: storeName
+      };
+
+      try {
+        let existingProds = JSON.parse(localStorage.getItem('switch_merchant_custom_products') || '[]');
+        existingProds.unshift(newProductData);
+        localStorage.setItem('switch_merchant_custom_products', JSON.stringify(existingProds));
+
+        if (window.SwitchAPI && window.SwitchAPI.createProduct) {
+          window.SwitchAPI.createProduct({
+            name: name,
+            price: price,
+            category: categorySlug,
+            image_url: p1,
+            description: desc
+          });
+        }
+      } catch (err) {
+        console.warn("[Catalogue] Info sauvegarde produit :", err);
+      }
+
       if (nameEl) nameEl.value = '';
       if (priceEl) priceEl.value = '';
       if (descEl) descEl.value = '';
-      if (customCatEl) customCatEl.value = '';
 
       renderProducts();
-      alert('🎉 Superbe !\nVotre article "' + name + '" a été publié avec succès dans le rayon personnalisé "' + displayCategoryName + '" avec ses 4 photos HD !');
+      alert('🎉 Superbe !\nVotre article "' + name + '" a été publié avec succès !\nIl est maintenant immédiatement visible dans la Marketplace des clients Switch Bénin 🇧🇯.');
     }
 
     // Initialisation

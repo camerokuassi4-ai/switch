@@ -7,6 +7,8 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
@@ -18,7 +20,7 @@
   <!-- TopAppBar -->
   <header class="flex items-center justify-between px-container-margin py-stack-md w-full max-w-xl mx-auto pt-6">
     <div class="flex items-center gap-3">
-      <button aria-label="Retour" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
+      <button aria-label="Retour" onclick="window.history.back()" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
         <span class="material-symbols-outlined">arrow_back</span>
       </button>
       <div>
@@ -73,11 +75,11 @@
       <div class="flex flex-col gap-2">
         <div class="flex justify-between items-center">
           <label class="text-xs font-bold text-on-surface-variant uppercase" for="phone-num">Numéro destinataire</label>
-          <span class="text-xs text-primary font-semibold cursor-pointer hover:underline" onclick="document.getElementById('phone-num').value='+229 97 12 34 56'">Mon numéro</span>
+          <span class="text-xs text-primary font-semibold cursor-pointer hover:underline" onclick="setMyPhone()">Mon numéro</span>
         </div>
         <div class="relative flex items-center">
           <span class="material-symbols-outlined absolute left-4 text-on-surface-variant text-xl select-none">phone_iphone</span>
-          <input type="tel" id="phone-num" required value="+229 97 12 34 56" class="w-full bg-surface-container border border-outline-variant rounded-2xl pl-12 pr-4 py-3.5 text-base font-semibold focus:outline-none focus:border-primary"/>
+          <input type="tel" id="phone-num" required value="01 90 75 17 86" class="w-full bg-surface-container border border-outline-variant rounded-2xl pl-12 pr-4 py-3.5 text-base font-semibold focus:outline-none focus:border-primary"/>
         </div>
       </div>
 
@@ -103,7 +105,7 @@
         <div class="grid grid-cols-1 gap-2.5">
           <label class="p-3.5 rounded-2xl border border-outline-variant bg-surface-container hover:border-primary flex justify-between items-center cursor-pointer">
             <div class="flex items-center gap-3">
-              <input type="radio" name="bundle" checked class="text-primary focus:ring-primary"/>
+              <input type="radio" name="bundle" value="500" checked class="text-primary focus:ring-primary"/>
               <div>
                 <p class="text-sm font-bold text-on-surface">Maxi Data 1.5 Go</p>
                 <p class="text-xs text-on-surface-variant">Validité 24 heures</p>
@@ -114,7 +116,7 @@
 
           <label class="p-3.5 rounded-2xl border-2 border-primary bg-primary/5 flex justify-between items-center cursor-pointer">
             <div class="flex items-center gap-3">
-              <input type="radio" name="bundle" class="text-primary focus:ring-primary"/>
+              <input type="radio" name="bundle" value="2000" class="text-primary focus:ring-primary"/>
               <div>
                 <p class="text-sm font-bold text-on-surface">Mega Data 5 Go + 60 min</p>
                 <p class="text-xs text-on-surface-variant">Validité 7 jours</p>
@@ -125,7 +127,7 @@
 
           <label class="p-3.5 rounded-2xl border border-outline-variant bg-surface-container hover:border-primary flex justify-between items-center cursor-pointer">
             <div class="flex items-center gap-3">
-              <input type="radio" name="bundle" class="text-primary focus:ring-primary"/>
+              <input type="radio" name="bundle" value="10000" class="text-primary focus:ring-primary"/>
               <div>
                 <p class="text-sm font-bold text-on-surface">Illimité Nuit + 25 Go</p>
                 <p class="text-xs text-on-surface-variant">Validité 30 jours</p>
@@ -162,9 +164,10 @@
       </div>
 
       <div class="bg-surface-container p-4 rounded-2xl border border-outline-variant text-left text-xs flex flex-col gap-2">
-        <div class="flex justify-between"><span>Destinataire :</span><b class="text-on-surface">+229 97 12 34 56</b></div>
+        <div class="flex justify-between"><span>Destinataire :</span><b class="text-on-surface" id="modal-phone">01 90 75 17 86</b></div>
         <div class="flex justify-between"><span>Opérateur :</span><b class="text-on-surface" id="modal-op">MTN Bénin</b></div>
-        <div class="flex justify-between"><span>Cashback crédité :</span><b class="text-green-600">+20 FCFA</b></div>
+        <div class="flex justify-between"><span>Montant réglé :</span><b class="text-on-surface font-mono" id="modal-amt">1 000 FCFA</b></div>
+        <div class="flex justify-between"><span>Cashback crédité :</span><b class="text-green-600 font-mono" id="modal-cashback">+20 FCFA</b></div>
       </div>
 
       <div class="flex gap-3 mt-2">
@@ -218,9 +221,14 @@
       }
     }
 
-    function handleRecharge(e) {
+    function setMyPhone() {
+      const p = localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone') || '01 90 75 17 86';
+      document.getElementById('phone-num').value = p;
+    }
+
+    async function handleRecharge(e) {
       e.preventDefault();
-      const phone = document.getElementById('phone-num').value || '+229 97 12 34 56';
+      const phone = document.getElementById('phone-num').value || '01 90 75 17 86';
       let amt = 1000;
       let title = "Recharge Crédit " + currentOp;
 
@@ -228,9 +236,51 @@
         amt = parseInt(document.getElementById('airtime-amount').value) || 1000;
       } else {
         const bundle = document.querySelector('input[name="bundle"]:checked');
-        amt = 2000; // default for Mega Data
-        title = "Forfait Internet 5 Go " + currentOp;
+        amt = bundle ? parseInt(bundle.value) : 2000;
+        title = "Forfait Internet " + currentOp;
       }
+
+      let paySuccess = false;
+      let txRef = "";
+      let errorMessage = "Solde insuffisant dans votre Compte Switch.";
+
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.payBillOrAirtime) {
+          const res = await window.SwitchAPI.payBillOrAirtime('telecom', phone, amt, currentOp);
+          if (res && res.success) {
+            paySuccess = true;
+            txRef = res.tx_ref;
+          } else if (res && res.message) {
+            errorMessage = res.message;
+          }
+        }
+      } catch (err) {
+        errorMessage = err.message || errorMessage;
+      }
+
+      if (!paySuccess) {
+        alert("❌ Recharge rejetée : " + errorMessage);
+        return; // STRICTEMENT BLOQUANT
+      }
+
+      const cashback = Math.round(amt * 0.02);
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+      const receiptData = {
+        title: title,
+        amount: amt,
+        fee: "0 FCFA",
+        beneficiary: `${currentOp} (${phone})`,
+        network: currentOp,
+        cashback: `+${cashback} FCFA`,
+        ref: txRef || `TRX-TEL-${Date.now().toString().slice(-6)}`,
+        date: dateStr,
+        source: "Compte Switch Principal",
+        returnUrl: "../tableau_de_bord_mis_jour/code.html",
+        returnLabel: "Retour à l'Accueil"
+      };
+      localStorage.setItem('switch_last_transaction', JSON.stringify(receiptData));
 
       if (window.SwitchEngine) {
         window.SwitchEngine.addTransaction({
@@ -239,15 +289,22 @@
           amount: -amt,
           fee: 0,
           recipient: currentOp + " (" + phone + ")",
-          note: "Recharge instantanée",
+          note: "Cashback: +" + cashback + " FCFA",
           icon: "cell_tower",
           iconBg: "bg-amber-50 text-amber-800"
         });
       }
 
+      document.getElementById('modal-phone').textContent = phone;
       document.getElementById('modal-op').textContent = currentOp;
+      document.getElementById('modal-amt').textContent = amt.toLocaleString('fr-FR') + ' FCFA';
+      document.getElementById('modal-cashback').textContent = '+' + cashback + ' FCFA';
       document.getElementById('recharge-modal').classList.remove('hidden');
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setMyPhone();
+    });
   </script>
 
   <script src="../assets/switch.router.js"></script>

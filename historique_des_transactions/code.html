@@ -17,6 +17,7 @@
   <script src="../assets/switch.config.js"></script>
   <!-- Load SwitchEngine explicitly to prevent race conditions -->
   <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     body {
@@ -777,8 +778,49 @@
       window.print();
     }
 
+    async function syncTransactionsFromCloud() {
+      if (window.SwitchAPI && window.SwitchAPI.getWallet) {
+        try {
+          const w = await window.SwitchAPI.getWallet();
+          if (w && Array.isArray(w.transactions) && w.transactions.length > 0) {
+            const liveTxs = w.transactions.map((t, idx) => ({
+              id: t.tx_ref || `TRX-${idx}`,
+              title: t.title || t.note || (t.amount > 0 ? "Dépôt d'espèces reçu" : "Paiement / Transfert Switch"),
+              category: t.category || (t.amount > 0 ? "deposit" : "transfer"),
+              amount: t.amount,
+              fee: t.fee || 0,
+              date: t.date || "À l'instant",
+              status: "success",
+              recipient: t.recipient || "Kiosque Switch Saint-Michel",
+              note: t.note || "",
+              icon: t.amount > 0 ? "add_circle" : "send",
+              iconBg: t.amount > 0 ? "bg-emerald-50 text-emerald-700" : "bg-purple-50 text-primary"
+            }));
+
+            // Merge with local engine transactions
+            if (window.SwitchEngine && window.SwitchEngine.getTransactions) {
+              const localList = window.SwitchEngine.getTransactions();
+              const merged = [...liveTxs];
+              localList.forEach(lt => {
+                if (!merged.some(m => m.id === lt.id || m.title === lt.title)) {
+                  merged.push(lt);
+                }
+              });
+              localStorage.setItem('switch_transactions', JSON.stringify(merged));
+            } else {
+              localStorage.setItem('switch_transactions', JSON.stringify(liveTxs));
+            }
+            renderTransactions();
+          }
+        } catch (e) {
+          console.info("[Historique] Synchro Cloud :", e.message);
+        }
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       renderTransactions();
+      syncTransactionsFromCloud();
     });
   </script>
 

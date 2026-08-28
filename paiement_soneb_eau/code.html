@@ -7,6 +7,8 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
@@ -18,7 +20,7 @@
   <!-- TopAppBar -->
   <header class="flex items-center justify-between px-container-margin py-stack-md w-full max-w-xl mx-auto pt-6">
     <div class="flex items-center gap-3">
-      <button aria-label="Retour" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
+      <button aria-label="Retour" onclick="window.history.back()" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
         <span class="material-symbols-outlined">arrow_back</span>
       </button>
       <div>
@@ -53,7 +55,7 @@
         <div class="flex justify-between items-start">
           <div>
             <p class="text-xs text-sky-700 font-bold uppercase">Facture N° 2026-07-8831</p>
-            <h3 class="text-base font-bold text-sky-950 mt-0.5">Abonné : Adele Doe</h3>
+            <h3 class="text-base font-bold text-sky-950 mt-0.5" id="soneb-subscriber-name">Abonné : Camero Kuassis</h3>
             <p class="text-xs text-sky-800">Haie Vive, Rue 340, Cotonou</p>
           </div>
           <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-1 rounded-full">
@@ -125,9 +127,9 @@
       </div>
 
       <div class="bg-surface-container p-4 rounded-2xl border border-outline-variant text-left text-xs flex flex-col gap-2">
-        <div class="flex justify-between"><span>Numéro de quittance :</span><b class="font-mono text-on-surface">SNB-2026-0849201-9</b></div>
+        <div class="flex justify-between"><span>Numéro de quittance :</span><b class="font-mono text-on-surface" id="modal-soneb-ref">SNB-2026-0849201-9</b></div>
         <div class="flex justify-between"><span>Montant réglé :</span><b class="text-on-surface">8 450 FCFA</b></div>
-        <div class="flex justify-between"><span>Date :</span><b class="text-on-surface">24 Août 2026, 22:45</b></div>
+        <div class="flex justify-between"><span>Date :</span><b class="text-on-surface" id="modal-soneb-date">À l'instant</b></div>
       </div>
 
       <div class="flex gap-3 mt-2">
@@ -149,35 +151,73 @@
       document.getElementById('invoice-result').classList.remove('hidden');
     }
 
-    function payWaterInvoice() {
+    async function payWaterInvoice() {
       const police = document.getElementById('police-number').value || '0849201';
       const amt = 8450;
+      let paySuccess = false;
+      let txRef = "";
+      let errorMessage = "Solde insuffisant dans votre Compte Switch.";
+
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.payBillOrAirtime) {
+          const res = await window.SwitchAPI.payBillOrAirtime('soneb', police, amt, 'SONEB');
+          if (res && res.success) {
+            paySuccess = true;
+            txRef = res.tx_ref;
+          } else if (res && res.message) {
+            errorMessage = res.message;
+          }
+        }
+      } catch (err) {
+        errorMessage = err.message || errorMessage;
+      }
+
+      if (!paySuccess) {
+        alert("❌ Règlement SONEB rejeté : " + errorMessage);
+        return; // STRICTEMENT BLOQUANT
+      }
+
+      const uName = localStorage.getItem('switch_user_fullname') || 'Camero Kuassis';
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+      const receiptData = {
+        title: "Facture d'Eau SONEB",
+        amount: amt,
+        fee: "0 FCFA",
+        police: police,
+        subscriber: uName,
+        ref: txRef || `SNB-2026-${police}-9`,
+        date: dateStr,
+        source: "Compte Switch Principal",
+        returnUrl: "../tableau_de_bord_mis_jour/code.html",
+        returnLabel: "Retour à l'Accueil"
+      };
+      localStorage.setItem('switch_last_transaction', JSON.stringify(receiptData));
 
       if (window.SwitchEngine) {
-        const mainBal = window.SwitchEngine.getMainBalance();
-        if (mainBal < amt) {
-          alert("Solde insuffisant dans votre Compte Principal (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible, " + amt.toLocaleString('fr-FR') + " FCFA requis).");
-          return;
-        }
-
-        const tx = window.SwitchEngine.addTransaction({
-          title: "Facture Eau SONEB (" + police + ")",
+        window.SwitchEngine.addTransaction({
+          title: "Facture Eau SONEB (Police " + police + ")",
           category: "utility",
           amount: -amt,
           fee: 0,
-          recipient: "SONEB Bénin (Police " + police + ")",
-          note: "Quittance: SNB-2026-0849201-9",
+          recipient: "SONEB Bénin",
+          note: "Quittance: " + receiptData.ref,
           icon: "water_drop",
           iconBg: "bg-sky-50 text-sky-700"
         });
-
-        localStorage.setItem('switch_last_tx_id', tx.id);
-        localStorage.setItem('switch_last_tx_amount', amt.toString());
-        localStorage.setItem('switch_last_tx_recipient', "SONEB Bénin (Police " + police + ")");
       }
 
+      document.getElementById('modal-soneb-ref').textContent = receiptData.ref;
+      document.getElementById('modal-soneb-date').textContent = dateStr;
       document.getElementById('success-modal').classList.remove('hidden');
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const uName = localStorage.getItem('switch_user_fullname') || 'Camero Kuassis';
+      const subEl = document.getElementById('soneb-subscriber-name');
+      if (subEl) subEl.textContent = 'Abonné : ' + uName;
+    });
   </script>
 
   <script src="../assets/switch.router.js"></script>
