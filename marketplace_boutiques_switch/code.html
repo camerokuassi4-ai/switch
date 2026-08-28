@@ -17,6 +17,8 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     body {
@@ -514,8 +516,30 @@
       return defaultMarketProducts;
     }
 
-    function syncMarketplaceFromStorage() {
-      const products = getProducts();
+    async function syncMarketplaceFromStorage() {
+      let liveProducts = [];
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.getProducts) {
+          const res = await window.SwitchAPI.getProducts();
+          if (res && res.success && Array.isArray(res.products)) {
+            const defaultStoreName = localStorage.getItem('switch_merchant_business_name') || "Boutique & Restaurant La Plage";
+            liveProducts = res.products.map(p => ({
+              id: p.id,
+              title: p.name,
+              price: parseFloat(p.price) || 1000,
+              stock: p.stock_quantity !== undefined ? p.stock_quantity : 25,
+              category: (p.category || "alimentation").toLowerCase(),
+              emoji: "🏪",
+              image: p.image_url || null,
+              store: defaultStoreName
+            }));
+          }
+        }
+      } catch (e) {
+        console.warn("Live products sync info :", e);
+      }
+
+      const products = liveProducts.length > 0 ? [...liveProducts, ...defaultMarketProducts] : getProducts();
       const grid = document.getElementById('marketplace-grid');
       grid.innerHTML = "";
       const defaultStoreName = localStorage.getItem('switch_merchant_business_name') || "Boutique Partenaire Switch";
