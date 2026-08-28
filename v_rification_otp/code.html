@@ -149,7 +149,7 @@
     const activeOtp = sessionStorage.getItem('switch_active_otp') || localStorage.getItem('switch_active_otp') || '582914';
 
     // Affichage dynamique du numéro renseigné et de la bannière OTP à l'écran
-    document.addEventListener('DOMContentLoaded', () => {
+    function initOtpDisplay() {
       const phoneDisplay = document.getElementById('recipient-phone-display');
       if (phoneDisplay) {
         phoneDisplay.textContent = userPhone;
@@ -165,7 +165,10 @@
       if (window.SwitchAPI && window.SwitchAPI.showOnscreenOtp) {
         window.SwitchAPI.showOnscreenOtp(activeOtp, "Code de Connexion / Inscription");
       }
-    });
+    }
+
+    document.addEventListener('DOMContentLoaded', initOtpDisplay);
+    initOtpDisplay();
 
     inputs.forEach((input, index) => {
       input.addEventListener('input', (e) => {

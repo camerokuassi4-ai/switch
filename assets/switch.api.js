@@ -56,34 +56,34 @@
      * Helper : Affichage visuel d'un OTP à l'écran (Mode Démo BCEAO sans SMS)
      */
     showOnscreenOtp: function (otpCode, label = "Code de Sécurité") {
-      if (!cfg.DEMO_ONSCREEN_OTP && cfg.DEMO_ONSCREEN_OTP !== undefined) return;
+      if (cfg.DEMO_ONSCREEN_OTP === false) return;
       
       const existing = document.getElementById('switch-demo-otp-banner');
       if (existing) existing.remove();
 
       const banner = document.createElement('div');
       banner.id = 'switch-demo-otp-banner';
-      banner.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-[9999] w-[92%] max-w-md bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 text-white rounded-3xl p-4 shadow-2xl border-2 border-amber-400/80 animate-bounce flex flex-col gap-2';
+      banner.style.cssText = 'position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:99999; width:92%; max-width:440px; background:linear-gradient(135deg, #2D1577 0%, #150E38 100%); color:#ffffff; border-radius:24px; padding:16px; box-shadow:0 20px 40px rgba(0,0,0,0.4); border:2px solid #F59E0B; font-family:sans-serif; display:flex; flex-direction:column; gap:10px;';
       banner.innerHTML = `
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="text-base">🔑</span>
-            <span class="text-[10px] font-black uppercase tracking-wider text-amber-300 bg-amber-400/20 px-2 py-0.5 rounded-full border border-amber-400/30">Démo BCEAO • Sans SMS</span>
+        <div style="display:flex; align-items:center; justify-content:between; width:100%;">
+          <div style="display:flex; align-items:center; gap:8px; flex:1;">
+            <span style="font-size:18px;">🔑</span>
+            <span style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:#FCD34D; background:rgba(245,158,11,0.2); padding:3px 8px; border-radius:999px; border:1px solid rgba(245,158,11,0.4);">Mode Démo BCEAO • Sans SMS</span>
           </div>
-          <button type="button" onclick="this.closest('#switch-demo-otp-banner').remove()" class="text-gray-400 hover:text-white text-xs font-bold px-1.5 py-0.5 rounded-full bg-white/10">✕</button>
+          <button type="button" onclick="document.getElementById('switch-demo-otp-banner').remove()" style="background:rgba(255,255,255,0.15); border:none; color:#ffffff; font-weight:bold; font-size:12px; border-radius:999px; width:24px; height:24px; cursor:pointer; display:flex; align-items:center; justify-content:center;">✕</button>
         </div>
-        <div class="flex items-center justify-between gap-2">
-          <div class="flex flex-col">
-            <span class="text-[11px] text-gray-300 font-medium">${label} :</span>
-            <span class="text-2xl font-black font-mono tracking-widest text-amber-300 select-all">${otpCode}</span>
+        <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(0,0,0,0.25); border-radius:16px; padding:10px 14px; border:1px solid rgba(255,255,255,0.1);">
+          <div style="display:flex; flex-direction:column;">
+            <span style="font-size:11px; color:#E0E7FF;">${label} :</span>
+            <span style="font-size:24px; font-weight:900; font-family:monospace; letter-spacing:4px; color:#FCD34D; user-select:all;">${otpCode}</span>
           </div>
-          <button type="button" onclick="navigator.clipboard.writeText('${otpCode}'); alert('Code OTP copié : ${otpCode}');" class="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-purple-950 font-black text-xs shadow-md transition-all shrink-0 cursor-pointer">
-            Copier
+          <button type="button" onclick="navigator.clipboard.writeText('${otpCode}'); alert('Code OTP copié : ${otpCode}'); if(window.fillTestOtp) fillTestOtp();" style="background:#F59E0B; color:#1E1035; border:none; font-weight:800; font-size:12px; padding:8px 14px; border-radius:12px; cursor:pointer; box-shadow:0 4px 10px rgba(245,158,11,0.3);">
+            Copier & Insérer
           </button>
         </div>
-        <p class="text-[10px] text-purple-200/80 leading-tight">
-          Ce code a été généré sécurisé (crypto). En production, il sera expédié par SMS.
-        </p>
+        <div style="font-size:10px; color:#C7D2FE; line-height:1.3;">
+          Code généré sécurisé (crypto). En production réelle, ce code sera délivré par SMS.
+        </div>
       `;
       document.body.appendChild(banner);
     },
