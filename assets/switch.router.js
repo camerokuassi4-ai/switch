@@ -22,7 +22,7 @@
   const DASHBOARDS = {
     user: ROOT + "tableau_de_bord_mis_jour/code.html",
     merchant: ROOT + "tableau_de_bord_marchand/code.html",
-    agent: ROOT + "tableau_de_bord_agent_simple/code.html",
+    agent: ROOT + "tableau_de_bord_agent/code.html",
     hybrid: ROOT + "tableau_de_bord_agent_mixte/code.html",
   };
   const DASHBOARD_KEYS = ["tableau_de_bord_mis_jour", "tableau_de_bord_marchand", "tableau_de_bord_agent", "tableau_de_bord_agent_simple", "tableau_de_bord_agent_mixte"];
@@ -608,7 +608,7 @@
 
     if (space === "agent") {
       const isHybrid = localStorage.getItem("switch_is_hybrid") === "true";
-      const agentHomeUrl = isHybrid ? (ROOT + "tableau_de_bord_agent/code.html") : (ROOT + "tableau_de_bord_agent_simple/code.html");
+      const agentHomeUrl = isHybrid ? (ROOT + "tableau_de_bord_agent_mixte/code.html") : (ROOT + "tableau_de_bord_agent/code.html");
       return `
 <nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="${NAV_BAR_STYLE}">
   ${navItemHTML(agentHomeUrl, "dashboard", "Accueil", activeTab === "a-home")}

@@ -216,12 +216,13 @@
       localStorage.setItem('switch_agent_name', 'Adele Doe');
       localStorage.setItem('switch_agent_float', '1450000');
       sessionStorage.setItem('switch_agent_auth_token', btoa('agt_' + id + '_' + Date.now()));
-      sessionStorage.setItem('switchActiveSpace', 'agent');
+      const isHybrid = localStorage.getItem('switch_is_hybrid') === 'true';
+      const targetDash = isHybrid ? '../tableau_de_bord_agent_mixte/code.html' : '../tableau_de_bord_agent/code.html';
 
       if (window.switchNavigate) {
-        window.switchNavigate('../tableau_de_bord_agent_simple/code.html');
+        window.switchNavigate(targetDash);
       } else {
-        window.location.href = '../tableau_de_bord_agent_simple/code.html';
+        window.location.href = targetDash;
       }
     }
   </script>

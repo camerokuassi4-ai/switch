@@ -143,10 +143,12 @@
       sessionStorage.setItem('switchActiveSpace', 'agent');
 
       alert("Félicitations ! Votre guichet Agent Switch est officiellement agréé et activé !");
+      const isHybrid = localStorage.getItem('switch_is_hybrid') === 'true';
+      const targetDash = isHybrid ? '../tableau_de_bord_agent_mixte/code.html' : '../tableau_de_bord_agent/code.html';
       if (window.switchNavigate) {
-        window.switchNavigate('../tableau_de_bord_agent_simple/code.html');
+        window.switchNavigate(targetDash);
       } else {
-        window.location.href = '../tableau_de_bord_agent_simple/code.html';
+        window.location.href = targetDash;
       }
     }
   </script>

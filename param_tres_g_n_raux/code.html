@@ -88,30 +88,47 @@
       </div>
     </section>
 
-    <!-- 2. Espaces Professionnels (Marchand & Agent) -->
+    <!-- 2. Espaces Professionnels (Commerce, Guichet & Agent Mixte) -->
     <section class="flex flex-col gap-3">
       <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Espaces Professionnels</h3>
 
+      <!-- Point Hybride Mise en Avant -->
+      <a href="../tableau_de_bord_agent_mixte/code.html" class="setting-item bg-gradient-to-r from-purple-900 via-indigo-900 to-[#1C0F4A] p-4 rounded-3xl text-white shadow-md flex items-center justify-between no-underline border border-purple-400/30 group">
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-white/15 text-amber-300 border border-white/20 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-2xl">hub</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <h4 class="font-extrabold text-xs sm:text-sm text-white">Commerce & Guichet (Agent Mixte)</h4>
+              <span class="text-[9px] font-black uppercase bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded-full border border-amber-300/30">Hybride</span>
+            </div>
+            <p class="text-[10px] text-purple-200 mt-0.5">Terminal 2-en-1 : Caisse Boutique POS + Guichet Cash-in/out</p>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-white/80 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+      </a>
+
       <div class="grid grid-cols-2 gap-3">
-        <!-- Espace Marchand -->
-        <a href="../accueil_marchand/code.html" class="setting-item bg-white p-4 rounded-3xl border border-outline-variant/40 shadow-sm flex flex-col gap-2 no-underline text-on-surface cursor-pointer">
-          <div class="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-            <span class="material-symbols-outlined text-xl">store</span>
+        <!-- Espace Marchand Simple -->
+        <a href="../tableau_de_bord_marchand/code.html" class="setting-item bg-white p-4 rounded-3xl border border-outline-variant/40 shadow-sm flex flex-col gap-2 no-underline text-on-surface cursor-pointer">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+            <span class="material-symbols-outlined text-xl">storefront</span>
           </div>
           <div>
             <h4 class="font-bold text-xs sm:text-sm">Espace Marchand</h4>
-            <p class="text-[10px] text-on-surface-variant mt-0.5">Encaisser vos clients via QR</p>
+            <p class="text-[10px] text-on-surface-variant mt-0.5">Caisse POS & Ventes QR 0%</p>
           </div>
         </a>
 
-        <!-- Espace Agent -->
+        <!-- Espace Agent Pur -->
         <a href="../tableau_de_bord_agent/code.html" class="setting-item bg-white p-4 rounded-3xl border border-outline-variant/40 shadow-sm flex flex-col gap-2 no-underline text-on-surface cursor-pointer">
-          <div class="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+          <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center">
             <span class="material-symbols-outlined text-xl">support_agent</span>
           </div>
           <div>
-            <h4 class="font-bold text-xs sm:text-sm">Espace Agent</h4>
-            <p class="text-[10px] text-on-surface-variant mt-0.5">Gagner des commissions</p>
+            <h4 class="font-bold text-xs sm:text-sm">Espace Agent Pur</h4>
+            <p class="text-[10px] text-on-surface-variant mt-0.5">Guichet & Commissions</p>
           </div>
         </a>
       </div>
