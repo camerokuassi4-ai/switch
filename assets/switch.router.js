@@ -1162,13 +1162,46 @@
     });
   }
 
+  function handleBack(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (e && e.stopPropagation) e.stopPropagation();
+    goBack();
+  }
+
+  function goBack() {
+    const screenKey = getCurrentScreen();
+    const config = SCREENS[screenKey];
+
+    // 1. Si un retour est explicitement spécifié dans le routeur
+    if (config && config.back) {
+      let target = config.back;
+      if (target === DYNAMIC_DASHBOARD) {
+        target = getActiveDashboard();
+      } else if (!target.startsWith("http") && !target.startsWith("../") && !target.startsWith("/")) {
+        target = ROOT + target + (target.endsWith(".html") ? "" : "/code.html");
+      }
+      switchNavigate(target);
+      return;
+    }
+
+    // 2. Si l'historique du navigateur permet de reculer
+    if (window.history.length > 1 && document.referrer && (document.referrer.includes(window.location.host) || document.referrer.includes("vercel.app") || document.referrer.includes("localhost"))) {
+      window.history.back();
+      return;
+    }
+
+    // 3. Fallback universel vers le tableau de bord actif
+    switchNavigate(getActiveDashboard());
+  }
+
+  window.goBack = goBack;
+  window.handleBack = handleBack;
+  window.switchHandleBack = handleBack;
+
   // Interception universelle des clics pour une transition SPA instantanée sans rechargement
   document.addEventListener("click", function (e) {
     const backBtn = e.target.closest('button[aria-label="Retour"], button.switch-back-btn, button.back-btn, #back-btn, .btn-back, [data-action="back"]');
     if (backBtn) {
-      if (backBtn.hasAttribute("onclick") || backBtn.getAttribute("data-no-router") === "true") {
-        return;
-      }
       handleBack(e);
       return;
     }
