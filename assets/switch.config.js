@@ -15,7 +15,7 @@
     SUPABASE_URL: window.localStorage.getItem('switch_supabase_url') || "https://dfzyyawclnxcgykktrbr.supabase.co",
 
     // 2. Clé d'API publique anonyme (anon public key)
-    SUPABASE_ANON_KEY: window.localStorage.getItem('switch_supabase_anon_key') || "sb_publishable_w1Bk1r74psAg-e03Xn4Wog_RhepjXG5",
+    SUPABASE_ANON_KEY: "sb_publishable_w1Bk1r74psAg-e03Xn4Wog_RhepjXG5",
 
     // 3. Mode de fonctionnement
     OFFLINE_FALLBACK: false, // Strictement bloquant : les erreurs Supabase RPC affichent de vraies erreurs et ne basculent plus sur localStorage
