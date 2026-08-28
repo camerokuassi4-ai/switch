@@ -283,63 +283,135 @@
 
   <!-- Interactive Logic -->
   <script>
-    const agentNotifsData = {
-      1: {
-        title: "Commissions cumulées créditées",
-        time: "Aujourd'hui à 15:30 • Trésorerie Agent",
-        icon: "payments",
-        iconClass: "bg-emerald-50 text-emerald-600",
-        description: "Votre solde de commissions retirables a été augmenté de +1 450 FCFA suite à 4 opérations de caisse (3 dépôts et 1 retrait servis).",
-        extras: `
-          <div class="flex justify-between"><span>Commissions créditées :</span><b class="text-emerald-700 font-mono">+1 450 FCFA</b></div>
-          <div class="flex justify-between"><span>Nouveau Solde Retirable :</span><b class="font-mono text-primary font-bold">48 750 FCFA</b></div>
-          <div class="flex justify-between"><span>Guichetier :</span><b>Adèle K. (AGT-4092)</b></div>
-        `,
-        actionLabel: "Voir mon Solde Commissions",
-        actionUrl: "../tableau_de_bord_agent/code.html"
-      },
-      2: {
-        title: "Réapprovisionnement Float Validé",
-        time: "Aujourd'hui à 15:00 • Trésorerie Switch",
-        icon: "account_balance_wallet",
-        iconClass: "bg-purple-100 text-primary",
-        description: "Votre demande de réapprovisionnement par virement bancaire a été validée avec succès par la Trésorerie Centrale Switch Bénin.",
-        extras: `
-          <div class="flex justify-between"><span>Montant Float crédité :</span><b class="text-primary font-mono font-bold">+500 000 FCFA</b></div>
-          <div class="flex justify-between"><span>Solde Float actuel :</span><b class="font-mono">1 500 000 FCFA</b></div>
-          <div class="flex justify-between"><span>Réf. Virement :</span><b class="font-mono">#FLOAT-REQ-84920</b></div>
-        `,
-        actionLabel: "Gérer la Trésorerie Float",
-        actionUrl: "../demande_de_r_approvisionnement_float/code.html"
-      },
-      3: {
-        title: "Alerte Sécurité Session Guichet",
-        time: "Aujourd'hui à 13:30 • Cotonou, Bénin",
-        icon: "security",
-        iconClass: "bg-rose-100 text-rose-600",
-        description: "Ouverture de session de caisse enregistrée avec succès sur le terminal POS-COTONOU-04 après validation du code PIN Agent et empreinte.",
-        extras: `
-          <div class="flex justify-between"><span>Terminal :</span><b>POS-COTONOU-04</b></div>
-          <div class="flex justify-between"><span>Statut Guichet :</span><b class="text-emerald-700">Ouvert • Actif</b></div>
-          <div class="flex justify-between"><span>Localisation :</span><b>Cadjehoun, Cotonou 🇧🇯</b></div>
-        `,
-        actionLabel: "Gérer le Profil Guichet",
-        actionUrl: "../param_tres_et_profil_agent/code.html"
-      },
-      4: {
-        title: "Bonus Volume Cash-In & Cash-Out",
-        time: "Hier à 10:00 • Challenge Réseau",
-        icon: "campaign",
-        iconClass: "bg-amber-50 text-amber-600",
-        description: "Participez au challenge hebdomadaire des agents Switch Bénin ! Atteignez 2 000 000 FCFA d'opérations et empochez une prime de +15 000 FCFA.",
-        extras: `
-          <div class="flex justify-between"><span>Objectif Semaine :</span><b class="font-mono">2 000 000 FCFA</b></div>
-          <div class="flex justify-between"><span>Prime Cash :</span><b class="text-emerald-700 font-mono font-bold">+15 000 FCFA</b></div>
-        `,
-        actionLabel: "Voir l'Historique de mes Opérations",
-        actionUrl: "../historique_des_op_rations_agent/code.html"
+    let activeAgentNotifs = [];
+
+    function initAgentNotifications() {
+      if (window.SwitchAPI && window.SwitchAPI.getAgentNotifications) {
+        activeAgentNotifs = window.SwitchAPI.getAgentNotifications();
+      } else {
+        activeAgentNotifs = [
+          {
+            id: "AGT-NOTIF-1",
+            cat: "comm",
+            title: "Commissions cumulées créditées",
+            time: "À l'instant",
+            unread: true,
+            amount: "+1 450 FCFA",
+            description: "Félicitations ! Vous avez généré des commissions sur vos opérations du guichet.",
+            extras: {
+              source: "Caisse Centrale Switch",
+              ref: "#COMM-AG-4092",
+              date: "Aujourd'hui"
+            }
+          }
+        ];
       }
-    };
+
+      renderAgentNotificationCards();
+    }
+
+    function renderAgentNotificationCards() {
+      const container = document.getElementById('notifs-list');
+      if (!container) return;
+      container.innerHTML = "";
+
+      let unreadCount = 0;
+      let commCount = 0;
+      let floatCount = 0;
+      let secCount = 0;
+
+      activeAgentNotifs.forEach((n, idx) => {
+        if (n.unread) unreadCount++;
+        if (n.cat === 'comm') commCount++;
+        if (n.cat === 'float') floatCount++;
+        if (n.cat === 'sec') secCount++;
+
+        let icon = "payments";
+        let iconClass = "bg-emerald-50 text-emerald-600";
+        if (n.cat === 'float') {
+          icon = "account_balance_wallet";
+          iconClass = "bg-purple-100 text-primary";
+        } else if (n.cat === 'sec') {
+          icon = "security";
+          iconClass = "bg-rose-100 text-rose-600";
+        }
+
+        const card = document.createElement('div');
+        card.id = `agent-notif-item-${idx}`;
+        card.setAttribute('data-cat', n.cat || 'comm');
+        card.className = "notif-card bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md";
+        card.onclick = () => openAgentNotifDetail(idx);
+
+        card.innerHTML = `
+          <div class="w-11 h-11 rounded-2xl ${iconClass} flex items-center justify-center font-bold shrink-0">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">${icon}</span>
+          </div>
+          <div class="flex-1 space-y-1">
+            <div class="flex items-center justify-between">
+              <h3 class="font-extrabold text-sm text-on-surface">${n.title}</h3>
+              <span class="text-[11px] text-gray-400 font-medium">${n.time || "À l'instant"}</span>
+            </div>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              ${n.description}
+            </p>
+          </div>
+          ${n.unread ? `<span id="agent-dot-${idx}" class="w-2.5 h-2.5 rounded-full bg-primary shrink-0 mt-1.5 unread-dot"></span>` : ''}
+        `;
+
+        container.appendChild(card);
+      });
+
+      const bAll = document.getElementById('badge-all');
+      const bComm = document.getElementById('badge-comm');
+      const bFloat = document.getElementById('badge-float');
+      const bSec = document.getElementById('badge-sec');
+      if (bAll) bAll.textContent = unreadCount.toString();
+      if (bComm) bComm.textContent = commCount.toString();
+      if (bFloat) bFloat.textContent = floatCount.toString();
+      if (bSec) bSec.textContent = secCount.toString();
+    }
+
+    function openAgentNotifDetail(idx) {
+      const n = activeAgentNotifs[idx];
+      if (!n) return;
+
+      n.unread = false;
+      localStorage.setItem('switch_agent_notifications', JSON.stringify(activeAgentNotifs));
+      const dot = document.getElementById(`agent-dot-${idx}`);
+      if (dot) dot.remove();
+
+      let icon = "payments";
+      let iconClass = "bg-emerald-50 text-emerald-600";
+      if (n.cat === 'float') {
+        icon = "account_balance_wallet";
+        iconClass = "bg-purple-100 text-primary";
+      } else if (n.cat === 'sec') {
+        icon = "security";
+        iconClass = "bg-rose-100 text-rose-600";
+      }
+
+      document.getElementById('modal-title').textContent = n.title;
+      document.getElementById('modal-time').textContent = n.time || "Aujourd'hui";
+      document.getElementById('modal-icon').textContent = icon;
+      document.getElementById('modal-icon-box').className = `w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${iconClass}`;
+      document.getElementById('modal-description').textContent = n.description;
+
+      const extras = n.extras || {};
+      let extraHtml = `
+        <div class="flex justify-between"><span>Détail Opération :</span><b class="text-emerald-700 font-mono">${extras.amount || n.amount || 'Opération Guichet'}</b></div>
+        <div class="flex justify-between"><span>Bénéficiaire / Source :</span><b>${extras.client || extras.source || 'Client Switch'}</b></div>
+        <div class="flex justify-between"><span>Réf. Transaction :</span><b class="font-mono">${extras.ref || '#AGT-TX-9912'}</b></div>
+      `;
+      document.getElementById('modal-extra-details').innerHTML = extraHtml;
+      document.getElementById('modal-action-label').textContent = "Voir le Tableau de Bord";
+      document.getElementById('modal-action-btn').href = "../tableau_de_bord_agent/code.html";
+
+      document.getElementById('notif-detail-modal').classList.remove('hidden');
+    }
+
+    function closeNotifModal() {
+      document.getElementById('notif-detail-modal').classList.add('hidden');
+    }
 
     function goBack() {
       if (window.history.length > 1) {
@@ -350,18 +422,16 @@
     }
 
     function markAllRead() {
+      activeAgentNotifs.forEach(n => n.unread = false);
+      localStorage.setItem('switch_agent_notifications', JSON.stringify(activeAgentNotifs));
       document.querySelectorAll('.unread-dot').forEach(dot => dot.remove());
       const bAll = document.getElementById('badge-all');
-      const bComm = document.getElementById('badge-comm');
-      const bFloat = document.getElementById('badge-float');
-      const bSec = document.getElementById('badge-sec');
       if (bAll) bAll.textContent = "0";
-      if (bComm) bComm.remove();
-      if (bFloat) bFloat.remove();
-      if (bSec) bSec.remove();
     }
 
     function clearAllNotifications() {
+      activeAgentNotifs = [];
+      localStorage.setItem('switch_agent_notifications', JSON.stringify([]));
       document.getElementById('notifs-list').innerHTML = "";
       document.getElementById('empty-state').classList.remove('hidden');
       const bAll = document.getElementById('badge-all');
@@ -376,9 +446,9 @@
         const btn = document.getElementById('tab-' + t);
         if (btn) {
           if (t === category) {
-            btn.className = 'px-4 py-2 rounded-full text-xs font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap flex items-center gap-1.5';
+            btn.className = 'px-3.5 py-2 rounded-full text-xs font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap shrink-0 flex items-center gap-1.5';
           } else {
-            btn.className = 'px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap flex items-center gap-1.5';
+            btn.className = 'px-3.5 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap shrink-0 flex items-center gap-1.5';
           }
         }
       });
@@ -401,28 +471,9 @@
       }
     }
 
-    function openNotifDetail(id) {
-      const dot = document.getElementById(`dot-${id}`);
-      if (dot) dot.remove();
-
-      const data = agentNotifsData[id];
-      if (!data) return;
-
-      document.getElementById('modal-title').textContent = data.title;
-      document.getElementById('modal-time').textContent = data.time;
-      document.getElementById('modal-icon').textContent = data.icon;
-      document.getElementById('modal-icon-box').className = `w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${data.iconClass}`;
-      document.getElementById('modal-description').textContent = data.description;
-      document.getElementById('modal-extra-details').innerHTML = data.extras;
-      document.getElementById('modal-action-label').textContent = data.actionLabel;
-      document.getElementById('modal-action-btn').href = data.actionUrl;
-
-      document.getElementById('notif-detail-modal').classList.remove('hidden');
-    }
-
-    function closeNotifModal() {
-      document.getElementById('notif-detail-modal').classList.add('hidden');
-    }
+    document.addEventListener('DOMContentLoaded', initAgentNotifications);
+    window.addEventListener('pageshow', initAgentNotifications);
+    initAgentNotifications();
   </script>
 
   <!-- Bottom Navigation Bar Agent -->

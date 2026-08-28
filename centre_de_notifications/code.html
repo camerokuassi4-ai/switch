@@ -272,88 +272,147 @@
   </div>
 
   <!-- Router Script -->
-  <script src="../assets/switch.router.js"></script>
-
   <!-- Interactive Logic -->
   <script>
-    const notifsData = {
-      1: {
-        title: "Dépôt d'Espèces Reçu avec Succès",
-        time: "Aujourd'hui à 15:28 • Kiosque Switch Saint-Michel",
-        icon: "arrow_downward",
-        iconClass: "bg-emerald-50 text-emerald-600",
-        description: "Vous avez reçu un dépôt d'espèces de +50 000 FCFA effectué au Guichet Switch Saint-Michel (Agent AGT-4092). Les fonds sont immédiatement disponibles sur votre solde Switch.",
-        extras: `
-          <div class="flex justify-between"><span>Montant crédité :</span><b class="text-emerald-700 font-mono">+50 000 FCFA</b></div>
-          <div class="flex justify-between"><span>Guichet Émetteur :</span><b>Kiosque Switch Saint-Michel (AGT-4092)</b></div>
-          <div class="flex justify-between"><span>Réf. Transaction :</span><b class="font-mono">#TRX-DEP-66419</b></div>
-        `,
-        actionLabel: "Voir mon Tableau de Bord",
-        actionUrl: "../tableau_de_bord_mis_jour/code.html"
-      },
-      2: {
-        title: "Alerte Sécurité Compte",
-        time: "Aujourd'hui à 15:18 • Cotonou, Bénin",
-        icon: "gpp_maybe",
-        iconClass: "bg-rose-100 text-rose-600",
-        description: "Une nouvelle connexion a été effectuée sur votre compte Switch depuis un appareil iPhone 14 Pro à Cotonou (Cadjehoun). Si ce n'était pas vous, sécurisez immédiatement votre compte.",
-        extras: `
-          <div class="flex justify-between"><span>Appareil :</span><b>iPhone 14 Pro (iOS 18)</b></div>
-          <div class="flex justify-between"><span>Localisation :</span><b>Cotonou, Cadjehoun 🇧🇯</b></div>
-          <div class="flex justify-between"><span>Adresse IP :</span><b class="font-mono">154.68.21.14</b></div>
-        `,
-        actionLabel: "Sécuriser mon Compte",
-        actionUrl: "../s_curit/code.html"
-      },
-      3: {
-        title: "Dépôts 0% en Kiosques Switch",
-        time: "Hier à 10:00 • Offre Réseau National",
-        icon: "campaign",
-        iconClass: "bg-amber-50 text-amber-600",
-        description: "Profitez de 0% de frais sur tous vos dépôts d'espèces dans les plus de 500 points relais et agents agréés Switch à Cotonou, Calavi, Porto-Novo et Parakou.",
-        extras: `
-          <div class="flex justify-between"><span>Frais de dépôt :</span><b class="text-primary font-bold">0 FCFA Gratuit</b></div>
-          <div class="flex justify-between"><span>Points disponibles :</span><b>+500 Kiosques Partenaires</b></div>
-        `,
-        actionLabel: "Localiser un Guichet Proche",
-        actionUrl: "../carte_agents_guichets/code.html"
-      },
-      4: {
-        title: "Identité ANIP Validée (Niveau 2)",
-        time: "Il y a 2 jours • Conformité BCEAO",
-        icon: "verified_user",
-        iconClass: "bg-purple-50 text-primary",
-        description: "Votre document d'identité a été validé avec succès par les services ANIP Bénin. Votre plafond de compte est désormais augmenté à 2 000 000 FCFA.",
-        extras: `
-          <div class="flex justify-between"><span>Nouveau Niveau :</span><b class="text-emerald-700">Niveau 2 Vérifié</b></div>
-          <div class="flex justify-between"><span>Plafond Mensuel :</span><b class="font-mono">2 000 000 FCFA</b></div>
-        `,
-        actionLabel: "Voir mes Plafonds & Limites",
-        actionUrl: "../limites_de_transaction/code.html"
-      }
-    };
+    let activeNotifs = [];
 
-    function goBack() {
-      if (window.switchHandleBack) {
-        window.switchHandleBack();
-      } else if (window.history.length > 1) {
-        window.history.back();
+    function initNotifications() {
+      if (window.SwitchAPI && window.SwitchAPI.getClientNotifications) {
+        activeNotifs = window.SwitchAPI.getClientNotifications();
       } else {
-        window.location.href = '../tableau_de_bord_mis_jour/code.html';
+        activeNotifs = [
+          {
+            id: "NOTIF-1",
+            cat: "trans",
+            title: "Dépôt d'Espèces Reçu",
+            time: "À l'instant",
+            unread: true,
+            amount: "+50 000 FCFA",
+            description: "Vous avez reçu un dépôt d'espèces de +50 000 FCFA au Kiosque Switch Saint-Michel (Agent AGT-4092).",
+            extras: {
+              amount: "+50 000 FCFA",
+              source: "Kiosque Switch Saint-Michel (AGT-4092)",
+              ref: "#TRX-DEP-66419",
+              date: "28 août 2026 • 16:05"
+            }
+          }
+        ];
       }
+
+      renderNotificationCards();
     }
 
-    function markAllRead() {
-      document.querySelectorAll('.unread-dot').forEach(dot => dot.remove());
+    function renderNotificationCards() {
+      const container = document.getElementById('notifs-list');
+      if (!container) return;
+      container.innerHTML = "";
+
+      let unreadCount = 0;
+      let transCount = 0;
+      let secCount = 0;
+
+      activeNotifs.forEach((n, idx) => {
+        if (n.unread) unreadCount++;
+        if (n.cat === 'trans') transCount++;
+        if (n.cat === 'sec') secCount++;
+
+        let icon = "arrow_downward";
+        let iconClass = "bg-emerald-50 text-emerald-600";
+        if (n.cat === 'sec') {
+          icon = "gpp_maybe";
+          iconClass = "bg-rose-100 text-rose-600";
+        } else if (n.cat === 'promo') {
+          icon = "campaign";
+          iconClass = "bg-amber-50 text-amber-600";
+        }
+
+        const card = document.createElement('div');
+        card.id = `notif-item-${idx}`;
+        card.setAttribute('data-cat', n.cat || 'trans');
+        card.className = "notif-card bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex items-start gap-3.5 relative cursor-pointer group hover:shadow-md";
+        card.onclick = () => openNotifDetail(idx);
+
+        card.innerHTML = `
+          <div class="w-11 h-11 rounded-2xl ${iconClass} flex items-center justify-center font-bold shrink-0">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">${icon}</span>
+          </div>
+          <div class="flex-1 space-y-1">
+            <div class="flex items-center justify-between">
+              <h3 class="font-extrabold text-sm text-on-surface">${n.title}</h3>
+              <span class="text-[11px] text-gray-400 font-medium">${n.time || "À l'instant"}</span>
+            </div>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              ${n.description}
+            </p>
+          </div>
+          ${n.unread ? `<span id="dot-${idx}" class="w-2.5 h-2.5 rounded-full bg-primary shrink-0 mt-1.5 unread-dot"></span>` : ''}
+        `;
+
+        container.appendChild(card);
+      });
+
       const bAll = document.getElementById('badge-all');
       const bTrans = document.getElementById('badge-trans');
       const bSec = document.getElementById('badge-sec');
+      if (bAll) bAll.textContent = unreadCount.toString();
+      if (bTrans) bTrans.textContent = transCount.toString();
+      if (bSec) bSec.textContent = secCount.toString();
+    }
+
+    function openNotifDetail(idx) {
+      const n = activeNotifs[idx];
+      if (!n) return;
+
+      // Marquer comme lu
+      n.unread = false;
+      localStorage.setItem('switch_user_notifications', JSON.stringify(activeNotifs));
+      const dot = document.getElementById(`dot-${idx}`);
+      if (dot) dot.remove();
+
+      let icon = "arrow_downward";
+      let iconClass = "bg-emerald-50 text-emerald-600";
+      if (n.cat === 'sec') {
+        icon = "gpp_maybe";
+        iconClass = "bg-rose-100 text-rose-600";
+      } else if (n.cat === 'promo') {
+        icon = "campaign";
+        iconClass = "bg-amber-50 text-amber-600";
+      }
+
+      document.getElementById('modal-title').textContent = n.title;
+      document.getElementById('modal-time').textContent = n.time || "Aujourd'hui";
+      document.getElementById('modal-icon').textContent = icon;
+      document.getElementById('modal-icon-box').className = `w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${iconClass}`;
+      document.getElementById('modal-description').textContent = n.description;
+
+      const extras = n.extras || {};
+      let extraHtml = `
+        <div class="flex justify-between"><span>Montant crédité :</span><b class="text-emerald-700 font-mono">${extras.amount || n.amount || '+50 000 FCFA'}</b></div>
+        <div class="flex justify-between"><span>Point Réseau :</span><b>${extras.source || 'Kiosque Switch Saint-Michel'}</b></div>
+        <div class="flex justify-between"><span>Réf. Transaction :</span><b class="font-mono">${extras.ref || '#TRX-DEP-66419'}</b></div>
+      `;
+      document.getElementById('modal-extra-details').innerHTML = extraHtml;
+      document.getElementById('modal-action-label').textContent = "Voir mon Solde";
+      document.getElementById('modal-action-btn').href = "../tableau_de_bord_mis_jour/code.html";
+
+      document.getElementById('notif-detail-modal').classList.remove('hidden');
+    }
+
+    function closeNotifModal() {
+      document.getElementById('notif-detail-modal').classList.add('hidden');
+    }
+
+    function markAllRead() {
+      activeNotifs.forEach(n => n.unread = false);
+      localStorage.setItem('switch_user_notifications', JSON.stringify(activeNotifs));
+      document.querySelectorAll('.unread-dot').forEach(dot => dot.remove());
+      const bAll = document.getElementById('badge-all');
       if (bAll) bAll.textContent = "0";
-      if (bTrans) bTrans.remove();
-      if (bSec) bSec.remove();
     }
 
     function clearAllNotifications() {
+      activeNotifs = [];
+      localStorage.setItem('switch_user_notifications', JSON.stringify([]));
       document.getElementById('notifs-list').innerHTML = "";
       document.getElementById('empty-state').classList.remove('hidden');
       const bAll = document.getElementById('badge-all');
@@ -368,9 +427,9 @@
         const btn = document.getElementById('tab-' + t);
         if (btn) {
           if (t === category) {
-            btn.className = 'px-4 py-2 rounded-full text-xs font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap flex items-center gap-1.5';
+            btn.className = 'px-3.5 py-2 rounded-full text-xs font-black bg-primary text-white shadow-sm cursor-pointer whitespace-nowrap shrink-0 flex items-center gap-1.5';
           } else {
-            btn.className = 'px-4 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap flex items-center gap-1.5';
+            btn.className = 'px-3.5 py-2 rounded-full text-xs font-bold bg-white border border-outline-variant/40 text-on-surface-variant hover:text-on-surface cursor-pointer whitespace-nowrap shrink-0 flex items-center gap-1.5';
           }
         }
       });
@@ -393,29 +452,9 @@
       }
     }
 
-    function openNotifDetail(id) {
-      // Mark as read
-      const dot = document.getElementById(`dot-${id}`);
-      if (dot) dot.remove();
-
-      const data = notifsData[id];
-      if (!data) return;
-
-      document.getElementById('modal-title').textContent = data.title;
-      document.getElementById('modal-time').textContent = data.time;
-      document.getElementById('modal-icon').textContent = data.icon;
-      document.getElementById('modal-icon-box').className = `w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${data.iconClass}`;
-      document.getElementById('modal-description').textContent = data.description;
-      document.getElementById('modal-extra-details').innerHTML = data.extras;
-      document.getElementById('modal-action-label').textContent = data.actionLabel;
-      document.getElementById('modal-action-btn').href = data.actionUrl;
-
-      document.getElementById('notif-detail-modal').classList.remove('hidden');
-    }
-
-    function closeNotifModal() {
-      document.getElementById('notif-detail-modal').classList.add('hidden');
-    }
+    document.addEventListener('DOMContentLoaded', initNotifications);
+    window.addEventListener('pageshow', initNotifications);
+    initNotifications();
   </script>
 
   <script src="../assets/switch.router.js"></script>

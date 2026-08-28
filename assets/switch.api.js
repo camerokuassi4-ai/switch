@@ -766,26 +766,128 @@
     },
 
     /**
-     * 17. Récupère les points relais GPS (Carte des Agents)
+     * 18. Gestion Dynamique des Notifications (Client & Agent)
      */
-    getCashpoints: async function () {
+    getClientNotifications: function () {
       try {
-        const rows = await supabaseFetch('cashpoints?select=*&is_open=eq.true');
-        if (rows && rows.length > 0) {
-          return { success: true, cashpoints: rows };
+        const raw = localStorage.getItem('switch_user_notifications');
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return [
+        {
+          id: "NOTIF-INIT-1",
+          cat: "trans",
+          title: "Dépôt d'Espèces Reçu avec Succès",
+          time: "À l'instant",
+          unread: true,
+          amount: "+50 000 FCFA",
+          description: "Vous avez reçu un dépôt d'espèces de +50 000 FCFA au Kiosque Switch Saint-Michel (Agent AGT-4092).",
+          extras: {
+            amount: "+50 000 FCFA",
+            source: "Kiosque Switch Saint-Michel (AGT-4092)",
+            ref: "#TRX-DEP-66419",
+            date: "28 août 2026 • 16:05"
+          }
+        },
+        {
+          id: "NOTIF-INIT-2",
+          cat: "sec",
+          title: "Alerte Sécurité Compte",
+          time: "Il y a 10 min",
+          unread: true,
+          description: "Nouvelle connexion réussie depuis un appareil mobile à Cotonou (Cadjehoun).",
+          extras: {
+            source: "Système de Sécurité Switch Bénin",
+            ref: "#SEC-LOG-9148",
+            date: "Aujourd'hui"
+          }
+        },
+        {
+          id: "NOTIF-INIT-3",
+          cat: "promo",
+          title: "Dépôts 0% en Kiosques Switch",
+          time: "Hier",
+          unread: false,
+          description: "Profitez de 0% de frais sur tous vos dépôts d'espèces dans les +500 points relais agréés du Bénin.",
+          extras: {
+            source: "Réseau National Switch Bénin",
+            ref: "#OFFER-0PCT",
+            date: "Hier"
+          }
         }
-      } catch (e) {
-        console.info("[SwitchAPI] Chargement des cashpoints locaux");
-      }
+      ];
+    },
 
-      return {
-        success: true,
-        cashpoints: [
-          { name: "Kiosque Switch Saint-Michel", agent_code: "AGT-4092", city: "Cotonou", neighborhood: "Saint-Michel", phone: "+229 97 12 34 56", lat: 6.3683, lng: 2.4289 },
-          { name: "Agence Relais Switch Akpakpa", agent_code: "AGT-1021", city: "Cotonou", neighborhood: "Akpakpa Dodomè", phone: "+229 96 11 22 33", lat: 6.3650, lng: 2.4450 },
-          { name: "Point Service Switch Calavi", agent_code: "AGT-5541", city: "Abomey-Calavi", neighborhood: "Arconville", phone: "+229 95 44 55 66", lat: 6.4485, lng: 2.3556 }
-        ]
+    addClientNotification: function (notif) {
+      const list = this.getClientNotifications();
+      const newNotif = {
+        id: notif.id || `NOTIF-${Date.now()}`,
+        cat: notif.cat || "trans",
+        title: notif.title || "Notification Switch",
+        time: notif.time || "À l'instant",
+        unread: true,
+        amount: notif.amount || "",
+        description: notif.description || "",
+        extras: notif.extras || {}
       };
+      list.unshift(newNotif);
+      localStorage.setItem('switch_user_notifications', JSON.stringify(list));
+      localStorage.setItem('switch_user_has_unread_notif', 'true');
+      return newNotif;
+    },
+
+    getAgentNotifications: function () {
+      try {
+        const raw = localStorage.getItem('switch_agent_notifications');
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return [
+        {
+          id: "AGT-NOTIF-1",
+          cat: "comm",
+          title: "Commissions cumulées créditées",
+          time: "À l'instant",
+          unread: true,
+          amount: "+1 450 FCFA",
+          description: "Félicitations ! Vous avez généré +1 450 FCFA de commissions sur vos dernières opérations de guichet.",
+          extras: {
+            source: "Caisse Centrale Switch",
+            ref: "#COMM-AG-4092",
+            date: "Aujourd'hui"
+          }
+        },
+        {
+          id: "AGT-NOTIF-2",
+          cat: "float",
+          title: "Trésorerie Float Guichet Active",
+          time: "Il y a 30 min",
+          unread: true,
+          description: "Votre trésorerie float de caisse est active et opérationnelle pour servir les clients du réseau.",
+          extras: {
+            source: "Trésorerie Switch Bénin",
+            ref: "#FLOAT-OK",
+            date: "Aujourd'hui"
+          }
+        }
+      ];
+    },
+
+    addAgentNotification: function (notif) {
+      const list = this.getAgentNotifications();
+      const newNotif = {
+        id: notif.id || `AGT-NOTIF-${Date.now()}`,
+        cat: notif.cat || "comm",
+        title: notif.title || "Alerte Guichet",
+        time: notif.time || "À l'instant",
+        unread: true,
+        amount: notif.amount || "",
+        description: notif.description || "",
+        extras: notif.extras || {}
+      };
+      list.unshift(newNotif);
+      localStorage.setItem('switch_agent_notifications', JSON.stringify(list));
+      localStorage.setItem('switch_agent_has_unread_notif', 'true');
+      return newNotif;
     }
   };
 

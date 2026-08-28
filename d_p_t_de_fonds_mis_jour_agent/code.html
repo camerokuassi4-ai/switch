@@ -477,6 +477,43 @@
 
       localStorage.setItem('switch_last_transaction', JSON.stringify(trxData));
 
+      // Notifications automatiques Agent & Client
+      if (window.SwitchAPI) {
+        if (window.SwitchAPI.addAgentNotification) {
+          window.SwitchAPI.addAgentNotification({
+            id: trxData.ref,
+            cat: 'comm',
+            title: "Dépôt d'espèces client exécuté",
+            time: "À l'instant",
+            amount: `+${commText}`,
+            description: `Dépôt de ${amount.toLocaleString('fr-FR')} FCFA validé pour ${client}. Commission générée : +${commText}.`,
+            extras: {
+              client: `${client} (${identifier})`,
+              amount: `${amount.toLocaleString('fr-FR')} FCFA`,
+              ref: trxData.ref,
+              commission: commText,
+              date: dateStr
+            }
+          });
+        }
+        if (window.SwitchAPI.addClientNotification) {
+          window.SwitchAPI.addClientNotification({
+            id: trxData.ref,
+            cat: 'trans',
+            title: "Dépôt d'Espèces Reçu avec Succès",
+            time: "À l'instant",
+            amount: `+${amount.toLocaleString('fr-FR')} FCFA`,
+            description: `Vous avez reçu un dépôt d'espèces de +${amount.toLocaleString('fr-FR')} FCFA au Kiosque Switch Saint-Michel.`,
+            extras: {
+              amount: `+${amount.toLocaleString('fr-FR')} FCFA`,
+              source: "Kiosque Switch Saint-Michel (AGT-4092)",
+              ref: trxData.ref,
+              date: dateStr
+            }
+          });
+        }
+      }
+
       if (window.switchNavigate) {
         window.switchNavigate('../recu_operation_agent/code.html');
       } else {
