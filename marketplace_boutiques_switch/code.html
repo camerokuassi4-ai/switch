@@ -162,83 +162,119 @@
       </button>
     </div>
 
-    <!-- 3. Pre-rendered Fast Products Grid (Syncs immediately with JS) -->
+    <!-- 3. Pre-rendered Fast Products Grid (Directement synchronisé sans saut d'écran) -->
     <div class="grid grid-cols-2 gap-3" id="marketplace-grid">
       
-      <!-- Product 1 -->
-      <div class="product-card market-product-card bg-white rounded-3xl p-3.5 border border-outline-variant/40 shadow-soft flex flex-col justify-between gap-2.5 relative group" data-category="food" data-title="café espresso premium" data-price="1500">
-        <div class="w-full h-28 rounded-2xl bg-purple-50 relative overflow-hidden flex items-center justify-center">
-          <img src="../assets/images/img_005.jpg" alt="Café Espresso Premium" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <span class="absolute top-2 right-2 text-[9px] font-black uppercase bg-primary text-white px-2 py-0.5 rounded-full shadow-xs">
+      <!-- Product 1: Jus d'Ananas -->
+      <div class="product-card market-product-card bg-white rounded-2xl sm:rounded-3xl p-3.5 border border-purple-100 shadow-sm flex flex-col justify-between gap-3 relative group" data-category="alimentation" data-title="jus d'ananas naturel 1l" data-price="1500">
+        <div class="w-full h-32 rounded-2xl bg-gray-100 relative overflow-hidden flex items-center justify-center">
+          <img src="../assets/images/prod_jus_ananas.jpg" alt="Jus d'Ananas Naturel 1L" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+          <span class="absolute top-2 right-2 text-[10px] font-black uppercase bg-[#5E3BDC] text-white px-2.5 py-0.5 rounded-full shadow-xs">
+            45 dispo
+          </span>
+        </div>
+        <div class="space-y-1">
+          <div class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs text-[#5E3BDC]">verified</span>
+            <span class="text-[10px] font-bold text-gray-500 block truncate">Kiosque Saint-Michel (Bénin)</span>
+          </div>
+          <h4 class="text-xs sm:text-sm font-extrabold text-gray-900 line-clamp-1">Jus d'Ananas Naturel 1L</h4>
+          <span class="text-sm sm:text-base font-black font-mono text-[#5E3BDC] block">1 500 FCFA</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button onclick="openChatWithSeller('prod-jus')" class="py-2.5 px-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#5E3BDC] border border-purple-200 font-bold text-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">chat</span>
+            <span>Discuter</span>
+          </button>
+          <button onclick="openOrderModal('prod-jus')" class="py-2.5 px-2 rounded-xl bg-[#5E3BDC] hover:bg-[#4D2EC2] text-white font-extrabold text-xs shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">shopping_cart</span>
+            <span>Acheter</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Product 2: Riz Parfumé -->
+      <div class="product-card market-product-card bg-white rounded-2xl sm:rounded-3xl p-3.5 border border-purple-100 shadow-sm flex flex-col justify-between gap-3 relative group" data-category="alimentation" data-title="riz parfumé local 5kg" data-price="4500">
+        <div class="w-full h-32 rounded-2xl bg-gray-100 relative overflow-hidden flex items-center justify-center">
+          <img src="../assets/images/prod_riz_parfume.jpg" alt="Riz Parfumé Local 5kg" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+          <span class="absolute top-2 right-2 text-[10px] font-black uppercase bg-[#5E3BDC] text-white px-2.5 py-0.5 rounded-full shadow-xs">
+            20 dispo
+          </span>
+        </div>
+        <div class="space-y-1">
+          <div class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs text-[#5E3BDC]">verified</span>
+            <span class="text-[10px] font-bold text-gray-500 block truncate">Kiosque Saint-Michel (Bénin)</span>
+          </div>
+          <h4 class="text-xs sm:text-sm font-extrabold text-gray-900 line-clamp-1">Riz Parfumé Local 5kg</h4>
+          <span class="text-sm sm:text-base font-black font-mono text-[#5E3BDC] block">4 500 FCFA</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button onclick="openChatWithSeller('prod-riz')" class="py-2.5 px-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#5E3BDC] border border-purple-200 font-bold text-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">chat</span>
+            <span>Discuter</span>
+          </button>
+          <button onclick="openOrderModal('prod-riz')" class="py-2.5 px-2 rounded-xl bg-[#5E3BDC] hover:bg-[#4D2EC2] text-white font-extrabold text-xs shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">shopping_cart</span>
+            <span>Acheter</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Product 3: Savons Bio Coco -->
+      <div class="product-card market-product-card bg-white rounded-2xl sm:rounded-3xl p-3.5 border border-purple-100 shadow-sm flex flex-col justify-between gap-3 relative group" data-category="beaute" data-title="pack 6 savons bio coco" data-price="3500">
+        <div class="w-full h-32 rounded-2xl bg-gray-100 relative overflow-hidden flex items-center justify-center">
+          <img src="../assets/images/prod_savons_coco.jpg" alt="Pack 6 Savons Bio Coco" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+          <span class="absolute top-2 right-2 text-[10px] font-black uppercase bg-[#5E3BDC] text-white px-2.5 py-0.5 rounded-full shadow-xs">
+            35 dispo
+          </span>
+        </div>
+        <div class="space-y-1">
+          <div class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs text-[#5E3BDC]">verified</span>
+            <span class="text-[10px] font-bold text-gray-500 block truncate">Kiosque Saint-Michel (Bénin)</span>
+          </div>
+          <h4 class="text-xs sm:text-sm font-extrabold text-gray-900 line-clamp-1">Pack 6 Savons Bio Coco</h4>
+          <span class="text-sm sm:text-base font-black font-mono text-[#5E3BDC] block">3 500 FCFA</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button onclick="openChatWithSeller('prod-savon')" class="py-2.5 px-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#5E3BDC] border border-purple-200 font-bold text-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">chat</span>
+            <span>Discuter</span>
+          </button>
+          <button onclick="openOrderModal('prod-savon')" class="py-2.5 px-2 rounded-xl bg-[#5E3BDC] hover:bg-[#4D2EC2] text-white font-extrabold text-xs shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">shopping_cart</span>
+            <span>Acheter</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Product 4: Café Espresso -->
+      <div class="product-card market-product-card bg-white rounded-2xl sm:rounded-3xl p-3.5 border border-purple-100 shadow-sm flex flex-col justify-between gap-3 relative group" data-category="restauration" data-title="café espresso premium" data-price="1500">
+        <div class="w-full h-32 rounded-2xl bg-gray-100 relative overflow-hidden flex items-center justify-center">
+          <img src="../assets/images/img_034.jpg" alt="Café Espresso Premium" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+          <span class="absolute top-2 right-2 text-[10px] font-black uppercase bg-[#5E3BDC] text-white px-2.5 py-0.5 rounded-full shadow-xs">
             28 dispo
           </span>
         </div>
-        <div>
-          <span class="text-[9px] font-bold text-primary block truncate">Boutique & Restaurant La Plage</span>
-          <h4 class="text-xs font-bold text-on-surface line-clamp-1 mt-0.5">Café Espresso Premium</h4>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">1 500 FCFA</span>
+        <div class="space-y-1">
+          <div class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs text-[#5E3BDC]">verified</span>
+            <span class="text-[10px] font-bold text-gray-500 block truncate">Boutique & Restaurant La Plage</span>
+          </div>
+          <h4 class="text-xs sm:text-sm font-extrabold text-gray-900 line-clamp-1">Café Espresso Premium</h4>
+          <span class="text-sm sm:text-base font-black font-mono text-[#5E3BDC] block">1 500 FCFA</span>
         </div>
-        <button onclick="openOrderModal('prod-1')" class="w-full py-2.5 rounded-xl bg-primary hover:bg-primary-container text-white font-extrabold text-xs shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-          <span class="material-symbols-outlined text-sm">shopping_cart</span>
-          <span>Commander</span>
-        </button>
-      </div>
-
-      <!-- Product 2 -->
-      <div class="product-card market-product-card bg-white rounded-3xl p-3.5 border border-outline-variant/40 shadow-soft flex flex-col justify-between gap-2.5 relative group" data-category="food" data-title="croissant beurre artisanal" data-price="800">
-        <div class="w-full h-28 rounded-2xl bg-amber-50 relative overflow-hidden flex items-center justify-center">
-          <img src="../assets/images/img_006.jpg" alt="Croissant Beurre Artisanal" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <span class="absolute top-2 right-2 text-[9px] font-black uppercase bg-amber-600 text-white px-2 py-0.5 rounded-full shadow-xs">
-            5 dispo
-          </span>
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button onclick="openChatWithSeller('prod-cafe')" class="py-2.5 px-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#5E3BDC] border border-purple-200 font-bold text-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">chat</span>
+            <span>Discuter</span>
+          </button>
+          <button onclick="openOrderModal('prod-cafe')" class="py-2.5 px-2 rounded-xl bg-[#5E3BDC] hover:bg-[#4D2EC2] text-white font-extrabold text-xs shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">shopping_cart</span>
+            <span>Acheter</span>
+          </button>
         </div>
-        <div>
-          <span class="text-[9px] font-bold text-primary block truncate">Boutique & Restaurant La Plage</span>
-          <h4 class="text-xs font-bold text-on-surface line-clamp-1 mt-0.5">Croissant Beurre Artisanal</h4>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">800 FCFA</span>
-        </div>
-        <button onclick="openOrderModal('prod-2')" class="w-full py-2.5 rounded-xl bg-primary hover:bg-primary-container text-white font-extrabold text-xs shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-          <span class="material-symbols-outlined text-sm">shopping_cart</span>
-          <span>Commander</span>
-        </button>
-      </div>
-
-      <!-- Product 3 -->
-      <div class="product-card market-product-card bg-white rounded-3xl p-3.5 border border-outline-variant/40 shadow-soft flex flex-col justify-between gap-2.5 relative group" data-category="retail" data-title="robe wax soie africaine" data-price="25000">
-        <div class="w-full h-28 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-500 relative overflow-hidden flex items-center justify-center text-white">
-          <span class="material-symbols-outlined text-4xl">checkroom</span>
-          <span class="absolute top-2 right-2 text-[9px] font-black uppercase bg-primary text-white px-2 py-0.5 rounded-full shadow-xs">
-            12 dispo
-          </span>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-primary block truncate">Boutique & Restaurant La Plage</span>
-          <h4 class="text-xs font-bold text-on-surface line-clamp-1 mt-0.5">Robe Wax Soie Africaine</h4>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">25 000 FCFA</span>
-        </div>
-        <button onclick="openOrderModal('prod-3')" class="w-full py-2.5 rounded-xl bg-primary hover:bg-primary-container text-white font-extrabold text-xs shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-          <span class="material-symbols-outlined text-sm">shopping_cart</span>
-          <span>Commander</span>
-        </button>
-      </div>
-
-      <!-- Product 4 -->
-      <div class="product-card market-product-card bg-white rounded-3xl p-3.5 border border-outline-variant/40 shadow-soft flex flex-col justify-between gap-2.5 relative group" data-category="service" data-title="consultation & expertise (1h)" data-price="15000">
-        <div class="w-full h-28 rounded-2xl bg-indigo-50 relative overflow-hidden flex items-center justify-center">
-          <img src="../assets/images/img_007.jpg" alt="Consultation & Expertise" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <span class="absolute top-2 right-2 text-[9px] font-black uppercase bg-primary text-white px-2 py-0.5 rounded-full shadow-xs">
-            99 dispo
-          </span>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-primary block truncate">Boutique & Restaurant La Plage</span>
-          <h4 class="text-xs font-bold text-on-surface line-clamp-1 mt-0.5">Consultation & Expertise</h4>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">15 000 FCFA</span>
-        </div>
-        <button onclick="openOrderModal('prod-4')" class="w-full py-2.5 rounded-xl bg-primary hover:bg-primary-container text-white font-extrabold text-xs shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-          <span class="material-symbols-outlined text-sm">shopping_cart</span>
-          <span>Commander</span>
-        </button>
       </div>
 
     </div>
