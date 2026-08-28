@@ -262,6 +262,10 @@
      * 4. Opération Guichet Agent : Dépôt (Cash-In) & Retrait (Cash-Out) via Code OTP ou Compte
      */
     processAgentCash: async function (clientPhoneOrOtp, amount, opType = 'WITHDRAWAL') {
+      const curFloat = parseInt((localStorage.getItem('switch_agent_float') || '1500000').replace(/\s/g, ''), 10);
+      const curComm = parseInt((localStorage.getItem('switch_agent_commissions') || '48500').replace(/\s/g, ''), 10);
+      const commission = Math.max(100, Math.round(amount * 0.008));
+
       try {
         const data = await supabaseRPC('process_agent_cash_operation', {
           p_client_phone: clientPhoneOrOtp,
@@ -269,8 +273,19 @@
           p_operation_type: opType,
           p_otp_code: (clientPhoneOrOtp && clientPhoneOrOtp.length === 6) ? clientPhoneOrOtp : null
         });
+
         if (data && data.success) {
-          return data;
+          let newFloat = curFloat;
+          if (opType === 'DEPOSIT') {
+            newFloat = (data.new_agent_float !== undefined) ? parseInt(data.new_agent_float, 10) : Math.max(0, curFloat - amount);
+          } else {
+            newFloat = (data.new_agent_float !== undefined) ? parseInt(data.new_agent_float, 10) : (curFloat + amount);
+          }
+          const newComm = (data.new_commissions !== undefined) ? parseInt(data.new_commissions, 10) : (curComm + (data.commission || commission));
+
+          localStorage.setItem('switch_agent_float', newFloat.toString());
+          localStorage.setItem('switch_agent_commissions', newComm.toString());
+          return { ...data, new_agent_float: newFloat, new_commissions: newComm };
         } else if (data && data.success === false) {
           return data;
         }
@@ -282,10 +297,7 @@
       }
 
       // Repli local
-      const curFloat = parseInt((localStorage.getItem('switch_agent_float') || '1500000').replace(/\s/g, ''), 10);
-      const commission = Math.max(100, Math.round(amount * 0.008));
       let newFloat = curFloat;
-
       if (opType === 'DEPOSIT') {
         if (curFloat < amount) {
           return { success: false, message: "Float agent insuffisant pour effectuer ce dépôt." };
@@ -294,13 +306,17 @@
       } else {
         newFloat = curFloat + amount;
       }
+      const newComm = curComm + commission;
       localStorage.setItem('switch_agent_float', newFloat.toString());
+      localStorage.setItem('switch_agent_commissions', newComm.toString());
 
       return {
         success: true,
         tx_ref: `TRX-${opType.slice(0, 3)}-` + this._generateSecureCode(5),
         amount: amount,
         commission: commission,
+        new_agent_float: newFloat,
+        new_commissions: newComm,
         operation: opType,
         client: clientPhoneOrOtp
       };
