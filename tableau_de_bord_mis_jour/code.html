@@ -511,7 +511,7 @@
       }
     }
 
-    window.applyKycLevel = function applyKycLevel() {
+    window.applyKycLevel = async function applyKycLevel() {
       const level = localStorage.getItem('switch_kyc_level') || '2';
       const badge = document.getElementById('kyc-badge');
 
@@ -554,6 +554,19 @@
       updateGreeting();
       renderDashboardBalance();
       renderRecentTransactions();
+
+      // Synchronisation en direct avec Supabase Cloud
+      if (window.SwitchAPI && window.SwitchAPI.getWallet) {
+        try {
+          await window.SwitchAPI.getWallet();
+          renderDashboardBalance();
+          renderRecentTransactions();
+          const refreshedName = localStorage.getItem('switch_user_fullname');
+          if (refreshedName && uEl) uEl.textContent = refreshedName;
+        } catch (e) {
+          console.info("[Dashboard] Synchro wallet live :", e.message);
+        }
+      }
     };
 
     window.copyDashboardAccountNumber = function() {

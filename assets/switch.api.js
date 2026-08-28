@@ -89,21 +89,64 @@
     },
 
     /**
-     * 1. Récupère le profil et le solde utilisateur
+     * 1. Récupère le profil et le solde utilisateur (Synchronisation Supabase en temps réel)
      */
-    getWallet: async function (phone = "+229 97 12 34 56") {
+    getWallet: async function (phone) {
+      const userPhone = phone || localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone') || localStorage.getItem('switch_account_number') || "+229 01 97 12 34 56";
+      const cleanDigits = userPhone.replace(/\D/g, '');
+      const last8 = cleanDigits.length >= 8 ? cleanDigits.slice(-8) : cleanDigits;
+
       try {
-        const rows = await supabaseFetch(`profiles?phone=eq.${encodeURIComponent(phone)}&select=*`);
+        let query = `profiles?phone=eq.${encodeURIComponent(userPhone)}&select=*`;
+        if (cleanDigits.length >= 8) {
+          query = `profiles?or=(phone.eq.${encodeURIComponent(userPhone)},phone.eq.${encodeURIComponent(cleanDigits)},phone.ilike.*${last8}*)&select=*`;
+        }
+        const rows = await supabaseFetch(query);
         if (rows && rows.length > 0) {
           const user = rows[0];
-          localStorage.setItem('switch_user_balance', user.balance.toString());
-          localStorage.setItem('switch_vault_balance', user.vault_balance.toString());
-          localStorage.setItem('switch_user_fullname', user.full_name);
-          localStorage.setItem('switch_kyc_level', user.kyc_level.toString());
+          if (user.balance !== undefined && user.balance !== null) {
+            localStorage.setItem('switch_user_balance', user.balance.toString());
+          }
+          if (user.vault_balance !== undefined && user.vault_balance !== null) {
+            localStorage.setItem('switch_vault_balance', user.vault_balance.toString());
+          }
+          if (user.full_name) {
+            localStorage.setItem('switch_user_fullname', user.full_name);
+          }
+          if (user.kyc_level) {
+            localStorage.setItem('switch_kyc_level', user.kyc_level.toString());
+          }
+
+          // Récupération automatique des dernières transactions Supabase
+          try {
+            const txQuery = `transactions?or=(sender_id.eq.${user.id},receiver_id.eq.${user.id},recipient_phone.ilike.*${last8}*)&order=created_at.desc&limit=10&select=*`;
+            const txRows = await supabaseFetch(txQuery);
+            if (txRows && txRows.length > 0) {
+              const mappedTxs = txRows.map(t => {
+                const isPositive = (t.receiver_id === user.id || t.transaction_type === 'agent_deposit');
+                return {
+                  id: t.tx_ref || 'SW-TX',
+                  title: t.note || (t.transaction_type === 'agent_deposit' ? "Dépôt d'espèces (Guichet)" : (t.transaction_type === 'agent_withdrawal' ? "Retrait d'espèces" : "Transfert Switch")),
+                  category: t.transaction_type || 'transfer',
+                  amount: isPositive ? Math.abs(t.amount) : -Math.abs(t.amount),
+                  fee: t.fee || 0,
+                  date: new Date(t.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }) + ' • ' + new Date(t.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+                  timestamp: new Date(t.created_at).getTime(),
+                  status: t.status || 'completed',
+                  icon: t.transaction_type === 'agent_deposit' ? 'storefront' : (t.transaction_type === 'agent_withdrawal' ? 'payments' : 'swap_horiz'),
+                  iconBg: isPositive ? 'bg-emerald-50 text-emerald-700' : 'bg-purple-50 text-primary'
+                };
+              });
+              localStorage.setItem('switch_transactions', JSON.stringify(mappedTxs));
+            }
+          } catch(errTx) {
+            console.warn("[SwitchAPI] Transactions live sync info :", errTx.message);
+          }
+
           return { success: true, ...user };
         }
       } catch (e) {
-        console.info("[SwitchAPI] Mode LocalStorage actif :", e.message);
+        console.info("[SwitchAPI] Synchro live Supabase info :", e.message);
       }
 
       // Repli local
@@ -111,9 +154,9 @@
         success: true,
         balance: parseInt(localStorage.getItem('switch_user_balance') || '50000', 10),
         vault_balance: parseInt(localStorage.getItem('switch_vault_balance') || '0', 10),
-        full_name: localStorage.getItem('switch_user_fullname') || 'Adele Doe',
+        full_name: localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || 'Utilisateur Switch',
         kyc_level: parseInt(localStorage.getItem('switch_kyc_level') || '2', 10),
-        phone: phone
+        phone: userPhone
       };
     },
 
