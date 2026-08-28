@@ -92,14 +92,23 @@
      * 1. Récupère le profil et le solde utilisateur (Synchronisation Supabase en temps réel)
      */
     getWallet: async function (phone) {
-      const userPhone = phone || localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone') || localStorage.getItem('switch_account_number') || "+229 01 97 12 34 56";
-      const cleanDigits = userPhone.replace(/\D/g, '');
-      const last8 = cleanDigits.length >= 8 ? cleanDigits.slice(-8) : cleanDigits;
+      const rawUserPhone = phone || localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone') || localStorage.getItem('switch_account_number') || "+229 01 90 75 17 86";
+      const cleanDigits = rawUserPhone.replace(/\D/g, '');
+      
+      // Extraction des 8 chiffres pivots du numéro béninois (ex: 90751786)
+      let core8 = "";
+      if (cleanDigits.length === 14 && cleanDigits.startsWith("01")) {
+        core8 = cleanDigits.slice(2, 10); // 14 chiffres: 01 + 8 chiffres + 4 suffixe
+      } else if (cleanDigits.length >= 8) {
+        core8 = cleanDigits.slice(-8);
+      } else {
+        core8 = cleanDigits;
+      }
 
       try {
-        let query = `profiles?phone=eq.${encodeURIComponent(userPhone)}&select=*`;
-        if (cleanDigits.length >= 8) {
-          query = `profiles?or=(phone.eq.${encodeURIComponent(userPhone)},phone.eq.${encodeURIComponent(cleanDigits)},phone.ilike.*${last8}*)&select=*`;
+        let query = `profiles?select=*&order=updated_at.desc&limit=1`;
+        if (core8.length >= 6) {
+          query = `profiles?or=(phone.ilike.*${core8}*,phone.eq.${encodeURIComponent(rawUserPhone)},phone.eq.${encodeURIComponent(cleanDigits)})&order=updated_at.desc&limit=1&select=*`;
         }
         const rows = await supabaseFetch(query);
         if (rows && rows.length > 0) {
@@ -112,6 +121,7 @@
           }
           if (user.full_name) {
             localStorage.setItem('switch_user_fullname', user.full_name);
+            localStorage.setItem('switch_user_name', user.full_name);
           }
           if (user.kyc_level) {
             localStorage.setItem('switch_kyc_level', user.kyc_level.toString());
@@ -119,11 +129,11 @@
 
           // Récupération automatique des dernières transactions Supabase
           try {
-            const txQuery = `transactions?or=(sender_id.eq.${user.id},receiver_id.eq.${user.id},recipient_phone.ilike.*${last8}*)&order=created_at.desc&limit=10&select=*`;
+            const txQuery = `transactions?or=(sender_id.eq.${user.id},receiver_id.eq.${user.id},recipient_phone.ilike.*${core8}*)&order=created_at.desc&limit=10&select=*`;
             const txRows = await supabaseFetch(txQuery);
             if (txRows && txRows.length > 0) {
               const mappedTxs = txRows.map(t => {
-                const isPositive = (t.receiver_id === user.id || t.transaction_type === 'agent_deposit');
+                const isPositive = (t.receiver_id === user.id || t.transaction_type === 'agent_deposit' || (t.recipient_phone && t.recipient_phone.includes(core8)));
                 return {
                   id: t.tx_ref || 'SW-TX',
                   title: t.note || (t.transaction_type === 'agent_deposit' ? "Dépôt d'espèces (Guichet)" : (t.transaction_type === 'agent_withdrawal' ? "Retrait d'espèces" : "Transfert Switch")),
@@ -133,7 +143,7 @@
                   date: new Date(t.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }) + ' • ' + new Date(t.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
                   timestamp: new Date(t.created_at).getTime(),
                   status: t.status || 'completed',
-                  icon: t.transaction_type === 'agent_deposit' ? 'storefront' : (t.transaction_type === 'agent_withdrawal' ? 'payments' : 'swap_horiz'),
+                  icon: (t.transaction_type === 'agent_deposit' || isPositive) ? 'storefront' : (t.transaction_type === 'agent_withdrawal' ? 'payments' : 'swap_horiz'),
                   iconBg: isPositive ? 'bg-emerald-50 text-emerald-700' : 'bg-purple-50 text-primary'
                 };
               });
@@ -154,9 +164,9 @@
         success: true,
         balance: parseInt(localStorage.getItem('switch_user_balance') || '50000', 10),
         vault_balance: parseInt(localStorage.getItem('switch_vault_balance') || '0', 10),
-        full_name: localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || 'Utilisateur Switch',
+        full_name: localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || 'Camero Kuassis',
         kyc_level: parseInt(localStorage.getItem('switch_kyc_level') || '2', 10),
-        phone: userPhone
+        phone: rawUserPhone
       };
     },
 
