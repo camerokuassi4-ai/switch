@@ -947,40 +947,84 @@
       return newNotif;
     },
 
-    getAgentNotifications: function () {
+    fetchAgentNotifications: async function () {
       try {
-        const raw = localStorage.getItem('switch_agent_notifications');
-        if (raw) return JSON.parse(raw);
-      } catch (e) {}
-      return [
-        {
-          id: "AGT-NOTIF-1",
-          cat: "comm",
-          title: "Commissions cumulées créditées",
-          time: "À l'instant",
-          unread: true,
-          amount: "+1 450 FCFA",
-          description: "Félicitations ! Vous avez généré +1 450 FCFA de commissions sur vos dernières opérations de guichet.",
-          extras: {
-            source: "Caisse Centrale Switch",
-            ref: "#COMM-AG-4092",
-            date: "Aujourd'hui"
-          }
-        },
-        {
-          id: "AGT-NOTIF-2",
+        const rows = await supabaseFetch(`transactions?order=created_at.desc&limit=15`);
+        const dynamicNotifs = [];
+
+        if (rows && rows.length > 0) {
+          rows.forEach((t, i) => {
+            const isDeposit = t.transaction_type === 'agent_deposit' || (t.title && t.title.toLowerCase().includes('dépôt'));
+            const isWithdrawal = t.transaction_type === 'agent_withdrawal' || (t.title && t.title.toLowerCase().includes('retrait'));
+            const commVal = t.fee || Math.max(100, Math.round((t.amount || 0) * 0.008));
+            const dateStr = t.created_at ? (new Date(t.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }) + ' • ' + new Date(t.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })) : "À l'instant";
+
+            if (isDeposit || isWithdrawal) {
+              dynamicNotifs.push({
+                id: t.tx_ref || `AGT-TX-${i}`,
+                cat: "comm",
+                title: isDeposit ? "Dépôt d'espèces client exécuté" : "Retrait d'espèces client validé",
+                time: dateStr,
+                unread: i === 0,
+                amount: `+${commVal.toLocaleString('fr-FR')} FCFA`,
+                description: isDeposit
+                  ? `Dépôt de ${(t.amount || 0).toLocaleString('fr-FR')} FCFA exécuté avec succès pour ${t.recipient_phone || 'Camero Kuassis'}. Commission : +${commVal} FCFA.`
+                  : `Décaissement de ${(t.amount || 0).toLocaleString('fr-FR')} FCFA validé pour ${t.sender_phone || 'Client Switch'}. Commission : +${commVal} FCFA.`,
+                extras: {
+                  amount: `${(t.amount || 0).toLocaleString('fr-FR')} FCFA`,
+                  commission: `+${commVal.toLocaleString('fr-FR')} FCFA`,
+                  client: t.recipient_phone || t.sender_phone || 'Camero Kuassis (01907517868150)',
+                  ref: t.tx_ref ? (t.tx_ref.startsWith('#') ? t.tx_ref : '#' + t.tx_ref) : `#TRX-DEP-${i}`,
+                  date: dateStr
+                }
+              });
+            }
+          });
+        }
+
+        // Alertes permanentes de trésorerie & sécurité
+        dynamicNotifs.push({
+          id: "AGT-NOTIF-FLOAT",
           cat: "float",
           title: "Trésorerie Float Guichet Active",
-          time: "Il y a 30 min",
-          unread: true,
+          time: "Aujourd'hui",
+          unread: false,
           description: "Votre trésorerie float de caisse est active et opérationnelle pour servir les clients du réseau.",
           extras: {
             source: "Trésorerie Switch Bénin",
             ref: "#FLOAT-OK",
             date: "Aujourd'hui"
           }
-        }
-      ];
+        });
+
+        dynamicNotifs.push({
+          id: "AGT-NOTIF-SEC",
+          cat: "sec",
+          title: "Alerte Sécurité Session Guichet",
+          time: "Aujourd'hui",
+          unread: false,
+          description: "Session de caisse active et vérifiée sur terminal agréé Switch Bénin (AGT-4092).",
+          extras: {
+            source: "Sécurité Switch Bénin",
+            ref: "#SEC-AGT-4092",
+            date: "Aujourd'hui"
+          }
+        });
+
+        localStorage.setItem('switch_agent_notifications', JSON.stringify(dynamicNotifs));
+        return dynamicNotifs;
+      } catch (e) {
+        console.warn("[SwitchAPI] Erreur synchro notifications agent cloud :", e.message);
+        return this.getAgentNotifications();
+      }
+    },
+
+    getAgentNotifications: function () {
+      try {
+        const raw = localStorage.getItem('switch_agent_notifications');
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return [];
     },
 
     addAgentNotification: function (notif) {

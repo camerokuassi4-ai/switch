@@ -7,6 +7,8 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
@@ -285,29 +287,21 @@
   <script>
     let activeAgentNotifs = [];
 
-    function initAgentNotifications() {
+    async function initAgentNotifications() {
+      // 1. Chargement instantané depuis le cache local
       if (window.SwitchAPI && window.SwitchAPI.getAgentNotifications) {
         activeAgentNotifs = window.SwitchAPI.getAgentNotifications();
-      } else {
-        activeAgentNotifs = [
-          {
-            id: "AGT-NOTIF-1",
-            cat: "comm",
-            title: "Commissions cumulées créditées",
-            time: "À l'instant",
-            unread: true,
-            amount: "+1 450 FCFA",
-            description: "Félicitations ! Vous avez généré des commissions sur vos opérations du guichet.",
-            extras: {
-              source: "Caisse Centrale Switch",
-              ref: "#COMM-AG-4092",
-              date: "Aujourd'hui"
-            }
-          }
-        ];
+        renderAgentNotificationCards();
       }
 
-      renderAgentNotificationCards();
+      // 2. Synchronisation en direct avec les opérations Supabase Cloud
+      if (window.SwitchAPI && window.SwitchAPI.fetchAgentNotifications) {
+        try {
+          activeAgentNotifs = await window.SwitchAPI.fetchAgentNotifications();
+          renderAgentNotificationCards();
+        } catch (e) {
+          console.info("[Notifications Agent] Synchro Cloud :", e.message);
+        }
     }
 
     function renderAgentNotificationCards() {
