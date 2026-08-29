@@ -42,8 +42,11 @@ export default async function handler(req, res) {
       method: "POST",
       body: JSON.stringify({ phone, code_hash: hash(code), expires_at: new Date(now + 300000).toISOString() }),
     });
-    if (!ins.ok) throw new Error("Erreur d'enregistrement du code");
-
+        if (!ins.ok) {
+      const detail = await ins.text();
+      console.error("INSERT ERROR:", detail);
+      return res.status(500).json({ error: "Erreur d'enregistrement du code", detail });
+    }
     // Envoi SMS réel dès que Telerivet sera configuré
     if (process.env.TELERIVET_API_KEY && process.env.TELERIVET_PROJECT_ID) {
       await fetch(`https://api.telerivet.com/v1/projects/${process.env.TELERIVET_PROJECT_ID}/messages/send`, {
