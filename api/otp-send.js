@@ -56,14 +56,14 @@ export default async function handler(req, res) {
           Authorization: "Basic " + Buffer.from(process.env.TELERIVET_API_KEY + ":").toString("base64"),
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ msisdn: phone.replace("+", ""), content: `Switch Bénin : votre code est ${code}. Valable 5 min. Ne le partagez jamais.` }),
+        body: JSON.stringify({ to_number: phone, content: `Switch Bénin : votre code est ${code}. Valable 5 min. Ne le partagez jamais.` }),
       });
       const tvText = await tv.text();
       console.error("TELERIVET REPONSE:", tv.status, tvText);
       return res.json({ ok: true, telerivet: tv.status, detail: tvText });
     }
 
-    // MODE TEST temporaire (sans Telerivet) : le code est affiché pour que vous puissiez tester
+    // MODE TEST temporaire (sans Telerivet)
     return res.json({ ok: true, devCode: code });
   } catch (e) {
     console.error(e);
