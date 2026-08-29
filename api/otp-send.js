@@ -42,14 +42,15 @@ export default async function handler(req, res) {
       method: "POST",
       body: JSON.stringify({ phone, code_hash: hash(code), expires_at: new Date(now + 300000).toISOString() }),
     });
-        if (!ins.ok) {
+    if (!ins.ok) {
       const detail = await ins.text();
       console.error("INSERT ERROR:", detail);
       return res.status(500).json({ error: "Erreur d'enregistrement du code", detail });
     }
-    // Envoi SMS réel dès que Telerivet sera configuré
+
+    // Envoi SMS réel via Telerivet
     if (process.env.TELERIVET_API_KEY && process.env.TELERIVET_PROJECT_ID) {
-      await fetch(`https://api.telerivet.com/v1/projects/${process.env.TELERIVET_PROJECT_ID}/messages/send`, {
+      const tv = await fetch(`https://api.telerivet.com/v1/projects/${process.env.TELERIVET_PROJECT_ID}/messages/send`, {
         method: "POST",
         headers: {
           Authorization: "Basic " + Buffer.from(process.env.TELERIVET_API_KEY + ":").toString("base64"),
@@ -57,7 +58,9 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({ msisdn: phone.replace("+", ""), content: `Switch Bénin : votre code est ${code}. Valable 5 min. Ne le partagez jamais.` }),
       });
-      return res.json({ ok: true });
+      const tvText = await tv.text();
+      console.error("TELERIVET REPONSE:", tv.status, tvText);
+      return res.json({ ok: true, telerivet: tv.status, detail: tvText });
     }
 
     // MODE TEST temporaire (sans Telerivet) : le code est affiché pour que vous puissiez tester
