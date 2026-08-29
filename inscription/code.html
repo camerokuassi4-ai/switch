@@ -5,13 +5,11 @@
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
   <title>Inscription - Switch Bénin</title>
   
-  <!-- Google Fonts & Material Symbols -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS CDN & Plugins -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script>
     tailwind.config = {
@@ -39,7 +37,6 @@
     };
   </script>
   
-  <!-- Switch Design System & Router -->
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
 
@@ -66,45 +63,32 @@
       color: #1C1A24 !important;
       -webkit-font-smoothing: antialiased;
     }
-
-    .form-card {
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+    .form-card { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
     .form-card:focus-within {
       border-color: #5E3BDC;
       box-shadow: 0 8px 24px -4px rgba(94, 59, 220, 0.15);
       transform: translateY(-1px);
     }
-
-    .operator-badge {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
+    .operator-badge { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     @keyframes subtlePulse {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.02); }
     }
-    .bonus-pill {
-      animation: subtlePulse 3s infinite ease-in-out;
-    }
+    .bonus-pill { animation: subtlePulse 3s infinite ease-in-out; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-primary-fixed">
 
-  <!-- Top Navigation Bar & Progression -->
   <header class="w-full px-container-margin pt-5 pb-2 flex items-center justify-between z-30">
     <div class="w-10 h-10 rounded-2xl flex items-center justify-center bg-purple-50 text-[#5E3BDC] border border-purple-100 shadow-sm">
       <span class="material-symbols-outlined text-2xl">person_add</span>
     </div>
-    
-    <!-- Step Indicator Pill -->
     <div class="flex flex-col items-center gap-1.5">
       <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-gray-200 shadow-xs">
         <span class="text-[11px] font-extrabold uppercase tracking-wider text-primary">Étape 2 / 4</span>
         <span class="w-1 h-1 rounded-full bg-gray-300"></span>
         <span class="text-[11px] font-bold text-gray-600">Profil</span>
       </div>
-      <!-- Progress Track -->
       <div class="flex items-center gap-1">
         <span class="w-4 h-1.5 rounded-full bg-primary"></span>
         <span class="w-6 h-1.5 rounded-full bg-primary shadow-xs"></span>
@@ -112,17 +96,12 @@
         <span class="w-2 h-1.5 rounded-full bg-gray-200"></span>
       </div>
     </div>
-
-    <!-- Quick Help Link -->
     <a href="../support_aide/code.html" class="w-10 h-10 rounded-2xl flex items-center justify-center bg-white border border-gray-200 shadow-sm hover:bg-gray-50 active:scale-95 transition-all text-gray-600 hover:text-primary">
       <span class="material-symbols-outlined text-xl">help_outline</span>
     </a>
   </header>
 
-  <!-- Main Registration Canvas -->
   <main class="w-full px-container-margin flex flex-col gap-5 pt-3 pb-8 flex-1">
-    
-    <!-- Title & Brand Header -->
     <div class="flex items-start justify-between gap-3">
       <div class="space-y-1">
         <div class="inline-flex items-center gap-1.5 text-xs font-black text-primary bg-purple-100 text-[#5E3BDC] px-2.5 py-0.5 rounded-full mb-0.5">
@@ -139,10 +118,8 @@
       </div>
     </div>
 
-    <!-- Registration Form -->
     <form class="flex flex-col gap-4" id="registration-form" onsubmit="event.preventDefault(); submitRegistration();">
       
-      <!-- 1. Full Name Input (VIDE par défaut) -->
       <div class="form-card bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-gray-200 shadow-xs flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-extrabold text-gray-700 uppercase tracking-wider flex items-center gap-1.5" for="full-name">
@@ -151,71 +128,42 @@
           </label>
           <span class="text-[10px] text-gray-400 font-semibold" id="name-status">Requis</span>
         </div>
-        
         <div class="flex items-center gap-2.5 bg-gray-50 rounded-xl px-3.5 py-3 border border-gray-200 focus-within:bg-white focus-within:border-primary transition-all">
           <span class="material-symbols-outlined text-gray-400 text-lg">person</span>
-          <input 
-            type="text" 
-            id="full-name" 
-            name="full_name" 
-            placeholder="Ex: Koffi ADEBAYO" 
-            value="" 
-            required 
-            autocomplete="name"
+          <input type="text" id="full-name" name="full_name" placeholder="Ex: Koffi ADEBAYO" value="" required autocomplete="name"
             class="w-full bg-transparent border-none p-0 text-sm sm:text-base font-bold text-gray-900 focus:ring-0 outline-none placeholder:text-gray-400 placeholder:font-normal"
-            oninput="validateName(this)"
-          />
+            oninput="validateName(this)"/>
           <span class="material-symbols-outlined text-emerald-500 text-lg hidden" id="name-valid-icon">check_circle</span>
         </div>
-        <p class="text-[11px] text-gray-500 font-medium pl-1">
-          Identique à votre pièce officielle (CIP, CNI ou Passeport).
-        </p>
+        <p class="text-[11px] text-gray-500 font-medium pl-1">Identique à votre pièce officielle (CIP, CNI ou Passeport).</p>
       </div>
 
-      <!-- 2. Phone Number Input (Format Bénin 10 chiffres commençant par 01) -->
       <div class="form-card bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-gray-200 shadow-xs flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-extrabold text-gray-700 uppercase tracking-wider flex items-center gap-1.5" for="phone-number">
             <span class="material-symbols-outlined text-primary text-base">smartphone</span>
             <span>Numéro de téléphone Mobile <span class="text-rose-500">*</span></span>
           </label>
-          <!-- Dynamic Operator Badge -->
           <div id="operator-badge" class="operator-badge hidden items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black">
             <span id="operator-name">Bénin 01</span>
           </div>
         </div>
-
         <div class="flex items-center gap-2.5 bg-gray-50 rounded-xl px-3.5 py-3 border border-gray-200 focus-within:bg-white focus-within:border-primary transition-all">
-          <!-- Benin Prefix Chip -->
           <div class="flex items-center gap-1.5 shrink-0 border-r border-gray-300 pr-2.5 font-bold text-xs text-gray-800">
             <span class="text-base leading-none">🇧🇯</span>
             <span class="font-mono font-black">+229</span>
           </div>
-          
-          <input 
-            type="tel" 
-            id="phone-number" 
-            name="phone" 
-            placeholder="01 97 12 34 56" 
-            value="" 
-            maxlength="14"
-            required 
-            autocomplete="tel"
+          <input type="tel" id="phone-number" name="phone" placeholder="01 97 12 34 56" value="" maxlength="14" required autocomplete="tel"
             class="w-full bg-transparent border-none p-0 font-mono text-sm sm:text-base font-extrabold text-gray-950 focus:ring-0 outline-none placeholder:text-gray-400"
-            oninput="handlePhoneInput(this)"
-            onfocus="if(!this.value) this.value = '01 ';"
-          />
+            oninput="handlePhoneInput(this)" onfocus="if(!this.value) this.value = '01 ';"/>
           <span class="material-symbols-outlined text-primary text-lg" id="phone-icon">dialpad</span>
         </div>
         <div class="flex items-center justify-between pl-1">
-          <p class="text-[11px] text-gray-500 font-medium">
-            Plan national 10 chiffres (commence par <b>01</b>).
-          </p>
+          <p class="text-[11px] text-gray-500 font-medium">Plan national 10 chiffres (commence par <b>01</b>).</p>
           <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md">Vérification SMS</span>
         </div>
       </div>
 
-      <!-- 3. Referral Code (Optional with +500 F CFA Bonus) -->
       <div class="form-card bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-gray-200 shadow-xs flex flex-col gap-2">
         <div class="flex items-center justify-between">
           <label class="text-xs font-extrabold text-gray-700 uppercase tracking-wider flex items-center gap-1.5" for="referral-code">
@@ -226,24 +174,15 @@
             <span>🎁</span> +500 F CFA Offerts
           </span>
         </div>
-
         <div class="flex items-center gap-2.5 bg-gray-50 rounded-xl px-3.5 py-3 border border-gray-200 focus-within:bg-white focus-within:border-primary transition-all">
           <span class="material-symbols-outlined text-gray-400 text-lg">loyalty</span>
-          <input 
-            type="text" 
-            id="referral-code" 
-            name="referral_code" 
-            placeholder="Ex: SWITCH-KOFFI" 
-            value=""
-            maxlength="15"
+          <input type="text" id="referral-code" name="referral_code" placeholder="Ex: SWITCH-KOFFI" value="" maxlength="15"
             class="w-full bg-transparent border-none p-0 font-mono text-sm sm:text-base font-bold text-gray-900 focus:ring-0 outline-none uppercase placeholder:text-gray-400 placeholder:font-normal placeholder:normal-case"
-            oninput="checkReferral(this.value)"
-          />
+            oninput="checkReferral(this.value)"/>
           <span class="material-symbols-outlined text-amber-500 text-lg hidden" id="ref-applied-pill">verified</span>
         </div>
       </div>
 
-      <!-- Terms & Legal Consent -->
       <div class="p-3.5 rounded-2xl bg-purple-50/60 border border-purple-100 flex items-start gap-2.5 mt-1">
         <span class="material-symbols-outlined text-primary text-lg shrink-0 mt-0.5">verified_user</span>
         <p class="text-[11px] text-gray-600 leading-relaxed">
@@ -251,71 +190,45 @@
         </p>
       </div>
 
-      <!-- Action Button -->
       <div class="pt-2">
-        <button 
-          type="submit" 
-          id="submit-btn" 
-          class="w-full bg-[#5E3BDC] text-white py-4 px-6 rounded-2xl font-extrabold text-base shadow-lg shadow-purple-600/30 hover:bg-[#4D2EC2] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
-        >
+        <button type="submit" id="submit-btn"
+          class="w-full bg-[#5E3BDC] text-white py-4 px-6 rounded-2xl font-extrabold text-base shadow-lg shadow-purple-600/30 hover:bg-[#4D2EC2] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
           <span id="btn-text">Recevoir mon code SMS</span>
           <span class="material-symbols-outlined text-xl" id="btn-icon">arrow_forward</span>
         </button>
       </div>
 
-      <!-- Link to Login -->
       <div class="text-center pt-2">
         <p class="text-xs font-semibold text-gray-600">
           Vous avez déjà un compte Switch ? 
           <a href="../connexion/code.html" class="text-primary font-extrabold hover:underline ml-1">Se connecter</a>
         </p>
       </div>
-
     </form>
   </main>
 
-  <!-- Interactive Scripts -->
   <script>
-    // Validation du Nom
     function validateName(input) {
       const val = input.value.trim();
       const validIcon = document.getElementById('name-valid-icon');
       const status = document.getElementById('name-status');
-      
       if (val.length >= 3) {
         if (validIcon) validIcon.classList.remove('hidden');
-        if (status) {
-          status.textContent = 'Valide';
-          status.className = 'text-[10px] text-emerald-600 font-bold';
-        }
+        if (status) { status.textContent = 'Valide'; status.className = 'text-[10px] text-emerald-600 font-bold'; }
       } else {
         if (validIcon) validIcon.classList.add('hidden');
-        if (status) {
-          status.textContent = 'Requis';
-          status.className = 'text-[10px] text-gray-400 font-semibold';
-        }
+        if (status) { status.textContent = 'Requis'; status.className = 'text-[10px] text-gray-400 font-semibold'; }
       }
     }
 
-    // Auto-formattage Bénin : 10 chiffres commençant par 01 (01 XX XX XX XX)
     function handlePhoneInput(input) {
       let digits = input.value.replace(/\D/g, '');
-      
-      // Forcer le préfixe 01 si l'utilisateur tape des chiffres
       if (digits.length >= 1 && !digits.startsWith('01')) {
-        if (digits.startsWith('0')) {
-          digits = '01' + digits.substring(1);
-        } else if (digits.startsWith('1')) {
-          digits = '01' + digits.substring(1);
-        } else {
-          digits = '01' + digits;
-        }
+        if (digits.startsWith('0')) digits = '01' + digits.substring(1);
+        else if (digits.startsWith('1')) digits = '01' + digits.substring(1);
+        else digits = '01' + digits;
       }
-      
-      // Limiter à 10 chiffres (01 + 8 chiffres)
       if (digits.length > 10) digits = digits.substring(0, 10);
-      
-      // Formater : 01 97 12 34 56
       let formatted = '';
       for (let i = 0; i < digits.length; i++) {
         if (i > 0 && i % 2 === 0) formatted += ' ';
@@ -323,17 +236,13 @@
       }
       input.value = formatted;
 
-      // Détection d'opérateur GSM béninois (MTN, Moov, Celtiis) basée sur les chiffres 3 et 4 (après 01)
       const badge = document.getElementById('operator-badge');
       const opName = document.getElementById('operator-name');
-      
       if (digits.length >= 4) {
         const networkPrefix = digits.substring(2, 4);
-        
-        const mtnPrefixes = ['51', '52', '53', '54', '56', '57', '59', '61', '62', '66', '67', '69', '90', '91', '96', '97'];
-        const moovPrefixes = ['55', '60', '63', '64', '65', '68', '94', '95', '98', '99'];
-        const celtiisPrefixes = ['40', '41', '44', '47', '48', '49', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79'];
-
+        const mtnPrefixes = ['51','52','53','54','56','57','59','61','62','66','67','69','90','91','96','97'];
+        const moovPrefixes = ['55','60','63','64','65','68','94','95','98','99'];
+        const celtiisPrefixes = ['40','41','44','47','48','49','70','71','72','73','74','75','76','77','78','79'];
         if (mtnPrefixes.includes(networkPrefix)) {
           badge.className = 'operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300';
           opName.textContent = '🟡 MTN Bénin';
@@ -355,11 +264,8 @@
 
     function checkReferral(code) {
       const pill = document.getElementById('ref-applied-pill');
-      if (code.length >= 4) {
-        pill.classList.remove('hidden');
-      } else {
-        pill.classList.add('hidden');
-      }
+      if (code.length >= 4) pill.classList.remove('hidden');
+      else pill.classList.add('hidden');
     }
 
     async function submitRegistration() {
@@ -375,34 +281,29 @@
         document.getElementById('full-name').focus();
         return;
       }
-
       if (phoneDigits.length !== 10 || !phoneDigits.startsWith('01')) {
-        alert("Veuillez saisir un numéro de téléphone béninois valide à 10 chiffres commençant par 01 (ex: 01 97 12 34 56).");
+        alert("Veuillez saisir un numéro béninois valide à 10 chiffres commençant par 01.");
         document.getElementById('phone-number').focus();
         return;
       }
 
-      // Format E.164 complet pour l'envoi SMS : +22901XXXXXXXX
       const formattedFullPhone = '+229' + phoneDigits;
       const formattedDisplayPhone = '+229 ' + phoneInput;
 
-      // État de chargement
       btn.disabled = true;
       btn.classList.add('opacity-80');
       btnText.textContent = "Envoi du code SMS...";
       btnIcon.textContent = "sync";
       btnIcon.classList.add('animate-spin');
 
-      // Génération obligatoire du Numéro de Compte Switch : Numéro de téléphone (10 chiffres) + 4 chiffres uniques
       let accountSuffix = localStorage.getItem('switch_account_suffix');
       if (!accountSuffix || accountSuffix.length !== 4) {
         accountSuffix = Math.floor(1000 + Math.random() * 9000).toString();
         localStorage.setItem('switch_account_suffix', accountSuffix);
       }
-      const switchAccountNumber = phoneDigits + accountSuffix; // 14 chiffres : 01XXXXXXXX + 4 chiffres
+      const switchAccountNumber = phoneDigits + accountSuffix;
       const formattedAccountDisplay = '01 ' + phoneDigits.slice(2,4) + ' ' + phoneDigits.slice(4,6) + ' ' + phoneDigits.slice(6,8) + ' ' + phoneDigits.slice(8,10) + ' • ' + accountSuffix;
 
-      // Sauvegarde des informations en local
       localStorage.setItem('switch_user_name', fullName);
       localStorage.setItem('switch_user_fullname', fullName);
       localStorage.setItem('switch_user_phone', formattedDisplayPhone);
@@ -410,36 +311,42 @@
       localStorage.setItem('switch_account_number', switchAccountNumber);
       localStorage.setItem('switch_account_display', formattedAccountDisplay);
       localStorage.setItem('switch_kyc_level', '1');
-      localStorage.setItem('switch_user_balance', '50000'); // Solde symbolique de départ pour testeurs BCEAO
+      localStorage.setItem('switch_user_balance', '50000');
 
-      // Génération cryptographique de l'OTP
-      let secureOtp = "582914";
-      if (window.crypto && window.crypto.getRandomValues) {
-        const arr = new Uint32Array(1);
-        window.crypto.getRandomValues(arr);
-        secureOtp = (100000 + (arr[0] % 900000)).toString();
-      }
-      sessionStorage.setItem('switch_active_otp', secureOtp);
-      localStorage.setItem('switch_active_otp', secureOtp);
-
-      // Appel Supabase Auth pour déclencher l'Edge Function Send SMS Hook
+      // ⭐ NOUVEAU : appel à notre moteur OTP Telerivet
       try {
-        if (window.SWITCH_API && window.SWITCH_API.supabaseClient) {
-          await window.SWITCH_API.supabaseClient.auth.signInWithOtp({
-            phone: formattedFullPhone,
-          });
-        }
-      } catch (err) {
-        console.warn("Supabase Auth OTP non bloquant (mode test actif) :", err);
-      }
+        const res = await fetch('/api/otp-send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: phoneDigits })
+        });
+        const data = await res.json();
 
-      setTimeout(() => {
-        if (window.switchNavigate) {
-          window.switchNavigate('../v_rification_otp/code.html');
-        } else {
-          window.location.href = '../v_rification_otp/code.html';
+        if (!data.ok) {
+          // Restaurer le bouton pour permettre une nouvelle tentative
+          btn.disabled = false;
+          btn.classList.remove('opacity-80');
+          btnText.textContent = "Recevoir mon code SMS";
+          btnIcon.textContent = "arrow_forward";
+          btnIcon.classList.remove('animate-spin');
+          alert(data.error || "Erreur lors de l'envoi du SMS");
+          return;
         }
-      }, 400);
+
+        // Succès : navigation vers la page de vérification
+        setTimeout(() => {
+          if (window.switchNavigate) window.switchNavigate('../v_rification_otp/code.html');
+          else window.location.href = '../v_rification_otp/code.html';
+        }, 400);
+
+      } catch (err) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-80');
+        btnText.textContent = "Recevoir mon code SMS";
+        btnIcon.textContent = "arrow_forward";
+        btnIcon.classList.remove('animate-spin');
+        alert("Erreur de connexion : " + err.message);
+      }
     }
   </script>
 
