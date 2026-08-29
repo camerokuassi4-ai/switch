@@ -202,9 +202,14 @@
         localStorage.setItem('switch_kyc_level', '2');
 
         setTimeout(() => {
-          if (window.switchNavigate) window.switchNavigate('../cr_ation_code_pin/code.html');
-          else window.location.href = '../cr_ation_code_pin/code.html';
-        }, 400);
+  const role = localStorage.getItem('switch_active_role');
+  let dest;
+  if (role === 'agent') dest = '../agent_verification_caution/code.html';
+  else if (role === 'merchant') dest = '../setup_point_de_vente_marchand/code.html';
+  else dest = '../cr_ation_code_pin/code.html';
+  if (window.switchNavigate) window.switchNavigate(dest);
+  else window.location.href = dest;
+}, 400);
       } catch (err) {
         alert("Erreur de connexion : " + err.message);
         btn.disabled = false;
