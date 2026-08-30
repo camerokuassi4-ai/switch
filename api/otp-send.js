@@ -43,9 +43,8 @@ export default async function handler(req, res) {
       body: JSON.stringify({ phone, code_hash: hash(code), expires_at: new Date(now + 300000).toISOString() }),
     });
     if (!ins.ok) {
-      const detail = await ins.text();
-      console.error("INSERT ERROR:", detail);
-      return res.status(500).json({ error: "Erreur d'enregistrement du code", detail });
+      console.error("INSERT ERROR:", await ins.text());
+      return res.status(500).json({ error: "Erreur d'enregistrement du code" });
     }
 
     // Envoi SMS réel via Telerivet
@@ -58,13 +57,13 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({ to_number: phone, content: `Switch Bénin : votre code est ${code}. Valable 5 min. Ne le partagez jamais.` }),
       });
-      const tvText = await tv.text();
-      console.error("TELERIVET REPONSE:", tv.status, tvText);
-      return res.json({ ok: true, telerivet: tv.status, detail: tvText });
+      if (!tv.ok) console.error("TELERIVET ERREUR:", tv.status, await tv.text());
+      return res.json({ ok: true });
     }
 
-    // MODE TEST temporaire (sans Telerivet)
-    return res.json({ ok: true, devCode: code });
+    // Sans Telerivet configuré : on ne révèle JAMAIS le code
+    console.error("TELERIVET NON CONFIGURE");
+    return res.status(500).json({ error: "Service SMS indisponible" });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ error: "Erreur serveur" });
