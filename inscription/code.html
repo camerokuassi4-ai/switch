@@ -208,16 +208,38 @@
   </main>
 
   <script>
+    // ===== VALIDATION RENFORCÉE =====
+    const OPERATOR_PREFIXES = {
+      mtn: ['42','46','51','52','53','54','56','57','59','61','62','66','67','69','90','91','96','97'],
+      moov: ['55','60','63','64','65','68','94','95','98','99'],
+      celtiis: ['40','41','43','44','45','47','48','49','70','71','72','73','74','75','76','77','78','79']
+    };
+    function operatorOf(digits) {
+      if (digits.length < 4) return null;
+      const pre = digits.substring(2, 4);
+      if (OPERATOR_PREFIXES.mtn.includes(pre)) return 'mtn';
+      if (OPERATOR_PREFIXES.moov.includes(pre)) return 'moov';
+      if (OPERATOR_PREFIXES.celtiis.includes(pre)) return 'celtiis';
+      return null;
+    }
+    function nameIsOk(val) {
+      const v = val.trim();
+      return /^[A-Za-zÀ-ÖØ-öø-ÿ' -]{3,60}$/.test(v) && v.split(/\s+/).length >= 2;
+    }
+
     function validateName(input) {
       const val = input.value.trim();
       const validIcon = document.getElementById('name-valid-icon');
       const status = document.getElementById('name-status');
-      if (val.length >= 3) {
+      if (nameIsOk(val)) {
         if (validIcon) validIcon.classList.remove('hidden');
         if (status) { status.textContent = 'Valide'; status.className = 'text-[10px] text-emerald-600 font-bold'; }
       } else {
         if (validIcon) validIcon.classList.add('hidden');
-        if (status) { status.textContent = 'Requis'; status.className = 'text-[10px] text-gray-400 font-semibold'; }
+        if (status) {
+          status.textContent = val.length === 0 ? 'Requis' : 'Nom + Prénom attendus';
+          status.className = 'text-[10px] text-rose-500 font-bold';
+        }
       }
     }
 
@@ -239,22 +261,19 @@
       const badge = document.getElementById('operator-badge');
       const opName = document.getElementById('operator-name');
       if (digits.length >= 4) {
-        const networkPrefix = digits.substring(2, 4);
-        const mtnPrefixes = ['51','52','53','54','56','57','59','61','62','66','67','69','90','91','96','97'];
-        const moovPrefixes = ['55','60','63','64','65','68','94','95','98','99'];
-        const celtiisPrefixes = ['40','41','44','47','48','49','70','71','72','73','74','75','76','77','78','79'];
-        if (mtnPrefixes.includes(networkPrefix)) {
+        const op = operatorOf(digits);
+        if (op === 'mtn') {
           badge.className = 'operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300';
           opName.textContent = '🟡 MTN Bénin';
-        } else if (moovPrefixes.includes(networkPrefix)) {
+        } else if (op === 'moov') {
           badge.className = 'operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-blue-100 text-blue-900 border border-blue-300';
           opName.textContent = '🔵 Moov Africa';
-        } else if (celtiisPrefixes.includes(networkPrefix)) {
+        } else if (op === 'celtiis') {
           badge.className = 'operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300';
           opName.textContent = '🟢 Celtiis Bénin';
         } else {
-          badge.className = 'operator-badge flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black bg-purple-100 text-purple-900';
-          opName.textContent = '🇧🇯 Mobile Bénin';
+          badge.className = 'operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-rose-100 text-rose-900 border border-rose-300';
+          opName.textContent = '❌ Opérateur non reconnu';
         }
       } else {
         badge.classList.add('hidden');
@@ -276,13 +295,18 @@
       const btnText = document.getElementById('btn-text');
       const btnIcon = document.getElementById('btn-icon');
 
-      if (!fullName || fullName.length < 3) {
-        alert("Veuillez saisir votre Nom et Prénom(s) complets.");
+      if (!nameIsOk(fullName)) {
+        alert("Veuillez saisir votre Nom ET votre Prénom complets (au moins 2 mots, ex : Koffi ADEBAYO).");
         document.getElementById('full-name').focus();
         return;
       }
       if (phoneDigits.length !== 10 || !phoneDigits.startsWith('01')) {
         alert("Veuillez saisir un numéro béninois valide à 10 chiffres commençant par 01.");
+        document.getElementById('phone-number').focus();
+        return;
+      }
+      if (!operatorOf(phoneDigits)) {
+        alert("Numéro non reconnu : vérifiez le préfixe opérateur (MTN, Moov ou Celtiis).");
         document.getElementById('phone-number').focus();
         return;
       }
@@ -312,8 +336,8 @@
       localStorage.setItem('switch_account_display', formattedAccountDisplay);
       localStorage.setItem('switch_kyc_level', '1');
       localStorage.setItem('switch_user_balance', '50000');
+      localStorage.setItem('switch_active_role', 'client');
 
-      // ⭐ NOUVEAU : appel à notre moteur OTP Telerivet
       try {
         const res = await fetch('/api/otp-send', {
           method: 'POST',
@@ -323,7 +347,6 @@
         const data = await res.json();
 
         if (!data.ok) {
-          // Restaurer le bouton pour permettre une nouvelle tentative
           btn.disabled = false;
           btn.classList.remove('opacity-80');
           btnText.textContent = "Recevoir mon code SMS";
@@ -333,7 +356,6 @@
           return;
         }
 
-        // Succès : navigation vers la page de vérification
         setTimeout(() => {
           if (window.switchNavigate) window.switchNavigate('../v_rification_otp/code.html');
           else window.location.href = '../v_rification_otp/code.html';
