@@ -6,6 +6,8 @@
 
 BEGIN;
 
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 -- 1. Index d'idempotence client pérenne
 CREATE UNIQUE INDEX IF NOT EXISTS idx_cash_operations_client_idempotency
 ON public.cash_operations(client_user_id, idempotency_key)
@@ -50,8 +52,10 @@ BEGIN
         RETURN jsonb_build_object('success', false, 'error_code', 'INVALID_AMOUNT', 'message', 'Montant invalide.');
     END IF;
 
-    -- Idempotence check
-    SELECT tx_ref INTO v_tx_ref FROM public.transactions WHERE user_id = v_sender_id AND idempotency_key = v_clean_key;
+    -- Idempotence check via grand livre
+    SELECT tx_ref INTO v_tx_ref FROM public.transactions 
+    WHERE sender_id = v_sender_id AND metadata->>'idempotency_key' = v_clean_key;
+    
     IF v_tx_ref IS NOT NULL THEN
         RETURN jsonb_build_object('success', true, 'tx_ref', v_tx_ref, 'amount', p_amount, 'idempotent_replay', true, 'message', 'Transfert déjà validé.');
     END IF;
@@ -69,9 +73,13 @@ BEGIN
     UPDATE public.profiles SET balance = balance - p_amount WHERE id = v_sender_id;
     UPDATE public.profiles SET balance = balance + p_amount WHERE id = v_recipient_id;
 
-    v_tx_ref := 'SW-P2P-' || to_hex(trunc(extract(epoch from now()))::bigint) || '-' || substr(md5(random()::text), 1, 6);
-    INSERT INTO public.transactions (user_id, tx_ref, amount, type, status, idempotency_key, description)
-    VALUES (v_sender_id, v_tx_ref, p_amount, 'TRANSFER_OUT', 'completed', v_clean_key, p_note);
+    v_tx_ref := 'SW-P2P-' || replace(gen_random_uuid()::text, '-', '');
+    INSERT INTO public.transactions (
+        tx_ref, sender_id, receiver_id, amount, fee, transaction_type, status, note, metadata
+    ) VALUES (
+        v_tx_ref, v_sender_id, v_recipient_id, p_amount, 0, 'p2p_transfer', 'completed', p_note,
+        jsonb_build_object('idempotency_key', v_clean_key)
+    );
 
     RETURN jsonb_build_object('success', true, 'tx_ref', v_tx_ref, 'amount', p_amount, 'sender_balance_after', v_sender_bal - p_amount, 'idempotent_replay', false);
 END;
@@ -123,7 +131,8 @@ BEGIN
         END IF;
 
         IF v_op.status = 'completed' THEN
-            RETURN jsonb_build_object('success', true, 'tx_ref', 'SW-COMPLETED', 'amount', v_op.amount, 'idempotent_replay', true, 'message', 'Opération déjà validée.');
+            SELECT tx_ref INTO v_tx_ref FROM public.transactions WHERE metadata->>'request_id' = v_op.id::text;
+            RETURN jsonb_build_object('success', true, 'tx_ref', COALESCE(v_tx_ref, 'SW-COMPLETED'), 'amount', v_op.amount, 'idempotent_replay', true, 'message', 'Opération déjà validée.');
         END IF;
 
         IF v_op.status <> 'pending' THEN
@@ -146,7 +155,27 @@ BEGIN
         UPDATE public.agents SET float_balance = float_balance + v_op.amount, commissions_balance = commissions_balance + 100 WHERE id = v_agent_record.id;
         UPDATE public.cash_operations SET status = 'completed', agent_id = v_agent_record.id, updated_at = now() WHERE id = v_op.id;
 
-        v_tx_ref := 'SW-AGT-' || to_hex(trunc(extract(epoch from now()))::bigint);
+        v_tx_ref := 'SW-AGT-' || replace(gen_random_uuid()::text, '-', '');
+        INSERT INTO public.transactions (
+            tx_ref, sender_id, receiver_id, agent_id, amount, fee,
+            transaction_type, status, note, metadata
+        ) VALUES (
+            v_tx_ref,
+            v_op.client_user_id,
+            NULL,
+            v_agent_record.id,
+            v_op.amount,
+            0,
+            CASE WHEN v_op.op_type = 'EXPRESS_WITHDRAWAL' THEN 'agent_express_withdrawal' ELSE 'agent_withdrawal' END,
+            'completed',
+            'Retrait Guichet Switch',
+            jsonb_build_object(
+                'request_id', v_op.id,
+                'idempotency_key', v_clean_key,
+                'operation_type', v_op.op_type
+            )
+        );
+
         RETURN jsonb_build_object('success', true, 'tx_ref', v_tx_ref, 'amount', v_op.amount, 'commission', 100, 'idempotent_replay', false);
     END IF;
 
@@ -182,7 +211,9 @@ BEGIN
         RETURN jsonb_build_object('success', false, 'error_code', 'INVALID_IDEMPOTENCY_KEY', 'message', 'Clé d''idempotence requise.');
     END IF;
 
-    SELECT tx_ref INTO v_tx_ref FROM public.transactions WHERE user_id = v_user_id AND idempotency_key = v_clean_key;
+    SELECT tx_ref INTO v_tx_ref FROM public.transactions 
+    WHERE sender_id = v_user_id AND metadata->>'idempotency_key' = v_clean_key;
+    
     IF v_tx_ref IS NOT NULL THEN
         RETURN jsonb_build_object('success', true, 'tx_ref', v_tx_ref, 'amount', p_amount, 'idempotent_replay', true, 'message', 'Paiement déjà validé.');
     END IF;
@@ -194,9 +225,13 @@ BEGIN
 
     UPDATE public.profiles SET balance = balance - p_amount WHERE id = v_user_id;
 
-    v_tx_ref := 'SW-BIL-' || to_hex(trunc(extract(epoch from now()))::bigint);
-    INSERT INTO public.transactions (user_id, tx_ref, amount, type, status, idempotency_key, description, metadata)
-    VALUES (v_user_id, v_tx_ref, p_amount, 'BILL_PAYMENT', 'completed', v_clean_key, p_service_type || ' ' || p_operator, p_metadata);
+    v_tx_ref := 'SW-BIL-' || replace(gen_random_uuid()::text, '-', '');
+    INSERT INTO public.transactions (
+        tx_ref, sender_id, receiver_id, amount, fee, transaction_type, status, note, metadata
+    ) VALUES (
+        v_tx_ref, v_user_id, NULL, p_amount, 0, 'bill_payment', 'completed', p_service_type || ' ' || p_operator,
+        jsonb_build_object('idempotency_key', v_clean_key, 'service_type', p_service_type, 'operator', p_operator, 'meter_or_phone', p_meter_or_phone) || p_metadata
+    );
 
     RETURN jsonb_build_object('success', true, 'tx_ref', v_tx_ref, 'amount', p_amount, 'service', p_service_type, 'idempotent_replay', false);
 END;
