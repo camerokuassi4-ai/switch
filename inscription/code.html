@@ -222,9 +222,12 @@
       if (OPERATOR_PREFIXES.celtiis.includes(pre)) return 'celtiis';
       return null;
     }
-    function nameIsOk(val) {
+        function nameIsOk(val) {
       const v = val.trim();
-      return /^[A-Za-zÀ-ÖØ-öø-ÿ' -]{3,60}$/.test(v) && v.split(/\s+/).length >= 2;
+      if (v.length < 3 || v.length > 60) return false;
+      const words = v.split(/\s+/).filter(w => w.length >= 2);
+      if (words.length < 2) return false;
+      return words.every(w => /^\p{L}[\p{L}'’-]*$/u.test(w));
     }
 
     function validateName(input) {
