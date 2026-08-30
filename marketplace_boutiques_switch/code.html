@@ -635,7 +635,15 @@
     async function syncMarketplaceFromStorage() {
       let liveProducts = [];
       try {
-        if (window.SwitchAPI && window.SwitchAPI.getProducts) {
+        // ✅ RÈGLE 4 : Lecture live Supabase via marketplace_products view
+        if (window.SwitchAPI && window.SwitchAPI.getMarketplaceProducts) {
+          const supabaseProducts = await window.SwitchAPI.getMarketplaceProducts();
+          if (supabaseProducts && supabaseProducts.length > 0) {
+            liveProducts = supabaseProducts; // Déjà mappés par getMarketplaceProducts()
+          }
+        }
+        // Repli secondaire : ancienne méthode getProducts (si présente)
+        if (liveProducts.length === 0 && window.SwitchAPI && window.SwitchAPI.getProducts) {
           const res = await window.SwitchAPI.getProducts();
           if (res && res.success && Array.isArray(res.products)) {
             const defaultStoreName = localStorage.getItem('switch_merchant_business_name') || "Kiosque Saint-Michel (Bénin)";

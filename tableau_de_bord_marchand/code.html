@@ -46,7 +46,7 @@
   <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
     <div class="flex items-center gap-3">
       <!-- Store Avatar -->
-      <div class="w-11 h-11 rounded-2xl bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center justify-center font-black text-lg shadow-sm">
+      <div id="merchant-avatar-wrapper" class="w-11 h-11 rounded-2xl bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center justify-center font-black text-lg shadow-sm">
         <span class="material-symbols-outlined text-2xl text-emerald-700">storefront</span>
       </div>
       <div>
@@ -458,6 +458,12 @@
             }
             if (storeNameEl && data.business_name) {
               storeNameEl.textContent = data.business_name;
+              // ✅ RÈGLE 3 : Avatar initiales de la boutique
+              const mAvWrapper = document.getElementById('merchant-avatar-wrapper');
+              if (mAvWrapper && window.SwitchAPI) {
+                mAvWrapper.innerHTML = window.SwitchAPI.getAvatarHtml(data.business_name, null, 44);
+              }
+              localStorage.setItem('switch_merchant_business_name', data.business_name);
             }
             if (posIdEl && data.qr_code_id) {
               posIdEl.textContent = `N° POS : ${data.qr_code_id}`;
