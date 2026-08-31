@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Dépôt Gratuit en Agence - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
+    body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); }
+    .deposit-gradient { background: linear-gradient(135deg, #10B981 0%, #059669 50%, #064E3B 100%); }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32 flex flex-col antialiased">
+  <!-- TopAppBar -->
+  <header class="flex items-center justify-between px-container-margin py-stack-md w-full max-w-md mx-auto pt-6">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-xl font-bold text-on-surface">Dépôt en Agence Switch</h1>
+        <p class="text-xs text-on-surface-variant">Recharge 100% Gratuite • 0% de frais</p>
+      </div>
+    </div>
+    <span class="text-xs font-black uppercase text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">0% Frais</span>
+  </header>
+
+  <!-- Main Content -->
+  <main class="px-container-margin max-w-md mx-auto w-full pt-2 flex flex-col gap-5">
+    
+    <!-- Big Visual Deposit Card -->
+    <div class="deposit-gradient rounded-3xl p-6 text-white shadow-xl flex flex-col items-center text-center gap-4 relative overflow-hidden">
+      <div class="flex items-center justify-between w-full text-xs text-emerald-100">
+        <span>Montant du dépôt</span>
+        <span class="font-bold text-white text-base" id="disp-deposit-amount">50 000 FCFA</span>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/20 flex flex-col items-center gap-1">
+        <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-200">Code de Dépôt en Espèces</span>
+        <span class="text-3xl sm:text-4xl font-black font-mono tracking-widest text-white select-all">529 104</span>
+      </div>
+
+      <!-- QR Code for Agent Scanner -->
+      <div class="bg-white p-3 rounded-2xl shadow-lg flex flex-col items-center gap-1">
+        <div class="w-28 h-28 bg-gray-100 p-2 rounded-xl flex items-center justify-center border border-gray-200">
+          <span class="material-symbols-outlined text-7xl text-black">qr_code_2</span>
+        </div>
+        <span class="text-[10px] font-bold text-gray-500 uppercase">Scan Agent Switch</span>
+      </div>
+
+      <p class="text-xs text-emerald-100 leading-relaxed max-w-xs">
+        Remettez vos espèces à l'agent Switch et présentez ce code. Votre solde sera crédité instantanément avec <b>0 FCFA de frais</b>.
+      </p>
+    </div>
+
+    <!-- Closest Agent Location Card -->
+    <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant flex items-center justify-between shadow-sm">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
+          <span class="material-symbols-outlined text-2xl">storefront</span>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm text-on-surface">Kiosque Switch - Haie Vive</h4>
+          <p class="text-xs text-emerald-700 font-semibold flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> À 250m • Dépôt sans file d'attente
+          </p>
+        </div>
+      </div>
+      <button onclick="window.switchNavigate ? window.switchNavigate('../carte_agents_guichets/code.html') : window.location.href='../carte_agents_guichets/code.html'" class="px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xs flex items-center gap-1 cursor-pointer">
+        <span>Carte GPS</span>
+        <span class="material-symbols-outlined text-xs">navigation</span>
+      </button>
+    </div>
+
+    <!-- Done & Simulation Actions -->
+    <div class="flex flex-col gap-2 mt-2">
+      <button onclick="simulateAgentValidation()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-full shadow-md hover:bg-emerald-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm cursor-pointer">
+        <span class="material-symbols-outlined text-lg">verified</span>
+        <span>Simuler la validation par l'agent</span>
+      </button>
+
+      <button onclick="window.switchNavigate ? window.switchNavigate('../tableau_de_bord_mis_jour/code.html') : window.location.href='../tableau_de_bord_mis_jour/code.html'" class="w-full bg-surface-container border border-outline-variant text-on-surface font-semibold py-3 rounded-full hover:bg-surface-container-high transition-all flex items-center justify-center gap-1.5 text-xs cursor-pointer">
+        <span class="material-symbols-outlined text-base">arrow_back</span>
+        <span>Retour à l'accueil</span>
+      </button>
+    </div>
+  </main>
+
+  <script>
+    let depositAmt = 50000;
+    window.addEventListener('DOMContentLoaded', () => {
+      const stored = localStorage.getItem('switch_pending_deposit_amount');
+      if (stored) {
+        depositAmt = parseInt(stored) || 50000;
+        const amtEl = document.getElementById('disp-deposit-amount');
+        if (amtEl) amtEl.textContent = depositAmt.toLocaleString('fr-FR') + ' FCFA';
+      }
+    });
+
+    function simulateAgentValidation() {
+      if (window.SwitchEngine) {
+        window.SwitchEngine.addTransaction({
+          title: "Dépôt Espèces Kiosque Haie Vive",
+          category: "deposit",
+          amount: depositAmt,
+          fee: 0,
+          recipient: "Kiosque Switch (Haie Vive)",
+          note: "Code de dépôt 529 104 validé par l'agent",
+          icon: "add_circle",
+          iconBg: "bg-emerald-50 text-emerald-700"
+        });
+      }
+      setTimeout(() => {
+        if (window.switchNavigate) {
+          window.switchNavigate('../confirmation_de_succ_s/code.html');
+        } else {
+          window.location.href = '../confirmation_de_succ_s/code.html';
+        }
+      }, 500);
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

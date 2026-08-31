@@ -1,0 +1,31 @@
+{
+  "appId": "com.switchbenin.app",
+  "appName": "Switch Bénin",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://TO_BE_CONFIGURED_VERCEL_APP_URL",
+    "cleartext": false
+  },
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  },
+  "ios": {
+    "scheme": "Switch Benin",
+    "allowsLinkPreview": false,
+    "contentInset": "automatic"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#0F172A",
+      "showSpinner": false
+    },
+    "Keyboard": {
+      "resize": "body",
+      "resizeOnFullScreen": true
+    }
+  }
+}

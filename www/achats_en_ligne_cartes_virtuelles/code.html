@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Mes Cartes Virtuelles - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); background-color: #F8F9FD; }
+    
+    .card-hd-container {
+      background: linear-gradient(135deg, #1C0F4A 0%, #30177A 35%, #4C24BC 70%, #6E45E8 100%);
+      box-shadow: 0 24px 48px -12px rgba(76, 36, 188, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.18) inset;
+      position: relative;
+    }
+    
+    .card-hologram-shimmer {
+      background: radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 55%),
+                  radial-gradient(circle at 15% 85%, rgba(251, 191, 36, 0.18) 0%, rgba(251, 191, 36, 0) 45%);
+    }
+
+    .emv-chip {
+      background: linear-gradient(135deg, #FDE68A 0%, #D4AF37 40%, #B45309 80%, #F59E0B 100%);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .emv-chip::before {
+      content: '';
+      position: absolute;
+      inset: 2.5px;
+      border: 1px solid rgba(115, 60, 5, 0.55);
+      border-radius: 4px;
+    }
+
+    .emv-chip::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(115, 60, 5, 0.55);
+    }
+
+    .card-black-gradient {
+      background: linear-gradient(135deg, #2D2C34 0%, #1A1920 100%);
+      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.3);
+    }
+
+    .glass-pill { 
+      background: rgba(255, 255, 255, 0.18); 
+      backdrop-filter: blur(12px); 
+      -webkit-backdrop-filter: blur(12px); 
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .embossed-text {
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body class="text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
+
+  <!-- TopAppBar -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-lg sm:text-xl font-extrabold text-on-surface">Cartes Virtuelles</h1>
+        <p class="text-xs text-on-surface-variant">Visa & Mastercard Internationales</p>
+      </div>
+    </div>
+
+    <!-- Create Card Button -->
+    <a href="../creer_carte_virtuelle/code.html" class="flex items-center gap-1.5 bg-primary text-white text-xs font-bold px-3.5 py-2 rounded-full shadow-md hover:opacity-90 active:scale-95 transition-all no-underline cursor-pointer">
+      <span class="material-symbols-outlined text-sm font-bold">add</span>
+      <span>Nouvelle</span>
+    </a>
+  </header>
+
+  <!-- Main Content -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-6 pt-1">
+
+    <!-- Active Card 1 (Ultra-HD Visa Multi-usage avec Logo Switch) -->
+    <div class="card-hd-container rounded-[32px] p-6 text-white relative overflow-hidden flex flex-col justify-between min-h-[235px]">
+      
+      <!-- Holographic Shimmer Overlay -->
+      <div class="absolute inset-0 card-hologram-shimmer pointer-events-none"></div>
+
+      <!-- Top Row : Switch Brand Logo & Security Controls -->
+      <div class="relative z-10 flex justify-between items-start">
+        <div class="flex items-center gap-2.5">
+          <!-- Logo Switch App Icon -->
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-400 via-purple-300 to-white flex items-center justify-center shadow-md p-0.5">
+            <div class="w-full h-full bg-[#1C0F4A] rounded-[10px] flex items-center justify-center">
+              <span class="text-xs font-black text-amber-400 font-sans tracking-tighter">SW</span>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-sm font-black tracking-widest font-sans text-white">SWITCH</span>
+              <span class="text-[9px] font-black uppercase tracking-wider bg-amber-400/30 text-amber-300 border border-amber-300/40 px-1.5 py-0.2 rounded-md">PLATINUM</span>
+            </div>
+            <div class="flex items-center gap-1.5 mt-0.5" id="card-status-badge">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="status-dot"></span>
+              <span class="text-[11px] font-bold text-purple-100" id="status-label">Active • 3D Secure</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- Copy details button -->
+          <button onclick="copyCardDetails()" class="glass-pill px-3 py-1 rounded-full text-xs font-bold text-white flex items-center gap-1 hover:bg-white/30 active:scale-95 transition-all cursor-pointer" title="Copier le numéro">
+            <span class="material-symbols-outlined text-xs">content_copy</span>
+            <span>Copier</span>
+          </button>
+
+          <!-- Toggle view numbers -->
+          <button onclick="toggleCardVisibility()" class="w-8 h-8 rounded-full glass-pill flex items-center justify-center hover:bg-white/30 active:scale-95 transition-all cursor-pointer" title="Afficher/Masquer">
+            <span class="material-symbols-outlined text-sm" id="card-eye-icon">visibility</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Middle Row : EMV Chip & Contactless NFC -->
+      <div class="relative z-10 flex items-center justify-between my-2">
+        <div class="flex items-center gap-3">
+          <!-- Realistic EMV Gold Smart Chip -->
+          <div class="w-10 h-7.5 emv-chip shrink-0"></div>
+          <!-- Contactless NFC Wave -->
+          <span class="material-symbols-outlined text-2xl text-purple-200/90 -rotate-90">wifi</span>
+        </div>
+        <div class="flex items-center gap-1 text-[10px] font-bold font-mono text-purple-200 bg-black/20 px-2 py-1 rounded-lg border border-white/10">
+          <span class="material-symbols-outlined text-xs text-amber-300">verified_user</span>
+          <span>3DS PROTECTED</span>
+        </div>
+      </div>
+
+      <!-- Card Number (Embossed Monospace HD) -->
+      <div class="relative z-10 my-1">
+        <span class="text-xl sm:text-2xl font-mono font-black tracking-widest block transition-all text-white embossed-text" id="card-num-text">4289 •••• •••• 4289</span>
+        <div class="flex gap-6 mt-2 text-xs text-purple-200">
+          <span>EXP : <b class="text-white font-mono" id="card-exp-text">12/28</b></span>
+          <span>CVV : <b class="text-white font-mono" id="card-cvv-text">•••</b></span>
+          <span>Solde : <b class="text-white font-mono font-bold" id="card-balance-val">75 000 FCFA</b></span>
+        </div>
+      </div>
+
+      <!-- Bottom Row : Holder Name & High-Res VISA Foil -->
+      <div class="relative z-10 flex justify-between items-end pt-2 border-t border-white/15">
+        <span id="card-holder-name" class="text-xs font-black uppercase tracking-wider text-white embossed-text">CAMERO KUASSIS</span>
+        <div class="flex flex-col items-end">
+          <span class="text-2xl font-black italic tracking-wider text-white font-sans bg-clip-text text-transparent bg-gradient-to-r from-white via-amber-200 to-white">VISA</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Management Hub (Recharger, Geler, Plafonds) -->
+    <div class="grid grid-cols-3 gap-3 bg-white p-3.5 rounded-3xl border border-outline-variant/40 shadow-sm text-center">
+      <!-- Recharger -->
+      <button onclick="rechargeCardPrompt()" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-surface-container transition-colors cursor-pointer">
+        <div class="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">add_card</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface">Recharger</span>
+      </button>
+
+      <!-- Geler / Débloquer -->
+      <button onclick="toggleFreezeCard()" id="btn-freeze" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-surface-container transition-colors cursor-pointer">
+        <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center" id="freeze-icon-box">
+          <span class="material-symbols-outlined text-xl" id="freeze-icon">ac_unit</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface" id="freeze-label">Geler carte</span>
+      </button>
+
+      <!-- Plafonds & Paramètres -->
+      <a href="../limites_de_transaction/code.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-surface-container transition-colors cursor-pointer no-underline">
+        <div class="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">tune</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface">Plafonds</span>
+      </a>
+    </div>
+
+    <!-- Card 2: Éphémère (Secondary Card) -->
+    <div class="card-black-gradient rounded-3xl p-5 text-white shadow-md flex justify-between items-center opacity-90 hover:opacity-100 transition-opacity">
+      <div class="flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-2xl bg-white/10 flex items-center justify-center font-bold">
+          <span class="material-symbols-outlined text-2xl text-amber-400">bolt</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h4 class="text-sm font-bold text-white">Carte Éphémère (Pubs & Tests)</h4>
+            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300">Usage Unique</span>
+          </div>
+          <span class="text-xs font-mono text-gray-400">5520 •••• •••• 9012 • 12 500 F</span>
+        </div>
+      </div>
+      <span class="text-lg font-black italic tracking-wider text-gray-300">Mastercard</span>
+    </div>
+
+    <!-- Recent Card Transactions -->
+    <section class="flex flex-col gap-3">
+      <div class="flex items-center justify-between px-1">
+        <h3 class="text-xs font-black text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-base">receipt_long</span>
+          <span>Achats en Ligne Récents</span>
+        </h3>
+        <span class="text-xs text-on-surface-variant font-medium">Temps réel</span>
+      </div>
+
+      <div class="bg-white rounded-3xl p-2 border border-outline-variant/40 shadow-sm flex flex-col divide-y divide-outline-variant/30">
+        
+        <!-- Tx 1: Netflix -->
+        <div class="p-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center font-bold text-xs">
+              N
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold text-on-surface">Netflix International</h4>
+              <p class="text-[10px] text-on-surface-variant">Abonnement Premium • 20 Août</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs sm:text-sm font-black font-mono text-on-surface block">-6 500 F</span>
+            <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full">Approuvé</span>
+          </div>
+        </div>
+
+        <!-- Tx 2: Spotify -->
+        <div class="p-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center font-bold text-xs">
+              S
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold text-on-surface">Spotify AB</h4>
+              <p class="text-[10px] text-on-surface-variant">Musique • 15 Août</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs sm:text-sm font-black font-mono text-on-surface block">-2 500 F</span>
+            <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full">Approuvé</span>
+          </div>
+        </div>
+
+        <!-- Tx 3: Google Play -->
+        <div class="p-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">
+              G
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold text-on-surface">Google Play Store</h4>
+              <p class="text-[10px] text-on-surface-variant">Application • 10 Août</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs sm:text-sm font-black font-mono text-on-surface block">-1 200 F</span>
+            <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full">Approuvé</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    let isDetailsVisible = false;
+    let isFrozen = false;
+    let cardBalance = 75000;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const storedBal = localStorage.getItem('switch_card_balance');
+      if (storedBal) {
+        cardBalance = parseInt(storedBal) || 75000;
+      }
+      updateCardBalanceDisplay();
+
+      const uProfile = JSON.parse(localStorage.getItem('switch_user_profile') || '{}');
+      const uName = uProfile.fullName || localStorage.getItem('switch_user_fullname') || 'CAMERO KUASSIS';
+      const nameEl = document.getElementById('card-holder-name');
+      if (nameEl) nameEl.textContent = uName.toUpperCase();
+
+      const frozenStored = localStorage.getItem('switch_card_frozen') === 'true';
+      if (frozenStored) {
+        isFrozen = true;
+        applyFreezeUI();
+      }
+    });
+
+    function updateCardBalanceDisplay() {
+      const el = document.getElementById('card-balance-val');
+      if (el) el.textContent = cardBalance.toLocaleString('fr-FR') + ' FCFA';
+    }
+
+    function toggleCardVisibility() {
+      isDetailsVisible = !isDetailsVisible;
+      const num = document.getElementById('card-num-text');
+      const cvv = document.getElementById('card-cvv-text');
+      const eye = document.getElementById('card-eye-icon');
+
+      if (isDetailsVisible) {
+        num.textContent = '4289 3301 8847 4289';
+        cvv.textContent = '742';
+        eye.textContent = 'visibility_off';
+      } else {
+        num.textContent = '4289 •••• •••• 4289';
+        cvv.textContent = '•••';
+        eye.textContent = 'visibility';
+      }
+    }
+
+    function copyCardDetails() {
+      navigator.clipboard.writeText("4289330188474289");
+      alert("Numéro de carte copié dans le presse-papiers (4289 3301 8847 4289) !");
+    }
+
+    function applyFreezeUI() {
+      const dot = document.getElementById('status-dot');
+      const label = document.getElementById('status-label');
+      const freezeIcon = document.getElementById('freeze-icon');
+      const freezeLabel = document.getElementById('freeze-label');
+      const freezeBox = document.getElementById('freeze-icon-box');
+
+      if (isFrozen) {
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-red-400';
+        if (label) label.textContent = 'Gelée • Transactions bloquées';
+        if (freezeIcon) freezeIcon.textContent = 'lock_open';
+        if (freezeLabel) freezeLabel.textContent = 'Débloquer';
+        if (freezeBox) freezeBox.className = 'w-11 h-11 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center';
+      } else {
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+        if (label) label.textContent = 'Active • 3D Secure';
+        if (freezeIcon) freezeIcon.textContent = 'ac_unit';
+        if (freezeLabel) freezeLabel.textContent = 'Geler carte';
+        if (freezeBox) freezeBox.className = 'w-11 h-11 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center';
+      }
+    }
+
+    function toggleFreezeCard() {
+      isFrozen = !isFrozen;
+      localStorage.setItem('switch_card_frozen', isFrozen.toString());
+      applyFreezeUI();
+      if (isFrozen) {
+        alert("Carte gelée avec succès. Aucun paiement international ne pourra être débité.");
+      } else {
+        alert("Carte réactivée avec succès ! Vos paiements 3D-Secure sont actifs.");
+      }
+    }
+
+    function rechargeCardPrompt() {
+      const amtInput = prompt("Entrez le montant à transférer depuis votre Compte Principal vers votre Carte Virtuelle Visa (FCFA) :", "10000");
+      if (!amtInput) return;
+      const amt = parseInt(amtInput.replace(/\s+/g, '')) || 0;
+      if (amt <= 0) return;
+
+      if (window.SwitchEngine) {
+        const mainBal = window.SwitchEngine.getMainBalance();
+        if (mainBal < amt) {
+          alert("Solde insuffisant dans votre Compte Principal (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible).");
+          return;
+        }
+
+        window.SwitchEngine.addTransaction({
+          title: "Recharge Carte Virtuelle Visa",
+          category: "internal",
+          amount: -amt,
+          fee: 0,
+          recipient: "Carte Virtuelle Visa (4289)",
+          note: "Recharge interne solde carte",
+          icon: "credit_card",
+          iconBg: "bg-purple-50 text-primary"
+        });
+
+        cardBalance += amt;
+        localStorage.setItem('switch_card_balance', cardBalance.toString());
+        updateCardBalanceDisplay();
+        alert(`${amt.toLocaleString('fr-FR')} FCFA ont été crédités avec succès sur votre Carte Virtuelle Visa !`);
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

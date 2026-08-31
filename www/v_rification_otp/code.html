@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Vérification OTP - Switch Bénin</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#5E3BDC',
+            'primary-hover': '#4D2EC2',
+            'primary-container': '#EDE7FE',
+            'on-primary': '#FFFFFF',
+            surface: '#FFFFFF',
+            'on-surface': '#1C1A24',
+            'on-surface-variant': '#5D5A68',
+            'outline-variant': '#E2E0EC',
+          },
+          fontFamily: {
+            sans: ['"Hanken Grotesk"', 'sans-serif'],
+          },
+          spacing: {
+            'container-margin': '20px',
+          }
+        }
+      }
+    };
+  </script>
+
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
+
+  <style>
+    body {
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #F8F9FD !important;
+      color: #1C1A24 !important;
+      -webkit-font-smoothing: antialiased;
+    }
+    .otp-box { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    .otp-box:focus {
+      border-color: #5E3BDC !important;
+      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.2) !important;
+      background-color: #FFFFFF !important;
+      outline: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-primary-fixed">
+
+  <header class="w-full px-container-margin pt-6 pb-2 flex items-center justify-between z-30">
+    <div class="w-10 h-10 rounded-2xl flex items-center justify-center bg-purple-50 text-[#5E3BDC] border border-purple-100 shadow-sm">
+      <span class="material-symbols-outlined text-2xl">sms</span>
+    </div>
+    <div class="flex items-center gap-1.5">
+      <span class="w-2 h-2 rounded-full bg-[#5E3BDC]"></span>
+      <span class="w-2 h-2 rounded-full bg-[#5E3BDC]"></span>
+      <span class="w-7 h-2 rounded-full bg-[#5E3BDC]"></span>
+      <span class="w-2 h-2 rounded-full bg-gray-200"></span>
+    </div>
+    <div class="w-10"></div>
+  </header>
+
+  <main class="w-full px-container-margin flex flex-col items-center text-center gap-5 pt-2 flex-1 justify-center">
+    
+    <div class="relative w-20 h-20 flex items-center justify-center">
+      <div class="absolute inset-0 bg-[#5E3BDC]/20 rounded-full blur-xl animate-pulse"></div>
+      <div class="w-16 h-16 rounded-3xl bg-white border border-purple-100 shadow-md flex items-center justify-center text-[#5E3BDC] relative z-10">
+        <span class="material-symbols-outlined text-3xl">mark_email_read</span>
+      </div>
+    </div>
+
+    <div class="space-y-1.5 max-w-sm">
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-950 tracking-tight">Code de Sécurité</h1>
+      <p class="text-xs sm:text-sm text-gray-600 font-medium">
+        Saisissez le code secret à 6 chiffres envoyé par SMS au :
+      </p>
+      <div class="inline-flex items-center gap-2 bg-white px-4 py-1.5 rounded-full border border-gray-200 shadow-sm mt-1">
+        <span class="font-mono font-black text-xs sm:text-sm text-gray-900" id="recipient-phone-display">+229 01 XX XX XX XX</span>
+        <button onclick="window.history.back()" class="text-[11px] text-[#5E3BDC] font-bold hover:underline cursor-pointer">Modifier</button>
+      </div>
+    </div>
+
+    <form class="w-full flex flex-col items-center gap-5 mt-1" onsubmit="event.preventDefault(); submitOtp();">
+      
+      <div class="flex justify-center gap-2 sm:gap-2.5 w-full max-w-sm" id="otp-container">
+        <input aria-label="Chiffre 1" class="otp-box w-11 h-14 sm:w-12 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-white border border-gray-200 shadow-sm text-[#5E3BDC]" id="otp-0" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text" autofocus/>
+        <input aria-label="Chiffre 2" class="otp-box w-11 h-14 sm:w-12 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-white border border-gray-200 shadow-sm text-[#5E3BDC]" id="otp-1" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+        <input aria-label="Chiffre 3" class="otp-box w-11 h-14 sm:w-12 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-white border border-gray-200 shadow-sm text-[#5E3BDC]" id="otp-2" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+        <input aria-label="Chiffre 4" class="otp-box w-11 h-14 sm:w-12 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-white border border-gray-200 shadow-sm text-[#5E3BDC]" id="otp-3" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+        <input aria-label="Chiffre 5" class="otp-box w-11 h-14 sm:w-12 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-white border border-gray-200 shadow-sm text-[#5E3BDC]" id="otp-4" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+        <input aria-label="Chiffre 6" class="otp-box w-11 h-14 sm:w-12 sm:h-16 text-center font-mono font-black text-2xl rounded-2xl bg-white border border-gray-200 shadow-sm text-[#5E3BDC]" id="otp-5" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+      </div>
+
+      <button type="submit" id="btn-verify" class="w-full max-w-sm bg-[#5E3BDC] text-white py-4 px-6 rounded-2xl font-extrabold text-base shadow-lg shadow-purple-600/30 hover:bg-[#4D2EC2] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer mt-1">
+        <span id="btn-verify-text">Confirmer le code</span>
+        <span class="material-symbols-outlined text-xl" id="btn-verify-icon">arrow_forward</span>
+      </button>
+    </form>
+
+    <div class="flex flex-col items-center gap-1.5 pt-1">
+      <p class="text-xs text-gray-500 font-medium">Vous n'avez pas reçu le SMS ?</p>
+      <div id="resend-wrapper">
+        <span class="text-xs font-bold text-gray-400" id="countdown-text">Renvoyer dans <span class="font-mono text-[#5E3BDC] font-extrabold" id="timer-sec">45s</span></span>
+      </div>
+      <button type="button" onclick="resendByWhatsapp()" class="text-xs text-emerald-600 font-bold hover:underline flex items-center gap-1 mt-1 cursor-pointer">
+        <span class="material-symbols-outlined text-sm">chat</span>
+        <span>Recevoir par WhatsApp</span>
+      </button>
+    </div>
+
+  </main>
+
+  <script>
+    const inputs = document.querySelectorAll('.otp-box');
+    const userPhone = localStorage.getItem('switch_user_phone') || '+229 01 97 12 34 56';
+    const userPhoneRaw = localStorage.getItem('switch_user_phone_raw') || '+2290197123456';
+
+    function initOtpDisplay() {
+      const phoneDisplay = document.getElementById('recipient-phone-display');
+      if (phoneDisplay) phoneDisplay.textContent = userPhone;
+    }
+
+    document.addEventListener('DOMContentLoaded', initOtpDisplay);
+    initOtpDisplay();
+
+    inputs.forEach((input, index) => {
+      input.addEventListener('input', (e) => {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        if (e.target.value.length === 1) {
+          if (index < inputs.length - 1) inputs[index + 1].focus();
+          else { input.blur(); submitOtp(); }
+        }
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && e.target.value.length === 0 && index > 0) {
+          inputs[index - 1].focus();
+          inputs[index - 1].value = '';
+        }
+      });
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').substring(0, 6);
+        text.split('').forEach((char, i) => { if (inputs[i]) inputs[i].value = char; });
+        if (text.length >= 6) submitOtp();
+        else if (inputs[text.length]) inputs[text.length].focus();
+      });
+    });
+
+    async function submitOtp() {
+      let fullCode = '';
+      inputs.forEach(inp => fullCode += inp.value);
+      if (fullCode.length < 6) {
+        alert("Veuillez saisir les 6 chiffres du code SMS.");
+        return;
+      }
+
+      const btn = document.getElementById('btn-verify');
+      const btnText = document.getElementById('btn-verify-text');
+      const btnIcon = document.getElementById('btn-verify-icon');
+
+      btn.disabled = true;
+      btn.classList.add('opacity-80');
+      btnText.textContent = "Vérification...";
+      btnIcon.textContent = "sync";
+      btnIcon.classList.add('animate-spin');
+
+      try {
+        const res = await fetch('/api/otp-verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: userPhoneRaw, code: fullCode })
+        });
+        const data = await res.json();
+
+        if (!data.ok) {
+          alert(data.error || "Code incorrect ou expiré");
+          btn.disabled = false;
+          btn.classList.remove('opacity-80');
+          btnText.textContent = "Confirmer le code";
+          btnIcon.textContent = "arrow_forward";
+          btnIcon.classList.remove('animate-spin');
+          return;
+        }
+
+        if (data.session && window.SWITCH_API && window.SWITCH_API.supabaseClient) {
+          await window.SWITCH_API.supabaseClient.auth.setSession(data.session);
+        }
+
+        localStorage.setItem('switch_phone_verified', 'true');
+        localStorage.setItem('switch_kyc_level', '2');
+
+        setTimeout(() => {
+  const role = localStorage.getItem('switch_active_role');
+  let dest;
+  if (role === 'agent') dest = '../agent_verification_caution/code.html';
+  else if (role === 'merchant') dest = '../setup_point_de_vente_marchand/code.html';
+  else dest = '../cr_ation_code_pin/code.html';
+  if (window.switchNavigate) window.switchNavigate(dest);
+  else window.location.href = dest;
+}, 400);
+      } catch (err) {
+        alert("Erreur de connexion : " + err.message);
+        btn.disabled = false;
+        btn.classList.remove('opacity-80');
+        btnText.textContent = "Confirmer le code";
+        btnIcon.textContent = "arrow_forward";
+        btnIcon.classList.remove('animate-spin');
+      }
+    }
+
+    let secondsLeft = 45;
+    let timerInterval = null;
+
+    function startOtpCountdown() {
+      if (timerInterval) clearInterval(timerInterval);
+      const timerSec = document.getElementById('timer-sec');
+      if (timerSec) timerSec.textContent = secondsLeft + 's';
+
+      timerInterval = setInterval(() => {
+        secondsLeft--;
+        const timerEl = document.getElementById('timer-sec');
+        if (timerEl) timerEl.textContent = secondsLeft + 's';
+        if (secondsLeft <= 0) {
+          clearInterval(timerInterval);
+          const wrapper = document.getElementById('resend-wrapper');
+          if (wrapper) wrapper.innerHTML = '<button onclick="restartTimer()" class="text-xs font-bold text-[#5E3BDC] hover:underline cursor-pointer">Renvoyer le code SMS</button>';
+        }
+      }, 1000);
+    }
+
+    async function restartTimer() {
+      secondsLeft = 45;
+      const wrapper = document.getElementById('resend-wrapper');
+      if (wrapper) wrapper.innerHTML = '<span class="text-xs font-bold text-gray-400">Renvoyer dans <span class="font-mono text-[#5E3BDC] font-extrabold" id="timer-sec">45s</span></span>';
+      startOtpCountdown();
+
+      try {
+        const res = await fetch('/api/otp-send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: userPhoneRaw })
+        });
+        const data = await res.json();
+        if (data.ok) alert("📨 Un nouveau code SMS a été envoyé au " + userPhone + " !");
+        else alert(data.error || "Erreur lors du renvoi");
+      } catch (e) {
+        alert("Erreur de connexion : " + e.message);
+      }
+    }
+
+    startOtpCountdown();
+
+    function resendByWhatsapp() {
+      alert("📲 Code envoyé par WhatsApp au " + userPhone + " !");
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

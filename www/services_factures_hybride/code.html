@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Services & Factures Hybrides - Boutique & Guichet Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .service-card {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .service-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.08);
+    }
+    .service-card:active {
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/95 backdrop-blur-md">
+    <a href="../tableau_de_bord_agent_mixte/code.html" aria-label="Retour" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer no-underline">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </a>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Services & Factures Hybrides</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Boutique & Guichet Partenaire Bénin</p>
+    </div>
+
+    <!-- Double Badge -->
+    <div class="flex items-center gap-1">
+      <span class="text-[9px] font-black uppercase bg-amber-100 text-amber-900 border border-amber-300 px-1.5 py-0.5 rounded-md">🛍️</span>
+      <span class="text-[9px] font-black uppercase bg-purple-100 text-purple-900 border border-purple-300 px-1.5 py-0.5 rounded-md">🏦</span>
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Catégorie : Services Financiers Guichet (Commissions Élevées) -->
+    <section class="flex flex-col gap-2.5">
+      <div class="flex items-center justify-between px-1">
+        <h2 class="text-xs font-black text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-base">account_balance_wallet</span>
+          <span>Guichet Public & Facturiers Bénin</span>
+        </h2>
+        <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full">Jusqu'à 70% com</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <!-- Service SBEE -->
+        <a href="../paiement_sbee_electricite/code.html" class="service-card bg-white p-4 rounded-3xl border border-outline-variant/40 shadow-soft flex flex-col gap-3 no-underline text-on-surface">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-xl">bolt</span>
+            </div>
+            <span class="text-[9px] font-bold bg-amber-50 text-amber-800 px-2 py-0.5 rounded-full">STS 20 chiffres</span>
+          </div>
+          <div>
+            <h3 class="text-xs sm:text-sm font-bold text-on-surface">Recharge SBEE Électricité</h3>
+            <p class="text-[10px] text-on-surface-variant mt-0.5">Vente de crédits de compteur conventionnel et prépayé</p>
+          </div>
+        </a>
+
+        <!-- Service SONEB -->
+        <a href="../services_factures_agent/code.html" class="service-card bg-white p-4 rounded-3xl border border-outline-variant/40 shadow-soft flex flex-col gap-3 no-underline text-on-surface">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-xl">water_drop</span>
+            </div>
+            <span class="text-[9px] font-bold bg-blue-50 text-blue-800 px-2 py-0.5 rounded-full">SONEB Eau</span>
+          </div>
+          <div>
+            <h3 class="text-xs sm:text-sm font-bold text-on-surface">Factures SONEB Bénin</h3>
+            <p class="text-[10px] text-on-surface-variant mt-0.5">Règlement instantané des factures d'eau potable</p>
+          </div>
+        </a>
+
+        <!-- Service CANAL+ -->
+        <a href="../services_factures_agent/code.html" class="service-card bg-white p-4 rounded-3xl border border-outline-variant/40 shadow-soft flex flex-col gap-3 no-underline text-on-surface">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-slate-950 text-amber-400 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-xl">tv</span>
+            </div>
+            <span class="text-[9px] font-bold bg-slate-100 text-slate-900 px-2 py-0.5 rounded-full">Canal+ / StarTimes</span>
+          </div>
+          <div>
+            <h3 class="text-xs sm:text-sm font-bold text-on-surface">Réabonnements TV</h3>
+            <p class="text-[10px] text-on-surface-variant mt-0.5">Réactivation immédiate des bouquets télévisés</p>
+          </div>
+        </a>
+
+        <!-- Recharges MoMo / Moov -->
+        <a href="../d_p_t_de_fonds_mis_jour_agent/code.html" class="service-card bg-white p-4 rounded-3xl border border-outline-variant/40 shadow-soft flex flex-col gap-3 no-underline text-on-surface">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-yellow-100 text-yellow-800 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-xl">swap_horiz</span>
+            </div>
+            <span class="text-[9px] font-bold bg-yellow-50 text-yellow-800 px-2 py-0.5 rounded-full">MoMo / Moov</span>
+          </div>
+          <div>
+            <h3 class="text-xs sm:text-sm font-bold text-on-surface">Transferts & Dépôts GSM</h3>
+            <p class="text-[10px] text-on-surface-variant mt-0.5">Recharge cash-in des portefeuilles MTN et Moov</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 2. Catégorie : Outils Marchand & Caisse Boutique -->
+    <section class="flex flex-col gap-2.5">
+      <div class="flex items-center justify-between px-1">
+        <h2 class="text-xs font-black text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-emerald-700 text-base">storefront</span>
+          <span>Outils & Modules Caisse Boutique</span>
+        </h2>
+        <span class="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full">0% Frais Encaissement</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <!-- Terminal POS 80mm -->
+        <a href="../caisse_marchand_pos/code.html" class="service-card bg-white p-4 rounded-3xl border border-outline-variant/40 shadow-soft flex flex-col gap-3 no-underline text-on-surface">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-xl">point_of_sale</span>
+            </div>
+            <span class="text-[9px] font-bold bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full">Imprimante 80mm</span>
+          </div>
+          <div>
+            <h3 class="text-xs sm:text-sm font-bold text-on-surface">Terminal Caisse POS</h3>
+            <p class="text-[10px] text-on-surface-variant mt-0.5">Écran de caisse magasin pour imprimer les tickets de caisse</p>
+          </div>
+        </a>
+
+        <!-- Carnet Dettes & Crédits -->
+        <a href="../carnet_de_dettes_marchand/code.html" class="service-card bg-white p-4 rounded-3xl border border-outline-variant/40 shadow-soft flex flex-col gap-3 no-underline text-on-surface">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-xl">menu_book</span>
+            </div>
+            <span class="text-[9px] font-bold bg-amber-50 text-amber-800 px-2 py-0.5 rounded-full">Rappels WhatsApp</span>
+          </div>
+          <div>
+            <h3 class="text-xs sm:text-sm font-bold text-on-surface">Carnet des Dettes</h3>
+            <p class="text-[10px] text-on-surface-variant mt-0.5">Suivi des ardoises des clients fidèles du quartier</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Barre de navigation sur-mesure Boutique & Guichet -->
+  <nav id="switch-nav" role="navigation" aria-label="Navigation Boutique & Guichet">
+    <a href="../tableau_de_bord_agent_mixte/code.html" class="nav-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;padding:4px 8px;border-radius:16px;color:#79747E;">
+      <span class="material-symbols-outlined nav-icon" style="font-size:24px;">dashboard</span>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#79747E;margin-top:2px;">Accueil</span>
+    </a>
+    <a href="../caisse_marchand_pos/code.html" class="nav-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;padding:4px 8px;border-radius:16px;color:#79747E;">
+      <span class="material-symbols-outlined nav-icon" style="font-size:24px;">storefront</span>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#79747E;margin-top:2px;">Boutique</span>
+    </a>
+    <a href="../valider_une_op_ration_client/code.html" class="nav-center-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;margin-top:-18px;position:relative;cursor:pointer;">
+      <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#5E3BDC 0%,#059669 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(5,150,105,0.4);border:3px solid #ffffff;">
+        <span class="material-symbols-outlined" style="font-size:28px;">qr_code_scanner</span>
+      </div>
+      <span class="nav-label" style="font-size:10px;font-weight:800;color:#059669;margin-top:2px;">Servir</span>
+    </a>
+    <a href="../services_factures_hybride/code.html" class="nav-item active" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;padding:4px 8px;border-radius:16px;color:#5E3BDC;">
+      <span class="material-symbols-outlined nav-icon" style="font-size:24px;font-variation-settings:'FILL' 1;">account_balance</span>
+      <span class="nav-label" style="font-size:10px;font-weight:800;color:#5E3BDC;margin-top:2px;">Guichet</span>
+    </a>
+    <a href="../cloture_de_caisse_hybride/code.html" class="nav-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;padding:4px 8px;border-radius:16px;color:#79747E;">
+      <span class="material-symbols-outlined nav-icon" style="font-size:24px;">point_of_sale</span>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#79747E;margin-top:2px;">Caisse & Z</span>
+    </a>
+  </nav>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

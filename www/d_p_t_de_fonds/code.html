@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr" class="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Dépôt d'espèces - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .shadow-card {
+      box-shadow: 0 10px 30px -5px rgba(94, 59, 220, 0.08), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
+
+  <!-- Top Navigation Header -->
+  <header class="flex justify-between items-center px-container-margin py-stack-md w-full max-w-lg mx-auto sticky top-0 z-10 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-lg sm:text-xl font-extrabold text-on-surface">Dépôt d'espèces</h1>
+        <p class="text-xs text-on-surface-variant">Recharger mon Compte Switch au Guichet</p>
+      </div>
+    </div>
+    <span class="text-xs font-black uppercase text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200">0% Frais</span>
+  </header>
+
+  <!-- Main Content -->
+  <main class="px-container-margin pt-2 flex flex-col gap-5 max-w-lg mx-auto w-full">
+    
+    <!-- Instruction Banner -->
+    <div class="bg-gradient-to-r from-purple-900 to-indigo-900 rounded-3xl p-5 text-white shadow-lg flex flex-col gap-3 relative overflow-hidden">
+      <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+      
+      <div class="flex items-center gap-3 z-10">
+        <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm text-white flex items-center justify-center font-black text-xl shrink-0">
+          <span class="material-symbols-outlined text-2xl">storefront</span>
+        </div>
+        <div>
+          <h2 class="text-sm font-black tracking-tight">Dépôt auprès d'un Agent Switch</h2>
+          <p class="text-xs text-purple-200 leading-relaxed">Présentez votre <b>Numéro de Compte Switch</b> ou faites scanner votre QR Code à n'importe quel guichet agréé.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Client Switch Account Card (The only way to deposit) -->
+    <section class="bg-white rounded-3xl p-6 border border-outline-variant/40 shadow-card flex flex-col gap-5">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-xl">badge</span>
+          <h3 class="text-xs font-black text-on-surface uppercase tracking-wider">Mon Numéro de Compte Switch</h3>
+        </div>
+        <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">Actif 🟢</span>
+      </div>
+
+      <!-- Account Number Display Box -->
+      <div class="bg-[#F8F9FD] rounded-2xl p-4 border border-outline-variant/60 flex flex-col items-center justify-center gap-2 text-center">
+        <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider" id="deposit-user-fullname">Titulaire du compte</span>
+        <div class="text-xl sm:text-2xl font-black font-mono tracking-tight text-primary select-all" id="deposit-account-number">
+          Chargement...
+        </div>
+        <button type="button" onclick="copyMyAccountNumber()" class="mt-1 px-4 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-primary text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs">
+          <span class="material-symbols-outlined text-sm">content_copy</span>
+          <span>Copier mon N° de compte</span>
+        </button>
+      </div>
+
+      <!-- Quick Steps -->
+      <div class="flex flex-col gap-2.5 text-xs text-gray-600">
+        <div class="flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-full bg-purple-100 text-primary font-black flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+          <span>Rendez-vous chez un agent ou kiosque Switch à proximité.</span>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-full bg-purple-100 text-primary font-black flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+          <span>Communiquez votre <b>Numéro de Compte Switch</b> et remettez les espèces (Cash).</span>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded-full bg-purple-100 text-primary font-black flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
+          <span>Votre solde est <b>instantanément crédité sans aucun frais (0%)</b>.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Find Nearest Agent GPS Button -->
+    <section class="p-4 rounded-3xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-emerald-700 text-2xl">location_on</span>
+        <div>
+          <h4 class="font-bold text-xs text-emerald-900">Trouver un Agent Switch</h4>
+          <p class="text-[11px] text-emerald-700">Kiosques et agences partout au Bénin • Ouvert 7j/7</p>
+        </div>
+      </div>
+      <a href="../carte_agents_guichets/code.html" class="px-3.5 py-2 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs shadow-sm no-underline transition-all flex items-center gap-1 cursor-pointer">
+        <span>Carte GPS</span>
+        <span class="material-symbols-outlined text-sm">chevron_right</span>
+      </a>
+    </section>
+
+  </main>
+
+  <script>
+    function initDepositAccountScreen() {
+      const fullName = localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || 'Utilisateur Switch';
+      const nameEl = document.getElementById('deposit-user-fullname');
+      if (nameEl) nameEl.textContent = fullName;
+
+      let phone = localStorage.getItem('switch_user_phone') || '+229 01 22 90 19 07';
+      let accountSuffix = localStorage.getItem('switch_account_suffix');
+      if (!accountSuffix || accountSuffix.length !== 4) {
+        accountSuffix = Math.floor(1000 + Math.random() * 9000).toString();
+        localStorage.setItem('switch_account_suffix', accountSuffix);
+      }
+      
+      let digits = phone.replace(/\D/g, '');
+      if (digits.startsWith('229')) digits = digits.slice(3);
+      if (digits.length < 10) digits = digits.padStart(10, '0');
+
+      const formattedAccount = '01 ' + digits.slice(2,4) + ' ' + digits.slice(4,6) + ' ' + digits.slice(6,8) + ' ' + digits.slice(8,10) + ' • ' + accountSuffix;
+      const rawAccount = digits + accountSuffix;
+
+      localStorage.setItem('switch_account_number', rawAccount);
+      localStorage.setItem('switch_account_display', formattedAccount);
+
+      const accEl = document.getElementById('deposit-account-number');
+      if (accEl) accEl.textContent = formattedAccount;
+    }
+
+    function copyMyAccountNumber() {
+      const acc = localStorage.getItem('switch_account_number') || localStorage.getItem('switch_account_display') || '';
+      navigator.clipboard.writeText(acc);
+      alert("✅ Votre Numéro de Compte Switch (14 chiffres) a été copié :\n" + acc);
+    }
+
+    document.addEventListener('DOMContentLoaded', initDepositAccountScreen);
+    window.addEventListener('pageshow', initDepositAccountScreen);
+    initDepositAccountScreen();
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

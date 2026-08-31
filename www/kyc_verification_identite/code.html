@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Vérification Niveau 2 ANIP - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+    .level2-gradient {
+      background: linear-gradient(135deg, #10B981 0%, #059669 50%, #047857 100%);
+      box-shadow: 0 16px 36px -10px rgba(16, 185, 129, 0.35);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
+
+  <!-- Top App Bar -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full flex items-center justify-center bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
+        <span class="material-symbols-outlined text-xl">shield_person</span>
+      </div>
+      <div>
+        <h1 class="text-lg sm:text-xl font-extrabold text-on-surface">Mise à Niveau Niveau 2</h1>
+        <p class="text-xs text-on-surface-variant">Débloquer le plafond de 2 000 000 FCFA</p>
+      </div>
+    </div>
+    <span class="text-xs font-black uppercase text-emerald-900 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">Niveau 2</span>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-6 pt-1">
+
+    <!-- 1. Level 2 Advantages Hero -->
+    <section class="level2-gradient rounded-[32px] p-6 text-white relative overflow-hidden flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-200 block">Plafond Débloqué</span>
+          <h2 class="text-2xl sm:text-3xl font-black mt-0.5 font-mono">2 000 000 <span class="text-sm font-sans font-bold text-emerald-200">FCFA / jour</span></h2>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-emerald-100 shadow-inner">
+          <span class="material-symbols-outlined text-3xl font-bold">verified_user</span>
+        </div>
+      </div>
+
+      <!-- Perks List -->
+      <div class="grid grid-cols-2 gap-2 text-xs text-emerald-100 font-semibold pt-1 border-t border-white/20">
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-emerald-300">check_circle</span>
+          <span>Pièce ANIP Bénin</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-emerald-300">check_circle</span>
+          <span>Cartes Visa Switch</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-emerald-300">check_circle</span>
+          <span>Retraits Kiosques 1M/j</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-emerald-300">check_circle</span>
+          <span>Validation IA Instantanée</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Required Documents Form -->
+    <section class="flex flex-col gap-4">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Documents Réglementaires Requis</h3>
+
+      <!-- Step 1: Numéro NPI / CIP ANIP -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-bold text-on-surface flex items-center gap-1.5" for="npi-input">
+            <span class="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-black flex items-center justify-center">1</span>
+            <span>Numéro Personnel d'Identification (NPI / CIP)</span>
+          </label>
+          <span class="text-[10px] text-green-700 font-bold bg-green-50 px-2 py-0.5 rounded-full">Vérification ANIP</span>
+        </div>
+        <input type="text" id="npi-input" placeholder="Ex: 1192837465019" value="1192837465019" class="w-full bg-surface-container border border-outline-variant rounded-2xl py-3 px-4 font-mono font-bold text-sm text-on-surface focus:outline-none focus:border-primary"/>
+      </div>
+
+      <!-- Step 2: Photo de la Pièce d'Identité (CIP / CNI / Passeport) -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-bold text-on-surface flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-black flex items-center justify-center">2</span>
+            <span>Pièce d'Identité Officielle</span>
+          </label>
+          <span class="text-[10px] text-on-surface-variant font-medium">CIP / CNI / Passeport</span>
+        </div>
+
+        <!-- Document Type Selector -->
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" onclick="selectDocType('cip')" id="btn-cip" class="p-2.5 rounded-2xl border-2 border-primary bg-primary/5 text-center text-xs font-bold text-primary transition-all cursor-pointer">
+            CIP ANIP
+          </button>
+          <button type="button" onclick="selectDocType('cni')" id="btn-cni" class="p-2.5 rounded-2xl border border-outline-variant bg-surface-container text-center text-xs font-bold text-on-surface-variant transition-all cursor-pointer opacity-70">
+            CNI Biométrique
+          </button>
+          <button type="button" onclick="selectDocType('pass')" id="btn-pass" class="p-2.5 rounded-2xl border border-outline-variant bg-surface-container text-center text-xs font-bold text-on-surface-variant transition-all cursor-pointer opacity-70">
+            Passeport
+          </button>
+        </div>
+
+        <div onclick="simulateUploadDoc('Pièce d\'identité')" class="border-2 border-dashed border-emerald-500/30 rounded-2xl p-4 flex flex-col items-center justify-center gap-1.5 bg-emerald-50/50 hover:bg-emerald-50 transition-colors cursor-pointer text-center" id="doc-upload-box">
+          <span class="material-symbols-outlined text-2xl text-emerald-600" id="doc-cam-icon">add_a_photo</span>
+          <span class="text-xs font-bold text-emerald-800" id="doc-status-text">Scanner ou importer le recto/verso</span>
+          <p class="text-[10px] text-on-surface-variant">Photo nette sans reflets lumineux</p>
+        </div>
+      </div>
+
+      <!-- Step 3: Selfie de Reconnaissance Faciale -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-bold text-on-surface flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-black flex items-center justify-center">3</span>
+            <span>Selfie de Vérification Faciale</span>
+          </label>
+          <span class="text-[10px] text-on-surface-variant font-medium">Reconnaissance IA</span>
+        </div>
+
+        <div onclick="simulateSelfie()" class="border-2 border-dashed border-outline-variant rounded-2xl p-4 flex flex-col items-center justify-center gap-1.5 bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer text-center" id="selfie-box">
+          <span class="material-symbols-outlined text-2xl text-on-surface-variant" id="selfie-icon">face</span>
+          <span class="text-xs font-bold text-on-surface" id="selfie-text">Prendre un selfie vidéo</span>
+          <p class="text-[10px] text-on-surface-variant">Visage bien centré et éclairé</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Submit Button -->
+    <button onclick="submitKyc()" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base cursor-pointer">
+      <span class="material-symbols-outlined text-xl">verified_user</span>
+      <span>Soumettre ma vérification Niveau 2</span>
+    </button>
+  </main>
+
+  <script>
+    let selectedType = 'cip';
+
+    function selectDocType(type) {
+      selectedType = type;
+      ['cip', 'cni', 'pass'].forEach(t => {
+        const btn = document.getElementById('btn-' + t);
+        if (btn) btn.className = 'p-2.5 rounded-2xl border border-outline-variant bg-surface-container text-center text-xs font-bold text-on-surface-variant transition-all cursor-pointer opacity-70';
+      });
+      const active = document.getElementById('btn-' + type);
+      if (active) active.className = 'p-2.5 rounded-2xl border-2 border-primary bg-primary/5 text-center text-xs font-bold text-primary transition-all cursor-pointer';
+    }
+
+    function simulateUploadDoc(docTitle) {
+      document.getElementById('doc-cam-icon').textContent = 'check_circle';
+      document.getElementById('doc-status-text').innerHTML = '<span class="text-emerald-800 font-bold">Document scanné avec succès ✅</span>';
+      alert(`📎 ${docTitle} capturé avec succès !`);
+    }
+
+    function simulateSelfie() {
+      document.getElementById('selfie-icon').textContent = 'check_circle';
+      document.getElementById('selfie-icon').className = 'material-symbols-outlined text-2xl text-emerald-600';
+      document.getElementById('selfie-text').innerHTML = '<span class="text-emerald-800 font-bold">Reconnaissance faciale validée ✅</span>';
+      alert("🤳 Selfie biométrique validé avec succès !");
+    }
+
+    async function submitKyc() {
+      const npi = document.getElementById('npi-input')?.value;
+      if (!npi) {
+        alert("Veuillez renseigner votre numéro NPI / CIP.");
+        return;
+      }
+
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.upgradeKyc) {
+          await window.SwitchAPI.upgradeKyc(2, selectedType, npi);
+        }
+      } catch (e) {
+        console.warn("KYC upgrade info :", e);
+      }
+
+      localStorage.setItem('switch_kyc_level', '2');
+      if (window.switchNavigate) {
+        window.switchNavigate('../succes_verification_niveau2/code.html');
+      } else {
+        window.location.href = '../succes_verification_niveau2/code.html';
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

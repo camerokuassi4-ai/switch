@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Paramètres de paiement - Business Dashboard</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+
+<!-- Material Symbols -->
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        /* Ambient shadow for level 1 cards */
+        .ambient-shadow {
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Custom toggle switch styling */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #5e3bdc;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #5e3bdc;
+        }
+        .toggle-checkbox:checked + .toggle-label:after {
+            transform: translateX(100%);
+            border-color: white;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen text-on-background font-body-sm relative pb-32">
+<!-- TopAppBar -->
+<header class="bg-background sticky full-width top-0 z-40">
+<div class="flex justify-between items-center px-gutter py-4 w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-surface-variant flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A close up, professional portrait of an elegant Beninese businesswoman with a warm smile, wearing modern corporate attire in a softly lit, high-end office environment. The lighting is soft and natural, emphasizing a trustworthy and sophisticated corporate modern aesthetic with deep purple accents in the background." src="../assets/images/img_034.jpg"/>
+</div>
+<h1 class="font-headline-md text-headline-md-mobile font-bold text-on-surface">Business Dashboard</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-primary active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="px-container-margin pt-stack-sm pb-stack-lg max-w-3xl mx-auto flex flex-col gap-stack-lg">
+<!-- Page Title -->
+<div>
+<h2 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-stack-sm">Paramètres de paiement</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Gérez vos versements, consultez vos frais et configurez vos alertes.</p>
+</div>
+<!-- Section 1: Informations de versement (Bento Card) -->
+<section class="flex flex-col gap-stack-md">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+                Versement
+            </h3>
+<div class="bg-surface-container-lowest rounded-xl p-card-padding ambient-shadow border border-surface-variant/50 relative overflow-hidden">
+<!-- Subtle decorative element -->
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-primary-fixed-dim/20 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex flex-col md:flex-row justify-between gap-6 relative z-10">
+<div class="flex-1">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-2">Délai standard</p>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-display-lg-mobile text-display-lg-mobile text-primary font-bold">J+1</span>
+<span class="font-body-lg text-body-lg text-on-surface">Ouvré</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-xs">Vos fonds collectés sont automatiquement transférés vers votre compte bancaire principal chaque matin ouvrable.</p>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-lg p-4 border border-surface-variant/30 flex flex-col justify-center">
+<div class="flex items-center gap-3 mb-3 pb-3 border-b border-surface-variant/50">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-sm">store</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">Solde Merchant</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Collecte instantanée</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-sm">account_balance</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">Compte Ecobank ***452</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Destination par défaut</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Frais de transaction (Glassmorphism inspired breakdown) -->
+<section class="flex flex-col gap-stack-md">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+                Frais applicables
+            </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<!-- Mobile Money Card -->
+<div class="bg-surface-container-lowest rounded-xl p-card-padding ambient-shadow border border-surface-variant/50 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[#FFCC00]/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#FFCC00]">phone_iphone</span>
+</div>
+<div>
+<p class="font-headline-md text-body-lg font-semibold text-on-surface">Mobile Money</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">MTN &amp; Moov</p>
+</div>
+</div>
+<span class="bg-surface-container-high px-2 py-1 rounded-md font-label-caps text-label-caps text-on-surface-variant">Local</span>
+</div>
+<div class="flex items-end justify-between border-t border-surface-variant/30 pt-4">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Par transaction</p>
+<p class="font-display-lg-mobile text-headline-md text-on-surface font-bold">1.5%</p>
+</div>
+</div>
+<!-- Cartes Bancaires Card -->
+<div class="bg-surface-container-lowest rounded-xl p-card-padding ambient-shadow border border-surface-variant/50 flex flex-col justify-between">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">credit_card</span>
+</div>
+<div>
+<p class="font-headline-md text-body-lg font-semibold text-on-surface">Cartes Bancaires</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Visa &amp; Mastercard</p>
+</div>
+</div>
+<span class="bg-surface-container-high px-2 py-1 rounded-md font-label-caps text-label-caps text-on-surface-variant">Inter.</span>
+</div>
+<div class="flex items-end justify-between border-t border-surface-variant/30 pt-4">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Par transaction</p>
+<p class="font-display-lg-mobile text-headline-md text-on-surface font-bold">2.9% <span class="text-sm font-normal text-on-surface-variant">+ 100 FCFA</span></p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Préférences de notification -->
+<section class="flex flex-col gap-stack-md">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
+                Notifications de vente
+            </h3>
+<div class="bg-surface-container-lowest rounded-xl ambient-shadow border border-surface-variant/50 divide-y divide-surface-variant/50">
+<!-- Toggle Item 1 -->
+<div class="p-card-padding flex items-center justify-between">
+<div class="pr-4">
+<p class="font-body-lg text-body-lg font-semibold text-on-surface">Nouvelle transaction réussie</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Recevez une alerte push pour chaque paiement validé.</p>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in flex-shrink-0">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 transition-transform duration-200 ease-in-out border-surface-variant top-0 -left-1 checked:translate-x-6 checked:border-primary" id="toggle_success" name="toggle_success" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-primary cursor-pointer transition-colors duration-200 ease-in-out" for="toggle_success"></label>
+</div>
+</div>
+<!-- Toggle Item 2 -->
+<div class="p-card-padding flex items-center justify-between">
+<div class="pr-4">
+<p class="font-body-lg text-body-lg font-semibold text-on-surface">Échec de paiement</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Soyez notifié immédiatement si une tentative échoue.</p>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in flex-shrink-0">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 transition-transform duration-200 ease-in-out border-surface-variant top-0 -left-1 checked:translate-x-6 checked:border-primary" id="toggle_fail" name="toggle_fail" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-primary cursor-pointer transition-colors duration-200 ease-in-out" for="toggle_fail"></label>
+</div>
+</div>
+<!-- Toggle Item 3 -->
+<div class="p-card-padding flex items-center justify-between">
+<div class="pr-4">
+<p class="font-body-lg text-body-lg font-semibold text-on-surface">Rapport quotidien de versement</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Résumé envoyé par email à la clôture de la journée.</p>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in flex-shrink-0">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 transition-transform duration-200 ease-in-out border-surface-variant top-0 -left-1 checked:translate-x-6 checked:border-primary" id="toggle_report" name="toggle_report" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-surface-variant cursor-pointer transition-colors duration-200 ease-in-out" for="toggle_report"></label>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+
+<script>
+        // Simple logic to handle toggle visual states for the custom CSS setup
+        document.querySelectorAll('.toggle-checkbox').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const label = this.nextElementSibling;
+                if(this.checked) {
+                    this.classList.replace('border-surface-variant', 'border-primary');
+                    label.classList.replace('bg-surface-variant', 'bg-primary');
+                } else {
+                    this.classList.replace('border-primary', 'border-surface-variant');
+                    label.classList.replace('bg-primary', 'bg-surface-variant');
+                }
+            });
+        });
+    </script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

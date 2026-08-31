@@ -1,6 +1,7 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "outputDirectory": "www",
   "rewrites": [
     { "source": "/:path*/code", "destination": "/:path*/code.html" }
   ]

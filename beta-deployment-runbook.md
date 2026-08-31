@@ -1,36 +1,41 @@
-# Runbook de Déploiement & Rollback — Bêta Publique Switch Bénin
+# Runbook de Déploiement & Rollback — Architecture Découplée Option A
 
 ---
 
-## 1. Procédure de Déploiement Initial
+## 1. Déploiement Frontend Vercel
 
-1. **Vérification Préalable** : Valider l'intégrité de la branche `release/beta-public-v2.1.0`.
-2. **Provisioning Système** : Installer Node.js LTS, Nginx et le gestionnaire de processus (PM2/Systemd).
-3. **Configuration Réseau** : Mettre en place la configuration reverse proxy Nginx (`reverse-proxy.example.conf`).
-4. **Attribution TLS** : Provisionner les certificats TLS (Certbot / Cloudflare Edge).
-5. **Lancement Applicatif** : Démarrer le serveur unifié (`backend/staging_unified_server.js`) sur le port interne `4148`.
-6. **Contrôles Smoke Test** :
-   - Tester l'accès PWA (`HTTP 200`).
-   - Tester le verrouillage financier (`HTTP 403 FEATURE_NOT_AVAILABLE` sur `/api/v1/payments/*`).
-   - Tester le blocage des dossiers sensibles (`HTTP 403` sur `/scratch`, `/backups`, `/.env`).
+1. **Génération du Dossier `www/`** :
+   ```bash
+   node scripts/ops/build_clean_www_frontend.js
+   ```
+2. **Import Vercel** :
+   - Sélectionner le dépôt `camerokuassi4-ai/switch` et la branche `release/beta-public-v2.1.0`.
+   - Définir `Root Directory: .` et `Output Directory: www`.
+   - Build Command : `node scripts/ops/build_clean_www_frontend.js`.
+3. **Attribution Domaine & HTTPS** : Vercel provisionne automatiquement le certificat SSL Edge.
 
 ---
 
-## 2. Procédure de Rollback Immuable
+## 2. Déploiement API Node.js Dédiée
 
-En cas d'anomalie critique post-déploiement :
+1. **Hôte Dédié** : Démarrer `backend/staging_unified_server.js` via PM2 / Systemd sur le port `4148`.
+2. **Reverse Proxy Nginx** : Configurer `reverse-proxy.example.conf` pour écouter sur `api.<domaine>` et proxy-passer vers `127.0.0.1:4148`.
+3. **CORS & Sécurité** : Restreindre `Access-Control-Allow-Origin` au domaine Vercel.
+
+---
+
+## 3. Procédure Séquentielle de Rollback Immuable
 
 ```ini
 ROLLBACK_VERSION = 690b3f773828642da286d16904b2ff6022e3d8b5
 ROLLBACK_METHOD = REDEPLOY_PREVIOUS_IMMUTABLE_VERSION
 ```
 
-### Étapes Séquentielles de Rollback :
-1. **Passage en Maintenance** : Activer la page de maintenance temporaire au niveau Nginx.
-2. **Sauvegarde de l'État** : Exécuter un instantané complet du fichier `scratch/preprod_storage.json` et des journaux d'erreurs.
-3. **Redéploiement de la Version Précédente** : Restaurer l'arbre applicatif au commit immuable `690b3f773828642da286d16904b2ff6022e3d8b5`.
-4. **Contrôle Health** : Vérifier que le service répond correctement sur son endpoint d'intégrité.
-5. **Contrôle 403 Financier** : Confirmer que les barrières financières demeurent 100% étanches.
-6. **Vérification PWA** : Valider le rechargement propre de l'interface utilisateur.
-7. **Remise en Ligne** : Désactiver le mode maintenance et réouvrir le trafic reverse proxy.
-8. **Conservation des Logs** : Archiver les journaux d'incident pour analyse post-mortem.
+1. **Passage en maintenance** (Nginx / Vercel Edge).
+2. **Sauvegarde de l'état** (`scratch/preprod_storage.json`).
+3. **Redéploiement de la version précédente** (`690b3f773828642da286d16904b2ff6022e3d8b5`).
+4. **Contrôle health** (`/api/v1/health`).
+5. **Contrôle 403 financier**.
+6. **Vérification PWA**.
+7. **Remise en ligne**.
+8. **Conservation des logs**.

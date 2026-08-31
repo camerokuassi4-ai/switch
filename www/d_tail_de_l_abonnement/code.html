@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Confirmer le paiement - Bénin Fintech</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+        .ambient-shadow-level-1 { box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.04); }
+        .mesh-gradient { background: radial-gradient(at 100% 0%, #cabeff 0px, transparent 50%), radial-gradient(at 0% 100%, #e6deff 0px, transparent 50%); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col items-center pb-32">
+<!-- Top Navigation (Transactional: Back Button Only) -->
+<header class="w-full max-w-md px-container-margin py-stack-md flex justify-between items-center bg-transparent sticky top-0 z-10 backdrop-blur-md">
+<button aria-label="Retour" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">Confirmer le paiement</h1>
+<div class="w-10 h-10"></div> <!-- Placeholder for balance -->
+</header>
+<!-- Main Canvas -->
+<main class="w-full max-w-md px-container-margin mt-stack-md flex-1 flex flex-col gap-stack-lg">
+<!-- Payment Details Card (Glassmorphism/Soft Texture) -->
+<section class="bg-surface-container-lowest rounded-[24px] p-card-padding ambient-shadow-level-1 relative overflow-hidden border border-surface-variant">
+<div class="absolute inset-0 mesh-gradient opacity-30 pointer-events-none"></div>
+<div class="relative z-10 flex flex-col items-center mb-stack-lg">
+<div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center mb-stack-md">
+<!-- Service Logo Placeholder -->
+<span class="material-symbols-outlined text-[32px] text-primary" style="font-variation-settings: 'FILL' 1;">live_tv</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">Montant à payer</p>
+<p class="font-display-lg-mobile text-display-lg-mobile text-on-surface">15 000 FCFA</p>
+</div>
+<div class="relative z-10 flex flex-col gap-stack-sm">
+<div class="flex justify-between items-center py-2 border-b border-surface-variant">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Service</span>
+<span class="font-body-lg text-body-lg text-on-surface font-semibold">Canal+ Afrique</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-surface-variant">
+<span class="font-body-sm text-body-sm text-on-surface-variant">N° d'abonné</span>
+<span class="font-body-lg text-body-lg text-on-surface font-semibold">1458 9652 301</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-surface-variant">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Titulaire</span>
+<span class="font-body-lg text-body-lg text-on-surface font-semibold">Kouassi Koffi</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Frais</span>
+<span class="font-body-lg text-body-lg text-on-surface font-semibold">0 FCFA</span>
+</div>
+</div>
+</section>
+<!-- Payment Source Selection -->
+<section class="flex flex-col gap-stack-sm">
+<h2 class="font-headline-md text-headline-md text-on-surface px-2">Payer avec</h2>
+<label class="flex items-center p-4 bg-surface-container-lowest rounded-xl border-2 border-primary cursor-pointer transition-all hover:bg-surface-container-low">
+<input checked="" class="form-radio h-5 w-5 text-primary border-outline-variant focus:ring-primary focus:ring-offset-background mr-4" name="payment_source" type="radio"/>
+<div class="flex-1">
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">Solde Principal</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Disponible: 42 500 FCFA</p>
+</div>
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</label>
+<label class="flex items-center p-4 bg-surface-container-lowest rounded-xl border border-surface-variant cursor-pointer transition-all hover:bg-surface-container-low opacity-50 pointer-events-none">
+<input class="form-radio h-5 w-5 text-primary border-outline-variant mr-4" disabled="" name="payment_source" type="radio"/>
+<div class="flex-1">
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">MTN MoMo</p>
+<p class="font-body-sm text-body-sm text-error">Solde insuffisant</p>
+</div>
+<span class="material-symbols-outlined text-secondary">phone_iphone</span>
+</label>
+</section>
+<!-- Action Button & Security Notice -->
+<div class="mt-auto flex flex-col gap-stack-md pt-stack-md">
+<button class="w-full py-4 rounded-full bg-primary text-on-primary font-headline-md text-headline-md shadow-md hover:bg-primary-container hover:text-on-primary-container transition-colors flex items-center justify-center gap-2 active:scale-95 duration-200">
+<span class="material-symbols-outlined text-on-primary">lock</span>
+                Confirmer et payer
+            </button>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-center flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+                Paiement sécurisé crypté de bout en bout
+            </p>
+</div>
+</main>
+<!-- Suppressed BottomNavBar: This is a transactional flow (confirmation screen). -->
+<!-- As per instructions: "Automatic Suppression: You MUST exclude the navigation shell if the page intent is: Linear/Transactional: Login, Sign-up, Onboarding, Checkout, or "Success/Confirmation" splash screens." -->
+<script src="../assets/switch.router.js"></script>
+</body></html>

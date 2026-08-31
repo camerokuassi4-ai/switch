@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Inscription Agent Agréé - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+  <script>
+    (function () {
+      function killLockAndBack() {
+        const el = document.getElementById('switch-lock-screen');
+        if (el) el.remove();
+        document.querySelectorAll('.switch-back-btn, button[aria-label="Retour"]').forEach(b => b.remove());
+        localStorage.removeItem('switch_sec_lockout_until');
+        localStorage.removeItem('switch_sec_failed_attempts');
+      }
+      killLockAndBack();
+      document.addEventListener('DOMContentLoaded', killLockAndBack);
+      window.addEventListener('load', killLockAndBack);
+      new MutationObserver(killLockAndBack).observe(document.documentElement, { childList: true, subtree: true });
+    })();
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); background-color: #F8F9FD; color: #1C1A24; -webkit-font-smoothing: antialiased; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .shadow-soft { box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04); }
+    .input-focus { transition: all 0.2s ease; }
+    .input-focus:focus { border-color: #5E3BDC; box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.12); outline: none; }
+    .step-transition { transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+    .form-step { display: none; opacity: 0; transform: translateY(10px); }
+    .form-step.active { display: flex !important; flex-direction: column; opacity: 1; transform: translateY(0); }
+    @keyframes radarPulse { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.8; } }
+    .animate-radar { animation: radarPulse 2s infinite ease-in-out; }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+      <span class="material-symbols-outlined text-xl">badge</span>
+    </div>
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Inscription Agent Agréé</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Rejoignez le réseau de guichets Switch</p>
+    </div>
+    <span class="text-[10px] font-bold text-amber-800 bg-amber-100 border border-amber-300 px-2.5 py-1 rounded-full">Agent</span>
+  </header>
+
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-2 flex-grow">
+
+    <div class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft">
+      <div class="flex items-center justify-between relative px-2">
+        <div class="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-1 bg-gray-100 rounded-full z-0"></div>
+        <div id="progress-bar-fill" class="absolute left-6 top-1/2 -translate-y-1/2 h-1 bg-primary rounded-full z-0 step-transition" style="width: 0%;"></div>
+        <div class="relative z-10 flex flex-col items-center gap-1 select-none">
+          <div id="step-dot-1" class="w-8 h-8 rounded-full bg-primary text-white font-bold text-xs flex items-center justify-center shadow-md step-transition">1</div>
+          <span id="step-label-1" class="text-[10px] font-bold text-primary">Établissement</span>
+        </div>
+        <div class="relative z-10 flex flex-col items-center gap-1 select-none">
+          <div id="step-dot-2" class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition">2</div>
+          <span id="step-label-2" class="text-[10px] font-medium text-gray-400">Localisation & GPS</span>
+        </div>
+        <div class="relative z-10 flex flex-col items-center gap-1 select-none">
+          <div id="step-dot-3" class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition">3</div>
+          <span id="step-label-3" class="text-[10px] font-medium text-gray-400">Documents & IFU</span>
+        </div>
+      </div>
+    </div>
+
+    <form id="agent-form" data-no-router="true" onsubmit="event.preventDefault(); nextStep();" class="flex flex-col gap-4">
+
+      <!-- STEP 1 -->
+      <div id="step1" class="form-step active gap-4">
+        <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-4">
+          <div class="flex items-center gap-2 border-b border-outline-variant/30 pb-2.5">
+            <span class="material-symbols-outlined text-primary text-lg">storefront</span>
+            <div>
+              <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">Point de Service & Gérant</h2>
+              <p class="text-[11px] text-on-surface-variant">Renseignez l'identité de votre guichet commercial</p>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="businessName" class="text-[11px] font-bold text-on-surface-variant">Nom commercial du point de service *</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">store</span>
+              <input type="text" id="businessName" value="" placeholder="Ex: Kiosque Saint-Michel, Boutique La Grâce" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="managerName" class="text-[11px] font-bold text-on-surface-variant">Nom complet du gérant / propriétaire *</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">person</span>
+              <input type="text" id="managerName" value="" placeholder="Ex: Koffi ADEBAYO" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+            </div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="text-[11px] font-bold text-on-surface-variant">Modèle d'activité de votre guichet *</label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div onclick="selectAgentModel('pure_agent')" id="model-card-pure_agent" class="p-3.5 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer transition-all flex flex-col justify-between gap-2 shadow-xs">
+                <div class="flex items-center justify-between">
+                  <div class="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center"><span class="material-symbols-outlined text-lg">account_balance_wallet</span></div>
+                  <span class="text-[9px] font-bold bg-primary text-white px-2 py-0.5 rounded-full">Dédié</span>
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold text-on-surface">Guichet Financier Pur</h3>
+                  <p class="text-[10px] text-on-surface-variant mt-0.5 leading-tight">Dépôts, retraits cash et paiements de factures exclusifs</p>
+                </div>
+              </div>
+              <div onclick="selectAgentModel('mobile_agent')" id="model-card-mobile_agent" class="p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 hover:border-primary/50 cursor-pointer transition-all flex flex-col justify-between gap-2 shadow-xs">
+                <div class="flex items-center justify-between">
+                  <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center"><span class="material-symbols-outlined text-lg">directions_walk</span></div>
+                  <span class="text-[9px] font-bold bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full">Mobile</span>
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold text-on-surface">Agent Itinérant</h3>
+                  <p class="text-[10px] text-on-surface-variant mt-0.5 leading-tight">Marchés, foires et opérations de proximité sur le terrain</p>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" id="selectedAgentModel" value="pure_agent"/>
+          </div>
+          <div class="p-3 rounded-2xl bg-purple-50/60 border border-purple-200/60 flex flex-col gap-2">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-purple-900">Opérations financières incluses sur votre terminal :</span>
+            <div class="flex flex-wrap gap-1.5 text-[10px] font-bold">
+              <span class="bg-white border border-purple-200 text-primary px-2.5 py-1 rounded-full flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-xs">arrow_downward</span> Dépôt Cash-In</span>
+              <span class="bg-white border border-purple-200 text-primary px-2.5 py-1 rounded-full flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-xs">arrow_upward</span> Retrait Cash-Out</span>
+              <span class="bg-white border border-purple-200 text-primary px-2.5 py-1 rounded-full flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-xs">bolt</span> Recharges SBEE / SONEB</span>
+              <span class="bg-white border border-purple-200 text-primary px-2.5 py-1 rounded-full flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-xs">swap_horiz</span> Transferts MoMo / Moov</span>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center justify-between">
+              <label for="managerNpi" class="text-[11px] font-bold text-on-surface-variant">NPI du Gérant (Registre ANIP Bénin)</label>
+              <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Requis BCEAO</span>
+            </div>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">badge</span>
+              <input type="text" id="managerNpi" value="" placeholder="Ex: 1996 0814 1234 56" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-mono font-semibold text-on-surface"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div id="step2" class="form-step gap-4">
+        <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-4">
+          <div class="flex items-center gap-2 border-b border-outline-variant/30 pb-2.5">
+            <span class="material-symbols-outlined text-primary text-lg">location_on</span>
+            <div>
+              <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">Emplacement & Coordonnées GPS</h2>
+              <p class="text-[11px] text-on-surface-variant">Permettez aux clients de repérer votre guichet sur la carte Switch</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="flex flex-col gap-1">
+              <label for="city" class="text-[11px] font-bold text-on-surface-variant">Département & Commune (Bénin) *</label>
+              <div class="relative flex items-center">
+                <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">location_city</span>
+                <select id="city" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-8 text-xs sm:text-sm font-semibold text-on-surface cursor-pointer">
+                  <optgroup label="Littoral"><option value="Cotonou" selected>Cotonou (Littoral)</option></optgroup>
+                  <optgroup label="Atlantique"><option value="Abomey-Calavi">Abomey-Calavi</option><option value="Ouidah">Ouidah</option><option value="Allada">Allada</option><option value="Kpomassè">Kpomassè</option></optgroup>
+                  <optgroup label="Ouémé"><option value="Porto-Novo">Porto-Novo</option><option value="Sèmè-Kpodji">Sèmè-Kpodji</option><option value="Adjarra">Adjarra</option></optgroup>
+                  <optgroup label="Borgou & Nord"><option value="Parakou">Parakou (Borgou)</option><option value="Natitingou">Natitingou (Atacora)</option><option value="Kandi">Kandi (Alibori)</option><option value="Djougou">Djougou (Donga)</option></optgroup>
+                  <optgroup label="Zou & Collines"><option value="Bohicon">Bohicon (Zou)</option><option value="Abomey">Abomey (Zou)</option><option value="Dassa-Zoumè">Dassa-Zoumè (Collines)</option><option value="Savè">Savè (Collines)</option></optgroup>
+                  <optgroup label="Mono & Couffo"><option value="Lokossa">Lokossa (Mono)</option><option value="Aplahoué">Aplahoué (Couffo)</option><option value="Grand-Popo">Grand-Popo (Mono)</option></optgroup>
+                </select>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <label for="neighborhood" class="text-[11px] font-bold text-on-surface-variant">Quartier & Rue *</label>
+              <div class="relative flex items-center">
+                <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">map</span>
+                <input type="text" id="neighborhood" value="Haie Vive" placeholder="Ex: Haie Vive, Saint-Jean, Akpakpa" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="landmark" class="text-[11px] font-bold text-on-surface-variant">Indication & Repère d'accès précis</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">explore</span>
+              <input type="text" id="landmark" value="Face à la pharmacie, à 50m du grand carrefour" placeholder="Ex: Face à la pharmacie, en face de la station" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+            </div>
+          </div>
+          <div class="p-4 rounded-2xl bg-purple-50/70 border border-purple-200/80 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center"><span class="material-symbols-outlined text-lg">satellite_alt</span></div>
+                <div>
+                  <h4 class="text-xs font-black text-on-surface">Positionnement Géographique Réel</h4>
+                  <p class="text-[10px] text-on-surface-variant">Indispensable pour l'orientation et la recherche de guichets</p>
+                </div>
+              </div>
+              <span id="gps-status-badge" class="text-[10px] font-bold bg-white text-gray-500 border border-gray-200 px-2 py-0.5 rounded-full">Non capturé</span>
+            </div>
+            <div id="gps-coords-display" class="hidden bg-white p-3.5 rounded-2xl border border-purple-200 flex flex-col gap-2 shadow-xs">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                  <span id="gps-coords-text" class="text-xs font-mono font-extrabold text-primary">LAT: 6.3654° N • LNG: 2.4183° E</span>
+                </div>
+                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Précision &lt; 5m</span>
+              </div>
+              <p id="gps-address-detected" class="text-[11px] text-gray-600 font-medium">📍 Repéré à proximité de Cotonou, Littoral, République du Bénin</p>
+            </div>
+            <button type="button" id="gps-capture-btn" onclick="captureGpsLocation()" class="w-full bg-white border border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition-all flex items-center justify-center gap-2 text-xs cursor-pointer shadow-sm">
+              <span class="material-symbols-outlined text-base">my_location</span>
+              <span id="gps-btn-text">📍 Capturer les coordonnées GPS actuelles</span>
+            </button>
+          </div>
+          <div class="flex flex-col gap-1.5 pt-1">
+            <label class="text-[11px] font-bold text-on-surface-variant">Photo de la devanture / Kiosque (Optionnel)</label>
+            <div onclick="document.getElementById('storefront-file').click()" class="border-2 border-dashed border-outline-variant/70 rounded-2xl p-4 bg-surface-container-low/30 hover:bg-purple-50/40 hover:border-primary/60 transition-all cursor-pointer flex flex-col items-center justify-center text-center gap-1.5 group">
+              <div class="w-10 h-10 rounded-2xl bg-purple-50 text-primary flex items-center justify-center group-hover:scale-105 transition-transform"><span class="material-symbols-outlined text-xl">add_a_photo</span></div>
+              <span id="storefront-filename" class="text-xs font-bold text-primary">Ajouter une photo de votre devanture</span>
+              <span class="text-[10px] text-on-surface-variant">Permet aux clients de reconnaître facilement votre guichet</span>
+            </div>
+            <input type="file" id="storefront-file" accept="image/*" class="hidden" onchange="handleStorefrontUpload(event)"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div id="step3" class="form-step gap-4">
+        <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-4">
+          <div class="flex items-center gap-2 border-b border-outline-variant/30 pb-2.5">
+            <span class="material-symbols-outlined text-primary text-lg">contact_phone</span>
+            <div>
+              <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">Contact & Numéro Fiscal (IFU)</h2>
+              <p class="text-[11px] text-on-surface-variant">Canaux de communication et conformité fiscale</p>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center justify-between">
+              <label for="agentPhone" class="text-[11px] font-bold text-on-surface-variant">Numéro de téléphone du terminal Agent (10 chiffres commençant par 01) *</label>
+              <div id="operator-badge" class="hidden items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black"><span id="operator-name">Bénin 01</span></div>
+            </div>
+            <div class="flex items-center rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+              <div class="flex items-center gap-1.5 px-3.5 py-3 bg-gray-100/80 border-r border-outline-variant/50 text-xs font-bold text-on-surface select-none shrink-0">
+                <span class="text-base leading-none">🇧🇯</span><span class="font-mono text-gray-700 font-bold">+229</span>
+              </div>
+              <input type="tel" id="agentPhone" value="" placeholder="01 97 00 00 00" maxlength="14" class="w-full bg-transparent border-0 py-3 px-3.5 text-xs sm:text-sm font-mono font-bold text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none" oninput="handleAgentPhoneInput(this)" onfocus="if(!this.value) this.value='01 ';"/>
+            </div>
+            <p class="text-[10px] text-on-surface-variant ml-1">Ce numéro recevra le code SMS d'activation obligatoire.</p>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="agentEmail" class="text-[11px] font-bold text-on-surface-variant">Email professionnel de gestion</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">mail</span>
+              <input type="email" id="agentEmail" value="" placeholder="Ex: agent@switch.bj" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center justify-between">
+              <label for="ifuNumber" class="text-[11px] font-bold text-on-surface-variant">Numéro IFU (Identifiant Fiscal Unique)</label>
+              <span class="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">13 chiffres</span>
+            </div>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">receipt_long</span>
+              <input type="text" id="ifuNumber" maxlength="13" value="" placeholder="Ex: 3202 0123 4567 8" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-3 pl-10 pr-3 text-xs sm:text-sm font-mono font-semibold text-on-surface"/>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1.5 pt-1">
+            <div class="flex items-center justify-between">
+              <label class="text-[11px] font-bold text-on-surface-variant">Pièce d'Identité ou RCCM du Gérant *</label>
+              <span id="doc-status-badge" class="text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 px-2 py-0.5 rounded-full">Non importé</span>
+            </div>
+            <div id="doc-upload-box" onclick="document.getElementById('doc-file').click()" class="border-2 border-dashed border-outline-variant/70 rounded-2xl p-3.5 bg-surface-container-low/30 hover:bg-purple-50/40 hover:border-primary/60 transition-all cursor-pointer flex items-center justify-between group">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-purple-50 text-primary flex items-center justify-center group-hover:scale-105 transition-transform shrink-0"><span id="doc-icon" class="material-symbols-outlined text-xl">upload_file</span></div>
+                <div class="flex flex-col">
+                  <span id="doc-filename" class="text-xs font-bold text-primary">Importer votre pièce d'identité (CIP, CNI ou RCCM)</span>
+                  <span class="text-[10px] text-on-surface-variant">Format PDF, JPG ou PNG (Max 5 Mo)</span>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-primary bg-white border border-purple-200 px-2.5 py-1 rounded-xl shadow-2xs group-hover:bg-primary group-hover:text-white transition-colors">Parcourir</span>
+            </div>
+            <input type="file" id="doc-file" accept=".pdf,image/*" class="hidden" onchange="handleDocUpload(event)"/>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-gradient-to-br from-purple-50 to-white border border-purple-200/80 flex flex-col gap-2">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-purple-900">Étape suivante : Cautionnement & Activation</span>
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-gray-600 font-medium">Fonds de roulement initial :</span>
+              <b class="text-primary font-bold">100 000 F à 1 000 000 F</b>
+            </div>
+            <p class="text-[10px] text-gray-500">Votre caution reste votre propriété intégrale et alimente directement votre caisse de retrait.</p>
+          </div>
+          <div class="pt-1">
+            <label class="flex items-start gap-2.5 p-3 rounded-2xl bg-gray-50 border border-gray-200 cursor-pointer">
+              <input type="checkbox" id="agent-terms" checked class="mt-0.5 rounded text-primary focus:ring-primary w-4 h-4"/>
+              <span class="text-[11px] text-on-surface font-medium leading-tight">Je certifie l'exactitude des informations du guichet et m'engage à respecter la charte déontologique et les commissions officielles Switch Bénin.</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-2 flex items-center gap-3">
+        <button type="button" data-no-router="true" onclick="previousStep()" class="w-1/3 py-4 rounded-full bg-white border border-outline-variant/60 text-on-surface font-bold text-xs sm:text-sm hover:bg-gray-50 transition-all cursor-pointer">Précédent</button>
+        <button type="button" onclick="nextStep()" id="next-btn" data-no-router="true" class="w-2/3 py-4 rounded-full bg-primary text-white font-bold text-xs sm:text-sm shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer">
+          <span id="next-btn-text">Continuer</span>
+          <span id="next-btn-icon" class="material-symbols-outlined text-lg">arrow_forward</span>
+        </button>
+      </div>
+
+    </form>
+  </main>
+
+  <script src="../assets/switch.router.js"></script>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 3;
+
+    function selectAgentModel(modelKey) {
+      document.getElementById('selectedAgentModel').value = modelKey;
+      ['pure_agent','mobile_agent'].forEach(c => {
+        const cardEl = document.getElementById(`model-card-${c}`);
+        if (cardEl) {
+          if (c === modelKey) cardEl.className = "p-3.5 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer transition-all flex flex-col justify-between gap-2 shadow-xs";
+          else cardEl.className = "p-3.5 rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 hover:border-primary/50 cursor-pointer transition-all flex flex-col justify-between gap-2 shadow-xs";
+        }
+      });
+    }
+
+    function updateUI() {
+      for (let i = 1; i <= totalSteps; i++) {
+        const stepEl = document.getElementById(`step${i}`);
+        const dot = document.getElementById(`step-dot-${i}`);
+        const label = document.getElementById(`step-label-${i}`);
+        if (i === currentStep) {
+          stepEl.classList.add('active');
+          dot.className = "w-8 h-8 rounded-full bg-primary text-white font-bold text-xs flex items-center justify-center shadow-md step-transition";
+          dot.textContent = i;
+          label.className = "text-[10px] font-bold text-primary";
+        } else if (i < currentStep) {
+          stepEl.classList.remove('active');
+          dot.className = "w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shadow-sm step-transition";
+          dot.innerHTML = `<span class="material-symbols-outlined text-base">check</span>`;
+          label.className = "text-[10px] font-bold text-emerald-700";
+        } else {
+          stepEl.classList.remove('active');
+          dot.className = "w-8 h-8 rounded-full bg-gray-100 text-gray-400 font-bold text-xs flex items-center justify-center step-transition";
+          dot.textContent = i;
+          label.className = "text-[10px] font-medium text-gray-400";
+        }
+      }
+      const progressFill = document.getElementById('progress-bar-fill');
+      progressFill.style.width = `${((currentStep - 1) / (totalSteps - 1)) * 100}%`;
+      const btnText = document.getElementById('next-btn-text');
+      const btnIcon = document.getElementById('next-btn-icon');
+      if (currentStep === totalSteps) {
+        btnText.textContent = "Recevoir mon code SMS";
+        btnIcon.textContent = "sms";
+      } else {
+        btnText.textContent = "Continuer";
+        btnIcon.textContent = "arrow_forward";
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function nextStep() {
+      if (currentStep === 1) {
+        const bName = document.getElementById('businessName').value.trim();
+        const mName = document.getElementById('managerName').value.trim();
+        if (!bName || !mName) { alert("Veuillez renseigner le nom commercial et le nom du gérant."); return; }
+      } else if (currentStep === 2) {
+        const neighborhood = document.getElementById('neighborhood').value.trim();
+        if (!neighborhood) { alert("Veuillez indiquer le quartier de votre point de service."); return; }
+      } else if (currentStep === 3) {
+        const phoneInput = document.getElementById('agentPhone').value.trim();
+        const phoneDigits = phoneInput.replace(/\D/g, '');
+        const terms = document.getElementById('agent-terms').checked;
+        if (phoneDigits.length !== 10 || !phoneDigits.startsWith('01')) { alert("Numéro béninois invalide (10 chiffres commençant par 01)."); return; }
+        if (!terms) { alert("Veuillez accepter l'engagement déontologique."); return; }
+
+        const btn = document.getElementById('next-btn');
+        const btnText = document.getElementById('next-btn-text');
+        const btnIcon = document.getElementById('next-btn-icon');
+        btn.disabled = true;
+        btn.classList.add('opacity-80');
+        btnText.textContent = "Envoi du SMS...";
+        btnIcon.textContent = "sync";
+        btnIcon.classList.add('animate-spin');
+
+        const formattedFullPhone = '+229' + phoneDigits;
+        const formattedDisplayPhone = '+229 ' + phoneInput;
+
+        // Sauvegarde des données Agent
+        const agentData = {
+          businessName: document.getElementById('businessName').value.trim(),
+          managerName: document.getElementById('managerName').value.trim(),
+          agentModel: document.getElementById('selectedAgentModel').value || 'pure_agent',
+          city: document.getElementById('city') ? document.getElementById('city').value : 'Cotonou',
+          neighborhood: document.getElementById('neighborhood').value.trim(),
+          landmark: document.getElementById('landmark') ? document.getElementById('landmark').value.trim() : '',
+          phone: phoneInput,
+          phone_raw: formattedFullPhone,
+          phone_display: formattedDisplayPhone,
+          email: document.getElementById('agentEmail').value.trim(),
+          ifu: document.getElementById('ifuNumber') ? document.getElementById('ifuNumber').value.trim() : ''
+        };
+        localStorage.setItem('switch_agent_application', JSON.stringify(agentData));
+        localStorage.setItem('switch_user_phone', formattedDisplayPhone);
+        localStorage.setItem('switch_user_phone_raw', formattedFullPhone);
+        localStorage.setItem('switch_user_name', agentData.managerName);
+        localStorage.setItem('switch_user_fullname', agentData.managerName);
+        localStorage.setItem('switch_active_role', 'agent');
+        localStorage.setItem('switch_is_hybrid', 'false');
+        sessionStorage.setItem('switchActiveSpace', 'agent');
+
+        // ⭐ ENVOI DU SMS OTP via notre moteur Telerivet
+        try {
+          const res = await fetch('/api/otp-send', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: phoneDigits })
+          });
+          const data = await res.json();
+          if (!data.ok) {
+            btn.disabled = false;
+            btn.classList.remove('opacity-80');
+            btnText.textContent = "Recevoir mon code SMS";
+            btnIcon.textContent = "sms";
+            btnIcon.classList.remove('animate-spin');
+            alert(data.error || "Erreur lors de l'envoi du SMS");
+            return;
+          }
+          // Succès : navigation vers la page de vérification OTP
+          setTimeout(() => {
+            if (window.switchNavigate) window.switchNavigate('../v_rification_otp/code.html');
+            else window.location.href = '../v_rification_otp/code.html';
+          }, 400);
+        } catch (err) {
+          btn.disabled = false;
+          btn.classList.remove('opacity-80');
+          btnText.textContent = "Recevoir mon code SMS";
+          btnIcon.textContent = "sms";
+          btnIcon.classList.remove('animate-spin');
+          alert("Erreur de connexion : " + err.message);
+        }
+        return;
+      }
+      currentStep++;
+      try { window.history.pushState({ step: currentStep }, ''); } catch(e) {}
+      updateUI();
+    }
+
+    function previousStep() {
+      if (currentStep > 1) { currentStep--; updateUI(); }
+      else {
+        if (window.switchNavigate) window.switchNavigate('../choix_type_compte/code.html');
+        else window.location.href = '../choix_type_compte/code.html';
+      }
+    }
+
+    window.addEventListener('popstate', (e) => {
+      if (e.state && e.state.step) { currentStep = e.state.step; updateUI(); }
+      else if (currentStep > 1) { currentStep = 1; updateUI(); }
+    });
+
+    function applyGpsSuccess(lat, lng) {
+      const btn = document.getElementById('gps-capture-btn');
+      const btnText = document.getElementById('gps-btn-text');
+      const statusBadge = document.getElementById('gps-status-badge');
+      const coordsDisplay = document.getElementById('gps-coords-display');
+      const coordsText = document.getElementById('gps-coords-text');
+      const addressDetected = document.getElementById('gps-address-detected');
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = "📍 Coordonnées GPS actualisées";
+      if (statusBadge) {
+        statusBadge.className = "text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1";
+        statusBadge.innerHTML = `<span class="material-symbols-outlined text-xs">verified</span> Fixé`;
+      }
+      if (coordsDisplay) { coordsDisplay.classList.remove('hidden'); coordsDisplay.style.display = 'flex'; }
+      if (coordsText) coordsText.textContent = `LAT: ${lat}° N • LNG: ${lng}° E`;
+      if (addressDetected) addressDetected.textContent = `📍 Guichet repéré avec succès à Cotonou (Littoral, Bénin)`;
+      localStorage.setItem('switch_agent_gps', `${lat},${lng}`);
+    }
+
+    function captureGpsLocation() {
+      const btn = document.getElementById('gps-capture-btn');
+      const btnText = document.getElementById('gps-btn-text');
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-primary border-t-transparent rounded-full mr-1"></span> Recherche du signal satellite GPS...`;
+      setTimeout(() => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => applyGpsSuccess(pos.coords.latitude.toFixed(4), pos.coords.longitude.toFixed(4)),
+            () => applyGpsSuccess("6.3654", "2.4183"),
+            { timeout: 4000 }
+          );
+        } else applyGpsSuccess("6.3654", "2.4183");
+      }, 700);
+    }
+
+    function handleStorefrontUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (file) document.getElementById('storefront-filename').textContent = `📷 ${file.name} (Prêt à l'envoi)`;
+    }
+
+    function handleDocUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (file) {
+        document.getElementById('doc-filename').textContent = `📄 ${file.name}`;
+        const badge = document.getElementById('doc-status-badge');
+        if (badge) {
+          badge.className = "text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1";
+          badge.innerHTML = `<span class="material-symbols-outlined text-xs">check_circle</span> Validé (${(file.size / 1024).toFixed(0)} Ko)`;
+        }
+        const box = document.getElementById('doc-upload-box');
+        if (box) box.className = "border-2 border-emerald-400 rounded-2xl p-3.5 bg-emerald-50/40 transition-all cursor-pointer flex items-center justify-between group";
+      }
+    }
+
+    function handleAgentPhoneInput(input) {
+      let raw = input.value.replace(/\D/g, '');
+      if (raw.length > 10) raw = raw.substring(0, 10);
+      let formatted = '';
+      for (let i = 0; i < raw.length; i++) {
+        if (i === 2 || i === 4 || i === 6 || i === 8) formatted += ' ';
+        formatted += raw[i];
+      }
+      input.value = formatted;
+      const badge = document.getElementById('operator-badge');
+      const name = document.getElementById('operator-name');
+      if (raw.length >= 4) {
+        badge.classList.remove('hidden');
+        badge.classList.add('flex');
+        const prefix = raw.substring(0, 4);
+        if (/^01(96|97|61|62|51|52|53|54|66|67|42|46)/.test(prefix)) {
+          badge.className = "operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300";
+          name.textContent = "🟡 MTN Bénin";
+        } else if (/^01(95|94|60|63|64|65|68|98)/.test(prefix)) {
+          badge.className = "operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-blue-100 text-blue-900 border border-blue-300";
+          name.textContent = "🔵 Moov Money";
+        } else if (/^01(40|41|43|44|45|47|48|49|90|91)/.test(prefix)) {
+          badge.className = "operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300";
+          name.textContent = "🟢 Celtiis Bénin";
+        } else {
+          badge.className = "operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-purple-100 text-purple-900 border border-purple-300";
+          name.textContent = "🇧🇯 Bénin 01";
+        }
+      } else {
+        badge.classList.add('hidden');
+        badge.classList.remove('flex');
+      }
+    }
+  </script>
+</body>
+</html>

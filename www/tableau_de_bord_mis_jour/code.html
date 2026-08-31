@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fr" class="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Tableau de bord - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css?v=2.3">
+  <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hero-gradient {
+      background: linear-gradient(135deg, #5E3BDC 0%, #4323B0 50%, #2A1175 100%);
+      box-shadow: 0 16px 36px -10px rgba(94, 59, 220, 0.35);
+    }
+
+    .silk-orb-1 {
+      background: radial-gradient(circle, rgba(202, 190, 255, 0.35) 0%, rgba(94, 59, 220, 0) 70%);
+    }
+
+    .silk-orb-2 {
+      background: radial-gradient(circle, rgba(255, 204, 0, 0.25) 0%, rgba(94, 59, 220, 0) 70%);
+    }
+
+    .service-card {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.03);
+    }
+
+    .service-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -4px rgba(94, 59, 220, 0.1);
+      border-color: rgba(94, 59, 220, 0.4);
+    }
+
+    .action-bubble {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .action-bubble:active {
+      transform: scale(0.92);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-44 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top App Bar -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30">
+    <!-- User Avatar & Dynamic Greeting (Static & Non-clickable) -->
+    <div class="flex items-center gap-3 select-none">
+      <div class="relative">
+        <div id="user-avatar-wrapper" class="w-11 h-11 rounded-full overflow-hidden border-2 border-primary/30 shadow-sm flex items-center justify-center">
+          <!-- Avatar généré dynamiquement via SwitchAPI.getAvatarHtml() -->
+        </div>
+        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-green-500 border-2 border-white"></span>
+      </div>
+      <div>
+        <span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider block" id="time-greeting">Bonjour 👋</span>
+        <h1 class="text-base sm:text-lg font-extrabold text-on-surface leading-tight" id="dashboard-user-name">Chargement...</h1>
+      </div>
+    </div>
+
+    <!-- Top Right Actions -->
+    <div class="flex items-center gap-2">
+      <!-- Map Agent GPS Button -->
+      <a href="../carte_agents_guichets/code.html" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer no-underline" title="Localiser un agent">
+        <span class="material-symbols-outlined text-xl">map</span>
+      </a>
+
+      <!-- Notifications with Badge -->
+      <a href="../centre_de_notifications/code.html" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer no-underline relative">
+        <span class="material-symbols-outlined text-xl">notifications</span>
+        <span class="absolute top-2 right-2 w-2.5 h-2.5 bg-rose-500 rounded-full border border-white"></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-1">
+
+    <!-- 1. Hero Balance Card (High-End Fintech) -->
+    <section id="hero-card" class="hero-gradient text-white rounded-[32px] p-6 relative overflow-hidden flex flex-col justify-between min-h-[190px]">
+      <!-- Background Ambient Orbs -->
+      <div class="absolute -top-12 -right-12 w-48 h-48 silk-orb-1 rounded-full pointer-events-none"></div>
+      <div class="absolute -bottom-16 -left-12 w-48 h-48 silk-orb-2 rounded-full pointer-events-none"></div>
+
+      <!-- Card Top Bar -->
+      <div class="relative z-10 flex items-center justify-between w-full">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-purple-200 uppercase tracking-wider">Solde Principal</span>
+          <span id="kyc-badge" class="text-[10px] font-black uppercase bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full text-white border border-white/20">
+            Niveau 2 Vérifié
+          </span>
+        </div>
+
+        <!-- Eye toggle button -->
+        <button id="toggle-balance-btn" onclick="toggleBalance()" class="w-8 h-8 rounded-full bg-white/15 backdrop-blur-md hover:bg-white/25 transition-colors flex items-center justify-center cursor-pointer" aria-label="Afficher ou masquer le solde">
+          <span id="eye-icon" class="material-symbols-outlined text-white text-base">visibility</span>
+        </button>
+      </div>
+
+      <!-- Balance Amount -->
+      <div class="relative z-10 my-3">
+        <h2 id="main-balance-text" data-hidden="false" class="text-3xl sm:text-4xl font-black tracking-tight font-mono">
+          50 000 <span class="text-lg sm:text-xl font-bold font-sans text-purple-200">FCFA</span>
+        </h2>
+      </div>
+
+      <!-- Card Bottom Row : Numéro de Compte Switch (10 chiffres tél + 4 chiffres uniques) & QR Shortcut -->
+      <div class="relative z-10 flex items-center justify-between pt-2.5 border-t border-white/15 text-xs text-purple-200 gap-2">
+        <div class="flex items-center gap-1.5 font-mono bg-white/15 px-2.5 py-1 rounded-xl border border-white/15 text-white whitespace-nowrap shrink-0">
+          <span class="material-symbols-outlined text-xs shrink-0">badge</span>
+          <span class="font-bold text-[11px] sm:text-xs whitespace-nowrap tracking-tight" id="dashboard-account-number">N° Compte : Chargement...</span>
+          <button onclick="copyDashboardAccountNumber()" class="text-purple-200 hover:text-white cursor-pointer ml-0.5 shrink-0 flex items-center" title="Copier mon numéro de compte">
+            <span class="material-symbols-outlined text-xs">content_copy</span>
+          </button>
+        </div>
+        <a href="../scanner_qr_code/code.html" class="flex items-center gap-1 text-white hover:text-amber-300 transition-colors no-underline font-bold text-xs shrink-0 whitespace-nowrap">
+          <span class="material-symbols-outlined text-sm">qr_code_scanner</span>
+          <span>Scanner QR</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 2. Primary Actions Bar (4 Clean Circular Buttons) -->
+    <section class="grid grid-cols-4 gap-3 bg-white p-4 rounded-3xl border border-outline-variant/30 shadow-sm text-center">
+      <!-- Dépôt -->
+      <a href="../d_p_t_de_fonds/code.html" class="action-bubble flex flex-col items-center gap-1.5 no-underline group cursor-pointer">
+        <div class="w-13 h-13 rounded-2xl bg-primary text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-2xl font-bold">add</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface">Dépôt</span>
+      </a>
+
+      <!-- Envoyer -->
+      <a href="../transfert_switch_switch/code.html" class="action-bubble flex flex-col items-center gap-1.5 no-underline group cursor-pointer">
+        <div class="w-13 h-13 rounded-2xl bg-indigo-50 text-indigo-700 border border-indigo-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-2xl">send</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface">Envoyer</span>
+      </a>
+
+      <!-- Retrait -->
+      <a href="../retrait_de_fonds/code.html" class="action-bubble flex flex-col items-center gap-1.5 no-underline group cursor-pointer">
+        <div class="w-13 h-13 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface">Retrait</span>
+      </a>
+
+      <!-- Scanner / Payer -->
+      <a href="../scanner_qr_code/code.html" class="action-bubble flex flex-col items-center gap-1.5 no-underline group cursor-pointer">
+        <div class="w-13 h-13 rounded-2xl bg-amber-50 text-amber-700 border border-amber-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-2xl">qr_code_2</span>
+        </div>
+        <span class="text-xs font-bold text-on-surface">Payer QR</span>
+      </a>
+    </section>
+
+    <!-- 2.5 Kiosque Switch Agences VIP Banner (0% Dépôt & Retrait Express) -->
+    <div class="bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-800 rounded-3xl p-4 text-white shadow-md flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shrink-0">
+          <span class="material-symbols-outlined text-2xl font-bold">storefront</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h4 class="font-black text-xs sm:text-sm">Dépôt 0% & Retrait en Agence</h4>
+            <span class="text-[9px] font-black uppercase bg-white/25 px-2 py-0.5 rounded-full">Gratuit</span>
+          </div>
+          <p class="text-[11px] text-emerald-100 mt-0.5">+500 Kiosques Switch au Bénin • Liquidités garanties</p>
+        </div>
+      </div>
+      <a href="../carte_agents_guichets/code.html" class="px-3 py-1.5 rounded-full bg-white text-emerald-900 font-extrabold text-xs flex items-center gap-1 shadow-sm hover:bg-emerald-50 transition-colors no-underline cursor-pointer shrink-0">
+        <span>Kiosques</span>
+        <span class="material-symbols-outlined text-xs">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- 3. Super-App Services & Factures Bénin (Organisé en 2 catégories & mode compact) -->
+    <section class="flex flex-col gap-3">
+      <div class="flex items-center justify-between px-1">
+        <h3 class="text-xs font-black text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-base">apps</span>
+          <span>Services & Factures Bénin</span>
+        </h3>
+        <!-- Category Filter Pills -->
+        <div class="flex gap-1 bg-surface-container p-1 rounded-full text-[11px] font-bold">
+          <button type="button" onclick="filterServices('all')" id="srv-tab-all" class="px-2.5 py-0.5 rounded-full bg-primary text-white shadow-xs transition-all cursor-pointer">Tous</button>
+          <button type="button" onclick="filterServices('bills')" id="srv-tab-bills" class="px-2.5 py-0.5 rounded-full text-on-surface-variant hover:text-on-surface transition-all cursor-pointer">Factures</button>
+          <button type="button" onclick="filterServices('finance')" id="srv-tab-finance" class="px-2.5 py-0.5 rounded-full text-on-surface-variant hover:text-on-surface transition-all cursor-pointer">Finance</button>
+        </div>
+      </div>
+
+      <!-- Services Grid (Top 6 visible by default, others expandable) -->
+      <div class="grid grid-cols-3 gap-2.5" id="services-grid">
+        <!-- 1. SBEE Électricité (Bill) -->
+        <a href="../paiement_sbee_electricite/code.html" data-category="bills" class="service-card srv-item bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">SBEE Élec</span>
+          <span class="text-[10px] text-amber-700 font-semibold bg-amber-50 px-2 py-0.5 rounded-full">Recharge</span>
+        </a>
+
+        <!-- 2. SONEB Eau (Bill) -->
+        <a href="../paiement_soneb_eau/code.html" data-category="bills" class="service-card srv-item bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-sky-500/10 text-sky-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">SONEB Eau</span>
+          <span class="text-[10px] text-sky-700 font-semibold bg-sky-50 px-2 py-0.5 rounded-full">Factures</span>
+        </a>
+
+        <!-- 3. Forfaits Data & Crédit (Bill) -->
+        <a href="../recharge_credit_data/code.html" data-category="bills" class="service-card srv-item bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">cell_tower</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Forfaits</span>
+          <span class="text-[10px] text-primary font-semibold bg-primary/5 px-2 py-0.5 rounded-full">MTN • Moov</span>
+        </a>
+
+        <!-- 4. Coffre Vault Épargne (Finance) -->
+        <a href="../coffre_epargne_vault/code.html" data-category="finance" class="service-card srv-item bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">savings</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Vault 6%</span>
+          <span class="text-[10px] text-indigo-700 font-semibold bg-indigo-50 px-2 py-0.5 rounded-full">Épargne</span>
+        </a>
+
+        <!-- 5. Tontines Digitales (Finance) -->
+        <a href="../mes_tontines/code.html" data-category="finance" class="service-card srv-item bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">groups</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Tontines</span>
+          <span class="text-[10px] text-purple-700 font-semibold bg-purple-50 px-2 py-0.5 rounded-full">Épargne</span>
+        </a>
+
+        <!-- 6. Boutiques & Shopping Marketplace (Visible par défaut) -->
+        <a href="../marketplace_boutiques_switch/code.html" data-category="bills" class="service-card srv-item bg-white p-3.5 rounded-3xl border-2 border-primary/40 bg-purple-50/20 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-primary text-white flex items-center justify-center shadow-xs">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">storefront</span>
+          </div>
+          <span class="text-xs font-black text-primary mt-1">Boutiques</span>
+          <span class="text-[10px] text-white font-bold bg-primary px-2 py-0.5 rounded-full">Shopping</span>
+        </a>
+
+        <!-- SECTION EXTRA : SERVICES MASQUÉS PAR DÉFAUT (Voir plus) -->
+        <!-- 7. Switch Campus Scolarité (Bill) -->
+        <a href="../paiement_scolarite_campus/code.html" data-category="bills" class="service-card srv-item srv-extra hidden bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">school</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Campus</span>
+          <span class="text-[10px] text-indigo-700 font-semibold bg-indigo-50 px-2 py-0.5 rounded-full">Scolarité</span>
+        </a>
+
+        <!-- 8. Switch Kids & Famille (Finance) -->
+        <a href="../switch_kids_famille/code.html" data-category="finance" class="service-card srv-item srv-extra hidden bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">child_care</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Kids</span>
+          <span class="text-[10px] text-amber-700 font-semibold bg-amber-50 px-2 py-0.5 rounded-full">Poche</span>
+        </a>
+
+        <!-- 8. Switch Auto-Pay (Finance) -->
+        <a href="../paiements_recurrents_autopay/code.html" data-category="finance" class="service-card srv-item srv-extra hidden bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-violet-500/10 text-violet-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">autorenew</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Auto-Pay</span>
+          <span class="text-[10px] text-violet-700 font-semibold bg-violet-50 px-2 py-0.5 rounded-full">Récurrent</span>
+        </a>
+
+        <!-- 9. Switch Invest (Finance) -->
+        <a href="../investissements_bons_tresor/code.html" data-category="finance" class="service-card srv-item srv-extra hidden bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Invest</span>
+          <span class="text-[10px] text-emerald-800 font-semibold bg-emerald-100 px-2 py-0.5 rounded-full">BCEAO 7.5%</span>
+        </a>
+
+        <!-- 10. Switch Santé (Bill) -->
+        <a href="../switch_sante_assurance/code.html" data-category="bills" class="service-card srv-item srv-extra hidden bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-teal-500/10 text-teal-700 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">health_and_safety</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Santé</span>
+          <span class="text-[10px] text-teal-800 font-semibold bg-teal-50 px-2 py-0.5 rounded-full">Mutuelle</span>
+        </a>
+
+        <!-- 11. Micro-Crédit Avance (Finance) -->
+        <a href="../micro_credit_express/code.html" data-category="finance" class="service-card srv-item srv-extra hidden bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">speed</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Avance</span>
+          <span class="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full">Nano-crédit</span>
+        </a>
+
+        <!-- 12. Split Note Addition (Finance) -->
+        <a href="../partage_addition_split/code.html" data-category="finance" class="service-card srv-item srv-extra hidden bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-orange-500/10 text-orange-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">pie_chart</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Diviser</span>
+          <span class="text-[10px] text-orange-700 font-semibold bg-orange-50 px-2 py-0.5 rounded-full">Split note</span>
+        </a>
+
+        <!-- 13. Carte Agents GPS (Bill) -->
+        <a href="../carte_agents_guichets/code.html" data-category="bills" class="service-card srv-item srv-extra hidden bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-rose-500/10 text-rose-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">map</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Agences</span>
+          <span class="text-[10px] text-rose-700 font-semibold bg-rose-50 px-2 py-0.5 rounded-full">Carte GPS</span>
+        </a>
+
+        <!-- 14. Budget Insights (Finance) -->
+        <a href="../budget_analyse_depenses/code.html" data-category="finance" class="service-card srv-item srv-extra hidden bg-white p-3.5 rounded-3xl border border-outline-variant/40 flex flex-col items-center gap-1 text-center no-underline cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-teal-500/10 text-teal-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">insights</span>
+          </div>
+          <span class="text-xs font-bold text-on-surface mt-1">Budget</span>
+          <span class="text-[10px] text-teal-700 font-semibold bg-teal-50 px-2 py-0.5 rounded-full">Dépenses</span>
+        </a>
+      </div>
+
+      <!-- Expand / Collapse "Voir Plus" Button -->
+      <button type="button" onclick="toggleServicesExpand()" id="btn-toggle-services" class="w-full py-2.5 rounded-2xl bg-white border border-outline-variant/50 hover:bg-surface-container text-xs font-bold text-primary flex items-center justify-center gap-1.5 shadow-xs transition-all cursor-pointer">
+        <span id="label-toggle-services">Voir tous les services (14)</span>
+        <span id="icon-toggle-services" class="material-symbols-outlined text-base">expand_more</span>
+      </button>
+    </section>
+
+    <!-- 4. Marketplace & Boutiques Marchandes Banner -->
+    <a href="../marketplace_boutiques_switch/code.html" class="w-full bg-gradient-to-r from-[#5E3BDC] via-[#4323B0] to-[#2A1175] rounded-3xl p-4 text-white shadow-md flex items-center justify-between no-underline hover:opacity-95 transition-opacity cursor-pointer">
+      <div class="flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shrink-0 shadow-inner">
+          <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h4 class="font-black text-sm text-white">Marketplace & Boutiques</h4>
+            <span class="text-[9px] font-black uppercase bg-amber-400 text-amber-950 px-2 py-0.5 rounded-full">0% Frais</span>
+          </div>
+          <p class="text-[11px] text-purple-200 mt-0.5">Parcourez les produits des marchands béninois et payez en 1 clic</p>
+        </div>
+      </div>
+      <div class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center text-white shrink-0">
+        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </div>
+    </a>
+
+    <!-- 5. Quick Insights Banner (Referral & Cashback) -->
+    <a href="../parrainage_recompenses/code.html" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-4 text-white shadow-md flex items-center justify-between no-underline hover:opacity-95 transition-opacity cursor-pointer">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl">
+          🎁
+        </div>
+        <div>
+          <h4 class="font-black text-sm">Gagnez 500 FCFA par ami</h4>
+          <p class="text-[11px] text-purple-200">Partagez votre code parrain ADELE500</p>
+        </div>
+      </div>
+      <span class="material-symbols-outlined text-white text-xl">arrow_forward</span>
+    </a>
+
+    <!-- 5. Recent Transactions Feed -->
+    <section class="flex flex-col gap-3">
+      <div class="flex items-center justify-between px-1">
+        <h3 class="text-xs font-black text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-base">history</span>
+          <span>Transactions Récentes</span>
+        </h3>
+        <button type="button" onclick="toggleAllTransactions()" id="btn-toggle-all-tx" class="text-xs font-bold text-primary hover:underline bg-transparent border-none p-0 cursor-pointer">
+          Voir tout (10) ▾
+        </button>
+      </div>
+
+      <div id="recent-tx-feed" class="bg-white rounded-3xl p-2 border border-outline-variant/40 shadow-sm flex flex-col divide-y divide-outline-variant/30">
+        <!-- Dynamically injected via SwitchEngine -->
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    let isBalanceHidden = localStorage.getItem("switch_privacy_mode") === "true";
+    let isServicesExpanded = false;
+    let currentCategory = 'all';
+    let isAllTxVisible = false;
+
+    function toggleAllTransactions() {
+      isAllTxVisible = !isAllTxVisible;
+      const btn = document.getElementById("btn-toggle-all-tx");
+      const txList = window.SwitchEngine ? window.SwitchEngine.getTransactions() : JSON.parse(localStorage.getItem('switch_transactions') || '[]');
+      
+      if (btn) {
+        btn.textContent = isAllTxVisible ? "Réduire ▴" : `Voir tout (${txList.length}) ▾`;
+      }
+      renderRecentTransactions();
+    }
+
+    function updateGreeting() {
+      const hour = new Date().getHours();
+      const greetingEl = document.getElementById("time-greeting");
+      if (greetingEl) {
+        if (hour >= 5 && hour < 12) {
+          greetingEl.textContent = "Bonjour 👋";
+        } else if (hour >= 12 && hour < 18) {
+          greetingEl.textContent = "Bon après-midi ☀️";
+        } else {
+          greetingEl.textContent = "Bonsoir 🌙";
+        }
+      }
+    }
+
+    function toggleBalance() {
+      isBalanceHidden = !isBalanceHidden;
+      localStorage.setItem("switch_privacy_mode", isBalanceHidden ? "true" : "false");
+      if (window.SwitchEngine) {
+        window.SwitchEngine.syncUI();
+      }
+      renderDashboardBalance();
+    }
+
+    function renderDashboardBalance() {
+      const bal = window.SwitchEngine ? window.SwitchEngine.getMainBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 125000);
+      const el = document.getElementById("main-balance-text");
+      const icon = document.getElementById("eye-icon");
+      if (isBalanceHidden) {
+        if (el) el.innerHTML = "•••••• <span class=\"text-lg sm:text-xl font-bold font-sans text-purple-200\">FCFA</span>";
+        if (icon) icon.textContent = "visibility_off";
+      } else {
+        if (el) el.innerHTML = bal.toLocaleString('fr-FR') + " <span class=\"text-lg sm:text-xl font-bold font-sans text-purple-200\">FCFA</span>";
+        if (icon) icon.textContent = "visibility";
+      }
+    }
+
+    function renderRecentTransactions() {
+      const feed = document.getElementById("recent-tx-feed");
+      if (!feed) return;
+
+      const txList = window.SwitchEngine ? window.SwitchEngine.getTransactions() : JSON.parse(localStorage.getItem('switch_transactions') || '[]');
+      if (!txList || txList.length === 0) {
+        feed.innerHTML = `
+          <div class="p-6 text-center text-xs text-gray-400 font-bold">
+            Aucune transaction pour le moment.
+          </div>
+        `;
+        return;
+      }
+
+      feed.innerHTML = "";
+      const displayedList = isAllTxVisible ? txList : txList.slice(0, 5);
+      displayedList.forEach(tx => {
+        const isPositive = tx.amount > 0;
+        const sign = isPositive ? "+" : "-";
+        const amtColor = isPositive ? "text-emerald-600 font-mono font-black" : "text-on-surface font-mono font-black";
+        const badgeBg = isPositive ? "bg-emerald-50 text-emerald-700" : "bg-surface-container text-on-surface-variant";
+        const badgeLabel = isPositive ? "Reçu" : (tx.category === "utility" ? "Facture" : (tx.category === "telecom" ? "Recharge" : "Débit"));
+
+        const item = document.createElement("a");
+        item.href = "../recu_transaction_partage/code.html";
+        item.className = "p-3 flex items-center justify-between hover:bg-surface-container/50 rounded-2xl transition-colors no-underline text-on-surface cursor-pointer";
+        item.onclick = function() {
+          localStorage.setItem("switch_last_tx_id", tx.id);
+          localStorage.setItem("switch_last_tx_amount", Math.abs(tx.amount).toString());
+          localStorage.setItem("switch_last_tx_recipient", tx.recipient || tx.title);
+          localStorage.setItem("switch_last_tx_phone", tx.phone || "");
+          localStorage.setItem("switch_last_tx_note", tx.note || "");
+        };
+
+        item.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl ${tx.iconBg || 'bg-purple-50 text-primary'} flex items-center justify-center font-bold shrink-0">
+              <span class="material-symbols-outlined text-lg">${tx.icon || 'payments'}</span>
+            </div>
+            <div class="min-w-0 flex-1">
+              <h4 class="text-xs sm:text-sm font-bold text-on-surface truncate">${tx.title}</h4>
+              <p class="text-[10px] text-on-surface-variant">${tx.date}</p>
+            </div>
+          </div>
+          <div class="text-right shrink-0 ml-2">
+            <span class="text-xs sm:text-sm ${amtColor} block">${sign}${Math.abs(tx.amount).toLocaleString('fr-FR')} F</span>
+            <span class="text-[9px] font-bold ${badgeBg} px-1.5 py-0.5 rounded-full">${badgeLabel}</span>
+          </div>
+        `;
+        feed.appendChild(item);
+      });
+
+      const btn = document.getElementById("btn-toggle-all-tx");
+      if (btn) {
+        btn.textContent = isAllTxVisible ? "Réduire ▴" : `Voir tout (${txList.length}) ▾`;
+      }
+    }
+
+    window.applyKycLevel = async function applyKycLevel() {
+      const level = localStorage.getItem('switch_kyc_level') || '2';
+      const badge = document.getElementById('kyc-badge');
+
+      if (level === '3') {
+        if (badge) {
+          badge.innerHTML = '👑 Niveau 3 VIP • 10M FCFA';
+          badge.className = 'text-[10px] font-black uppercase bg-amber-400 text-amber-950 px-2.5 py-0.5 rounded-full border border-amber-300 shadow-sm';
+        }
+      } else if (level === '2') {
+        if (badge) {
+          badge.innerHTML = 'Niveau 2 Vérifié • 2M FCFA';
+          badge.className = 'text-[10px] font-black uppercase bg-emerald-400 text-emerald-950 px-2.5 py-0.5 rounded-full border border-emerald-300 shadow-sm';
+        }
+      } else {
+        if (badge) {
+          badge.innerHTML = 'Niveau 1 • Plafond 500 000 FCFA';
+          badge.className = 'text-[10px] font-black uppercase bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-full text-white border border-white/20 shadow-sm';
+        }
+      }
+      const savedName = localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name');
+      if (savedName) {
+        const uEl = document.getElementById('dashboard-user-name');
+        if (uEl) uEl.textContent = savedName;
+        // ✅ RÈGLE 3 : Avatar dynamique (initiales si pas de photo réelle)
+        const avatarWrapper = document.getElementById('user-avatar-wrapper');
+        if (avatarWrapper && window.SwitchAPI) {
+          const avatarUrl = localStorage.getItem('switch_user_avatar_url');
+          avatarWrapper.innerHTML = window.SwitchAPI.getAvatarHtml(savedName, avatarUrl, 44);
+        }
+      } else {
+        // Avatar par défaut si aucun nom enregistré
+        const avatarWrapper = document.getElementById('user-avatar-wrapper');
+        if (avatarWrapper && window.SwitchAPI) {
+          avatarWrapper.innerHTML = window.SwitchAPI.getAvatarHtml('Utilisateur Switch', null, 44);
+        }
+      }
+      
+      let phone = localStorage.getItem('switch_user_phone') || '0122901907';
+      let accountSuffix = localStorage.getItem('switch_account_suffix');
+      if (!accountSuffix || accountSuffix.length !== 4) {
+        accountSuffix = Math.floor(1000 + Math.random() * 9000).toString();
+        localStorage.setItem('switch_account_suffix', accountSuffix);
+      }
+      let digits = phone.replace(/\D/g, '');
+      if (digits.startsWith('229')) digits = digits.slice(3);
+      if (digits.length < 10) digits = digits.padStart(10, '0');
+
+      const formattedAccount = 'N° Compte : 01 ' + digits.slice(2,4) + ' ' + digits.slice(4,6) + ' ' + digits.slice(6,8) + ' ' + digits.slice(8,10) + ' • ' + accountSuffix;
+      const accEl = document.getElementById('dashboard-account-number');
+      if (accEl) accEl.textContent = formattedAccount;
+
+      updateGreeting();
+      renderDashboardBalance();
+      renderRecentTransactions();
+
+      // Synchronisation en direct avec Supabase Cloud
+      if (window.SwitchAPI && window.SwitchAPI.getWallet) {
+        try {
+          const oldBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
+          await window.SwitchAPI.getWallet();
+          renderDashboardBalance();
+          renderRecentTransactions();
+          const newBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
+          if (newBal > oldBal) {
+            showDepositNotification(newBal - oldBal);
+          }
+          const refreshedName = localStorage.getItem('switch_user_fullname');
+          if (refreshedName && uEl) uEl.textContent = refreshedName;
+
+          // Vérification des demandes de retrait en cours
+          if (window.SwitchAPI.checkPendingWithdrawalForClient) {
+            const pendingOp = await window.SwitchAPI.checkPendingWithdrawalForClient();
+            if (pendingOp && pendingOp.hasPending && pendingOp.otp_code) {
+              showWithdrawalRequestModal(pendingOp.otp_code, pendingOp.amount || 10000);
+            }
+          }
+        } catch (e) {
+          console.info("[Dashboard] Synchro wallet live :", e.message);
+        }
+      }
+    };
+
+    function showWithdrawalRequestModal(otp, amount) {
+      const existing = document.getElementById('switch-withdraw-request-modal');
+      if (existing) existing.remove();
+
+      const modal = document.createElement('div');
+      modal.id = 'switch-withdraw-request-modal';
+      modal.style.cssText = 'position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.75); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:16px; font-family:sans-serif;';
+      modal.innerHTML = `
+        <div style="background:#ffffff; border-radius:28px; width:100%; max-width:400px; padding:24px; box-shadow:0 24px 48px rgba(0,0,0,0.3); display:flex; flex-direction:column; gap:16px; animation: slideUp 0.3s ease-out;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="width:40px; height:40px; border-radius:12px; background:#FEF3C7; color:#D97706; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold;">🛡️</div>
+              <div>
+                <h3 style="font-size:15px; font-weight:900; color:#1C1A24; margin:0;">Demande de Retrait Guichet</h3>
+                <span style="font-size:11px; color:#6B7280; font-weight:600;">Kiosque Switch Saint-Michel</span>
+              </div>
+            </div>
+            <button onclick="document.getElementById('switch-withdraw-request-modal').remove()" style="background:#F3F4F6; border:none; border-radius:50%; width:32px; height:32px; cursor:pointer; font-weight:bold; color:#4B5563;">✕</button>
+          </div>
+
+          <div style="background:#F8F9FD; border:1px solid #E5E7EB; border-radius:20px; padding:16px; text-align:center;">
+            <span style="font-size:11px; font-weight:700; color:#6B7280; text-transform:uppercase; letter-spacing:0.5px;">Montant à Décaisser</span>
+            <div style="font-size:24px; font-weight:900; color:#5E3BDC; font-family:monospace; margin:4px 0 12px 0;">${amount.toLocaleString('fr-FR')} FCFA</div>
+            
+            <span style="font-size:11px; font-weight:700; color:#374151;">Votre Code Secret de Confirmation :</span>
+            <div style="font-size:32px; font-weight:900; letter-spacing:6px; color:#10B981; font-family:monospace; background:#ECFDF5; border:2px dashed #059669; border-radius:16px; padding:10px; margin-top:6px;">
+              ${otp}
+            </div>
+          </div>
+
+          <p style="font-size:11px; color:#6B7280; margin:0; line-height:1.4; text-align:center;">
+            ⚠️ <b>Sécurité BCEAO :</b> Ne donnez ce code à l'agent que si vous êtes physiquement devant son guichet pour récupérer vos espèces en mains propres.
+          </p>
+
+          <button onclick="document.getElementById('switch-withdraw-request-modal').remove()" style="width:100%; background:#5E3BDC; color:white; font-weight:800; font-size:13px; padding:14px; border-radius:20px; border:none; cursor:pointer; box-shadow:0 8px 16px rgba(94,59,220,0.3);">
+            J'ai communiqué le code à l'agent
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    function showDepositNotification(amount) {
+      const existing = document.getElementById('switch-deposit-toast');
+      if (existing) existing.remove();
+      const toast = document.createElement('div');
+      toast.id = 'switch-deposit-toast';
+      toast.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:99999; width:90%; max-width:400px; background:linear-gradient(135deg, #10B981 0%, #047857 100%); color:#ffffff; border-radius:24px; padding:14px 18px; box-shadow:0 20px 40px rgba(0,0,0,0.35); display:flex; align-items:center; gap:12px; border:2px solid #34D399; font-family:sans-serif;';
+      toast.innerHTML = `
+        <div style="background:rgba(255,255,255,0.25); width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px;">💰</div>
+        <div style="flex:1;">
+          <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:#E6FFFA;">Dépôt d'Espèces Reçu !</div>
+          <div style="font-size:18px; font-weight:900; font-family:monospace; color:#FFFFFF;">+${amount.toLocaleString('fr-FR')} FCFA</div>
+        </div>
+        <button onclick="document.getElementById('switch-deposit-toast').remove()" style="background:rgba(0,0,0,0.2); border:none; color:white; border-radius:50%; width:26px; height:26px; cursor:pointer; font-weight:bold; font-size:12px;">✕</button>
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => { if (toast && toast.parentNode) toast.remove(); }, 7000);
+    }
+
+    window.copyDashboardAccountNumber = function() {
+      const accNum = localStorage.getItem('switch_account_number') || localStorage.getItem('switch_account_display') || '';
+      navigator.clipboard.writeText(accNum);
+      alert("Numéro de Compte Switch (14 chiffres) copié :\n" + accNum);
+    };
+
+    window.toggleServicesExpand = function() {
+      isServicesExpanded = !isServicesExpanded;
+      const extraItems = document.querySelectorAll('.srv-extra');
+      const label = document.getElementById('label-toggle-services');
+      const icon = document.getElementById('icon-toggle-services');
+
+      if (isServicesExpanded) {
+        extraItems.forEach(item => {
+          if (currentCategory === 'all' || item.getAttribute('data-category') === currentCategory) {
+            item.classList.remove('hidden');
+          }
+        });
+        if (label) label.textContent = "Réduire l'affichage des services";
+        if (icon) icon.textContent = "expand_less";
+      } else {
+        extraItems.forEach(item => item.classList.add('hidden'));
+        if (label) label.textContent = "Voir tous les services (15)";
+        if (icon) icon.textContent = "expand_more";
+      }
+    };
+
+    window.filterServices = function(cat) {
+      currentCategory = cat;
+      const tabAll = document.getElementById('srv-tab-all');
+      const tabBills = document.getElementById('srv-tab-bills');
+      const tabFinance = document.getElementById('srv-tab-finance');
+      const toggleBtn = document.getElementById('btn-toggle-services');
+
+      [tabAll, tabBills, tabFinance].forEach(t => {
+        if (t) t.className = "px-2.5 py-0.5 rounded-full text-on-surface-variant hover:text-on-surface transition-all cursor-pointer";
+      });
+
+      if (cat === 'all') {
+        if (tabAll) tabAll.className = "px-2.5 py-0.5 rounded-full bg-primary text-white shadow-xs transition-all cursor-pointer";
+        if (toggleBtn) toggleBtn.classList.remove('hidden');
+      } else if (cat === 'bills') {
+        if (tabBills) tabBills.className = "px-2.5 py-0.5 rounded-full bg-primary text-white shadow-xs transition-all cursor-pointer";
+        if (toggleBtn) toggleBtn.classList.add('hidden');
+      } else if (cat === 'finance') {
+        if (tabFinance) tabFinance.className = "px-2.5 py-0.5 rounded-full bg-primary text-white shadow-xs transition-all cursor-pointer";
+        if (toggleBtn) toggleBtn.classList.add('hidden');
+      }
+
+      const allItems = document.querySelectorAll('.srv-item');
+      allItems.forEach((item) => {
+        const itemCat = item.getAttribute('data-category');
+        const isExtra = item.classList.contains('srv-extra');
+
+        if (cat === 'all') {
+          if (isExtra && !isServicesExpanded) {
+            item.classList.add('hidden');
+          } else {
+            item.classList.remove('hidden');
+          }
+        } else if (itemCat === cat) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+    };
+
+    window.addEventListener("DOMContentLoaded", () => {
+      window.applyKycLevel();
+    });
+
+    window.addEventListener("pageshow", () => {
+      window.applyKycLevel();
+    });
+
+    window.addEventListener("storage", () => {
+      window.applyKycLevel();
+    });
+
+    // Exécution immédiate
+    if (window.applyKycLevel) {
+      window.applyKycLevel();
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

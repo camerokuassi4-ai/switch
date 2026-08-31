@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Confirmer l'opération - Code PIN Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .pin-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid #5E3BDC;
+      background-color: transparent;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .pin-dot.filled {
+      background-color: #5E3BDC;
+      transform: scale(1.15);
+      box-shadow: 0 0 12px rgba(94, 59, 220, 0.4);
+    }
+
+    .keypad-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background-color: #FFFFFF;
+      border: 1px solid rgba(201, 196, 215, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 800;
+      color: #1C1A24;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      transition: all 0.15s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+    .keypad-btn:active {
+      transform: scale(0.92);
+      background-color: #F3EEFF;
+      border-color: #5E3BDC;
+      color: #5E3BDC;
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-16 flex flex-col justify-between antialiased selection:bg-primary-fixed">
+
+  <!-- Top App Bar -->
+  <header class="w-full max-w-md mx-auto px-container-margin pt-5 pb-2 flex items-center justify-between z-30">
+    <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    <h1 class="text-lg font-extrabold text-on-surface">Confirmer l'opération</h1>
+    <div class="w-10"></div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-md mx-auto px-container-margin flex flex-col items-center gap-5 pt-1">
+
+    <!-- 1. Transaction Summary Card -->
+    <div class="w-full bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3.5">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+        <span class="text-xs font-bold text-on-surface-variant uppercase">Montant total</span>
+        <span class="text-2xl font-black text-primary font-mono" id="confirm-amount">50 000 FCFA</span>
+      </div>
+
+      <div class="flex flex-col gap-2 text-xs">
+        <div class="flex items-center justify-between">
+          <span class="text-on-surface-variant font-medium">Bénéficiaire / Service :</span>
+          <span class="font-bold text-on-surface" id="confirm-recipient">Koffi Mensah (+229 97 00 11 22)</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-on-surface-variant font-medium">Frais de transaction :</span>
+          <span class="font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">0 FCFA (Gratuit)</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-on-surface-variant font-medium">Débité depuis :</span>
+          <span class="font-bold text-on-surface">Solde Principal Switch</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. PIN Prompt Title & Dots -->
+    <div class="flex flex-col items-center gap-3 my-1">
+      <div class="flex items-center gap-2 text-primary font-bold text-xs">
+        <span class="material-symbols-outlined text-base">lock</span>
+        <span>Entrez votre Code PIN Switch (4 chiffres)</span>
+      </div>
+
+      <!-- 4 PIN Dots -->
+      <div class="flex items-center gap-4 my-1">
+        <div class="pin-dot" id="dot-1"></div>
+        <div class="pin-dot" id="dot-2"></div>
+        <div class="pin-dot" id="dot-3"></div>
+        <div class="pin-dot" id="dot-4"></div>
+      </div>
+    </div>
+
+    <!-- 3. Numeric Keypad (1 to 9, Biometry, 0, Backspace) -->
+    <div class="grid grid-cols-3 gap-x-6 gap-y-3.5 my-2">
+      <button type="button" class="keypad-btn" onclick="enterPinDigit('1')">1</button>
+      <button type="button" class="keypad-btn" onclick="enterPinDigit('2')">2</button>
+      <button type="button" class="keypad-btn" onclick="enterPinDigit('3')">3</button>
+      <button type="button" class="keypad-btn" onclick="enterPinDigit('4')">4</button>
+      <button type="button" class="keypad-btn" onclick="enterPinDigit('5')">5</button>
+      <button type="button" class="keypad-btn" onclick="enterPinDigit('6')">6</button>
+      <button type="button" class="keypad-btn" onclick="enterPinDigit('7')">7</button>
+      <button type="button" class="keypad-btn" onclick="enterPinDigit('8')">8</button>
+      <button type="button" class="keypad-btn" onclick="enterPinDigit('9')">9</button>
+      <button type="button" class="keypad-btn text-primary text-xl" onclick="triggerBiometricAuth()" title="FaceID / Empreinte">
+        <span class="material-symbols-outlined text-2xl">fingerprint</span>
+      </button>
+      <button type="button" class="keypad-btn" onclick="enterPinDigit('0')">0</button>
+      <button type="button" class="keypad-btn text-rose-500" onclick="deletePinDigit()" title="Effacer">
+        <span class="material-symbols-outlined text-2xl">backspace</span>
+      </button>
+    </div>
+
+  </main>
+
+  <script>
+    let currentPin = '';
+
+    function updatePinDots() {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById('dot-' + i);
+        if (i <= currentPin.length) {
+          dot.classList.add('filled');
+        } else {
+          dot.classList.remove('filled');
+        }
+      }
+    }
+
+    function enterPinDigit(digit) {
+      if (currentPin.length < 4) {
+        currentPin += digit;
+        updatePinDots();
+        if (navigator.vibrate) navigator.vibrate(30);
+
+        if (currentPin.length === 4) {
+          setTimeout(validateOperationSuccess, 300);
+        }
+      }
+    }
+
+    function deletePinDigit() {
+      if (currentPin.length > 0) {
+        currentPin = currentPin.slice(0, -1);
+        updatePinDots();
+        if (navigator.vibrate) navigator.vibrate(20);
+      }
+    }
+
+    function triggerBiometricAuth() {
+      if (navigator.vibrate) navigator.vibrate(50);
+      alert("🔐 Authentification biométrique FaceID / Empreinte réussie !");
+      validateOperationSuccess();
+    }
+
+    function validateOperationSuccess() {
+      if (window.switchNavigate) {
+        window.switchNavigate('../confirmation_de_succ_s/code.html');
+      } else {
+        window.location.href = '../confirmation_de_succ_s/code.html';
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

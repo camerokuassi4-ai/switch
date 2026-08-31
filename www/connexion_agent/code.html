@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Connexion Guichet Agent Agréé — Switch Bénin 🇧🇯</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+  
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css"/>
+  <link rel="manifest" href="../manifest.json"/>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            agent: '#4323B0',
+            'agent-hover': '#32188E',
+            primary: '#4323B0',
+            surface: '#FFFFFF',
+            'on-surface': '#1C1B1F',
+            'on-surface-variant': '#49454F',
+            outline: '#79747E',
+            'outline-variant': '#CAC4D0',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F6F4FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .pin-input {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .pin-input:focus {
+      border-color: #4323B0;
+      box-shadow: 0 0 0 3px rgba(67, 35, 176, 0.18);
+      background-color: #FFFFFF;
+      outline: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-12 flex flex-col justify-between antialiased selection:bg-indigo-200">
+
+  <!-- Top App Bar -->
+  <header class="w-full max-w-lg mx-auto px-container-margin pt-6 pb-2 flex items-center justify-between z-30">
+    <div class="w-10 h-10 rounded-full flex items-center justify-center bg-indigo-100 border border-indigo-200 text-indigo-700 font-bold">
+      <span class="material-symbols-outlined text-xl">badge</span>
+    </div>
+    <div class="flex items-center gap-1.5 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full">
+      <span class="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></span>
+      <span class="text-[11px] font-black text-indigo-950 uppercase tracking-wider">Espace Guichet Agent</span>
+    </div>
+    <div class="w-10"></div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-lg mx-auto px-container-margin flex flex-col items-center text-center gap-4 pt-2 flex-1 justify-center">
+    
+    <!-- Header Icon & Welcome -->
+    <div class="flex flex-col items-center gap-2.5 mb-1">
+      <div class="w-14 h-14 rounded-3xl bg-indigo-600 text-white shadow-lg flex items-center justify-center font-black">
+        <span class="material-symbols-outlined text-3xl">account_balance</span>
+      </div>
+      <div class="space-y-0.5 max-w-xs">
+        <h1 class="text-2xl font-black text-gray-950 tracking-tight">Connexion Guichet</h1>
+        <p class="text-xs text-gray-600 font-medium">
+          Accédez à vos opérations de dépôts/retraits espèces et float trésorerie Switch Bénin.
+        </p>
+      </div>
+    </div>
+
+    <!-- Login Form -->
+    <form class="w-full max-w-sm flex flex-col gap-3.5 mt-2" onsubmit="event.preventDefault(); handleAgentLogin();">
+      
+      <!-- 1. N° de Compte Agent (10 chiffres) -->
+      <div class="bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex flex-col gap-1.5 text-left">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-black uppercase tracking-wider text-gray-600" for="agent-acc-input">N° de Compte Agent (10 chiffres)</label>
+          <span class="text-[9px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full font-mono">BCEAO</span>
+        </div>
+        <div class="flex items-center gap-2 bg-surface-container/60 rounded-2xl px-4 py-3 border border-outline-variant/50 focus-within:border-indigo-600 focus-within:bg-white transition-all">
+          <span class="material-symbols-outlined text-indigo-600 text-lg">badge</span>
+          <input type="tel" id="agent-acc-input" value="9700409215" placeholder="97XXXXXXXX" maxlength="10" class="w-full bg-transparent border-none p-0 text-sm font-black font-mono text-on-surface focus:ring-0 outline-none" required/>
+        </div>
+      </div>
+
+      <!-- 2. Code Identifiant Guichetier / Distributeur -->
+      <div class="bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-sm flex flex-col gap-1.5 text-left">
+        <label class="text-xs font-black uppercase tracking-wider text-gray-600" for="agent-id-input">Code Distributeur Agréé</label>
+        <div class="flex items-center gap-2 bg-surface-container/60 rounded-2xl px-4 py-3 border border-outline-variant/50 focus-within:border-indigo-600 focus-within:bg-white transition-all">
+          <span class="material-symbols-outlined text-indigo-600 text-lg">storefront</span>
+          <input type="text" id="agent-id-input" value="AGT-4092" placeholder="AGT-XXXX" class="w-full bg-transparent border-none p-0 text-sm font-bold font-mono text-on-surface focus:ring-0 outline-none uppercase" required/>
+        </div>
+      </div>
+
+      <!-- 3. Secret PIN Boxes -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-black uppercase tracking-wider text-gray-600">Code PIN Guichet (4 Chiffres)</label>
+          <button type="button" onclick="togglePinEye()" class="text-[11px] font-bold text-indigo-700 hover:text-indigo-900 flex items-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm" id="eye-icon">visibility</span>
+            <span id="eye-text">Afficher</span>
+          </button>
+        </div>
+
+        <div class="flex justify-center gap-3 pt-1">
+          <input aria-label="PIN Chiffre 1" class="pin-input w-12 h-14 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-indigo-700" id="pin-0" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password" autofocus/>
+          <input aria-label="PIN Chiffre 2" class="pin-input w-12 h-14 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-indigo-700" id="pin-1" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="PIN Chiffre 3" class="pin-input w-12 h-14 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-indigo-700" id="pin-2" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+          <input aria-label="PIN Chiffre 4" class="pin-input w-12 h-14 text-center font-mono font-black text-2xl rounded-2xl bg-surface-container/50 border border-outline-variant/50 shadow-sm text-indigo-700" id="pin-3" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="password"/>
+        </div>
+
+        <div class="flex justify-end pt-1">
+          <a href="../reinitialisation_code_pin/code.html" class="text-xs font-bold text-indigo-600 hover:underline">
+            Code PIN Guichet oublié ?
+          </a>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-98 text-white font-extrabold py-4 rounded-full shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer mt-1">
+        <span class="material-symbols-outlined text-xl">login</span>
+        <span>Ouvrir la Session Guichet Agent</span>
+      </button>
+
+      <!-- Inscription Link -->
+      <div class="mt-2 text-xs text-gray-500 font-medium">
+        Pas encore distributeur agréé Switch ?
+        <a href="../inscription_agent_switch/code.html" class="font-bold text-emerald-600 hover:underline block mt-1">
+          Devenir Agent Agréé Switch (Créer mon compte) →
+        </a>
+      </div>
+
+    </form>
+  </main>
+
+  <script>
+    // Auto-focus PIN digits
+    const pinInputs = [
+      document.getElementById('pin-0'),
+      document.getElementById('pin-1'),
+      document.getElementById('pin-2'),
+      document.getElementById('pin-3')
+    ];
+
+    pinInputs.forEach((input, index) => {
+      input.addEventListener('input', (e) => {
+        if (e.target.value.length === 1 && index < 3) {
+          pinInputs[index + 1].focus();
+        }
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+          pinInputs[index - 1].focus();
+        }
+      });
+    });
+
+    let isPinVisible = false;
+    function togglePinEye() {
+      isPinVisible = !isPinVisible;
+      pinInputs.forEach(input => {
+        input.type = isPinVisible ? 'text' : 'password';
+      });
+      document.getElementById('eye-icon').textContent = isPinVisible ? 'visibility_off' : 'visibility';
+      document.getElementById('eye-text').textContent = isPinVisible ? 'Masquer' : 'Afficher';
+    }
+
+    function handleAgentLogin() {
+      const acc = document.getElementById('agent-acc-input').value.trim();
+      const id = document.getElementById('agent-id-input').value.trim();
+      const pin = pinInputs.map(i => i.value).join('');
+
+      if (!acc || acc.length < 10) {
+        alert("⚠️ Veuillez renseigner votre Numéro de Compte Agent (10 chiffres).");
+        document.getElementById('agent-acc-input').focus();
+        return;
+      }
+
+      if (!id) {
+        alert("⚠️ Veuillez renseigner votre Code Agent Distributeur (ex: AGT-4092).");
+        document.getElementById('agent-id-input').focus();
+        return;
+      }
+
+      if (pin.length < 4) {
+        alert("⚠️ Veuillez saisir vos 4 chiffres de Code PIN Guichet.");
+        pinInputs[0].focus();
+        return;
+      }
+
+      // Enregistrer la session Agent Agréé authentifiée avec token chiffré
+      localStorage.setItem('switch_agent_session_active', 'true');
+      localStorage.setItem('switch_is_hybrid', 'false');
+      localStorage.setItem('switch_active_role', 'agent');
+      localStorage.setItem('switch_agent_account', acc);
+      localStorage.setItem('switch_agent_id', id);
+      localStorage.setItem('switch_agent_name', 'Adele Doe');
+      localStorage.setItem('switch_agent_float', '1450000');
+      sessionStorage.setItem('switch_agent_auth_token', btoa('agt_' + id + '_' + Date.now()));
+      const isHybrid = localStorage.getItem('switch_is_hybrid') === 'true';
+      const targetDash = isHybrid ? '../tableau_de_bord_agent_mixte/code.html' : '../tableau_de_bord_agent/code.html';
+
+      if (window.switchNavigate) {
+        window.switchNavigate(targetDash);
+      } else {
+        window.location.href = targetDash;
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js?v=4.5"></script>
+</body>
+</html>

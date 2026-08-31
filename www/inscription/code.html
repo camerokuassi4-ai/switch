@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Inscription - Switch Bénin</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#5E3BDC',
+            'primary-hover': '#4D2EC2',
+            'primary-container': '#EDE7FE',
+            'on-primary': '#FFFFFF',
+            surface: '#FFFFFF',
+            'on-surface': '#1C1A24',
+            'on-surface-variant': '#5D5A68',
+            'outline-variant': '#E2E0EC',
+          },
+          fontFamily: {
+            sans: ['"Hanken Grotesk"', 'sans-serif'],
+          },
+          spacing: {
+            'container-margin': '20px',
+          }
+        }
+      }
+    };
+  </script>
+  
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <script>
+    (function () {
+      function killLockAndBack() {
+        const el = document.getElementById('switch-lock-screen');
+        if (el) el.remove();
+        document.querySelectorAll('.switch-back-btn, button[aria-label="Retour"]').forEach(b => b.remove());
+        localStorage.removeItem('switch_sec_lockout_until');
+        localStorage.removeItem('switch_sec_failed_attempts');
+      }
+      killLockAndBack();
+      document.addEventListener('DOMContentLoaded', killLockAndBack);
+      window.addEventListener('load', killLockAndBack);
+      new MutationObserver(killLockAndBack).observe(document.documentElement, { childList: true, subtree: true });
+    })();
+  </script>
+
+  <style>
+    body {
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #F8F9FD !important;
+      color: #1C1A24 !important;
+      -webkit-font-smoothing: antialiased;
+    }
+    .form-card { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+    .form-card:focus-within {
+      border-color: #5E3BDC;
+      box-shadow: 0 8px 24px -4px rgba(94, 59, 220, 0.15);
+      transform: translateY(-1px);
+    }
+    .operator-badge { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    @keyframes subtlePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    .bonus-pill { animation: subtlePulse 3s infinite ease-in-out; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-primary-fixed">
+
+  <header class="w-full px-container-margin pt-5 pb-2 flex items-center justify-between z-30">
+    <div class="w-10 h-10 rounded-2xl flex items-center justify-center bg-purple-50 text-[#5E3BDC] border border-purple-100 shadow-sm">
+      <span class="material-symbols-outlined text-2xl">person_add</span>
+    </div>
+    <div class="flex flex-col items-center gap-1.5">
+      <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-gray-200 shadow-xs">
+        <span class="text-[11px] font-extrabold uppercase tracking-wider text-primary">Étape 2 / 4</span>
+        <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+        <span class="text-[11px] font-bold text-gray-600">Profil</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <span class="w-4 h-1.5 rounded-full bg-primary"></span>
+        <span class="w-6 h-1.5 rounded-full bg-primary shadow-xs"></span>
+        <span class="w-2 h-1.5 rounded-full bg-gray-200"></span>
+        <span class="w-2 h-1.5 rounded-full bg-gray-200"></span>
+      </div>
+    </div>
+    <a href="../support_aide/code.html" class="w-10 h-10 rounded-2xl flex items-center justify-center bg-white border border-gray-200 shadow-sm hover:bg-gray-50 active:scale-95 transition-all text-gray-600 hover:text-primary">
+      <span class="material-symbols-outlined text-xl">help_outline</span>
+    </a>
+  </header>
+
+  <main class="w-full px-container-margin flex flex-col gap-5 pt-3 pb-8 flex-1">
+    <div class="flex items-start justify-between gap-3">
+      <div class="space-y-1">
+        <div class="inline-flex items-center gap-1.5 text-xs font-black text-primary bg-purple-100 text-[#5E3BDC] px-2.5 py-0.5 rounded-full mb-0.5">
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">how_to_reg</span>
+          <span>Compte Particulier</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black text-gray-950 tracking-tight leading-tight">Créer mon compte</h1>
+        <p class="text-xs sm:text-sm text-gray-600 font-medium">
+          Rejoignez Switch Bénin en 2 minutes pour vos transferts à 0%.
+        </p>
+      </div>
+      <div class="w-12 h-12 rounded-2xl bg-white p-1.5 shadow-sm border border-gray-200 flex items-center justify-center shrink-0">
+        <img src="../assets/images/img_003.jpg" alt="Logo Switch" class="w-full h-full object-contain rounded-xl"/>
+      </div>
+    </div>
+
+    <form class="flex flex-col gap-4" id="registration-form" onsubmit="event.preventDefault(); submitRegistration();">
+      
+      <div class="form-card bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-gray-200 shadow-xs flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-extrabold text-gray-700 uppercase tracking-wider flex items-center gap-1.5" for="full-name">
+            <span class="material-symbols-outlined text-primary text-base">badge</span>
+            <span>Nom et Prénom(s) complets <span class="text-rose-500">*</span></span>
+          </label>
+          <span class="text-[10px] text-gray-400 font-semibold" id="name-status">Requis</span>
+        </div>
+        <div class="flex items-center gap-2.5 bg-gray-50 rounded-xl px-3.5 py-3 border border-gray-200 focus-within:bg-white focus-within:border-primary transition-all">
+          <span class="material-symbols-outlined text-gray-400 text-lg">person</span>
+          <input type="text" id="full-name" name="full_name" placeholder="Ex: Koffi ADEBAYO" value="" required autocomplete="name"
+            class="w-full bg-transparent border-none p-0 text-sm sm:text-base font-bold text-gray-900 focus:ring-0 outline-none placeholder:text-gray-400 placeholder:font-normal"
+            oninput="validateName(this)"/>
+          <span class="material-symbols-outlined text-emerald-500 text-lg hidden" id="name-valid-icon">check_circle</span>
+        </div>
+        <p class="text-[11px] text-gray-500 font-medium pl-1">Identique à votre pièce officielle (CIP, CNI ou Passeport).</p>
+      </div>
+
+      <div class="form-card bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-gray-200 shadow-xs flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-extrabold text-gray-700 uppercase tracking-wider flex items-center gap-1.5" for="phone-number">
+            <span class="material-symbols-outlined text-primary text-base">smartphone</span>
+            <span>Numéro de téléphone Mobile <span class="text-rose-500">*</span></span>
+          </label>
+          <div id="operator-badge" class="operator-badge hidden items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black">
+            <span id="operator-name">Bénin 01</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2.5 bg-gray-50 rounded-xl px-3.5 py-3 border border-gray-200 focus-within:bg-white focus-within:border-primary transition-all">
+          <div class="flex items-center gap-1.5 shrink-0 border-r border-gray-300 pr-2.5 font-bold text-xs text-gray-800">
+            <span class="text-base leading-none">🇧🇯</span>
+            <span class="font-mono font-black">+229</span>
+          </div>
+          <input type="tel" id="phone-number" name="phone" placeholder="01 97 12 34 56" value="" maxlength="14" required autocomplete="tel"
+            class="w-full bg-transparent border-none p-0 font-mono text-sm sm:text-base font-extrabold text-gray-950 focus:ring-0 outline-none placeholder:text-gray-400"
+            oninput="handlePhoneInput(this)" onfocus="if(!this.value) this.value = '01 ';"/>
+          <span class="material-symbols-outlined text-primary text-lg" id="phone-icon">dialpad</span>
+        </div>
+        <div class="flex items-center justify-between pl-1">
+          <p class="text-[11px] text-gray-500 font-medium">Plan national 10 chiffres (commence par <b>01</b>).</p>
+          <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md">Vérification SMS</span>
+        </div>
+      </div>
+
+      <div class="form-card bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-gray-200 shadow-xs flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-extrabold text-gray-700 uppercase tracking-wider flex items-center gap-1.5" for="referral-code">
+            <span class="material-symbols-outlined text-amber-500 text-base">card_giftcard</span>
+            <span>Code Parrainage <span class="text-gray-400 font-normal lowercase">(optionnel)</span></span>
+          </label>
+          <span class="bonus-pill text-[10px] text-primary font-black bg-purple-100 text-[#5E3BDC] px-2.5 py-0.5 rounded-full border border-purple-200 flex items-center gap-1">
+            <span>🎁</span> +500 F CFA Offerts
+          </span>
+        </div>
+        <div class="flex items-center gap-2.5 bg-gray-50 rounded-xl px-3.5 py-3 border border-gray-200 focus-within:bg-white focus-within:border-primary transition-all">
+          <span class="material-symbols-outlined text-gray-400 text-lg">loyalty</span>
+          <input type="text" id="referral-code" name="referral_code" placeholder="Ex: SWITCH-KOFFI" value="" maxlength="15"
+            class="w-full bg-transparent border-none p-0 font-mono text-sm sm:text-base font-bold text-gray-900 focus:ring-0 outline-none uppercase placeholder:text-gray-400 placeholder:font-normal placeholder:normal-case"
+            oninput="checkReferral(this.value)"/>
+          <span class="material-symbols-outlined text-amber-500 text-lg hidden" id="ref-applied-pill">verified</span>
+        </div>
+      </div>
+
+      <div class="p-3.5 rounded-2xl bg-purple-50/60 border border-purple-100 flex items-start gap-2.5 mt-1">
+        <span class="material-symbols-outlined text-primary text-lg shrink-0 mt-0.5">verified_user</span>
+        <p class="text-[11px] text-gray-600 leading-relaxed">
+          En créant un compte, vous acceptez les <a href="../conditions_utilisation/code.html" class="text-primary font-bold hover:underline">Conditions Générales</a> et la <a href="../politique_confidentialite/code.html" class="text-primary font-bold hover:underline">Politique de Confidentialité</a> Switch Bénin agréée BCEAO.
+        </p>
+      </div>
+
+      <div class="pt-2">
+        <button type="submit" id="submit-btn"
+          class="w-full bg-[#5E3BDC] text-white py-4 px-6 rounded-2xl font-extrabold text-base shadow-lg shadow-purple-600/30 hover:bg-[#4D2EC2] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+          <span id="btn-text">Recevoir mon code SMS</span>
+          <span class="material-symbols-outlined text-xl" id="btn-icon">arrow_forward</span>
+        </button>
+      </div>
+
+      <div class="text-center pt-2">
+        <p class="text-xs font-semibold text-gray-600">
+          Vous avez déjà un compte Switch ? 
+          <a href="../connexion/code.html" class="text-primary font-extrabold hover:underline ml-1">Se connecter</a>
+        </p>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    // ===== VALIDATION RENFORCÉE =====
+    const OPERATOR_PREFIXES = {
+      mtn: ['42','46','51','52','53','54','56','57','59','61','62','66','67','69','90','91','96','97'],
+      moov: ['55','60','63','64','65','68','94','95','98','99'],
+      celtiis: ['40','41','43','44','45','47','48','49','70','71','72','73','74','75','76','77','78','79']
+    };
+    function operatorOf(digits) {
+      if (digits.length < 4) return null;
+      const pre = digits.substring(2, 4);
+      if (OPERATOR_PREFIXES.mtn.includes(pre)) return 'mtn';
+      if (OPERATOR_PREFIXES.moov.includes(pre)) return 'moov';
+      if (OPERATOR_PREFIXES.celtiis.includes(pre)) return 'celtiis';
+      return null;
+    }
+        function nameIsOk(val) {
+      const v = val.trim();
+      if (v.length < 3 || v.length > 60) return false;
+      const words = v.split(/\s+/).filter(w => w.length >= 2);
+      if (words.length < 2) return false;
+      return words.every(w => /^\p{L}[\p{L}'’-]*$/u.test(w));
+    }
+
+    function validateName(input) {
+      const val = input.value.trim();
+      const validIcon = document.getElementById('name-valid-icon');
+      const status = document.getElementById('name-status');
+      if (nameIsOk(val)) {
+        if (validIcon) validIcon.classList.remove('hidden');
+        if (status) { status.textContent = 'Valide'; status.className = 'text-[10px] text-emerald-600 font-bold'; }
+      } else {
+        if (validIcon) validIcon.classList.add('hidden');
+        if (status) {
+          status.textContent = val.length === 0 ? 'Requis' : 'Nom + Prénom attendus';
+          status.className = 'text-[10px] text-rose-500 font-bold';
+        }
+      }
+    }
+
+    function handlePhoneInput(input) {
+      let digits = input.value.replace(/\D/g, '');
+      if (digits.length >= 1 && !digits.startsWith('01')) {
+        if (digits.startsWith('0')) digits = '01' + digits.substring(1);
+        else if (digits.startsWith('1')) digits = '01' + digits.substring(1);
+        else digits = '01' + digits;
+      }
+      if (digits.length > 10) digits = digits.substring(0, 10);
+      let formatted = '';
+      for (let i = 0; i < digits.length; i++) {
+        if (i > 0 && i % 2 === 0) formatted += ' ';
+        formatted += digits[i];
+      }
+      input.value = formatted;
+
+      const badge = document.getElementById('operator-badge');
+      const opName = document.getElementById('operator-name');
+      if (digits.length >= 4) {
+        const op = operatorOf(digits);
+        if (op === 'mtn') {
+          badge.className = 'operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300';
+          opName.textContent = '🟡 MTN Bénin';
+        } else if (op === 'moov') {
+          badge.className = 'operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-blue-100 text-blue-900 border border-blue-300';
+          opName.textContent = '🔵 Moov Africa';
+        } else if (op === 'celtiis') {
+          badge.className = 'operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300';
+          opName.textContent = '🟢 Celtiis Bénin';
+        } else {
+          badge.className = 'operator-badge flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-rose-100 text-rose-900 border border-rose-300';
+          opName.textContent = '❌ Opérateur non reconnu';
+        }
+      } else {
+        badge.classList.add('hidden');
+        badge.classList.remove('flex');
+      }
+    }
+
+    function checkReferral(code) {
+      const pill = document.getElementById('ref-applied-pill');
+      if (code.length >= 4) pill.classList.remove('hidden');
+      else pill.classList.add('hidden');
+    }
+
+    async function submitRegistration() {
+      const fullName = document.getElementById('full-name').value.trim();
+      const phoneInput = document.getElementById('phone-number').value.trim();
+      const phoneDigits = phoneInput.replace(/\D/g, '');
+      const btn = document.getElementById('submit-btn');
+      const btnText = document.getElementById('btn-text');
+      const btnIcon = document.getElementById('btn-icon');
+
+      if (!nameIsOk(fullName)) {
+        alert("Veuillez saisir votre Nom ET votre Prénom complets (au moins 2 mots, ex : Koffi ADEBAYO).");
+        document.getElementById('full-name').focus();
+        return;
+      }
+      if (phoneDigits.length !== 10 || !phoneDigits.startsWith('01')) {
+        alert("Veuillez saisir un numéro béninois valide à 10 chiffres commençant par 01.");
+        document.getElementById('phone-number').focus();
+        return;
+      }
+      if (!operatorOf(phoneDigits)) {
+        alert("Numéro non reconnu : vérifiez le préfixe opérateur (MTN, Moov ou Celtiis).");
+        document.getElementById('phone-number').focus();
+        return;
+      }
+
+      const formattedFullPhone = '+229' + phoneDigits;
+      const formattedDisplayPhone = '+229 ' + phoneInput;
+
+      btn.disabled = true;
+      btn.classList.add('opacity-80');
+      btnText.textContent = "Envoi du code SMS...";
+      btnIcon.textContent = "sync";
+      btnIcon.classList.add('animate-spin');
+
+      let accountSuffix = localStorage.getItem('switch_account_suffix');
+      if (!accountSuffix || accountSuffix.length !== 4) {
+        accountSuffix = Math.floor(1000 + Math.random() * 9000).toString();
+        localStorage.setItem('switch_account_suffix', accountSuffix);
+      }
+      const switchAccountNumber = phoneDigits + accountSuffix;
+      const formattedAccountDisplay = '01 ' + phoneDigits.slice(2,4) + ' ' + phoneDigits.slice(4,6) + ' ' + phoneDigits.slice(6,8) + ' ' + phoneDigits.slice(8,10) + ' • ' + accountSuffix;
+
+      localStorage.setItem('switch_user_name', fullName);
+      localStorage.setItem('switch_user_fullname', fullName);
+      localStorage.setItem('switch_user_phone', formattedDisplayPhone);
+      localStorage.setItem('switch_user_phone_raw', formattedFullPhone);
+      localStorage.setItem('switch_account_number', switchAccountNumber);
+      localStorage.setItem('switch_account_display', formattedAccountDisplay);
+      localStorage.setItem('switch_kyc_level', '1');
+      localStorage.setItem('switch_user_balance', '50000');
+      localStorage.setItem('switch_active_role', 'client');
+
+      try {
+        const res = await fetch('/api/otp-send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: phoneDigits })
+        });
+        const data = await res.json();
+
+        if (!data.ok) {
+          btn.disabled = false;
+          btn.classList.remove('opacity-80');
+          btnText.textContent = "Recevoir mon code SMS";
+          btnIcon.textContent = "arrow_forward";
+          btnIcon.classList.remove('animate-spin');
+          alert(data.error || "Erreur lors de l'envoi du SMS");
+          return;
+        }
+
+        setTimeout(() => {
+          if (window.switchNavigate) window.switchNavigate('../v_rification_otp/code.html');
+          else window.location.href = '../v_rification_otp/code.html';
+        }, 400);
+
+      } catch (err) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-80');
+        btnText.textContent = "Recevoir mon code SMS";
+        btnIcon.textContent = "arrow_forward";
+        btnIcon.classList.remove('animate-spin');
+        alert("Erreur de connexion : " + err.message);
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

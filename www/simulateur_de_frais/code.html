@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Simulateur de Frais - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .savings-gradient {
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      box-shadow: 0 16px 36px -10px rgba(16, 185, 129, 0.4);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-32 flex flex-col justify-between antialiased selection:bg-primary-fixed">
+
+  <!-- Top App Bar -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-6 pb-2 flex items-center justify-between z-30">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-xl font-extrabold text-on-surface">Simulateur de Frais</h1>
+        <p class="text-xs text-on-surface-variant font-medium">Transparence totale 0% frais cachés</p>
+      </div>
+    </div>
+    <span class="text-xs font-black uppercase text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">0% Caché</span>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-2 flex-1">
+    
+    <!-- 1. Operation Type Selector -->
+    <div class="flex flex-col gap-2">
+      <label class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Type d'opération</label>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <button type="button" onclick="setOpType('depot')" id="op-depot" class="p-3 rounded-2xl border-2 border-primary bg-white shadow-sm flex flex-col items-center gap-1 text-center cursor-pointer transition-all">
+          <span class="material-symbols-outlined text-xl text-primary">add_card</span>
+          <span class="text-xs font-bold text-on-surface">Dépôt Agence</span>
+          <span class="text-[9px] font-black uppercase text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded">0% Gratuit</span>
+        </button>
+
+        <button type="button" onclick="setOpType('switch')" id="op-switch" class="p-3 rounded-2xl border border-outline-variant/40 bg-white hover:border-primary flex flex-col items-center gap-1 text-center cursor-pointer transition-all">
+          <span class="material-symbols-outlined text-xl text-purple-600">bolt</span>
+          <span class="text-xs font-bold text-on-surface">Switch ➡️ Switch</span>
+          <span class="text-[9px] font-black uppercase text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded">0% Gratuit</span>
+        </button>
+
+        <button type="button" onclick="setOpType('inter')" id="op-inter" class="p-3 rounded-2xl border border-outline-variant/40 bg-white hover:border-primary flex flex-col items-center gap-1 text-center cursor-pointer transition-all">
+          <span class="material-symbols-outlined text-xl text-sky-600">sync_alt</span>
+          <span class="text-xs font-bold text-on-surface">MTN ➡️ Moov</span>
+          <span class="text-[9px] font-black uppercase text-sky-700 bg-sky-50 px-1.5 py-0.2 rounded">0.5% max</span>
+        </button>
+
+        <button type="button" onclick="setOpType('retrait')" id="op-retrait" class="p-3 rounded-2xl border border-outline-variant/40 bg-white hover:border-primary flex flex-col items-center gap-1 text-center cursor-pointer transition-all">
+          <span class="material-symbols-outlined text-xl text-amber-600">payments</span>
+          <span class="text-xs font-bold text-on-surface">Retrait Kiosque</span>
+          <span class="text-[9px] font-black uppercase text-amber-700 bg-amber-50 px-1.5 py-0.2 rounded">0.5% Réduit</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. Amount Input & Quick Chips -->
+    <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+      <div class="flex items-center justify-between">
+        <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider" for="calc-amount">Montant de la transaction</label>
+        <span class="text-xs font-bold font-mono text-primary" id="tag-current-op">Dépôt d'espèces en Agence</span>
+      </div>
+
+      <div class="flex items-center gap-2 border-b-2 border-primary pb-2 pt-1">
+        <input type="number" id="calc-amount" value="50000" min="500" step="500" class="w-full bg-transparent border-none p-0 text-3xl sm:text-4xl font-black font-mono text-on-surface focus:ring-0 outline-none"/>
+        <span class="text-lg sm:text-xl font-bold font-sans text-gray-500">FCFA</span>
+      </div>
+
+      <!-- Quick Preset Chips -->
+      <div class="flex flex-wrap gap-1.5 pt-1">
+        <button type="button" onclick="setAmount(5000)" class="px-2.5 py-1 rounded-xl bg-surface-container hover:bg-surface-container-high text-xs font-mono font-bold text-on-surface transition-colors cursor-pointer">5 000</button>
+        <button type="button" onclick="setAmount(25000)" class="px-2.5 py-1 rounded-xl bg-surface-container hover:bg-surface-container-high text-xs font-mono font-bold text-on-surface transition-colors cursor-pointer">25 000</button>
+        <button type="button" onclick="setAmount(50000)" class="px-2.5 py-1 rounded-xl bg-purple-100 text-primary text-xs font-mono font-black border border-purple-200 transition-colors cursor-pointer">50 000</button>
+        <button type="button" onclick="setAmount(100000)" class="px-2.5 py-1 rounded-xl bg-surface-container hover:bg-surface-container-high text-xs font-mono font-bold text-on-surface transition-colors cursor-pointer">100 000</button>
+        <button type="button" onclick="setAmount(500000)" class="px-2.5 py-1 rounded-xl bg-surface-container hover:bg-surface-container-high text-xs font-mono font-bold text-on-surface transition-colors cursor-pointer">500 000</button>
+      </div>
+    </div>
+
+    <!-- 3. Comparison Hero Savings Card -->
+    <div class="savings-gradient rounded-3xl p-5 text-white flex items-center justify-between shadow-lg">
+      <div class="space-y-1">
+        <span class="text-[10px] font-black uppercase tracking-wider text-emerald-200 block">Économie Nette Immédiate</span>
+        <h2 class="text-3xl sm:text-4xl font-black font-mono" id="savings-val">750 FCFA</h2>
+        <p class="text-xs text-emerald-100 font-medium">Économisé par rapport aux opérateurs traditionnels</p>
+      </div>
+      <div class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-inner shrink-0">
+        <span class="material-symbols-outlined text-3xl font-bold">savings</span>
+      </div>
+    </div>
+
+    <!-- 4. Detailed Breakdown Bento Grid -->
+    <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider border-b border-outline-variant/30 pb-2">
+        Détail Comparatif Transparent
+      </h3>
+
+      <div class="space-y-2.5 text-xs">
+        
+        <!-- Switch Price Row -->
+        <div class="flex items-center justify-between p-3 rounded-2xl bg-purple-50/70 border border-purple-100">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-black">⚡</span>
+            <div>
+              <span class="font-extrabold text-sm text-primary">Frais Switch Bénin :</span>
+              <p class="text-[10px] text-on-surface-variant font-medium">Tarif le plus bas garanti</p>
+            </div>
+          </div>
+          <span class="text-lg font-black font-mono text-primary" id="switch-fee">0 FCFA</span>
+        </div>
+
+        <!-- Competitor Price Row -->
+        <div class="flex items-center justify-between p-3 rounded-2xl bg-gray-50 border border-gray-200">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-gray-300 text-gray-700 flex items-center justify-center text-[10px] font-black">✕</span>
+            <div>
+              <span class="font-bold text-xs text-gray-700">Autres Opérateurs (MTN/Moov) :</span>
+              <p class="text-[10px] text-gray-500 font-medium">Grille standard 1% à 2.5%</p>
+            </div>
+          </div>
+          <span class="text-base font-bold font-mono text-gray-600 line-through" id="competitor-fee">750 FCFA</span>
+        </div>
+
+        <!-- Total Debited & Received -->
+        <div class="pt-2 flex flex-col gap-2 border-t border-outline-variant/30">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-on-surface-variant font-medium">Montant total débité :</span>
+            <b class="font-mono text-on-surface" id="total-debited">50 000 FCFA</b>
+          </div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-on-surface-variant font-medium">Montant exact reçu par le bénéficiaire :</span>
+            <b class="font-mono text-emerald-600 font-bold" id="total-received">50 000 FCFA</b>
+          </div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-on-surface-variant font-medium">Délai d'exécution :</span>
+            <b class="text-primary font-bold">Instantané (< 3 secondes) ⚡</b>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 5. Dynamic Action Button -->
+    <div class="pt-1">
+      <button onclick="executeSimulatedOperation()" class="w-full bg-primary text-white py-4 px-6 rounded-full font-extrabold text-base shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+        <span class="material-symbols-outlined text-xl">send</span>
+        <span id="cta-action-text">Effectuer un Dépôt Gratuit</span>
+      </button>
+    </div>
+
+  </main>
+
+  <script>
+    let currentOp = 'depot';
+
+    function setOpType(type) {
+      currentOp = type;
+      const types = ['depot', 'switch', 'inter', 'retrait'];
+
+      types.forEach(t => {
+        const btn = document.getElementById('op-' + t);
+        if (btn) {
+          if (t === type) {
+            btn.className = 'p-3 rounded-2xl border-2 border-primary bg-white shadow-sm flex flex-col items-center gap-1 text-center cursor-pointer transition-all';
+          } else {
+            btn.className = 'p-3 rounded-2xl border border-outline-variant/40 bg-white hover:border-primary flex flex-col items-center gap-1 text-center cursor-pointer transition-all';
+          }
+        }
+      });
+
+      calculateFees();
+    }
+
+    function setAmount(val) {
+      document.getElementById('calc-amount').value = val;
+      calculateFees();
+    }
+
+    function formatMoney(num) {
+      return num.toLocaleString('fr-FR') + ' FCFA';
+    }
+
+    function calculateFees() {
+      const amount = parseInt(document.getElementById('calc-amount')?.value) || 0;
+      let switchFee = 0;
+      let competitorFee = 0;
+      let tagText = "Dépôt d'espèces en Agence";
+      let ctaText = "Effectuer un Dépôt Gratuit (0%)";
+
+      if (currentOp === 'depot') {
+        tagText = "Dépôt d'espèces en Agence Switch";
+        switchFee = 0; // Always 0% in Switch Kiosks
+        competitorFee = Math.max(100, Math.round(amount * 0.015)); // 1.5% elsewhere
+        ctaText = "Générer mon Code Dépôt Agence (0%)";
+      } else if (currentOp === 'switch') {
+        tagText = "Transfert Switch à Switch";
+        switchFee = 0; // 0% between Switch users
+        competitorFee = Math.max(100, Math.round(amount * 0.01)); // 1%
+        ctaText = "Envoyer à un contact Switch (0%)";
+      } else if (currentOp === 'inter') {
+        tagText = "Transfert Inter-Réseaux (MTN ➡️ Moov)";
+        switchFee = Math.min(500, Math.max(50, Math.round(amount * 0.005))); // 0.5% cap 500
+        competitorFee = Math.max(150, Math.round(amount * 0.02)); // 2% elsewhere
+        ctaText = "Transférer vers MTN / Moov";
+      } else if (currentOp === 'retrait') {
+        tagText = "Retrait d'espèces en Kiosque Switch";
+        switchFee = Math.round(amount * 0.005); // 0.5%
+        competitorFee = Math.max(150, Math.round(amount * 0.025)); // 2.5% elsewhere
+        ctaText = "Générer un Code de Retrait Kiosque";
+      }
+
+      const savings = Math.max(0, competitorFee - switchFee);
+      const totalDebited = amount + switchFee;
+      const totalReceived = amount;
+
+      document.getElementById('tag-current-op').textContent = tagText;
+      document.getElementById('switch-fee').textContent = switchFee === 0 ? "0 FCFA (Gratuit)" : formatMoney(switchFee);
+      document.getElementById('competitor-fee').textContent = formatMoney(competitorFee);
+      document.getElementById('savings-val').textContent = formatMoney(savings);
+      document.getElementById('total-debited').textContent = formatMoney(totalDebited);
+      document.getElementById('total-received').textContent = formatMoney(totalReceived);
+      document.getElementById('cta-action-text').textContent = ctaText;
+    }
+
+    document.getElementById('calc-amount').addEventListener('input', calculateFees);
+
+    function executeSimulatedOperation() {
+      if (currentOp === 'depot') {
+        if (window.switchNavigate) window.switchNavigate('../code_depot_especes_agent/code.html');
+        else window.location.href = '../code_depot_especes_agent/code.html';
+      } else if (currentOp === 'retrait') {
+        if (window.switchNavigate) window.switchNavigate('../code_retrait_especes_agent/code.html');
+        else window.location.href = '../code_retrait_especes_agent/code.html';
+      } else {
+        if (window.switchNavigate) window.switchNavigate('../transfert_switch_switch/code.html');
+        else window.location.href = '../transfert_switch_switch/code.html';
+      }
+    }
+
+    calculateFees();
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

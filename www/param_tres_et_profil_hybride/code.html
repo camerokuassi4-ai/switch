@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Profil & Paramètres Marchand - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/95 backdrop-blur-md">
+    <a href="../tableau_de_bord_agent_mixte/code.html" aria-label="Retour" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer no-underline">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </a>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Paramètres & Profil</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Espace Commerce Switch Bénin</p>
+    </div>
+
+    <!-- Double Badge Certifié -->
+    <div class="flex items-center gap-1">
+      <span class="text-[9px] font-black uppercase bg-emerald-100 text-emerald-900 border border-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+        <span>✓ Pro</span>
+      </span>
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. CARTE PROFIL BOUTIQUE (Modifiable en direct) -->
+    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-4">
+      <div class="flex items-start justify-between gap-3">
+        
+        <div class="flex items-center gap-3.5">
+          <!-- Logo / Photo Boutique avec déclencheur de galerie -->
+          <div class="relative group cursor-pointer" onclick="triggerProfilePhotoUpload()">
+            <input type="file" id="shop-logo-file" accept="image/*" class="hidden" onchange="handleShopLogoChange(this)"/>
+            <div class="w-16 h-16 rounded-2xl bg-purple-100 text-primary border-2 border-primary/30 overflow-hidden flex items-center justify-center font-bold text-2xl shadow-sm">
+              <img id="shop-logo-img" src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Illustration Switch"/>
+            </div>
+            <span class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center shadow-md">
+              <span class="material-symbols-outlined text-xs">photo_camera</span>
+            </span>
+          </div>
+
+          <div>
+            <h2 id="display-shop-name" class="text-sm sm:text-base font-extrabold text-on-surface leading-tight">Commerce & Guichet Saint-Michel</h2>
+            <p id="display-owner-name" class="text-xs text-on-surface-variant font-medium mt-0.5">Gérante : <b>Amina Kouassi</b></p>
+            <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+              <span class="text-[9px] font-black uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-200">
+                🟢 Ouvert & Vérifié
+              </span>
+              <span id="display-shop-ifu" class="text-[9px] font-mono font-bold bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">
+                IFU: 3201948271049
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="openEditProfileModal()" class="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-primary font-bold text-xs border border-purple-200 transition-all cursor-pointer flex items-center gap-1 shrink-0">
+          <span class="material-symbols-outlined text-sm">edit</span>
+          <span>Modifier</span>
+        </button>
+      </div>
+
+      <!-- Coordonnées & Localisation -->
+      <div class="grid grid-cols-2 gap-2 pt-3 border-t border-outline-variant/20 text-xs">
+        <div class="flex items-center gap-2 text-on-surface">
+          <span class="material-symbols-outlined text-primary text-base">location_on</span>
+          <span id="display-shop-address" class="truncate font-semibold">Akpakpa Dodomè, Cotonou</span>
+        </div>
+        <div class="flex items-center gap-2 text-on-surface">
+          <span class="material-symbols-outlined text-emerald-600 text-base">call</span>
+          <span id="display-shop-phone" class="font-mono font-bold">+229 97 00 11 22</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. BASCULE VERS L'ESPACE GUICHET AGENT -->
+    <section class="bg-gradient-to-r from-slate-900 via-indigo-950 to-purple-950 rounded-3xl p-5 text-white shadow-lg flex items-center justify-between gap-3 border border-indigo-700/50 relative overflow-hidden">
+      <div class="absolute -right-8 -bottom-8 w-28 h-28 bg-indigo-500/15 rounded-full blur-xl pointer-events-none"></div>
+
+      <div class="flex items-center gap-3.5 z-10">
+        <div class="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 text-white flex items-center justify-center font-bold text-2xl shrink-0 shadow-inner">
+          🏦
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-[10px] font-bold uppercase text-indigo-300 tracking-wider">Services Guichet & Distributeur</span>
+            <span class="text-[8px] font-black uppercase bg-emerald-500/30 text-emerald-300 border border-emerald-400/30 px-1.5 py-0.2 rounded-full">BCEAO</span>
+          </div>
+          <b class="text-xs sm:text-sm text-white block mt-0.5 font-extrabold">Espace Guichet Agent & Trésorerie</b>
+          <p class="text-[10px] text-indigo-200 mt-0.5">Dépôts, retraits clients, gestion float et commissions</p>
+        </div>
+      </div>
+
+      <button type="button" onclick="openGuichetAccessModal()" class="px-3.5 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black flex items-center gap-1.5 transition-all shadow-md shrink-0 cursor-pointer active:scale-95 z-10 border border-indigo-400/30">
+        <span>Accéder</span>
+        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </button>
+    </section>
+
+    <!-- 3. COMPTE PERSONNEL SWITCH LIÉ (Pour vidages et retraits uniques) -->
+    <section class="bg-gradient-to-br from-purple-900 to-indigo-950 rounded-3xl p-5 text-white shadow-soft flex flex-col gap-3 relative overflow-hidden">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center font-bold text-white">
+            <span class="material-symbols-outlined text-lg">account_balance_wallet</span>
+          </div>
+          <div>
+            <h3 class="text-xs font-black uppercase tracking-wider text-purple-200">Compte Switch Personnel Lié</h3>
+            <span class="text-[10px] text-purple-300">Destination exclusive pour vider les recettes</span>
+          </div>
+        </div>
+        <span class="text-[9px] font-black uppercase bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full">
+          ✓ Lié à 100%
+        </span>
+      </div>
+
+      <div class="bg-white/10 p-3 rounded-2xl backdrop-blur-sm border border-white/15 flex items-center justify-between">
+        <div>
+          <b class="text-xs text-white block">Amina Kouassi (Compte Particulier)</b>
+          <span class="text-[10px] font-mono text-purple-200">+229 97 00 11 22 • 0% de frais de virement</span>
+        </div>
+        <a href="../retrait_marchand/code.html" class="px-3 py-1.5 rounded-xl bg-white text-primary hover:bg-purple-50 text-xs font-black transition-all no-underline shadow-sm">
+          Vider Caisse
+        </a>
+      </div>
+    </section>
+
+    <!-- 3. PARAMÈTRES CAISSE POS & TICKETS -->
+    <section class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider flex items-center gap-1.5 border-b border-outline-variant/30 pb-2">
+        <span class="material-symbols-outlined text-primary text-base">point_of_sale</span>
+        <span>Caisse POS & Tickets de Vente</span>
+      </h3>
+
+      <div class="flex flex-col divide-y divide-outline-variant/20 text-xs">
+        
+        <!-- Statut Caisse -->
+        <div class="py-2.5 flex items-center justify-between">
+          <div>
+            <b class="text-on-surface block">Statut d'Ouverture de la Caisse</b>
+            <span class="text-[10px] text-on-surface-variant">Autoriser les scans et paiements clients</span>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="store-toggle" checked onchange="toggleStoreOpen(this)" class="sr-only peer">
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:width-5 after:transition-all peer-checked:bg-emerald-500"></div>
+          </label>
+        </div>
+
+        <!-- Imprimante Bluetooth -->
+        <div class="py-2.5 flex items-center justify-between">
+          <div>
+            <b class="text-on-surface block">Imprimante Ticket Thermique</b>
+            <span class="text-[10px] text-on-surface-variant">POS-80mm Bluetooth (Connectée)</span>
+          </div>
+          <button onclick="testThermalPrinter()" class="text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded-xl hover:bg-emerald-100 transition-colors cursor-pointer">
+            Tester Impression
+          </button>
+        </div>
+
+        <!-- Personnalisation du Ticket -->
+        <div class="py-2.5 flex items-center justify-between">
+          <div>
+            <b class="text-on-surface block">Message de bas de ticket</b>
+            <span id="display-receipt-footer" class="text-[10px] text-on-surface-variant font-medium">« Merci pour votre fidélité chez Saint-Michel ! »</span>
+          </div>
+          <button onclick="editReceiptFooter()" class="text-[10px] font-bold text-primary hover:underline cursor-pointer">
+            Changer
+          </button>
+        </div>
+
+        <!-- QR Code Comptoir Fixe -->
+        <div class="py-2.5 flex items-center justify-between">
+          <div>
+            <b class="text-on-surface block">QR Code Comptoir à Imprimer</b>
+            <span class="text-[10px] text-on-surface-variant">À poser sur votre comptoir pour encaissement autonome</span>
+          </div>
+          <button onclick="downloadCounterQrCode()" class="text-[10px] font-bold text-primary flex items-center gap-1 hover:underline cursor-pointer">
+            <span class="material-symbols-outlined text-sm">download</span> Télécharger
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. GESTION DES CAISSIERS & EMPLOYÉS -->
+    <section class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+        <h3 class="text-xs font-black text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-base">group</span>
+          <span>Caissiers & Accès Équipe</span>
+        </h3>
+        <button onclick="openAddCashierModal()" class="text-[10px] font-black text-primary hover:underline bg-purple-50 px-2.5 py-1 rounded-xl border border-purple-200 flex items-center gap-1 cursor-pointer">
+          <span>+ Ajouter Caissier</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-2" id="cashiers-list">
+        
+        <!-- Caissier 1 -->
+        <div class="p-2.5 bg-surface-container-low/60 rounded-2xl border border-outline-variant/30 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-purple-100 text-primary font-bold flex items-center justify-center text-xs">
+              AK
+            </div>
+            <div>
+              <b class="text-on-surface block">Amina Kouassi (Vous)</b>
+              <span class="text-[10px] text-on-surface-variant">Gérante Principale • Accès Total</span>
+            </div>
+          </div>
+          <span class="text-[9px] font-bold bg-purple-100 text-primary px-2 py-0.5 rounded-full">Propriétaire</span>
+        </div>
+
+        <!-- Caissier 2 -->
+        <div class="p-2.5 bg-surface-container-low/60 rounded-2xl border border-outline-variant/30 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-800 font-bold flex items-center justify-center text-xs">
+              JD
+            </div>
+            <div>
+              <b class="text-on-surface block">Jean Dossou</b>
+              <span class="text-[10px] text-on-surface-variant">Caissier Vente • Code POS: 4491</span>
+            </div>
+          </div>
+          <button onclick="removeCashier(this, 'Jean Dossou')" class="text-rose-600 hover:text-rose-800 text-[10px] font-bold cursor-pointer">
+            Retirer
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. SÉCURITÉ & CODE PIN -->
+    <section class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft flex flex-col gap-2.5">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider flex items-center gap-1.5 border-b border-outline-variant/30 pb-2">
+        <span class="material-symbols-outlined text-primary text-base">lock</span>
+        <span>Sécurité & Confidentialité</span>
+      </h3>
+
+      <div class="flex flex-col divide-y divide-outline-variant/20 text-xs">
+        
+        <div class="py-2.5 flex items-center justify-between">
+          <div>
+            <b class="text-on-surface block">Code PIN Caisse (4 chiffres)</b>
+            <span class="text-[10px] text-on-surface-variant">Requis pour vider les recettes et clôturer la caisse</span>
+          </div>
+          <button onclick="changePinCode()" class="text-[10px] font-bold text-primary hover:underline cursor-pointer">
+            Modifier PIN
+          </button>
+        </div>
+
+        <div class="py-2.5 flex items-center justify-between">
+          <div>
+            <b class="text-on-surface block">Alertes SMS à chaque encaissement</b>
+            <span class="text-[10px] text-on-surface-variant">Reçoit un SMS instantané sur +229 97 00 11 22</span>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" checked onchange="alert('Paramètre d\'alerte SMS mis à jour !')" class="sr-only peer">
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:width-5 after:transition-all peer-checked:bg-primary"></div>
+          </label>
+        </div>
+
+        <div class="py-2.5 flex items-center justify-between">
+          <div>
+            <b class="text-on-surface block">Contrat Agréé Switch Bénin</b>
+            <span class="text-[10px] text-on-surface-variant">Convention Marchand & Certificat BCEAO</span>
+          </div>
+          <button onclick="alert('Téléchargement du contrat d\'agrément Switch en cours...')" class="text-[10px] font-bold text-primary flex items-center gap-0.5 hover:underline cursor-pointer">
+            <span class="material-symbols-outlined text-sm">file_download</span> PDF
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. SUPPORT ET DÉCONNEXION -->
+    <div class="flex flex-col gap-2.5">
+      <button onclick="contactSwitchSupport()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-lg">support_agent</span>
+        <span>Assistance Marchand Switch (WhatsApp & Appel 24/7)</span>
+      </button>
+
+      <button onclick="logoutMerchantSession()" class="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 py-3 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 border border-rose-200 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-base">logout</span>
+        <span>Déconnexion de l'espace Caisse Marchand</span>
+      </button>
+    </div>
+
+  </main>
+
+  <!-- MODAL : MODIFIER LE PROFIL BOUTIQUE -->
+  <div id="edit-profile-modal" onclick="if(event.target===this) closeEditProfileModal()" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+    <div class="w-full max-w-md bg-white rounded-t-[36px] sm:rounded-[36px] p-6 shadow-2xl flex flex-col gap-4 border border-outline-variant/40 animate-in fade-in slide-in-from-bottom duration-200 max-h-[90vh] overflow-y-auto">
+      
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined text-lg">edit</span>
+          </div>
+          <div>
+            <h3 class="text-xs font-black text-on-surface uppercase">Modifier les Infos de la Boutique</h3>
+            <p class="text-[10px] text-on-surface-variant">Visible par les clients Switch Bénin</p>
+          </div>
+        </div>
+        <button onclick="closeEditProfileModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:text-black cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <div>
+          <label class="text-[11px] font-bold text-on-surface-variant">Nom de la Boutique / Commerce *</label>
+          <input type="text" id="edit-shop-name" class="input-focus w-full bg-surface-container-low/60 border border-outline-variant/60 rounded-2xl p-2.5 text-xs font-bold text-on-surface"/>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-bold text-on-surface-variant">Nom du Gérant / Propriétaire *</label>
+          <input type="text" id="edit-owner-name" class="input-focus w-full bg-surface-container-low/60 border border-outline-variant/60 rounded-2xl p-2.5 text-xs text-on-surface"/>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-bold text-on-surface-variant">Adresse Physique & Quartier *</label>
+          <input type="text" id="edit-shop-address" class="input-focus w-full bg-surface-container-low/60 border border-outline-variant/60 rounded-2xl p-2.5 text-xs text-on-surface"/>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-bold text-on-surface-variant">Téléphone WhatsApp Commercial *</label>
+          <input type="text" id="edit-shop-phone" class="input-focus w-full bg-surface-container-low/60 border border-outline-variant/60 rounded-2xl p-2.5 text-xs font-mono font-bold text-on-surface"/>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-bold text-on-surface-variant">Numéro IFU Bénin</label>
+          <input type="text" id="edit-shop-ifu" class="input-focus w-full bg-surface-container-low/60 border border-outline-variant/60 rounded-2xl p-2.5 text-xs font-mono text-on-surface"/>
+        </div>
+      </div>
+
+      <button onclick="saveProfileChanges()" class="w-full bg-primary hover:bg-primary-hover text-white py-3.5 rounded-full font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+        <span class="material-symbols-outlined text-lg">save</span>
+        <span>Enregistrer les Modifications</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL : AJOUTER UN CAISSIER -->
+  <div id="add-cashier-modal" onclick="if(event.target===this) closeAddCashierModal()" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+    <div class="w-full max-w-md bg-white rounded-t-[36px] sm:rounded-[36px] p-6 shadow-2xl flex flex-col gap-4 border border-outline-variant/40 animate-in fade-in slide-in-from-bottom duration-200">
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined text-lg">person_add</span>
+          </div>
+          <div>
+            <h3 class="text-xs font-black text-on-surface uppercase">Nouveau Sous-Compte Caissier</h3>
+            <p class="text-[10px] text-on-surface-variant">Permet d'encaisser sans accès aux retraits</p>
+          </div>
+        </div>
+        <button onclick="closeAddCashierModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:text-black cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <div>
+          <label class="text-[11px] font-bold text-on-surface-variant">Nom & Prénom de l'employé *</label>
+          <input type="text" id="new-cashier-name" placeholder="Ex: Marc Houngbo" class="input-focus w-full bg-surface-container-low/60 border border-outline-variant/60 rounded-2xl p-2.5 text-xs font-bold text-on-surface"/>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-bold text-on-surface-variant">Numéro de téléphone *</label>
+          <input type="tel" id="new-cashier-phone" placeholder="Ex: +229 96 12 34 56" class="input-focus w-full bg-surface-container-low/60 border border-outline-variant/60 rounded-2xl p-2.5 text-xs font-mono text-on-surface"/>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-bold text-on-surface-variant">Code PIN d'encaissement (4 chiffres) *</label>
+          <input type="password" id="new-cashier-pin" maxlength="4" placeholder="••••" class="input-focus w-full bg-surface-container-low/60 border border-outline-variant/60 rounded-2xl p-2.5 text-xs font-mono font-black text-center text-on-surface tracking-widest"/>
+        </div>
+      </div>
+
+      <button onclick="saveNewCashier()" class="w-full bg-primary hover:bg-primary-hover text-white py-3.5 rounded-full font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+        <span class="material-symbols-outlined text-lg">check_circle</span>
+        <span>Créer l'Accès Caissier</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL : ACCÈS À L'ESPACE GUICHET AGENT (Connexion ou Inscription) -->
+  <div id="guichet-access-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+    <div class="w-full max-w-md bg-white rounded-t-[36px] sm:rounded-[36px] p-6 shadow-2xl flex flex-col gap-4 border border-outline-variant/40 animate-in fade-in slide-in-from-bottom duration-200">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-11 h-11 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-black shrink-0">
+            <span class="material-symbols-outlined text-2xl">account_balance</span>
+          </div>
+          <div>
+            <h3 class="text-sm sm:text-base font-black text-on-surface" id="guichet-modal-title">Espace Guichet Agent Switch</h3>
+            <span class="text-[10px] text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100">Guichet & Distributeur Agréé 🇧🇯</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeGuichetModal()" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface-variant cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <!-- STEP 1 : CHOIX DU STATUT (J'ai un compte / Je m'inscris) -->
+      <div id="guichet-step-choice" class="flex flex-col gap-3">
+        <p class="text-xs text-on-surface-variant font-medium leading-relaxed">
+          L'Espace Guichet vous permet d'effectuer les <b>Dépôts espèces (Cash-In)</b>, <b>Retraits clients</b>, de gérer votre <b>Float de trésorerie</b> et de toucher des commissions sur chaque opération.
+        </p>
+
+        <!-- Option 1 : J'ai déjà un compte Agent (Ouvre le Formulaire de Connexion) -->
+        <button type="button" onclick="showAgentLoginForm()" class="w-full text-left p-4 rounded-3xl bg-indigo-50 hover:bg-indigo-100/80 border-2 border-indigo-200 shadow-xs flex items-center justify-between gap-3 text-on-surface group transition-all cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-2xl">login</span>
+            </div>
+            <div>
+              <b class="text-xs sm:text-sm font-black text-indigo-950 block">J'ai déjà un compte Agent</b>
+              <span class="text-[11px] text-indigo-700 font-medium">Me connecter à mon compte Guichet</span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-indigo-600 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </button>
+
+        <!-- Option 2 : Créer un compte Agent (Inscription) -->
+        <a href="../inscription_agent_switch/code.html" class="p-4 rounded-3xl bg-emerald-50 hover:bg-emerald-100/80 border-2 border-emerald-200 shadow-xs flex items-center justify-between gap-3 text-on-surface no-underline group transition-all cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-2xl">how_to_reg</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <b class="text-xs sm:text-sm font-black text-emerald-950">Devenir Agent Agréé Switch</b>
+                <span class="text-[9px] font-black uppercase bg-emerald-200 text-emerald-900 px-1.5 py-0.2 rounded">+2.5%</span>
+              </div>
+              <span class="text-[11px] text-emerald-700 font-medium">Créer mon compte & Cautionnement</span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-emerald-600 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </a>
+
+        <button type="button" onclick="closeGuichetModal()" class="w-full py-3 rounded-2xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-bold text-xs transition-colors cursor-pointer">
+          Rester sur le Profil Marchand
+        </button>
+      </div>
+
+      <!-- STEP 2 : FORMULAIRE D'AUTHENTIFICATION COMPTE AGENT -->
+      <div id="guichet-step-login" class="flex flex-col gap-3.5 hidden animate-in fade-in duration-150">
+        <p class="text-xs text-gray-600 font-medium">
+          Veuillez renseigner les identifiants de votre compte Agent Guichet Switch :
+        </p>
+
+        <!-- 1. N° de Compte Agent (10 chiffres) -->
+        <div class="flex flex-col gap-1 text-left">
+          <label class="text-[11px] font-black uppercase tracking-wider text-gray-600" for="guichet-login-acc">N° de Compte Agent (10 chiffres)</label>
+          <div class="flex items-center gap-2 bg-surface-container/60 rounded-2xl px-3.5 py-2.5 border border-outline-variant/50 focus-within:border-indigo-600 focus-within:bg-white transition-all">
+            <span class="material-symbols-outlined text-indigo-600 text-base">badge</span>
+            <input type="tel" id="guichet-login-acc" value="9700409215" placeholder="97XXXXXXXX" maxlength="10" class="w-full bg-transparent border-none p-0 text-xs sm:text-sm font-black font-mono text-on-surface focus:ring-0 outline-none"/>
+          </div>
+        </div>
+
+        <!-- 2. Code Agent / Agrément -->
+        <div class="flex flex-col gap-1 text-left">
+          <label class="text-[11px] font-black uppercase tracking-wider text-gray-600" for="guichet-login-id">Code Distributeur / N° Agrément</label>
+          <div class="flex items-center gap-2 bg-surface-container/60 rounded-2xl px-3.5 py-2.5 border border-outline-variant/50 focus-within:border-indigo-600 focus-within:bg-white transition-all">
+            <span class="material-symbols-outlined text-indigo-600 text-base">storefront</span>
+            <input type="text" id="guichet-login-id" value="AGT-4092" placeholder="AGT-XXXX" class="w-full bg-transparent border-none p-0 text-xs sm:text-sm font-bold font-mono text-on-surface focus:ring-0 outline-none uppercase"/>
+          </div>
+        </div>
+
+        <!-- 3. Code PIN Guichet -->
+        <div class="flex flex-col gap-1 text-left">
+          <label class="text-[11px] font-black uppercase tracking-wider text-gray-600" for="guichet-login-pin">Code PIN Secret Guichet (4 chiffres)</label>
+          <div class="flex items-center gap-2 bg-surface-container/60 rounded-2xl px-3.5 py-2.5 border border-outline-variant/50 focus-within:border-indigo-600 focus-within:bg-white transition-all">
+            <span class="material-symbols-outlined text-indigo-600 text-base">lock</span>
+            <input type="password" id="guichet-login-pin" value="1234" placeholder="••••" maxlength="4" class="w-full bg-transparent border-none p-0 text-xs sm:text-sm font-black font-mono text-on-surface focus:ring-0 outline-none"/>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="button" onclick="submitGuichetAgentLogin()" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-98 text-white font-extrabold py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer mt-1">
+          <span class="material-symbols-outlined text-lg">login</span>
+          <span>Se Connecter au Guichet Agent</span>
+        </button>
+
+        <div class="flex items-center justify-between text-xs pt-1">
+          <button type="button" onclick="backToGuichetChoice()" class="text-gray-500 hover:text-gray-800 font-bold flex items-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            <span>Retour au choix</span>
+          </button>
+          <a href="../connexion_agent/code.html" class="text-indigo-600 font-bold hover:underline">
+            Page dédiée →
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Initialisation des données depuis le stockage local
+    function loadSavedProfile() {
+      const shopName = localStorage.getItem('switch_merchant_business_name') || "Commerce & Guichet Saint-Michel";
+      const ownerName = localStorage.getItem('switch_merchant_owner_name') || "Amina Kouassi";
+      const address = localStorage.getItem('switch_merchant_address') || "Akpakpa Dodomè, Cotonou";
+      const phone = localStorage.getItem('switch_merchant_phone') || "+229 97 00 11 22";
+      const ifu = localStorage.getItem('switch_merchant_ifu') || "3201948271049";
+      const logo = localStorage.getItem('switch_merchant_logo');
+
+      const nameEl = document.getElementById('display-shop-name');
+      if (nameEl) nameEl.textContent = shopName;
+
+      const ownerEl = document.getElementById('display-owner-name');
+      if (ownerEl) ownerEl.innerHTML = `Gérante : <b>${ownerName}</b>`;
+
+      const addrEl = document.getElementById('display-shop-address');
+      if (addrEl) addrEl.textContent = address;
+
+      const phoneEl = document.getElementById('display-shop-phone');
+      if (phoneEl) phoneEl.textContent = phone;
+
+      const ifuEl = document.getElementById('display-shop-ifu');
+      if (ifuEl) ifuEl.textContent = `IFU: ${ifu}`;
+
+      if (logo) {
+        const logoEl = document.getElementById('shop-logo-img');
+        if (logoEl) logoEl.src = logo;
+      }
+    }
+
+    function triggerProfilePhotoUpload() {
+      document.getElementById('shop-logo-file').click();
+    }
+
+    function handleShopLogoChange(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('shop-logo-img').src = e.target.result;
+          localStorage.setItem('switch_merchant_logo', e.target.result);
+          alert("📸 Logo de la boutique mis à jour avec succès !");
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function openEditProfileModal() {
+      document.getElementById('edit-shop-name').value = document.getElementById('display-shop-name').textContent;
+      document.getElementById('edit-owner-name').value = localStorage.getItem('switch_merchant_owner_name') || "Amina Kouassi";
+      document.getElementById('edit-shop-address').value = document.getElementById('display-shop-address').textContent;
+      document.getElementById('edit-shop-phone').value = document.getElementById('display-shop-phone').textContent;
+      document.getElementById('edit-shop-ifu').value = (document.getElementById('display-shop-ifu').textContent || '').replace('IFU: ', '');
+      document.getElementById('edit-profile-modal').classList.remove('hidden');
+    }
+
+    function closeEditProfileModal() {
+      document.getElementById('edit-profile-modal').classList.add('hidden');
+    }
+
+    function saveProfileChanges() {
+      const shopName = document.getElementById('edit-shop-name').value.trim();
+      const ownerName = document.getElementById('edit-owner-name').value.trim();
+      const address = document.getElementById('edit-shop-address').value.trim();
+      const phone = document.getElementById('edit-shop-phone').value.trim();
+      const ifu = document.getElementById('edit-shop-ifu').value.trim();
+
+      if (!shopName || !ownerName) {
+        alert("⚠️ Veuillez renseigner au moins le nom de la boutique et du gérant.");
+        return;
+      }
+
+      localStorage.setItem('switch_merchant_business_name', shopName);
+      localStorage.setItem('switch_merchant_owner_name', ownerName);
+      localStorage.setItem('switch_merchant_address', address);
+      localStorage.setItem('switch_merchant_phone', phone);
+      localStorage.setItem('switch_merchant_ifu', ifu);
+
+      loadSavedProfile();
+      closeEditProfileModal();
+      alert("✅ Profil et coordonnées du commerce enregistrés avec succès !");
+    }
+
+    function toggleStoreOpen(checkbox) {
+      if (checkbox.checked) {
+        alert("🟢 Votre caisse et boutique sont maintenant notées OUVERTES aux clients.");
+      } else {
+        alert("🔴 Caisse fermée temporairement.");
+      }
+    }
+
+    function testThermalPrinter() {
+      alert("🖨️ Impression d'un ticket test en cours sur l'imprimante Bluetooth POS-80mm...\n\n━━━━━━━━━━━━━━━━━━━━\n   SWITCH PAY BÉNIN\n Commerce Saint-Michel\n   TEST RÉUSSI ✓\n━━━━━━━━━━━━━━━━━━━━");
+    }
+
+    function editReceiptFooter() {
+      const current = document.getElementById('display-receipt-footer').textContent.replace(/[«»]/g, '').trim();
+      const msg = prompt("Saisissez votre message de remerciement au bas des tickets :", current);
+      if (msg) {
+        document.getElementById('display-receipt-footer').textContent = `« ${msg} »`;
+        alert("✅ Message de ticket mis à jour !");
+      }
+    }
+
+    function downloadCounterQrCode() {
+      alert("📲 Téléchargement du chevalet QR Code Comptoir haute définition (Format PDF prêt à imprimer)...");
+    }
+
+    function openAddCashierModal() {
+      document.getElementById('new-cashier-name').value = '';
+      document.getElementById('new-cashier-phone').value = '';
+      document.getElementById('new-cashier-pin').value = '';
+      document.getElementById('add-cashier-modal').classList.remove('hidden');
+    }
+
+    function closeAddCashierModal() {
+      document.getElementById('add-cashier-modal').classList.add('hidden');
+    }
+
+    function saveNewCashier() {
+      const name = document.getElementById('new-cashier-name').value.trim();
+      const phone = document.getElementById('new-cashier-phone').value.trim();
+      const pin = document.getElementById('new-cashier-pin').value.trim();
+
+      if (!name || !phone || pin.length !== 4) {
+        alert("⚠️ Veuillez renseigner le nom, téléphone et un PIN de 4 chiffres.");
+        return;
+      }
+
+      const list = document.getElementById('cashiers-list');
+      const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      const newCard = document.createElement('div');
+      newCard.className = "p-2.5 bg-surface-container-low/60 rounded-2xl border border-outline-variant/30 flex items-center justify-between text-xs animate-in fade-in";
+      newCard.innerHTML = `
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-xs">
+            ${initials}
+          </div>
+          <div>
+            <b class="text-on-surface block">${name}</b>
+            <span class="text-[10px] text-on-surface-variant">Caissier Vente • PIN: ${pin}</span>
+          </div>
+        </div>
+        <button onclick="removeCashier(this, '${name}')" class="text-rose-600 hover:text-rose-800 text-[10px] font-bold cursor-pointer">
+          Retirer
+        </button>
+      `;
+      list.appendChild(newCard);
+      closeAddCashierModal();
+      alert(`🎉 Caissier "${name}" ajouté avec succès !\nIl peut désormais se connecter sur sa caisse avec son code PIN.`);
+    }
+
+    function removeCashier(btn, name) {
+      if (confirm(`Voulez-vous vraiment retirer l'accès du caissier "${name}" ?`)) {
+        btn.closest('div.p-2.5').remove();
+        alert(`L'accès de ${name} a été révoqué.`);
+      }
+    }
+
+    function changePinCode() {
+      const oldPin = prompt("Entrez votre code PIN actuel (4 chiffres) :");
+      if (oldPin) {
+        const newPin = prompt("Entrez votre NOUVEAU code PIN (4 chiffres) :");
+        if (newPin && newPin.length === 4) {
+          alert("🔒 Code PIN Caisse modifié avec succès !");
+        } else {
+          alert("⚠️ Le code PIN doit contenir exactement 4 chiffres.");
+        }
+      }
+    }
+
+    function contactSwitchSupport() {
+      const phone = "22997000000";
+      const text = encodeURIComponent("Bonjour le Support Switch Bénin ! J'ai besoin d'assistance pour ma caisse commerçant.");
+      window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${text}`, '_blank');
+    }
+
+    function logoutMerchantSession() {
+      if (window.switchLogout) {
+        window.switchLogout("Voulez-vous vraiment fermer votre session Espace Hybride (Boutique & Guichet) ?");
+      } else {
+        if (confirm("Voulez-vous fermer votre session Caisse Marchand Switch ?")) {
+          sessionStorage.clear();
+          localStorage.removeItem('switch_merchant_session_active');
+          localStorage.removeItem('switch_agent_session_active');
+          window.location.href = "../accueil_splash_mis_jour/code.html";
+        }
+      }
+    }
+
+    /* ─── GESTION MODAL ACCÈS GUICHET AGENT ─── */
+    function openGuichetAccessModal() {
+      backToGuichetChoice();
+      const modal = document.getElementById('guichet-access-modal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeGuichetModal() {
+      const modal = document.getElementById('guichet-access-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function showAgentLoginForm() {
+      const stepChoice = document.getElementById('guichet-step-choice');
+      const stepLogin = document.getElementById('guichet-step-login');
+      const title = document.getElementById('guichet-modal-title');
+      if (stepChoice) stepChoice.classList.add('hidden');
+      if (stepLogin) stepLogin.classList.remove('hidden');
+      if (title) title.textContent = "Connexion Espace Guichet";
+      setTimeout(() => {
+        const accInp = document.getElementById('guichet-login-acc');
+        if (accInp) accInp.focus();
+      }, 100);
+    }
+
+    function backToGuichetChoice() {
+      const stepChoice = document.getElementById('guichet-step-choice');
+      const stepLogin = document.getElementById('guichet-step-login');
+      const title = document.getElementById('guichet-modal-title');
+      if (stepLogin) stepLogin.classList.add('hidden');
+      if (stepChoice) stepChoice.classList.remove('hidden');
+      if (title) title.textContent = "Espace Guichet Agent Switch";
+    }
+
+    function submitGuichetAgentLogin() {
+      const accInput = document.getElementById('guichet-login-acc');
+      const idInput = document.getElementById('guichet-login-id');
+      const pinInput = document.getElementById('guichet-login-pin');
+
+      const acc = accInput ? accInput.value.trim() : '';
+      const id = idInput ? idInput.value.trim() : '';
+      const pin = pinInput ? pinInput.value.trim() : '';
+
+      if (!acc || acc.length < 10) {
+        alert("⚠️ Veuillez renseigner votre Numéro de Compte Agent (10 chiffres).");
+        if (accInput) accInput.focus();
+        return;
+      }
+
+      if (!id) {
+        alert("⚠️ Veuillez renseigner votre Code Agent Distributeur (ex: AGT-4092).");
+        if (idInput) idInput.focus();
+        return;
+      }
+
+      if (!pin || pin.length < 4) {
+        alert("⚠️ Veuillez saisir vos 4 chiffres de Code PIN Guichet.");
+        if (pinInput) pinInput.focus();
+        return;
+      }
+
+      // Enregistrement de la session Agent liée au commerce
+      localStorage.setItem('switch_agent_session_active', 'true');
+      localStorage.setItem('switch_agent_account', acc);
+      localStorage.setItem('switch_agent_id', id);
+      localStorage.setItem('switch_agent_name', 'Amina K.');
+      localStorage.setItem('switch_store_name', 'Boutique La Plage');
+      localStorage.setItem('switch_agent_float', '1500000');
+      sessionStorage.setItem('switch_agent_auth_token', btoa('hybrid_agt_' + id + '_' + Date.now()));
+      localStorage.removeItem('switch_agent_pin');
+
+      closeGuichetModal();
+
+      if (window.switchNavigate) {
+        window.switchNavigate('../tableau_de_bord_agent/code.html');
+      } else {
+        window.location.href = '../tableau_de_bord_agent/code.html';
+      }
+    }
+
+    // Listener Touche Échap
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeEditProfileModal();
+        closeAddCashierModal();
+        closeGuichetModal();
+      }
+    });
+
+    // Chargement initial
+    loadSavedProfile();
+  </script>
+
+  <script src="../assets/switch.router.js?v=4.5"></script>
+</body>
+</html>

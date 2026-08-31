@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Caisse POS & Panier - Switch Business</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/95 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <a href="../tableau_de_bord_marchand/code.html" aria-label="Retour" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-purple-50 transition-all cursor-pointer no-underline">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </a>
+      <div>
+        <h1 class="text-base sm:text-lg font-extrabold text-on-surface tracking-tight leading-tight">Caisse POS & Panier</h1>
+        <p id="pos-store-name" class="text-[11px] text-on-surface-variant font-medium">Commerce & Guichet Saint-Michel</p>
+      </div>
+    </div>
+
+    <!-- Badge Mode Exclusif Switch Pay 0% -->
+    <div class="flex items-center gap-1.5 bg-emerald-100 border border-emerald-300 text-emerald-900 px-3 py-1 rounded-full text-xs font-black">
+      <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+      <span>Switch Pay (0% Frais)</span>
+    </div>
+  </header>
+
+  <!-- POS Main Interface Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. FORMULAIRE D'AJOUT D'ARTICLE AU PANIER (Clair, aéré, sans superposition) -->
+    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-4">
+      
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+          </div>
+          <div>
+            <h2 class="text-xs font-black uppercase tracking-wider text-on-surface">Ajouter un Article au Panier</h2>
+            <p class="text-[10px] text-on-surface-variant">Remplissez les détails du produit vendu</p>
+          </div>
+        </div>
+
+        <button type="button" onclick="toggleQuickCatalog()" class="text-[11px] font-bold text-primary bg-purple-50 hover:bg-purple-100 px-2.5 py-1 rounded-xl border border-purple-200 transition-all cursor-pointer flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">inventory_2</span>
+          <span>Suggestions</span>
+        </button>
+      </div>
+
+      <!-- Tiroir de suggestions rapides (Optionnel) -->
+      <div id="quick-catalog-drawer" class="hidden bg-purple-50/70 p-3 rounded-2xl border border-purple-200/80 flex flex-col gap-2">
+        <span class="text-[10px] font-bold text-purple-900 uppercase">Produits fréquents (Cliquez pour pré-remplir) :</span>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <button type="button" onclick="fillQuickItem('Jus d\'Ananas Naturel 1L', 1500)" class="p-2 bg-white hover:bg-purple-100 rounded-xl border border-purple-200 text-left transition-all cursor-pointer flex items-center gap-2">
+            <span class="text-base">🍍</span>
+            <div class="truncate">
+              <span class="text-[11px] font-bold text-on-surface block truncate">Jus d'Ananas 1L</span>
+              <span class="text-[10px] font-mono font-bold text-primary">1 500 F</span>
+            </div>
+          </button>
+          <button type="button" onclick="fillQuickItem('Riz Parfumé Local 5kg', 4500)" class="p-2 bg-white hover:bg-purple-100 rounded-xl border border-purple-200 text-left transition-all cursor-pointer flex items-center gap-2">
+            <span class="text-base">🌾</span>
+            <div class="truncate">
+              <span class="text-[11px] font-bold text-on-surface block truncate">Riz Parfumé 5kg</span>
+              <span class="text-[10px] font-mono font-bold text-primary">4 500 F</span>
+            </div>
+          </button>
+          <button type="button" onclick="fillQuickItem('Pack 6 Savons Bio Coco', 3500)" class="p-2 bg-white hover:bg-purple-100 rounded-xl border border-purple-200 text-left transition-all cursor-pointer flex items-center gap-2">
+            <span class="text-base">🥥</span>
+            <div class="truncate">
+              <span class="text-[11px] font-bold text-on-surface block truncate">Savons Bio Coco</span>
+              <span class="text-[10px] font-mono font-bold text-primary">3 500 F</span>
+            </div>
+          </button>
+          <button type="button" onclick="fillQuickItem('Café Espresso Premium', 1500)" class="p-2 bg-white hover:bg-purple-100 rounded-xl border border-purple-200 text-left transition-all cursor-pointer flex items-center gap-2">
+            <span class="text-base">☕</span>
+            <div class="truncate">
+              <span class="text-[11px] font-bold text-on-surface block truncate">Café Espresso</span>
+              <span class="text-[10px] font-mono font-bold text-primary">1 500 F</span>
+            </div>
+          </button>
+          <button type="button" onclick="fillQuickItem('Croissant Beurre Artisanal', 800)" class="p-2 bg-white hover:bg-purple-100 rounded-xl border border-purple-200 text-left transition-all cursor-pointer flex items-center gap-2">
+            <span class="text-base">🥐</span>
+            <div class="truncate">
+              <span class="text-[11px] font-bold text-on-surface block truncate">Croissant Beurre</span>
+              <span class="text-[10px] font-mono font-bold text-primary">800 F</span>
+            </div>
+          </button>
+          <button type="button" onclick="fillQuickItem('Robe Wax Soie Africaine', 25000)" class="p-2 bg-white hover:bg-purple-100 rounded-xl border border-purple-200 text-left transition-all cursor-pointer flex items-center gap-2">
+            <span class="text-base">👗</span>
+            <div class="truncate">
+              <span class="text-[11px] font-bold text-on-surface block truncate">Robe Wax Soie</span>
+              <span class="text-[10px] font-mono font-bold text-primary">25 000 F</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Champs de Remplissage -->
+      <div class="flex flex-col gap-3.5">
+        
+        <!-- Champ 1 : Nom de l'article -->
+        <div class="flex flex-col gap-1">
+          <label for="item-name-input" class="text-xs font-bold text-on-surface-variant flex items-center gap-1">
+            <span>Nom ou Description de l'article *</span>
+          </label>
+          <input 
+            type="text" 
+            id="item-name-input" 
+            placeholder="Ex: Tissu Wax 3 pagnes, Huile 5L, Montre..." 
+            class="input-focus w-full bg-surface-container-low/80 border border-outline-variant/60 rounded-2xl px-4 py-3 text-sm font-bold text-on-surface placeholder:text-gray-400"
+            onkeypress="if(event.key === 'Enter') document.getElementById('item-price-input').focus()"
+          />
+        </div>
+
+        <!-- Champ 2 & 3 : Prix Unitaire et Quantité -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          
+          <!-- Prix Unitaire -->
+          <div class="flex flex-col gap-1">
+            <label for="item-price-input" class="text-xs font-bold text-on-surface-variant">
+              <span>Prix Unitaire (FCFA) *</span>
+            </label>
+            <div class="relative flex items-center">
+              <input 
+                type="number" 
+                id="item-price-input" 
+                placeholder="Ex: 5000" 
+                min="50" 
+                step="50" 
+                class="input-focus w-full bg-surface-container-low/80 border border-outline-variant/60 rounded-2xl px-4 py-3 text-base font-mono font-extrabold text-primary placeholder:text-gray-400"
+                onkeypress="if(event.key === 'Enter') submitNewItemToCart()"
+              />
+              <span class="absolute right-3.5 text-xs font-black text-on-surface-variant pointer-events-none">FCFA</span>
+            </div>
+          </div>
+
+          <!-- Quantité avec Sélecteur Ergonomique -->
+          <div class="flex flex-col gap-1">
+            <label class="text-xs font-bold text-on-surface-variant">
+              <span>Quantité *</span>
+            </label>
+            <div class="flex items-center gap-2 h-[50px] bg-surface-container-low/80 border border-outline-variant/60 rounded-2xl px-3">
+              <button type="button" onclick="decrementFormQty()" class="w-8 h-8 rounded-xl bg-white border border-gray-300 text-on-surface flex items-center justify-center font-black hover:bg-gray-100 cursor-pointer active:scale-90">-</button>
+              <input 
+                type="number" 
+                id="item-qty-input" 
+                value="1" 
+                min="1" 
+                class="w-full bg-transparent border-0 text-center font-mono font-black text-base text-on-surface p-0 focus:ring-0"
+              />
+              <button type="button" onclick="incrementFormQty()" class="w-8 h-8 rounded-xl bg-white border border-gray-300 text-on-surface flex items-center justify-center font-black hover:bg-gray-100 cursor-pointer active:scale-90">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bouton Valider l'ajout -->
+        <button type="button" onclick="submitNewItemToCart()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 rounded-2xl font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+          <span class="material-symbols-outlined text-xl">add_shopping_cart</span>
+          <span>Ajouter cet article au Panier</span>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- 2. PANIER EN COURS (Détails des articles ajoutés) -->
+    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+      
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-purple-100 text-primary flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined text-lg">shopping_bag</span>
+          </div>
+          <div>
+            <h3 class="text-xs font-black uppercase tracking-wider text-on-surface">Panier en Cours</h3>
+            <p id="cart-count-label" class="text-[10px] text-on-surface-variant font-medium">0 article enregistré</p>
+          </div>
+        </div>
+
+        <button type="button" onclick="clearCart()" class="text-rose-600 hover:text-rose-800 text-xs font-bold flex items-center gap-1 cursor-pointer">
+          <span class="material-symbols-outlined text-sm">delete_sweep</span>
+          <span>Vider</span>
+        </button>
+      </div>
+
+      <!-- Liste dynamique des articles du panier -->
+      <div id="cart-items-list" class="flex flex-col gap-2.5 min-h-[70px]">
+        <!-- Placeholder Panier Vide -->
+        <div id="empty-cart-state" class="p-6 bg-surface-container-low/40 border-2 border-dashed border-outline-variant/40 rounded-2xl text-center flex flex-col items-center justify-center gap-1 text-gray-400">
+          <span class="material-symbols-outlined text-3xl text-gray-300">remove_shopping_cart</span>
+          <span class="text-xs font-medium">Le panier est vide. Remplissez le formulaire ci-dessus pour ajouter des articles.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. EN-TÊTE RÉCAPITULATIF & ENCAISSEMENT TOTAL -->
+    <section class="bg-gradient-to-br from-purple-900 to-indigo-950 rounded-3xl p-5 text-white shadow-soft flex flex-col gap-4">
+      
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold text-purple-300 uppercase tracking-wider block">Total à Encaisser</span>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="text-3xl sm:text-4xl font-mono font-black text-white" id="display-cart-total">0</span>
+            <span class="text-base font-bold text-purple-200">FCFA</span>
+          </div>
+        </div>
+
+        <div class="text-right">
+          <span class="text-[10px] font-bold bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 px-2.5 py-1 rounded-full uppercase">
+            0% de Frais
+          </span>
+          <span class="block text-[10px] text-purple-200 mt-1">Paiement Switch Instantané</span>
+        </div>
+      </div>
+
+      <!-- Bouton Générer QR Code -->
+      <button onclick="openLiveQrModal()" class="w-full bg-white text-primary hover:bg-purple-50 py-4 rounded-2xl font-black text-sm sm:text-base shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+        <span class="material-symbols-outlined text-2xl">qr_code_scanner</span>
+        <span>Encaisser via QR Code Switch Pay</span>
+      </button>
+    </section>
+
+  </main>
+
+  <!-- MODAL : QR CODE DYNAMIQUE SWITCH PAY (0% FRAIS) -->
+  <div id="live-qr-modal" onclick="if(event.target === this) closeModal('live-qr-modal')" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+    <div class="w-full max-w-md bg-white rounded-t-[36px] sm:rounded-[36px] p-6 shadow-2xl flex flex-col items-center gap-4 text-center border border-outline-variant/40 animate-in fade-in slide-in-from-bottom duration-200 max-h-[90vh] overflow-y-auto">
+      
+      <div class="w-full flex items-center justify-between border-b border-outline-variant/20 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined text-lg">qr_code_scanner</span>
+          </div>
+          <div class="text-left">
+            <h3 class="text-xs font-black text-on-surface uppercase">Scanner avec l'App Switch</h3>
+            <p class="text-[10px] text-on-surface-variant">Paiement direct Switch Pay • 0% de frais</p>
+          </div>
+        </div>
+        <button onclick="closeModal('live-qr-modal')" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:text-black cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <!-- Montant à Payer -->
+      <div class="flex flex-col items-center">
+        <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Montant Total du Panier</span>
+        <div class="flex items-baseline gap-1.5 mt-0.5">
+          <span class="text-3xl sm:text-4xl font-extrabold font-mono text-primary" id="modal-qr-amount">0</span>
+          <span class="text-base font-bold text-on-surface-variant">FCFA</span>
+        </div>
+      </div>
+
+      <!-- Grand QR Code Switch Pay -->
+      <div class="w-56 h-56 bg-white p-3.5 rounded-3xl border-4 border-primary shadow-lg flex items-center justify-center relative">
+        <img id="modal-qr-img" src="" alt="QR Code Dynamique Switch Pay" class="w-full h-full object-contain"/>
+        <div class="absolute inset-0 bg-emerald-500/90 backdrop-blur-xs rounded-2xl flex flex-col items-center justify-center text-white p-4 hidden" id="payment-success-overlay">
+          <span class="material-symbols-outlined text-5xl animate-bounce">check_circle</span>
+          <b class="text-base font-black mt-2">PAIEMENT REÇU !</b>
+          <span class="text-xs text-emerald-100 font-mono font-bold" id="overlay-received-amt">+0 FCFA</span>
+        </div>
+      </div>
+
+      <!-- Récapitulatif Articles Panier dans la modale -->
+      <div id="modal-cart-summary" class="w-full bg-surface-container-low/80 p-3.5 rounded-2xl border border-outline-variant/30 text-left text-xs flex flex-col gap-1.5 max-h-36 overflow-y-auto">
+        <!-- Rempli en direct -->
+      </div>
+
+      <div class="flex items-center gap-1.5 text-[11px] text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+        <span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
+        <span>Encaissement 100% Switch • 0 FCFA prélevé</span>
+      </div>
+
+      <!-- Simulation Scan Client -->
+      <button onclick="simulateClientSuccess()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 rounded-2xl font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+        <span class="material-symbols-outlined text-lg">touch_app</span>
+        <span>Simuler le Scan du Client Switch</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // État du Panier
+    let cart = [];
+
+    function loadStoreInfo() {
+      const name = localStorage.getItem('switch_merchant_business_name') || "Commerce & Guichet Saint-Michel";
+      const el = document.getElementById('pos-store-name');
+      if (el) el.textContent = name;
+    }
+
+    function toggleQuickCatalog() {
+      const drawer = document.getElementById('quick-catalog-drawer');
+      drawer.classList.toggle('hidden');
+    }
+
+    function fillQuickItem(name, price) {
+      document.getElementById('item-name-input').value = name;
+      document.getElementById('item-price-input').value = price;
+      document.getElementById('item-qty-input').value = 1;
+      document.getElementById('item-qty-input').focus();
+    }
+
+    function incrementFormQty() {
+      const input = document.getElementById('item-qty-input');
+      let val = parseInt(input.value) || 1;
+      input.value = val + 1;
+    }
+
+    function decrementFormQty() {
+      const input = document.getElementById('item-qty-input');
+      let val = parseInt(input.value) || 1;
+      if (val > 1) input.value = val - 1;
+    }
+
+    function submitNewItemToCart() {
+      const nameInput = document.getElementById('item-name-input');
+      const priceInput = document.getElementById('item-price-input');
+      const qtyInput = document.getElementById('item-qty-input');
+
+      const name = nameInput.value.trim();
+      const price = parseInt(priceInput.value);
+      const qty = parseInt(qtyInput.value) || 1;
+
+      if (!name) {
+        alert("⚠️ Veuillez renseigner le nom de l'article.");
+        nameInput.focus();
+        return;
+      }
+      if (isNaN(price) || price <= 0) {
+        alert("⚠️ Veuillez renseigner un prix unitaire valide en FCFA.");
+        priceInput.focus();
+        return;
+      }
+      if (qty <= 0) {
+        alert("⚠️ La quantité doit être d'au moins 1.");
+        qtyInput.focus();
+        return;
+      }
+
+      // Vérifier si l'article existe déjà dans le panier
+      const existing = cart.find(i => i.name.toLowerCase() === name.toLowerCase());
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({
+          id: Date.now(),
+          name: name,
+          unitPrice: price,
+          qty: qty
+        });
+      }
+
+      // Vider le formulaire et remettre le focus
+      nameInput.value = '';
+      priceInput.value = '';
+      qtyInput.value = '1';
+      nameInput.focus();
+
+      updateCartDisplay();
+    }
+
+    function changeCartItemQty(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (item) {
+        item.qty += delta;
+        if (item.qty <= 0) {
+          cart = cart.filter(i => i.id !== id);
+        }
+        updateCartDisplay();
+      }
+    }
+
+    function removeCartItem(id) {
+      cart = cart.filter(i => i.id !== id);
+      updateCartDisplay();
+    }
+
+    function clearCart() {
+      if (cart.length === 0) return;
+      if (confirm("Voulez-vous vraiment vider tous les articles du panier ?")) {
+        cart = [];
+        updateCartDisplay();
+      }
+    }
+
+    function calculateCartTotal() {
+      return cart.reduce((acc, item) => acc + (item.unitPrice * item.qty), 0);
+    }
+
+    function updateCartDisplay() {
+      const list = document.getElementById('cart-items-list');
+      const countLabel = document.getElementById('cart-count-label');
+      const totalDisplay = document.getElementById('display-cart-total');
+
+      const total = calculateCartTotal();
+      totalDisplay.textContent = total.toLocaleString('fr-FR');
+
+      const totalQty = cart.reduce((acc, i) => acc + i.qty, 0);
+      countLabel.textContent = `${totalQty} article${totalQty > 1 ? 's' : ''} enregistré${totalQty > 1 ? 's' : ''}`;
+
+      if (cart.length === 0) {
+        list.innerHTML = `
+          <div class="empty-cart-state p-6 bg-surface-container-low/40 border-2 border-dashed border-outline-variant/40 rounded-2xl text-center flex flex-col items-center justify-center gap-1 text-gray-400">
+            <span class="material-symbols-outlined text-3xl text-gray-300">remove_shopping_cart</span>
+            <span class="text-xs font-medium">Le panier est vide. Remplissez le formulaire ci-dessus pour ajouter des articles.</span>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      cart.forEach(item => {
+        const itemTotal = item.unitPrice * item.qty;
+        html += `
+          <div class="p-3 bg-surface-container-low/80 rounded-2xl border border-outline-variant/30 flex items-center justify-between gap-3 text-xs animate-in fade-in">
+            <div class="flex-1 min-w-0">
+              <b class="text-on-surface block text-sm font-extrabold truncate">${item.name}</b>
+              <div class="flex items-center gap-2 mt-0.5 text-on-surface-variant font-mono">
+                <span>${item.unitPrice.toLocaleString('fr-FR')} F</span>
+                <span>×</span>
+                <span class="font-bold text-on-surface">${item.qty}</span>
+                <span>=</span>
+                <b class="text-primary font-black">${itemTotal.toLocaleString('fr-FR')} FCFA</b>
+              </div>
+            </div>
+
+            <!-- Contrôles Quantité & Suppression -->
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button type="button" onclick="changeCartItemQty(${item.id}, -1)" class="w-7 h-7 rounded-xl bg-white border border-gray-300 text-on-surface font-black flex items-center justify-center hover:bg-gray-100 cursor-pointer active:scale-90">-</button>
+              <span class="w-6 text-center font-mono font-black text-xs text-on-surface">${item.qty}</span>
+              <button type="button" onclick="changeCartItemQty(${item.id}, 1)" class="w-7 h-7 rounded-xl bg-white border border-gray-300 text-on-surface font-black flex items-center justify-center hover:bg-gray-100 cursor-pointer active:scale-90">+</button>
+              <button type="button" onclick="removeCartItem(${item.id})" class="w-7 h-7 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 flex items-center justify-center ml-1 cursor-pointer transition-colors" title="Retirer cet article">
+                <span class="material-symbols-outlined text-sm">close</span>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      list.innerHTML = html;
+    }
+
+    function openLiveQrModal() {
+      const total = calculateCartTotal();
+      if (total <= 0) {
+        alert("⚠️ Votre panier est vide. Veuillez d'abord ajouter au moins un article pour générer le QR Code d'encaissement.");
+        document.getElementById('item-name-input').focus();
+        return;
+      }
+
+      document.getElementById('modal-qr-amount').textContent = total.toLocaleString('fr-FR');
+      document.getElementById('overlay-received-amt').textContent = `+${total.toLocaleString('fr-FR')} FCFA`;
+      document.getElementById('payment-success-overlay').classList.add('hidden');
+
+      // Remplir le récapitulatif détaillé
+      const summary = document.getElementById('modal-cart-summary');
+      let lines = '<b class="text-on-surface block text-xs border-b border-gray-200 pb-1">Articles du Panier :</b>';
+      cart.forEach(i => {
+        lines += `
+          <div class="flex items-center justify-between text-[11px] text-on-surface-variant font-mono">
+            <span>• ${i.name} (x${i.qty})</span>
+            <b class="text-on-surface">${(i.unitPrice * i.qty).toLocaleString('fr-FR')} F</b>
+          </div>
+        `;
+      });
+      summary.innerHTML = lines;
+
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=switchpay://pay/3201948271049?amount=${total}&ref=POS-${Date.now()}`;
+      document.getElementById('modal-qr-img').src = qrUrl;
+
+      document.getElementById('live-qr-modal').classList.remove('hidden');
+    }
+
+    async function simulateClientSuccess() {
+      const total = calculateCartTotal();
+      const posItems = cart.map(item => ({
+        id: item.id.toString().includes('-') ? item.id : '00000000-0000-0000-0000-000000000001',
+        quantity: item.qty,
+        unit_price: item.unitPrice
+      }));
+
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.processPosSale) {
+          await window.SwitchAPI.processPosSale(posItems, 'switch', '+229 01 22 90 19 07', 'Encaissement Caisse POS');
+        }
+      } catch (err) {
+        console.warn("Vente POS info :", err);
+      }
+
+      const overlay = document.getElementById('payment-success-overlay');
+      overlay.classList.remove('hidden');
+
+      closeModal('live-qr-modal');
+      cart = [];
+      updateCartDisplay();
+      alert(`🎉 VENTE PANIER ENCAISSÉE !\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nMontant Total : ${total.toLocaleString('fr-FR')} FCFA\nMode : Switch Pay (0% de frais)\n\nVos recettes ont été immédiatement créditées en base.`);
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // Touche Échap
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeModal('live-qr-modal');
+      }
+    });
+
+    loadStoreInfo();
+  </script>
+
+  <script src="../assets/switch.router.js?v=4.0"></script>
+</body>
+</html>

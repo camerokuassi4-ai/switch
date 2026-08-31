@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Accueil - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: 100vh !important;
+      min-height: 100dvh !important;
+      background-color: #0B061E !important;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      padding-bottom: 20px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+    }
+
+    /* Ambient Glowing Orbs */
+    .glow-orb-1 {
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123, 92, 250, 0.4) 0%, rgba(94, 59, 220, 0) 70%);
+      top: -100px;
+      left: -100px;
+      filter: blur(50px);
+      pointer-events: none;
+      animation: pulseGlow 9s ease-in-out infinite alternate;
+    }
+
+    .glow-orb-2 {
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 212, 170, 0.3) 0%, rgba(94, 59, 220, 0) 70%);
+      bottom: 20px;
+      right: -80px;
+      filter: blur(60px);
+      pointer-events: none;
+      animation: pulseGlow 7s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(1) translateY(0); opacity: 0.6; }
+      100% { transform: scale(1.2) translateY(25px); opacity: 0.95; }
+    }
+
+    /* Logo Floating Animation */
+    @keyframes floatSoft {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(1deg); }
+    }
+
+    .animate-float {
+      animation: floatSoft 4.5s ease-in-out infinite;
+    }
+
+    /* Shimmer Effect on CTA */
+    .btn-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-shimmer::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.35) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(25deg);
+      animation: shimmer 3.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -60%; }
+      30%, 100% { left: 140%; }
+    }
+
+    /* Ultra-Premium Glassmorphic Sheet */
+    .glass-sheet {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 28px 64px -16px rgba(11, 6, 30, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.95) inset;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between overflow-hidden relative selection:bg-[#5E3BDC] selection:text-white">
+
+  <!-- 1. Cinematic Background Wallpaper with Ambient Cybernetic Lighting -->
+  <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+    <img src="../assets/images/img_splash_bg.jpg" alt="Fintech Cybernetic Waves" class="w-full h-full object-cover scale-105 filter brightness-[0.95] contrast-[1.05]"/>
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0B061E]/50 via-transparent to-[#0B061E]/80"></div>
+    <div class="glow-orb-1"></div>
+    <div class="glow-orb-2"></div>
+  </div>
+
+  <!-- 2. Main Content Canvas -->
+  <main class="flex-1 flex flex-col justify-between items-center relative w-full h-full px-5 pt-8 pb-4 z-10 max-w-md mx-auto" style="min-height: calc(100dvh - 30px);">
+
+    <!-- Top Badge & Floating Logo -->
+    <div class="flex flex-col items-center justify-start w-full pt-2">
+      
+      <!-- Top Official Badge -->
+      <div class="mb-5 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/40 text-white text-[11px] font-bold shadow-xl">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="tracking-wider uppercase">SWITCH BÉNIN • S.A.S</span>
+      </div>
+
+      <!-- Floating Logo Box with Neon Aura (Forme Originelle) -->
+      <div class="animate-float relative group">
+        <div class="absolute -inset-2 rounded-[34px] bg-gradient-to-tr from-[#5E3BDC] via-[#7B5CFA] to-[#00D4AA] opacity-50 blur-lg group-hover:opacity-80 transition-opacity"></div>
+        <div class="relative bg-white/95 backdrop-blur-xl rounded-[28px] p-4 shadow-[0_20px_45px_rgba(94,59,220,0.35)] flex items-center justify-center w-24 h-24 border-2 border-white/80">
+          <img alt="Logo Switch" class="w-full h-full object-contain drop-shadow-sm" src="../assets/images/img_003.jpg"/>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Centered Glassmorphic Presentation Card -->
+    <div class="glass-sheet rounded-[36px] p-6 sm:p-7 w-full my-auto flex flex-col items-center text-center space-y-3.5 shadow-2xl relative">
+      
+      <h1 class="text-3xl sm:text-4xl font-black text-[#1C1A24] leading-[1.15] tracking-tight">
+        Vos transferts,<br/>
+        <span class="bg-gradient-to-r from-[#5E3BDC] via-[#7B5CFA] to-[#4323B0] bg-clip-text text-transparent">simplifiés</span>
+      </h1>
+
+      <p class="text-[#4A4557] font-semibold text-xs sm:text-sm max-w-xs mx-auto leading-relaxed">
+        La façon la plus rapide et sécurisée de gérer votre argent au Bénin et au-delà.
+      </p>
+
+      <!-- Trust Badges -->
+      <div class="pt-2.5 flex items-center justify-center gap-2.5 border-t border-gray-100/90 w-full text-[10px] font-bold text-gray-500">
+        <span class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-xs text-[#5E3BDC]">verified_user</span>
+          Agrément BCEAO
+        </span>
+        <span class="text-gray-300">•</span>
+        <span class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-xs text-emerald-600">bolt</span>
+          0F sans frais
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Bottom Actions Section -->
+    <div class="w-full pt-3 pb-2 flex flex-col gap-3.5">
+      
+      <!-- Primary Action CTA Button -->
+      <button onclick="startNewAccount()" class="btn-shimmer w-full bg-gradient-to-r from-[#5E3BDC] via-[#6F47E8] to-[#7B5CFA] text-white py-4 px-6 rounded-full font-extrabold text-sm sm:text-base shadow-[0_14px_32px_rgba(94,59,220,0.5)] hover:shadow-[0_18px_40px_rgba(94,59,220,0.65)] hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer group">
+        <span>Commencer</span>
+        <span class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+      </button>
+
+      <!-- Login Link Card -->
+      <div class="text-center py-2 px-4 rounded-full bg-white/20 backdrop-blur-md border border-white/30 shadow-lg">
+        <p class="text-xs sm:text-sm text-white font-medium">
+          Vous avez déjà un compte ?
+          <button onclick="goToLogin()" class="text-white font-black underline underline-offset-4 hover:text-[#00D4AA] ml-1 transition-colors cursor-pointer">
+            Se connecter
+          </button>
+        </p>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Navigation & Lifecycle Scripts -->
+  <script>
+    function startNewAccount() {
+      localStorage.setItem('switch_kyc_level', '1');
+      if (window.switchNavigate) {
+        window.switchNavigate('../choix_type_compte/code.html');
+      } else {
+        window.location.href = '../choix_type_compte/code.html';
+      }
+    }
+
+    function goToLogin() {
+      if (window.switchNavigate) {
+        window.switchNavigate('../connexion/code.html');
+      } else {
+        window.location.href = '../connexion/code.html';
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

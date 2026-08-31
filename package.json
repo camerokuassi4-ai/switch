@@ -1,5 +1,11 @@
 {
   "devDependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/cli": "^8.5.0",
+    "@capacitor/ios": "^8.5.0",
     "playwright": "^1.62.1"
+  },
+  "dependencies": {
+    "@capacitor/core": "^8.5.0"
   }
 }

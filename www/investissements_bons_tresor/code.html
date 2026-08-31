@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Switch Invest - Bons du Trésor & Obligations Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .invest-gradient {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #064E3B 100%);
+      box-shadow: 0 16px 36px -10px rgba(6, 78, 59, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
+
+  <!-- Top App Bar -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-emerald-700 hover:bg-emerald-50 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-base sm:text-lg font-black text-on-surface">Switch Invest</h1>
+        <p class="text-xs text-on-surface-variant font-medium">Bons du Trésor & Épargne Rémunérée</p>
+      </div>
+    </div>
+    <span class="text-xs font-black uppercase text-emerald-800 bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-full">BCEAO / UEMOA</span>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-1 flex-1">
+    
+    <!-- Hero Portfolio Card -->
+    <section class="invest-gradient rounded-[32px] p-6 text-white relative overflow-hidden flex flex-col gap-4">
+      <div class="flex items-center justify-between z-10">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300 block">Mon Portefeuille d'Obligations</span>
+          <h2 class="text-2xl sm:text-3xl font-black font-mono mt-0.5" id="invest-total-disp">250 000 FCFA</h2>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center text-emerald-300 shadow-inner">
+          <span class="material-symbols-outlined text-2xl font-bold">trending_up</span>
+        </div>
+      </div>
+
+      <!-- Quick Yield Stats -->
+      <div class="grid grid-cols-2 gap-3 pt-3 border-t border-white/20 text-xs z-10">
+        <div>
+          <p class="text-emerald-200">Gains annuels garantis</p>
+          <p class="text-base font-bold font-mono text-white">+18 750 FCFA (7.5%)</p>
+        </div>
+        <div class="text-right">
+          <p class="text-emerald-200">Prochain coupon</p>
+          <p class="font-bold text-white">15 Octobre 2026</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Available Government Bonds & Investment Offers -->
+    <section class="flex flex-col gap-3">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Opportunités du Trésor Public Bénin</h3>
+
+      <!-- Bond 1: TP Bénin 2026-2029 (7.50%) -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3.5">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center font-black text-xs border border-emerald-200">
+              🇧🇯 7.5%
+            </div>
+            <div>
+              <h4 class="font-extrabold text-sm text-on-surface">Bons du Trésor Public Bénin 3 Ans</h4>
+              <p class="text-xs text-on-surface-variant font-medium">Émetteur : Ministère des Finances du Bénin</p>
+            </div>
+          </div>
+          <span class="text-xs font-black text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">+7.50% / an</span>
+        </div>
+
+        <div class="bg-surface-container-low p-3.5 rounded-2xl flex items-center justify-between text-xs font-mono">
+          <div><span>Ticket minimum :</span><b class="text-primary ml-1">5 000 FCFA</b></div>
+          <div><span>Risque :</span><b class="text-emerald-800 ml-1">Très Faible (Souverain)</b></div>
+        </div>
+
+        <button onclick="openInvestModal('Bons du Trésor Bénin 3 Ans', 0.075)" class="w-full py-3.5 rounded-2xl bg-primary text-white font-bold text-xs shadow-md hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
+          <span class="material-symbols-outlined text-base">add_chart</span>
+          <span>Souscrire dès 5 000 FCFA</span>
+        </button>
+      </div>
+
+      <!-- Bond 2: Emprunt Obligataire UEMOA Infrastructure (8.25%) -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3.5">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-800 flex items-center justify-center font-black text-xs border border-amber-200">
+              ⚡ 8.25%
+            </div>
+            <div>
+              <h4 class="font-extrabold text-sm text-on-surface">Obligations Infrastructures Port & Énergie</h4>
+              <p class="text-xs text-on-surface-variant font-medium">Gouvernement Bénin • Échéance 2031</p>
+            </div>
+          </div>
+          <span class="text-xs font-black text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full">+8.25% / an</span>
+        </div>
+
+        <div class="bg-surface-container-low p-3.5 rounded-2xl flex items-center justify-between text-xs font-mono">
+          <div><span>Ticket minimum :</span><b class="text-primary ml-1">10 000 FCFA</b></div>
+          <div><span>Paiement :</span><b class="text-on-surface ml-1">Trimestriel</b></div>
+        </div>
+
+        <button onclick="openInvestModal('Obligations Infrastructures 8.25%', 0.0825)" class="w-full py-3.5 rounded-2xl bg-surface-container-highest border border-outline-variant text-on-surface font-bold text-xs hover:bg-surface-container active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
+          <span class="material-symbols-outlined text-base">add_chart</span>
+          <span>Souscrire dès 10 000 FCFA</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal Souscription Investissement -->
+  <div id="invest-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl p-6 flex flex-col gap-4 shadow-2xl animate-in zoom-in-95 duration-200">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-bold text-on-surface" id="modal-invest-title">Souscription Obligataire</h3>
+        <button onclick="closeInvestModal()" class="p-1 rounded-full hover:bg-gray-100 text-on-surface-variant cursor-pointer">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="handleInvestSubmit(event)" class="flex flex-col gap-3.5">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-bold text-on-surface-variant uppercase">Montant à investir</label>
+          <div class="relative flex items-center">
+            <input type="number" id="invest-amt-input" required min="5000" step="5000" value="50000" oninput="recalcGains()" class="w-full bg-surface-container-low border border-outline-variant rounded-2xl px-4 pr-16 py-3 font-mono font-bold text-lg text-primary focus:outline-none focus:border-primary"/>
+            <span class="absolute right-4 text-xs font-bold text-on-surface-variant">FCFA</span>
+          </div>
+        </div>
+
+        <!-- Calculated Yield Preview -->
+        <div class="bg-emerald-50 rounded-2xl p-3.5 border border-emerald-200 text-xs flex flex-col gap-1.5">
+          <div class="flex justify-between text-emerald-900">
+            <span>Intérêts annuels versés :</span>
+            <b class="font-mono text-emerald-800" id="calc-gains">+3 750 FCFA / an</b>
+          </div>
+          <div class="flex justify-between text-emerald-700 text-[11px]">
+            <span>Fréquence des versements :</span>
+            <b>Tous les 3 mois sur solde Switch</b>
+          </div>
+        </div>
+
+        <div class="flex gap-2 mt-2">
+          <button type="button" onclick="closeInvestModal()" class="flex-1 py-3 rounded-full border border-outline-variant font-bold text-xs hover:bg-surface-container cursor-pointer">Annuler</button>
+          <button type="submit" class="flex-1 py-3 rounded-full bg-primary text-white font-bold text-xs hover:opacity-90 shadow-md cursor-pointer">Confirmer l'Investissement</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let currentRate = 0.075;
+    let totalInvested = 250000;
+
+    function openInvestModal(title, rate) {
+      currentRate = rate;
+      document.getElementById('modal-invest-title').textContent = title;
+      recalcGains();
+      document.getElementById('invest-modal').classList.remove('hidden');
+    }
+
+    function closeInvestModal() {
+      document.getElementById('invest-modal').classList.add('hidden');
+    }
+
+    function recalcGains() {
+      const amt = parseInt(document.getElementById('invest-amt-input').value || 50000);
+      const gains = Math.round(amt * currentRate);
+      document.getElementById('calc-gains').textContent = `+${gains.toLocaleString('fr-FR')} FCFA / an`;
+    }
+
+    function handleInvestSubmit(e) {
+      e.preventDefault();
+      const amt = parseInt(document.getElementById('invest-amt-input').value || 50000);
+      const title = document.getElementById('modal-invest-title').textContent;
+
+      if (window.SwitchEngine) {
+        const mainBal = window.SwitchEngine.getMainBalance();
+        if (mainBal < amt) {
+          alert("Solde insuffisant dans votre Compte Switch (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible, " + amt.toLocaleString('fr-FR') + " FCFA requis).");
+          return;
+        }
+
+        window.SwitchEngine.addTransaction({
+          title: `Placement ${title}`,
+          category: "internal",
+          amount: -amt,
+          fee: 0,
+          recipient: "Trésor Public Bénin (Obligations)",
+          note: `Investissement garanti à ${(currentRate * 100).toFixed(2)}% / an`,
+          icon: "trending_up",
+          iconBg: "bg-emerald-50 text-emerald-800"
+        });
+      }
+
+      totalInvested += amt;
+      document.getElementById('invest-total-disp').textContent = totalInvested.toLocaleString('fr-FR') + ' FCFA';
+      closeInvestModal();
+      alert(`🎉 Félicitations ! Votre souscription de ${amt.toLocaleString('fr-FR')} FCFA en Bons du Trésor a été validée avec succès.`);
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

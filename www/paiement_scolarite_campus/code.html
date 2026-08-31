@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Switch Campus - Paiement Scolarités & Universités Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .campus-gradient {
+      background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%);
+      box-shadow: 0 16px 36px -10px rgba(49, 46, 129, 0.35);
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
+
+  <!-- Top App Bar -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-surface-container transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-base sm:text-lg font-black text-on-surface">Switch Campus</h1>
+        <p class="text-xs text-on-surface-variant font-medium">Frais de Scolarité & Universités</p>
+      </div>
+    </div>
+    <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold">
+      <span class="material-symbols-outlined text-2xl">school</span>
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-5 pt-1 flex-1">
+    
+    <!-- Hero Banner -->
+    <section class="campus-gradient rounded-[32px] p-6 text-white relative overflow-hidden flex flex-col gap-3">
+      <div class="flex items-center justify-between z-10">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-indigo-200 block">Zéro File d'Attente</span>
+          <h2 class="text-xl sm:text-2xl font-black mt-0.5">Paiement Universitaire Direct</h2>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center text-indigo-200">
+          <span class="material-symbols-outlined text-3xl">verified</span>
+        </div>
+      </div>
+      <p class="text-xs text-indigo-100 leading-relaxed z-10">
+        Réglez vos frais d'inscription UAC, écoles et lycées avec quittance officielle certifiée délivrée instantanément.
+      </p>
+    </section>
+
+    <!-- Step 1: Select Institution -->
+    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-4">
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-bold text-on-surface-variant uppercase" for="campus-school">Établissement / Université</label>
+        <select id="campus-school" onchange="handleSchoolChange()" class="w-full bg-surface-container-low border border-outline-variant rounded-2xl p-3.5 text-xs sm:text-sm font-bold text-on-surface focus:outline-none focus:border-primary">
+          <option value="UAC" selected>🏛️ Université d'Abomey-Calavi (UAC)</option>
+          <option value="ENEAM">📊 ENEAM Cotonou</option>
+          <option value="HECM">💼 HECM Bénin (Hautes Études Commerciales)</option>
+          <option value="PIGIER">🎓 Pigier Bénin</option>
+          <option value="LYCEE">🏫 Lycée Béhanzin / Lycée Toffa</option>
+        </select>
+      </div>
+
+      <!-- Matricule Input -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-bold text-on-surface-variant uppercase" for="student-matricule">Matricule Étudiant / Identifiant</label>
+        <div class="flex gap-2">
+          <input type="text" id="student-matricule" value="2024-UAC-88219" class="w-full bg-surface-container-low border border-outline-variant rounded-2xl px-4 py-3 text-sm font-mono font-bold text-on-surface focus:outline-none focus:border-primary uppercase"/>
+          <button type="button" onclick="verifyStudent()" class="px-4 py-3 rounded-2xl bg-primary text-white text-xs font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all shrink-0 cursor-pointer">
+            Vérifier
+          </button>
+        </div>
+      </div>
+
+      <!-- Student Found Card -->
+      <div id="student-card" class="bg-indigo-50/70 rounded-2xl p-4 border border-indigo-200 flex flex-col gap-2 text-xs animate-in fade-in duration-200">
+        <div class="flex justify-between items-center">
+          <span class="text-indigo-900 font-bold">Adele Doe</span>
+          <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Inscrit(e)</span>
+        </div>
+        <div class="flex justify-between text-indigo-700">
+          <span>Filière :</span>
+          <b class="text-indigo-950">Licence 3 • Sciences Économiques & Gestion</b>
+        </div>
+        <div class="flex justify-between text-indigo-700">
+          <span>Campus :</span>
+          <b class="text-indigo-950">Campus Principal Abomey-Calavi</b>
+        </div>
+      </div>
+
+      <!-- Fee Type Selector -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-bold text-on-surface-variant uppercase">Type de versement</label>
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" onclick="selectFee(15000, 'Frais d\'inscription annuelle')" id="fee-opt-1" class="p-3 rounded-2xl border-2 border-primary bg-primary/5 text-left flex flex-col justify-between cursor-pointer">
+            <span class="text-[11px] font-bold text-on-surface">Inscription Annuelle</span>
+            <b class="text-primary font-mono text-sm mt-1">15 000 FCFA</b>
+          </button>
+          <button type="button" onclick="selectFee(150000, 'Scolarité Tranche 1')" id="fee-opt-2" class="p-3 rounded-2xl border border-outline-variant text-left flex flex-col justify-between cursor-pointer opacity-75 hover:opacity-100">
+            <span class="text-[11px] font-bold text-on-surface">Tranche 1 Scolarité</span>
+            <b class="text-on-surface font-mono text-sm mt-1">150 000 FCFA</b>
+          </button>
+        </div>
+      </div>
+
+      <!-- Action Pay Button -->
+      <button type="button" onclick="payCampusFee()" class="w-full mt-2 bg-primary text-white py-4 rounded-full font-bold text-base shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+        <span class="material-symbols-outlined text-xl">payments</span>
+        <span>Payer <span id="disp-fee-amt">15 000 FCFA</span> sur Switch</span>
+      </button>
+    </section>
+
+  </main>
+
+  <!-- Modal Quittance Officielle PDF -->
+  <div id="receipt-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl p-6 flex flex-col gap-4 text-center shadow-2xl animate-in zoom-in-95 duration-200">
+      <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
+        <span class="material-symbols-outlined text-3xl">verified</span>
+      </div>
+      <div>
+        <h3 class="text-lg font-black text-on-surface">Paiement Campus Validé !</h3>
+        <p class="text-xs text-on-surface-variant mt-0.5">Votre quittance d'inscription a été enregistrée.</p>
+      </div>
+
+      <div class="bg-surface-container p-4 rounded-2xl border border-outline-variant text-left text-xs flex flex-col gap-2 font-mono">
+        <div class="flex justify-between"><span>Établissement :</span><b class="text-on-surface" id="rec-school">UAC Bénin</b></div>
+        <div class="flex justify-between"><span>Étudiant :</span><b class="text-on-surface">Adele Doe</b></div>
+        <div class="flex justify-between"><span>Matricule :</span><b class="text-primary" id="rec-mat">2024-UAC-88219</b></div>
+        <div class="flex justify-between"><span>Montant réglé :</span><b class="text-on-surface" id="rec-amt">15 000 FCFA</b></div>
+        <div class="flex justify-between"><span>Quittance N° :</span><b class="text-emerald-700">QTC-UAC-2026-8821</b></div>
+      </div>
+
+      <div class="flex gap-2 mt-2">
+        <button onclick="downloadReceiptPdf()" class="flex-1 py-3 rounded-full border border-outline-variant font-bold text-xs hover:bg-surface-container flex items-center justify-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-base">download</span>
+          Télécharger Quittance
+        </button>
+        <button onclick="window.switchNavigate ? window.switchNavigate('../tableau_de_bord_mis_jour/code.html') : window.location.href='../tableau_de_bord_mis_jour/code.html'" class="flex-1 py-3 rounded-full bg-primary text-white font-bold text-xs hover:opacity-90 shadow-md cursor-pointer">
+          Accueil
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedAmount = 15000;
+    let selectedLabel = "Frais d'inscription annuelle";
+
+    function handleSchoolChange() {
+      const school = document.getElementById('campus-school').value;
+      if (school === 'UAC') {
+        document.getElementById('student-matricule').value = '2024-UAC-88219';
+      } else if (school === 'ENEAM') {
+        document.getElementById('student-matricule').value = '2024-ENEAM-1049';
+      } else {
+        document.getElementById('student-matricule').value = '2024-STU-55201';
+      }
+    }
+
+    function verifyStudent() {
+      alert("✅ Identité académique confirmée : Adele Doe (Inscrit en règle) !");
+    }
+
+    function selectFee(amt, label) {
+      selectedAmount = amt;
+      selectedLabel = label;
+      document.getElementById('disp-fee-amt').textContent = amt.toLocaleString('fr-FR') + ' FCFA';
+      
+      const opt1 = document.getElementById('fee-opt-1');
+      const opt2 = document.getElementById('fee-opt-2');
+      if (amt === 15000) {
+        opt1.className = "p-3 rounded-2xl border-2 border-primary bg-primary/5 text-left flex flex-col justify-between cursor-pointer opacity-100";
+        opt2.className = "p-3 rounded-2xl border border-outline-variant text-left flex flex-col justify-between cursor-pointer opacity-75 hover:opacity-100";
+      } else {
+        opt2.className = "p-3 rounded-2xl border-2 border-primary bg-primary/5 text-left flex flex-col justify-between cursor-pointer opacity-100";
+        opt1.className = "p-3 rounded-2xl border border-outline-variant text-left flex flex-col justify-between cursor-pointer opacity-75 hover:opacity-100";
+      }
+    }
+
+    function payCampusFee() {
+      const school = document.getElementById('campus-school').value;
+      const mat = document.getElementById('student-matricule').value;
+
+      if (window.SwitchEngine) {
+        const mainBal = window.SwitchEngine.getMainBalance();
+        if (mainBal < selectedAmount) {
+          alert("Solde insuffisant dans votre Compte Switch (" + mainBal.toLocaleString('fr-FR') + " FCFA disponible, " + selectedAmount.toLocaleString('fr-FR') + " FCFA requis).");
+          return;
+        }
+
+        const tx = window.SwitchEngine.addTransaction({
+          title: `Scolarité ${school} (${mat})`,
+          category: "utility",
+          amount: -selectedAmount,
+          fee: 0,
+          recipient: `${school} Bénin`,
+          note: `${selectedLabel} - Réf: QTC-${school}-2026`,
+          icon: "school",
+          iconBg: "bg-indigo-50 text-indigo-700"
+        });
+
+        localStorage.setItem('switch_last_tx_id', tx.id);
+        localStorage.setItem('switch_last_tx_amount', selectedAmount.toString());
+      }
+
+      document.getElementById('rec-school').textContent = school + " Bénin";
+      document.getElementById('rec-mat').textContent = mat;
+      document.getElementById('rec-amt').textContent = selectedAmount.toLocaleString('fr-FR') + " FCFA";
+      document.getElementById('receipt-modal').classList.remove('hidden');
+    }
+
+    function downloadReceiptPdf() {
+      alert("📄 Quittance officielle de scolarité téléchargée au format PDF certifié !");
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

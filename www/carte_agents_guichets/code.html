@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Trouver un Agent & Kiosque - Switch Map</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
+    body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); }
+    .map-bg {
+      background: radial-gradient(circle at 50% 50%, #E8E2F7 0%, #EDE7F6 100%);
+      background-image: 
+        linear-gradient(to right, rgba(94, 59, 220, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(94, 59, 220, 0.08) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 flex flex-col antialiased relative">
+  <!-- Map Simulation Viewport -->
+  <div class="absolute inset-0 h-[48vh] map-bg relative overflow-hidden flex items-center justify-center">
+    <!-- Map Streets SVG styling -->
+    <svg class="absolute inset-0 w-full h-full opacity-40 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M-50,120 Q150,90 300,160 T600,100" fill="none" stroke="#5E3BDC" stroke-width="6" stroke-linecap="round"/>
+      <path d="M120,-50 Q180,200 140,400 T220,600" fill="none" stroke="#5E3BDC" stroke-width="4" stroke-linecap="round"/>
+      <path d="M-20,300 L500,280" fill="none" stroke="#CBD5E1" stroke-width="8"/>
+    </svg>
+
+    <!-- User Current Location Pulse Pin -->
+    <div class="relative z-10 flex flex-col items-center">
+      <div class="w-6 h-6 rounded-full bg-primary border-4 border-white shadow-lg flex items-center justify-center">
+        <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+      </div>
+      <span class="bg-white/90 text-primary text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-md mt-1 backdrop-blur-sm">
+        Vous êtes ici
+      </span>
+    </div>
+
+    <!-- Agent Pin 1 (Haie Vive) -->
+    <div onclick="selectPin('Kiosque Switch Haie Vive', '250m', 'Ouvert • Liquidités OK', '+229 97 10 20 30')" class="absolute top-1/4 left-1/4 z-10 flex flex-col items-center cursor-pointer group">
+      <div class="w-9 h-9 rounded-full bg-amber-500 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform border-2 border-white">
+        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">storefront</span>
+      </div>
+      <span class="bg-white text-on-surface text-[10px] font-bold px-2 py-0.5 rounded-md shadow-sm mt-1">250m</span>
+    </div>
+
+    <!-- Agent Pin 2 (Distributeur 24/7 Ganhi) -->
+    <div onclick="selectPin('Guichet Automatique Ganhi', '800m', '24h/24 • Retrait Sans Carte', '+229 21 30 11 22')" class="absolute bottom-1/3 right-1/4 z-10 flex flex-col items-center cursor-pointer group">
+      <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform border-2 border-white">
+        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">atm</span>
+      </div>
+      <span class="bg-white text-on-surface text-[10px] font-bold px-2 py-0.5 rounded-md shadow-sm mt-1">800m</span>
+    </div>
+
+    <!-- Top Float Header -->
+    <header class="absolute top-0 left-0 w-full z-20 flex justify-between items-center px-container-margin py-stack-md pt-6">
+      <button aria-label="Retour" class="w-11 h-11 rounded-full bg-white/90 backdrop-blur-md shadow-md flex items-center justify-center text-on-surface hover:bg-white transition-all cursor-pointer">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <div class="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-md flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-primary text-sm">location_on</span>
+        <span class="text-xs font-bold text-on-surface">Cotonou, Bénin</span>
+      </div>
+      <button onclick="recenterMap()" class="w-11 h-11 rounded-full bg-white/90 backdrop-blur-md shadow-md flex items-center justify-center text-primary hover:bg-white transition-all cursor-pointer">
+        <span class="material-symbols-outlined">my_location</span>
+      </button>
+    </header>
+  </div>
+
+  <!-- Bottom Drawer Sheet -->
+  <main class="relative z-20 mt-[42vh] flex-1 bg-surface-container-lowest rounded-t-[32px] shadow-2xl p-6 border-t border-outline-variant/60 flex flex-col gap-5">
+    <!-- Drag Handle -->
+    <div class="w-12 h-1 bg-surface-container-highest rounded-full mx-auto -mt-2"></div>
+
+    <!-- Search Input -->
+    <div class="relative flex items-center">
+      <span class="material-symbols-outlined absolute left-4 text-on-surface-variant text-xl select-none">search</span>
+      <input type="text" placeholder="Rechercher un quartier (Haie Vive, Ganhi, Akpakpa...)" class="w-full bg-surface-container border border-outline-variant rounded-2xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-primary"/>
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+      <button type="button" onclick="filterMap('all')" id="flt-all" class="px-4 py-2 rounded-full bg-primary text-on-primary text-xs font-bold shrink-0 shadow-sm">
+        Tous (48)
+      </button>
+      <button type="button" onclick="filterMap('kiosk')" id="flt-kiosk" class="px-4 py-2 rounded-full bg-surface-container text-on-surface text-xs font-bold shrink-0">
+        Kiosques & Agents
+      </button>
+      <button type="button" onclick="filterMap('atm')" id="flt-atm" class="px-4 py-2 rounded-full bg-surface-container text-on-surface text-xs font-bold shrink-0">
+        Distributeurs 24/7
+      </button>
+      <button type="button" onclick="filterMap('momo')" id="flt-momo" class="px-4 py-2 rounded-full bg-surface-container text-on-surface text-xs font-bold shrink-0">
+        Partenaires MTN/Moov
+      </button>
+    </div>
+
+    <!-- Selected Agent Highlight Card -->
+    <div id="selected-card" class="bg-primary/5 border-2 border-primary rounded-3xl p-5 flex flex-col gap-3">
+      <div class="flex justify-between items-start">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Ouvert maintenant</span>
+            <span class="text-xs text-primary font-bold" id="card-dist">À 250m</span>
+          </div>
+          <h3 class="text-base font-bold text-on-surface mt-1" id="card-title">Kiosque Switch Haie Vive</h3>
+          <p class="text-xs text-on-surface-variant mt-0.5" id="card-desc">Rue 340 • Dépôts & Retraits sans frais</p>
+        </div>
+        <div class="w-10 h-10 rounded-2xl bg-primary text-on-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-xl">storefront</span>
+        </div>
+      </div>
+
+      <div class="flex gap-2 mt-1">
+        <a id="btn-itineraire" href="https://maps.google.com/?q=Haie+Vive+Cotonou" target="_blank" class="flex-1 py-2.5 rounded-xl bg-primary text-on-primary text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm hover:opacity-90 no-underline cursor-pointer">
+          <span class="material-symbols-outlined text-base">directions</span>
+          <span>Itinéraire GPS</span>
+        </a>
+        <a id="btn-call" href="tel:+22997102030" class="py-2.5 px-4 rounded-xl border border-outline-variant text-on-surface text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-surface-container no-underline cursor-pointer">
+          <span class="material-symbols-outlined text-base">call</span>
+          <span>Appeler</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Agent List -->
+    <div class="flex flex-col gap-3">
+      <h4 class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Autres points à proximité</h4>
+      
+      <!-- Item 1 -->
+      <div onclick="selectPin('Agence Switch Ganhi Centrale', '800m', 'Ouvert jusqu\'à 19h • Tous services', '+229 21 30 00 11')" class="p-3.5 bg-surface-container rounded-2xl flex items-center justify-between cursor-pointer hover:bg-surface-container-high transition-colors">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <span class="material-symbols-outlined">account_balance</span>
+          </div>
+          <div>
+            <h5 class="text-sm font-bold text-on-surface">Agence Switch Ganhi</h5>
+            <p class="text-xs text-on-surface-variant">Avenue Clozel • 800m</p>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+      </div>
+
+      <!-- Item 2 -->
+      <div onclick="selectPin('Point Relais Akpakpa Dodomè', '1.4 km', 'Ouvert • Kiosque Partenaire', '+229 96 44 22 11')" class="p-3.5 bg-surface-container rounded-2xl flex items-center justify-between cursor-pointer hover:bg-surface-container-high transition-colors">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+            <span class="material-symbols-outlined">store</span>
+          </div>
+          <div>
+            <h5 class="text-sm font-bold text-on-surface">Point Relais Akpakpa</h5>
+            <p class="text-xs text-on-surface-variant">Carrefour Dodomè • 1.4 km</p>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function selectPin(title, dist, desc, phone) {
+      document.getElementById('card-title').textContent = title;
+      document.getElementById('card-dist').textContent = 'À ' + dist;
+      document.getElementById('card-desc').textContent = desc;
+      document.getElementById('btn-call').href = 'tel:' + phone;
+      document.getElementById('selected-card').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function recenterMap() {
+      alert("Position GPS réactualisée : Haie Vive, Cotonou.");
+    }
+
+    function filterMap(cat) {
+      document.querySelectorAll('#flt-all, #flt-kiosk, #flt-atm, #flt-momo').forEach(b => {
+        b.className = 'px-4 py-2 rounded-full bg-surface-container text-on-surface text-xs font-bold shrink-0';
+      });
+      document.getElementById('flt-' + cat).className = 'px-4 py-2 rounded-full bg-primary text-on-primary text-xs font-bold shrink-0 shadow-sm';
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

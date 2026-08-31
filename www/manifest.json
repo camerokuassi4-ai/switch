@@ -1,0 +1,45 @@
+{
+  "id": "./tableau_de_bord_mis_jour/code.html",
+  "name": "Switch Bénin - Fintech & Mobile Money",
+  "short_name": "Switch Bénin",
+  "description": "L'application financière tout-en-un pour le Bénin : transferts 0%, cartes virtuelles, paiements SBEE, tontines et guichets de quartier.",
+  "start_url": "./tableau_de_bord_mis_jour/code.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#120F1E",
+  "theme_color": "#5E3BDC",
+  "lang": "fr-BJ",
+  "categories": ["finance", "business"],
+  "icons": [
+    {
+      "src": "./assets/images/img_046.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/images/img_046.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Scanner QR",
+      "url": "./scanner_qr_code/code.html",
+      "description": "Payer un commerçant par QR Code"
+    },
+    {
+      "name": "Envoyer de l'argent",
+      "url": "./transfert_switch_switch/code.html",
+      "description": "Transfert instantané 0% de frais"
+    },
+    {
+      "name": "Recharge SBEE",
+      "url": "./paiement_sbee_electricite/code.html",
+      "description": "Acheter des crédits d'électricité"
+    }
+  ]
+}

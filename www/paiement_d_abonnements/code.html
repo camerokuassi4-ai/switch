@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Abonnements - Beninese Fintech</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+
+<!-- Material Symbols -->
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+<!-- Tailwind Config -->
+
+<style>
+        body {
+            background-color: #fdf8ff; /* background token */
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Subtle mesh gradient for headers/premium areas if needed, though background is requested white */
+        .mesh-subtle {
+            background-color: #ffffff;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,93%,90%,0.2) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(253,93%,90%,0.2) 0px, transparent 50%);
+        }
+
+        .shadow-soft {
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .shadow-nav {
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-lg text-on-surface antialiased min-h-screen flex flex-col relative pb-32">
+<!-- TopAppBar -->
+<header class="bg-transparent docked full-width top-0 z-40 sticky">
+<div class="flex justify-between items-center px-container-margin py-stack-md w-full max-w-2xl mx-auto">
+<!-- Leading Avatar -->
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container shadow-sm flex-shrink-0 bg-surface-variant flex items-center justify-center">
+<img alt="User profile picture" class="w-full h-full object-cover" data-alt="A close-up portrait of a modern professional Beninese woman with a warm smile, wearing stylish casual attire, against a clean light background. The lighting is soft and flattering, creating a premium and approachable vibe." src="../assets/images/img_033.jpg"/>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">Bonjour, Adele</h1>
+</div>
+</div>
+<!-- Trailing Icon -->
+<button aria-label="Search" class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">search</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow px-container-margin py-stack-md max-w-2xl mx-auto w-full flex flex-col gap-stack-lg">
+<!-- Page Title -->
+<section>
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">Abonnements</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Gérez vos factures et services en toute simplicité.</p>
+</section>
+<!-- Subscriptions List -->
+<section class="flex flex-col gap-4">
+<!-- Item 1: Canal+ (Pending) -->
+<div class="bg-surface-container-lowest rounded-xl p-card-padding shadow-soft border border-surface-variant/50 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between group hover:border-primary/20 transition-colors">
+<div class="flex items-center gap-4 w-full sm:w-auto">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0 text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">tv</span>
+</div>
+<div class="flex flex-col flex-grow">
+<span class="font-headline-md text-headline-md text-on-surface">Canal+</span>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-label-caps text-label-caps text-error bg-error-container px-2 py-0.5 rounded-full">À payer</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant hidden sm:inline">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Ref: 12345678</span>
+</div>
+</div>
+<!-- Mobile amount -->
+<div class="sm:hidden text-right">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">15.000F</span>
+</div>
+</div>
+<div class="flex items-center justify-between w-full sm:w-auto gap-4 mt-2 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-0 border-surface-variant">
+<div class="hidden sm:block text-right">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">15.000 F</span>
+</div>
+<button class="bg-primary text-on-primary font-label-caps text-label-caps rounded-full px-6 py-2.5 hover:bg-primary-container hover:text-on-primary-container transition-colors active:scale-95 shadow-sm flex items-center gap-2 w-full sm:w-auto justify-center">
+<span>Payer</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Item 2: SBEE (Pending) -->
+<div class="bg-surface-container-lowest rounded-xl p-card-padding shadow-soft border border-surface-variant/50 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between group hover:border-primary/20 transition-colors">
+<div class="flex items-center gap-4 w-full sm:w-auto">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0 text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<div class="flex flex-col flex-grow">
+<span class="font-headline-md text-headline-md text-on-surface">SBEE (Électricité)</span>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-label-caps text-label-caps text-error bg-error-container px-2 py-0.5 rounded-full">À payer</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant hidden sm:inline">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Échéance: 15 Mars</span>
+</div>
+</div>
+<!-- Mobile amount -->
+<div class="sm:hidden text-right">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">8.500F</span>
+</div>
+</div>
+<div class="flex items-center justify-between w-full sm:w-auto gap-4 mt-2 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-0 border-surface-variant">
+<div class="hidden sm:block text-right">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">8.500 F</span>
+</div>
+<button class="bg-primary text-on-primary font-label-caps text-label-caps rounded-full px-6 py-2.5 hover:bg-primary-container hover:text-on-primary-container transition-colors active:scale-95 shadow-sm flex items-center gap-2 w-full sm:w-auto justify-center">
+<span>Payer</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Item 3: SONEB (Success) -->
+<div class="bg-surface-container-lowest rounded-xl p-card-padding shadow-soft border border-surface-variant/50 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between opacity-75">
+<div class="flex items-center gap-4 w-full sm:w-auto">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center flex-shrink-0 text-on-surface-variant">
+<span class="material-symbols-outlined">water_drop</span>
+</div>
+<div class="flex flex-col flex-grow">
+<span class="font-headline-md text-headline-md text-on-surface">SONEB (Eau)</span>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-label-caps text-label-caps text-[10px] text-[#1e8e3e] bg-[#e6f4ea] px-2 py-0.5 rounded-full">Réussi</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant hidden sm:inline">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Payé le 02 Mars</span>
+</div>
+</div>
+<!-- Mobile amount -->
+<div class="sm:hidden text-right">
+<span class="font-headline-md text-headline-md text-on-surface font-normal">3.200F</span>
+</div>
+</div>
+<div class="flex items-center justify-between w-full sm:w-auto gap-4 mt-2 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-0 border-surface-variant">
+<div class="hidden sm:block text-right">
+<span class="font-headline-md text-headline-md text-on-surface font-normal">3.200 F</span>
+</div>
+<button class="bg-surface-variant text-on-surface-variant font-label-caps text-label-caps rounded-full px-6 py-2.5 flex items-center gap-2 w-full sm:w-auto justify-center cursor-default pointer-events-none">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Payé</span>
+</button>
+</div>
+</div>
+<!-- Item 4: Internet (Success) -->
+<div class="bg-surface-container-lowest rounded-xl p-card-padding shadow-soft border border-surface-variant/50 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between opacity-75">
+<div class="flex items-center gap-4 w-full sm:w-auto">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center flex-shrink-0 text-on-surface-variant">
+<span class="material-symbols-outlined">wifi</span>
+</div>
+<div class="flex flex-col flex-grow">
+<span class="font-headline-md text-headline-md text-on-surface">Internet (ISOCEL)</span>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-label-caps text-label-caps text-[10px] text-[#1e8e3e] bg-[#e6f4ea] px-2 py-0.5 rounded-full">Réussi</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant hidden sm:inline">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Payé le 28 Fév</span>
+</div>
+</div>
+<!-- Mobile amount -->
+<div class="sm:hidden text-right">
+<span class="font-headline-md text-headline-md text-on-surface font-normal">20.000F</span>
+</div>
+</div>
+<div class="flex items-center justify-between w-full sm:w-auto gap-4 mt-2 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-0 border-surface-variant">
+<div class="hidden sm:block text-right">
+<span class="font-headline-md text-headline-md text-on-surface font-normal">20.000 F</span>
+</div>
+<button class="bg-surface-variant text-on-surface-variant font-label-caps text-label-caps rounded-full px-6 py-2.5 flex items-center gap-2 w-full sm:w-auto justify-center cursor-default pointer-events-none">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Payé</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+
+<script src="../assets/switch.router.js"></script>
+</body></html>
