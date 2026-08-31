@@ -10,19 +10,33 @@ Ce document spécifie l'ensemble des paramètres d'infrastructure d'hébergement
 PUBLIC_DOMAIN = TO_BE_PROVIDED_BY_OWNER
 DNS_PROVIDER = TO_BE_PROVIDED_BY_OWNER
 HOSTING_PROVIDER = TO_BE_PROVIDED_BY_OWNER
-REVERSE_PROXY = NGINX_OR_CADDY_CONFIG_PENDING
-TLS_CERTIFICATE = LETS_ENCRYPT_OR_EDGE_SSL_PENDING
-NODE_PROCESS_MANAGER = PM2_OR_SYSTEMD_PENDING
+REVERSE_PROXY = TO_BE_CONFIGURED
+TLS_CERTIFICATE = TO_BE_CONFIGURED
+NODE_PROCESS_MANAGER = TO_BE_CONFIGURED
 INTERNAL_PORT = 4148
 PUBLIC_API_ORIGIN = TO_BE_DERIVED_FROM_PUBLIC_DOMAIN
 BACKUP_LOCATION = TO_BE_PROVIDED_BY_OWNER
 MONITORING_ENDPOINT = /api/v1/health
-ROLLBACK_COMMAND = git checkout 690b3f7
+ROLLBACK_VERSION = 690b3f773828642da286d16904b2ff6022e3d8b5
+ROLLBACK_METHOD = REDEPLOY_PREVIOUS_IMMUTABLE_VERSION
 ```
 
 ---
 
-## 2. Topologie Réseau & Routage Prévue
+## 2. Procédure Séquentielle de Rollback
+
+1. **Passage en maintenance** : Affichage d'une page temporaire au niveau reverse proxy.
+2. **Sauvegarde de l'état** : Snapshot d'intégrité de `scratch/preprod_storage.json` et des logs.
+3. **Redéploiement de la version précédente** : Rétablissement de l'arborescence au commit immuable `690b3f773828642da286d16904b2ff6022e3d8b5`.
+4. **Contrôle health** : Vérification des réponses du serveur.
+5. **Contrôle 403 financier** : Confirmation du verrouillage total des paiements.
+6. **Vérification PWA** : Validation de l'intégrité des écrans.
+7. **Remise en ligne** : Bascule du trafic reverse proxy vers le service actif.
+8. **Conservation des logs** : Archivage sécurisé des journaux pour diagnostic.
+
+---
+
+## 3. Topologie Réseau & Routage Prévue
 
 ```mermaid
 graph LR
@@ -35,7 +49,7 @@ graph LR
 
 ---
 
-## 3. Garde-fous de Sécurité & Étanchéité Staging
+## 4. Garde-fous de Sécurité & Étanchéité Staging
 
 * **Zéro Transaction Réelle** : Toute requête vers `/api/v1/payments/*` est rejetée avec le code **`HTTP 403 Forbidden` (`FEATURE_NOT_AVAILABLE`)**.
 * **Stockage Isolé** : Le fichier [`scratch/preprod_storage.json`](file:///c:/Users/camer/OneDrive/Documents/Nouveau%20dossier/stitch_switch_fintech_app_benin/scratch/preprod_storage.json) est exclusivement dédié aux données de démonstration (catalogues, messagerie de test). Il ne contient aucun secret bancaire ni solde réel.

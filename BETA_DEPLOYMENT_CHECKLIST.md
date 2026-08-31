@@ -23,7 +23,24 @@ Checklist de conformité obligatoire préalable à l'ouverture de la Bêta Publi
 
 ---
 
-## 3. Déclaration de Statuts
+## 3. Procédure de Rollback Immuable
+
+* **`ROLLBACK_VERSION`** : `690b3f773828642da286d16904b2ff6022e3d8b5`
+* **`ROLLBACK_METHOD`** : `REDEPLOY_PREVIOUS_IMMUTABLE_VERSION`
+
+### Étapes Séquentielles de Rollback :
+1. Passage en maintenance
+2. Sauvegarde de l'état
+3. Redéploiement de la version précédente
+4. Contrôle health
+5. Contrôle 403 financier
+6. Vérification PWA
+7. Remise en ligne
+8. Conservation des logs
+
+---
+
+## 4. Déclaration de Statuts
 
 * **`PUBLIC_BETA_ALL_126_SCREENS_READY`**
 * **`REAL_MONEY_DISABLED`**
