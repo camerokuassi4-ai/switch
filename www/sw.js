@@ -38,10 +38,35 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  // Always fetch fresh network first
+  const requestUrl = new URL(event.request.url);
+
+  if (
+    event.request.method !== "GET" ||
+    !["http:", "https:"].includes(requestUrl.protocol) ||
+    requestUrl.origin !== self.location.origin
+  ) {
+    return;
+  }
+
   event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request);
-    })
+    (async () => {
+      try {
+        return await fetch(event.request);
+      } catch (error) {
+        const cached = await caches.match(event.request);
+
+        if (cached instanceof Response) {
+          return cached;
+        }
+
+        return new Response("Réseau indisponible (hors ligne)", {
+          status: 503,
+          statusText: "Service Unavailable",
+          headers: {
+            "Content-Type": "text/plain; charset=utf-8"
+          }
+        });
+      }
+    })()
   );
 });
