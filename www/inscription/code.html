@@ -350,11 +350,6 @@
         const data = await res.json();
 
         if (!data.ok) {
-          btn.disabled = false;
-          btn.classList.remove('opacity-80');
-          btnText.textContent = "Recevoir mon code SMS";
-          btnIcon.textContent = "arrow_forward";
-          btnIcon.classList.remove('animate-spin');
           alert(data.error || "Erreur lors de l'envoi du SMS");
           return;
         }
@@ -365,12 +360,13 @@
         }, 400);
 
       } catch (err) {
+        alert("Erreur de connexion : " + err.message);
+      } finally {
         btn.disabled = false;
         btn.classList.remove('opacity-80');
         btnText.textContent = "Recevoir mon code SMS";
         btnIcon.textContent = "arrow_forward";
         btnIcon.classList.remove('animate-spin');
-        alert("Erreur de connexion : " + err.message);
       }
     }
   </script>

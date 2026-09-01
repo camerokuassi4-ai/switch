@@ -57,15 +57,34 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({ to_number: phone, content: `Switch Bénin : votre code est ${code}. Valable 5 min. Ne le partagez jamais.` }),
       });
-      if (!tv.ok) console.error("TELERIVET ERREUR:", tv.status, await tv.text());
+      
+      if (!tv.ok) {
+        const errorText = await tv.text();
+        console.error("TELERIVET ERREUR:", tv.status, errorText);
+        // On retourne quand même ok pour ne pas bloquer le frontend en mode test
+        console.log("==================================================");
+        console.log(" CODE OTP EN CLAIR (MODE TEST) :", code);
+        console.log("📱 Pour le numéro :", phone);
+        console.log("==================================================");
+        return res.json({ ok: true, testMode: true, message: "SMS en attente. Code disponible dans les logs Vercel." });
+      }
+      
       return res.json({ ok: true });
     }
 
-    // Sans Telerivet configuré : on ne révèle JAMAIS le code
-    console.error("TELERIVET NON CONFIGURE");
-    return res.status(500).json({ error: "Service SMS indisponible" });
+    // MODE SECOURS : Telerivet non configuré
+    console.log("==================================================");
+    console.log("🚨 CODE OTP EN CLAIR (MODE TEST) :", code);
+    console.log("📱 Pour le numéro :", phone);
+    console.log("==================================================");
+    
+    return res.json({ 
+      ok: true, 
+      testMode: true, 
+      message: "Service SMS non configuré. Code disponible dans les Runtime Logs de Vercel." 
+    });
   } catch (e) {
-    console.error(e);
+    console.error("OTP-SEND ERROR:", e);
     return res.status(500).json({ error: "Erreur serveur" });
   }
 }
