@@ -184,7 +184,7 @@
         });
         const data = await res.json();
 
-        if (!data.ok) {
+        if (!res.ok || !data.ok) {
           alert(data.error || "Code incorrect ou expiré");
           btn.disabled = false;
           btn.classList.remove('opacity-80');
@@ -193,6 +193,8 @@
           btnIcon.classList.remove('animate-spin');
           return;
         }
+
+        sessionStorage.removeItem('switch_otp_sent_at');
 
         if (data.session && window.SWITCH_API && window.SWITCH_API.supabaseClient) {
           await window.SWITCH_API.supabaseClient.auth.setSession(data.session);
@@ -234,17 +236,19 @@
         if (timerEl) timerEl.textContent = secondsLeft + 's';
         if (secondsLeft <= 0) {
           clearInterval(timerInterval);
+          sessionStorage.removeItem('switch_otp_sent_at');
           const wrapper = document.getElementById('resend-wrapper');
           if (wrapper) wrapper.innerHTML = '<button onclick="restartTimer()" class="text-xs font-bold text-[#5E3BDC] hover:underline cursor-pointer">Renvoyer le code SMS</button>';
         }
       }, 1000);
     }
 
+    let isResending = false;
     async function restartTimer() {
-      secondsLeft = 45;
+      if (isResending) return;
+      isResending = true;
       const wrapper = document.getElementById('resend-wrapper');
-      if (wrapper) wrapper.innerHTML = '<span class="text-xs font-bold text-gray-400">Renvoyer dans <span class="font-mono text-[#5E3BDC] font-extrabold" id="timer-sec">45s</span></span>';
-      startOtpCountdown();
+      if (wrapper) wrapper.innerHTML = '<span class="text-xs font-bold text-gray-400 animate-pulse">Envoi en cours...</span>';
 
       try {
         const res = await fetch('/api/otp-send', {
@@ -253,14 +257,37 @@
           body: JSON.stringify({ phone: userPhoneRaw })
         });
         const data = await res.json();
-        if (data.ok) alert("📨 Un nouveau code SMS a été envoyé au " + userPhone + " !");
-        else alert(data.error || "Erreur lors du renvoi");
+        if (res.ok && data.ok) {
+          sessionStorage.setItem('switch_otp_sent_at', String(Date.now()));
+          secondsLeft = 45;
+          if (wrapper) wrapper.innerHTML = '<span class="text-xs font-bold text-gray-400">Renvoyer dans <span class="font-mono text-[#5E3BDC] font-extrabold" id="timer-sec">45s</span></span>';
+          startOtpCountdown();
+          alert("📨 Un nouveau code SMS a été envoyé au " + userPhone + " !");
+        } else {
+          if (wrapper) wrapper.innerHTML = '<button onclick="restartTimer()" class="text-xs font-bold text-[#5E3BDC] hover:underline cursor-pointer">Renvoyer le code SMS</button>';
+          alert(data.error || "Erreur lors du renvoi du code SMS");
+        }
       } catch (e) {
+        if (wrapper) wrapper.innerHTML = '<button onclick="restartTimer()" class="text-xs font-bold text-[#5E3BDC] hover:underline cursor-pointer">Renvoyer le code SMS</button>';
         alert("Erreur de connexion : " + e.message);
+      } finally {
+        isResending = false;
       }
     }
 
-    startOtpCountdown();
+    // Démarrage conditionnel du timer uniquement si un envoi récent (< 45s) a été confirmé
+    const sentAt = parseInt(sessionStorage.getItem('switch_otp_sent_at') || '0', 10);
+    const elapsed = Math.floor((Date.now() - sentAt) / 1000);
+    if (sentAt > 0 && elapsed < 45) {
+      secondsLeft = 45 - elapsed;
+      const wrapper = document.getElementById('resend-wrapper');
+      if (wrapper) wrapper.innerHTML = '<span class="text-xs font-bold text-gray-400">Renvoyer dans <span class="font-mono text-[#5E3BDC] font-extrabold" id="timer-sec">' + secondsLeft + 's</span></span>';
+      startOtpCountdown();
+    } else {
+      sessionStorage.removeItem('switch_otp_sent_at');
+      const wrapper = document.getElementById('resend-wrapper');
+      if (wrapper) wrapper.innerHTML = '<button onclick="restartTimer()" class="text-xs font-bold text-[#5E3BDC] hover:underline cursor-pointer">Renvoyer le code SMS</button>';
+    }
 
     function resendByWhatsapp() {
       alert("📲 Code envoyé par WhatsApp au " + userPhone + " !");

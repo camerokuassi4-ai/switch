@@ -349,10 +349,12 @@
         });
         const data = await res.json();
 
-        if (!data.ok) {
+        if (!res.ok || !data.ok) {
           alert(data.error || "Erreur lors de l'envoi du SMS");
           return;
         }
+
+        sessionStorage.setItem('switch_otp_sent_at', String(Date.now()));
 
         setTimeout(() => {
           if (window.switchNavigate) window.switchNavigate('../v_rification_otp/code.html');
