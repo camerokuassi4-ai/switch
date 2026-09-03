@@ -49,7 +49,7 @@
       </button>
       <div>
         <h1 class="text-base sm:text-lg font-black text-on-surface tracking-tight">Virement des Recettes</h1>
-        <p id="settle-store-name" class="text-[11px] text-on-surface-variant font-medium">Boutique La Plage • Solde Caisse</p>
+        <p id="settle-store-name" class="text-[11px] text-on-surface-variant font-medium">Mon Commerce Switch • Solde Caisse</p>
       </div>
     </div>
 
@@ -66,7 +66,7 @@
     <div class="settle-hero-gradient rounded-[32px] p-6 text-white shadow-soft flex flex-col items-center text-center relative overflow-hidden">
       <span class="text-[10px] font-black uppercase tracking-wider text-emerald-200 block z-10">Solde Caisse Cumulé Disponible</span>
       <h2 id="settle-avail-balance" class="text-2xl sm:text-3xl font-extrabold font-mono text-white mt-1 z-10">
-        2 450 000 <span class="text-lg font-bold font-sans">FCFA</span>
+        0 <span class="text-lg font-bold font-sans">FCFA</span>
       </h2>
       <p class="text-xs text-emerald-100 mt-1 z-10">
         Fonds transférables instantanément vers votre compte Switch, compte bancaire ou Kiosque Switch.
@@ -84,7 +84,7 @@
       </div>
 
       <div class="flex items-center gap-2 border-b-2 border-emerald-600 pb-2">
-        <input type="number" id="settle-amount-input" value="100000" min="500" step="1000" oninput="validateAmount()" class="w-full bg-transparent border-none p-0 text-2xl sm:text-3xl font-black font-mono text-on-surface focus:ring-0 outline-none" placeholder="0"/>
+        <input type="number" id="settle-amount-input" value="0" min="500" step="1000" oninput="validateAmount()" class="w-full bg-transparent border-none p-0 text-2xl sm:text-3xl font-black font-mono text-on-surface focus:ring-0 outline-none" placeholder="0"/>
         <span class="text-base font-bold font-sans text-gray-500">FCFA</span>
       </div>
 
@@ -115,7 +115,7 @@
                   <h4 class="text-xs font-bold text-on-surface">Mon Compte Personnel Switch</h4>
                   <span class="text-[9px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded">Instantané • 0% Frais</span>
                 </div>
-                <p class="text-[11px] text-on-surface-variant font-mono mt-0.5" id="dest-switch-phone">Portefeuille Adele K. (+229 97 12 34 56)</p>
+                <p class="text-[11px] text-on-surface-variant font-mono mt-0.5" id="dest-switch-phone">Portefeuille Personnel Switch</p>
               </div>
             </div>
             <span class="material-symbols-outlined text-emerald-600 text-xl check-icon">check_circle</span>
@@ -226,14 +226,25 @@
   <script src="../assets/switch.router.js"></script>
 
   <script>
-    const maxBalance = 2450000;
+    let maxBalance = 0;
 
     document.addEventListener("DOMContentLoaded", function () {
-      const bName = localStorage.getItem('switch_merchant_business_name') || "Boutique & Restaurant La Plage";
+      maxBalance = window.SwitchAPI ? window.SwitchAPI.getMerchantBalance() : (parseInt(localStorage.getItem('switch_merchant_balance'), 10) || 0);
+      const availEl = document.getElementById('settle-avail-balance');
+      if (availEl) availEl.innerHTML = `${maxBalance.toLocaleString('fr-FR')} <span class="text-lg font-bold font-sans">FCFA</span>`;
+
+      const bName = localStorage.getItem('switch_merchant_business_name') || "Mon Commerce Switch";
       const appData = JSON.parse(localStorage.getItem('switch_merchant_application') || '{}');
 
       const storeEl = document.getElementById('settle-store-name');
       if (storeEl) storeEl.textContent = bName + " • Solde Caisse";
+
+      const userPhone = localStorage.getItem('switch_user_phone') || appData.phone || "";
+      const userFullName = localStorage.getItem('switch_user_fullname') || "Particulier";
+      const destPhoneEl = document.getElementById('dest-switch-phone');
+      if (destPhoneEl) {
+        destPhoneEl.textContent = `Portefeuille ${userFullName}${userPhone ? ' (' + userPhone + ')' : ''}`;
+      }
 
       if (appData.phone) {
         const momoPhone = document.getElementById('dest-momo-phone');

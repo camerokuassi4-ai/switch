@@ -815,137 +815,372 @@
     },
 
     /**
-     * 9. Récupération du Profil Marchand (Solde Boutique, Chiffre d'Affaires du Jour)
+     * 9. Gestion du Profil et du Tableau de Bord Marchand
      */
+    getMerchantProfile: function () {
+      const stored = localStorage.getItem('switch_merchant_profile');
+      if (stored) {
+        try { return JSON.parse(stored); } catch (e) {}
+      }
+      return {
+        business_name: localStorage.getItem('switch_merchant_business_name') || "Commerce Switch Agréé",
+        manager_name: localStorage.getItem('switch_merchant_manager_name') || localStorage.getItem('switch_user_fullname') || "Commerçant Switch",
+        ifu: localStorage.getItem('switch_merchant_ifu') || "",
+        rccm: localStorage.getItem('switch_merchant_rccm') || "",
+        phone: localStorage.getItem('switch_merchant_phone') || localStorage.getItem('switch_user_phone') || "",
+        city: localStorage.getItem('switch_merchant_city') || "Cotonou",
+        category: localStorage.getItem('switch_merchant_category') || "Commerce & Vente",
+        qr_code_id: localStorage.getItem('switch_merchant_qr_id') || ("SW-MCH-" + (this._generateSecureCode ? this._generateSecureCode(4) : "4820")),
+        pos_id: localStorage.getItem('switch_merchant_pos_id') || "POS-01",
+        avatar_url: localStorage.getItem('switch_merchant_avatar_url') || null,
+        is_active: true
+      };
+    },
+
+    setMerchantProfile: function (profile) {
+      if (!profile || typeof profile !== 'object') return;
+      const current = this.getMerchantProfile();
+      const updated = { ...current, ...profile };
+      localStorage.setItem('switch_merchant_profile', JSON.stringify(updated));
+      if (updated.business_name) localStorage.setItem('switch_merchant_business_name', updated.business_name);
+      if (updated.manager_name) localStorage.setItem('switch_merchant_manager_name', updated.manager_name);
+      if (updated.phone) localStorage.setItem('switch_merchant_phone', updated.phone);
+      if (updated.ifu) localStorage.setItem('switch_merchant_ifu', updated.ifu);
+      if (updated.rccm) localStorage.setItem('switch_merchant_rccm', updated.rccm);
+      if (updated.city) localStorage.setItem('switch_merchant_city', updated.city);
+      if (updated.category) localStorage.setItem('switch_merchant_category', updated.category);
+      if (updated.qr_code_id) localStorage.setItem('switch_merchant_qr_id', updated.qr_code_id);
+      return updated;
+    },
+
+    getMerchantBalance: function () {
+      const stored = localStorage.getItem('switch_merchant_balance');
+      if (stored === null || stored === undefined) return 0;
+      return parseInt(String(stored).replace(/\s/g, ''), 10) || 0;
+    },
+
+    setMerchantBalance: function (amount) {
+      const val = Math.max(0, parseInt(amount, 10) || 0);
+      localStorage.setItem('switch_merchant_balance', val.toString());
+      try {
+        window.dispatchEvent(new CustomEvent('switch:merchant-balance-updated', { detail: { balance: val } }));
+      } catch (e) {}
+      return val;
+    },
+
     getMerchantDashboard: async function () {
       try {
         const data = await supabaseRPC('get_merchant_dashboard_data', {});
         if (data && data.success) {
-          localStorage.setItem('switch_merchant_balance', data.shop_balance.toString());
-          localStorage.setItem('switch_merchant_business_name', data.business_name);
+          this.setMerchantBalance(data.shop_balance);
+          this.setMerchantProfile({ business_name: data.business_name });
           return data;
         }
       } catch (e) {
         console.warn("[SwitchAPI] Merchant Dashboard RPC info :", e.message);
       }
 
-      // Repli local
-      const curBal = parseInt((localStorage.getItem('switch_merchant_balance') || '285000').replace(/\s/g, ''), 10);
+      const prof = this.getMerchantProfile();
+      const bal = this.getMerchantBalance();
+      const sales = this.getMerchantSales();
+
+      let todaySalesCount = 0;
+      let todayTurnover = 0;
+      sales.forEach(s => {
+        todaySalesCount++;
+        todayTurnover += (s.amount || s.total_amount || 0);
+      });
+
       return {
         success: true,
-        business_name: localStorage.getItem('switch_merchant_business_name') || "Boutique & Restaurant La Plage",
-        ifu: "1202019283719",
-        phone: "+229 01 95 00 22 33",
-        shop_balance: curBal,
-        qr_code_id: "SW-MCH-8820",
-        today_sales_count: 18,
-        today_turnover: 142500
+        business_name: prof.business_name,
+        manager_name: prof.manager_name,
+        ifu: prof.ifu,
+        rccm: prof.rccm,
+        phone: prof.phone,
+        city: prof.city,
+        shop_balance: bal,
+        qr_code_id: prof.qr_code_id,
+        today_sales_count: todaySalesCount,
+        today_turnover: todayTurnover,
+        sales: sales
       };
     },
 
     /**
-     * 10. Gestion du Catalogue Produits
+     * 10. Gestion du Catalogue Produits / Services
      */
     getProducts: async function () {
-      try {
-        const rows = await supabaseFetch('products?select=*&is_active=eq.true&order=created_at.desc');
-        if (rows && Array.isArray(rows) && rows.length > 0) {
-          return { success: true, products: rows };
-        }
-      } catch (e) {
-        console.warn("[SwitchAPI] Fetch Products info :", e.message);
-      }
+      return this.getMerchantProducts();
+    },
 
-      // Repli local
+    getMerchantProducts: function () {
       const stored = localStorage.getItem('switch_merchant_products');
       if (stored) {
-        try { return { success: true, products: JSON.parse(stored) }; } catch (e) {}
+        try {
+          const list = JSON.parse(stored);
+          if (Array.isArray(list)) return { success: true, products: list };
+        } catch (e) {}
       }
+      return { success: true, products: [] };
+    },
 
-      return {
-        success: true,
-        products: [
-          { id: "p-01", name: "Jus d'Ananas Naturel 1L", price: 1500, stock_quantity: 45, category: "Boissons" },
-          { id: "p-02", name: "Riz Parfumé Local 5kg", price: 4500, stock_quantity: 20, category: "Alimentation" },
-          { id: "p-03", name: "Pack 6 Savons Bio Coco", price: 2000, stock_quantity: 35, category: "Hygiène" }
-        ]
+    addMerchantProduct: function (prod) {
+      if (!prod || !prod.name) return { success: false, message: "Nom de produit requis." };
+      const res = this.getMerchantProducts();
+      const list = res.products || [];
+      const newProd = {
+        id: prod.id || ("prod-" + Date.now().toString(36) + "-" + Math.floor(Math.random() * 1000)),
+        name: prod.name.trim(),
+        price: Math.max(0, parseInt(prod.price, 10) || 0),
+        category: prod.category || "Général",
+        stock_quantity: prod.stock_quantity !== undefined ? parseInt(prod.stock_quantity, 10) : 10,
+        in_stock: prod.in_stock !== undefined ? Boolean(prod.in_stock) : true,
+        image_url: prod.image_url || null,
+        created_at: new Date().toISOString()
       };
+      list.unshift(newProd);
+      localStorage.setItem('switch_merchant_products', JSON.stringify(list));
+      return { success: true, product: newProd, total: list.length };
+    },
+
+    deleteMerchantProduct: function (productId) {
+      const res = this.getMerchantProducts();
+      const list = (res.products || []).filter(p => p.id !== productId);
+      localStorage.setItem('switch_merchant_products', JSON.stringify(list));
+      return { success: true, total: list.length };
+    },
+
+    updateMerchantProductStock: function (productId, inStock) {
+      const res = this.getMerchantProducts();
+      const list = res.products || [];
+      const prod = list.find(p => p.id === productId);
+      if (prod) {
+        prod.in_stock = inStock;
+        localStorage.setItem('switch_merchant_products', JSON.stringify(list));
+        return { success: true, product: prod };
+      }
+      return { success: false, message: "Produit non trouvé." };
     },
 
     /**
-     * 11. Encaissement Caisse POS (Décrémentation Stock + Paiement)
+     * 11. Journal des Ventes & Encaissements Marchand
+     */
+    getMerchantSales: function () {
+      const stored = localStorage.getItem('switch_merchant_sales');
+      if (stored) {
+        try {
+          const list = JSON.parse(stored);
+          if (Array.isArray(list)) return list;
+        } catch (e) {}
+      }
+      return [];
+    },
+
+    addMerchantSale: function (sale) {
+      const list = this.getMerchantSales();
+      const now = new Date();
+      const newSale = {
+        id: sale.id || ("VNT-" + Date.now().toString(36).toUpperCase()),
+        ref: sale.ref || ("#VNT-" + Math.floor(10000 + Math.random() * 90000)),
+        title: sale.title || "Vente Caisse Marchand",
+        amount: Math.max(0, parseInt(sale.amount || sale.total_amount, 10) || 0),
+        client_name: sale.client_name || "Client Switch",
+        client_phone: sale.client_phone || "",
+        payment_method: sale.payment_method || "QR Switch Pay",
+        channel: sale.channel || "qr",
+        items_count: sale.items_count || 1,
+        items: sale.items || [],
+        date: sale.date || (now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + " • " + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })),
+        created_at: now.toISOString()
+      };
+      list.unshift(newSale);
+      localStorage.setItem('switch_merchant_sales', JSON.stringify(list));
+      return newSale;
+    },
+
+    clearMerchantSales: function () {
+      localStorage.removeItem('switch_merchant_sales');
+      return true;
+    },
+
+    /**
+     * 12. Messagerie Marchand - Clients
+     */
+    getMerchantConversations: function () {
+      const stored = localStorage.getItem('switch_merchant_conversations');
+      if (stored) {
+        try {
+          const list = JSON.parse(stored);
+          if (Array.isArray(list)) return list;
+        } catch (e) {}
+      }
+      return [];
+    },
+
+    sendMerchantMessage: function (conversationId, messageText) {
+      const list = this.getMerchantConversations();
+      let conv = list.find(c => c.id === conversationId);
+      const now = new Date();
+      const msgObj = {
+        id: "msg-" + Date.now(),
+        sender: "merchant",
+        text: messageText,
+        time: now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+        date: now.toISOString()
+      };
+      if (conv) {
+        conv.messages = conv.messages || [];
+        conv.messages.push(msgObj);
+        conv.last_message = messageText;
+        conv.last_time = msgObj.time;
+      } else {
+        conv = {
+          id: conversationId || ("conv-" + Date.now()),
+          client_name: "Client Switch",
+          client_phone: "",
+          messages: [msgObj],
+          last_message: messageText,
+          last_time: msgObj.time
+        };
+        list.unshift(conv);
+      }
+      localStorage.setItem('switch_merchant_conversations', JSON.stringify(list));
+      return { success: true, conversation: conv };
+    },
+
+    /**
+     * 13. Encaissement Caisse POS Tactile (Local / Supabase)
      */
     processPosSale: async function (items, paymentMethod = 'switch', customerPhone = null, note = "Vente Caisse POS") {
-      try {
-        const data = await supabaseRPC('process_pos_sale', {
-          p_items: items,
-          p_payment_method: paymentMethod,
-          p_customer_phone: customerPhone,
-          p_note: note
-        });
-        if (data && data.success) {
-          return data;
-        } else if (data && data.success === false) {
-          return data;
-        }
-      } catch (e) {
-        if (!cfg.OFFLINE_FALLBACK) {
-          return { success: false, message: e.message || "Erreur lors de l'encaissement POS." };
-        }
-        console.warn("[SwitchAPI] POS Sale RPC info :", e.message);
-      }
+      const totalAmount = Array.isArray(items) ? items.reduce((sum, it) => sum + ((it.unit_price || it.price || 0) * (it.quantity || 1)), 0) : 0;
+      if (totalAmount <= 0) return { success: false, message: "Panier vide." };
 
-      // Repli local
-      const totalAmount = items.reduce((sum, it) => sum + (it.unit_price * it.quantity), 0);
-      const curBal = parseInt((localStorage.getItem('switch_merchant_balance') || '285000').replace(/\s/g, ''), 10);
+      const curBal = this.getMerchantBalance();
       const newBal = curBal + totalAmount;
-      localStorage.setItem('switch_merchant_balance', newBal.toString());
+      this.setMerchantBalance(newBal);
+
+      const ref = "SW-POS-" + (this._generateSecureCode ? this._generateSecureCode(6) : Math.floor(100000 + Math.random() * 900000));
+      const sale = this.addMerchantSale({
+        ref: ref,
+        title: note,
+        amount: totalAmount,
+        client_name: customerPhone ? `Client (${customerPhone})` : "Client Comptoir",
+        client_phone: customerPhone || "",
+        payment_method: paymentMethod,
+        channel: "pos",
+        items_count: items.length,
+        items: items
+      });
 
       return {
         success: true,
-        tx_ref: "SW-POS-" + this._generateSecureCode(6),
+        tx_ref: ref,
         total_amount: totalAmount,
         payment_method: paymentMethod,
-        items_count: items.length
+        items_count: items.length,
+        sale: sale
       };
     },
 
     /**
-     * 12. Virement des Encaissements Marchand (Payout vers Compte Personnel)
+     * 14. Double Écriture Atomique : Paiement Client -> Caisse Marchand
      */
-    withdrawMerchantFunds: async function (amount) {
-      try {
-        const data = await supabaseRPC('withdraw_merchant_funds', {
-          p_amount: amount
-        });
-        if (data && data.success) {
-          localStorage.setItem('switch_merchant_balance', data.remaining_shop_balance.toString());
-          return data;
-        } else if (data && data.success === false) {
-          return data;
-        }
-      } catch (e) {
-        if (!cfg.OFFLINE_FALLBACK) {
-          return { success: false, message: e.message || "Erreur lors du virement des encaissements." };
-        }
-        console.warn("[SwitchAPI] Merchant Payout RPC info :", e.message);
+    processMerchantPayment: async function (customerPhone, amount, items = [], note = "Achat Marchand Switch") {
+      const amt = parseInt(amount, 10);
+      if (!amt || amt <= 0) return { success: false, message: "Montant invalide." };
+
+      const clientBal = this.getBalance();
+      if (clientBal < amt) {
+        return { success: false, message: `Solde client insuffisant (${clientBal.toLocaleString('fr-FR')} FCFA dispo pour ${amt.toLocaleString('fr-FR')} FCFA requis).` };
       }
 
-      // Repli local
-      const curBal = parseInt((localStorage.getItem('switch_merchant_balance') || '285000').replace(/\s/g, ''), 10);
-      if (curBal < amount) {
-        return { success: false, message: "Solde de caisse boutique insuffisant." };
-      }
-      const newBal = curBal - amount;
-      localStorage.setItem('switch_merchant_balance', newBal.toString());
-      const curUserBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
-      localStorage.setItem('switch_user_balance', (curUserBal + amount).toString());
+      // 1. Débit Client
+      const newClientBal = clientBal - amt;
+      this.setBalance(newClientBal);
+
+      // 2. Crédit Caisse Marchand
+      const curMerchBal = this.getMerchantBalance();
+      const newMerchBal = curMerchBal + amt;
+      this.setMerchantBalance(newMerchBal);
+
+      const ref = "SW-PAY-" + (this._generateSecureCode ? this._generateSecureCode(6) : Math.floor(100000 + Math.random() * 900000));
+      const prof = this.getMerchantProfile();
+
+      // 3. Enregistrement transaction côté Client
+      this.addTransaction({
+        type: 'payment',
+        title: `Paiement ${prof.business_name}`,
+        amount: -amt,
+        date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }),
+        category: 'shopping',
+        beneficiary: prof.business_name,
+        ref: ref
+      });
+
+      // 4. Enregistrement vente côté Marchand
+      const clientName = localStorage.getItem('switch_user_fullname') || "Client Switch";
+      const sale = this.addMerchantSale({
+        ref: ref,
+        title: note || `Encaissement ${prof.business_name}`,
+        amount: amt,
+        client_name: clientName,
+        client_phone: customerPhone || localStorage.getItem('switch_user_phone') || "",
+        payment_method: "QR Switch Pay",
+        channel: "qr",
+        items_count: items.length || 1,
+        items: items
+      });
 
       return {
         success: true,
-        tx_ref: "SW-PAYOUT-" + this._generateSecureCode(6),
-        amount: amount,
-        remaining_shop_balance: newBal
+        ref: ref,
+        amount: amt,
+        new_client_balance: newClientBal,
+        new_merchant_balance: newMerchBal,
+        sale: sale
+      };
+    },
+
+    /**
+     * 15. Virement des Encaissements Marchand vers Compte Personnel Switch
+     */
+    withdrawMerchantFunds: async function (amount) {
+      const amt = parseInt(amount, 10);
+      if (!amt || amt <= 0) return { success: false, message: "Montant de virement invalide." };
+
+      const curMerchBal = this.getMerchantBalance();
+      if (curMerchBal < amt) {
+        return { success: false, message: `Solde de caisse insuffisant (${curMerchBal.toLocaleString('fr-FR')} FCFA dispo).` };
+      }
+
+      // Débit caisse marchand
+      const newMerchBal = curMerchBal - amt;
+      this.setMerchantBalance(newMerchBal);
+
+      // Crédit compte particulier de l'exploitant
+      const curUserBal = this.getBalance();
+      const newUserBal = curUserBal + amt;
+      this.setBalance(newUserBal);
+
+      const ref = "SW-PAYOUT-" + (this._generateSecureCode ? this._generateSecureCode(6) : Math.floor(100000 + Math.random() * 900000));
+      
+      this.addTransaction({
+        type: 'deposit',
+        title: "Virement Recettes Caisse Marchand",
+        amount: amt,
+        date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }),
+        category: 'transfer',
+        beneficiary: "Compte Particulier",
+        ref: ref
+      });
+
+      return {
+        success: true,
+        tx_ref: ref,
+        amount: amt,
+        remaining_shop_balance: newMerchBal,
+        new_user_balance: newUserBal
       };
     },
 

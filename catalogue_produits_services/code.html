@@ -110,7 +110,7 @@
         <div>
           <span class="text-[10px] font-black uppercase tracking-wider text-purple-200 block">Vitrine Commerçant Switch</span>
           <h2 class="text-xl sm:text-2xl font-black text-white mt-0.5" id="published-count-header">
-            18 Articles avec Photos en Ligne
+            0 Article en Ligne
           </h2>
           <p class="text-xs text-purple-200 mt-0.5 font-medium">Tous vos produits sont visibles avec photos nettes dans les rayons de l'application client.</p>
         </div>
@@ -198,447 +198,17 @@
       </div>
     </div>
 
-    <!-- 3. Grid of Merchant's Published Products (Pre-rendered for 0.00ms Instant Loading) -->
+    <!-- 3. Grid of Merchant's Published Products (Rendu Dynamique) -->
     <div class="grid grid-cols-2 gap-3" id="products-list-container">
-      
-      <!-- ========================================== -->
-      <!-- CATÉGORIE : 👗 BOUTIQUE & MODE (3 Articles) -->
-      <!-- ========================================== -->
-      
-      <!-- Mode 1 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="mode">
-        <div class="w-full h-32 rounded-2xl bg-purple-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&auto=format&fit=crop&q=80" alt="Robe Wax Broderie" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_m1')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-primary block">👗 Mode & Vêtements</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Robe Wax Broderie Africaine</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">25 000 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Robe Wax Broderie Africaine', 25000)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Robe Wax Broderie Africaine', 25000)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
+      <div id="empty-state-products" class="col-span-2 p-12 text-center flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-outline-variant/40 shadow-xs">
+        <span class="material-symbols-outlined text-5xl text-gray-300">inventory_2</span>
+        <h3 class="text-sm font-bold text-gray-700">Votre vitrine est vide</h3>
+        <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Ajoutez vos premiers articles avec photo et prix pour les rendre disponibles aux clients Switch.</p>
+        <button onclick="openPublishModal()" class="mt-2 px-5 py-2.5 rounded-full bg-primary hover:bg-primary-hover text-white text-xs font-black shadow-md cursor-pointer flex items-center gap-2">
+          <span class="material-symbols-outlined text-base">add_photo_alternate</span>
+          <span>Publier mon premier article</span>
+        </button>
       </div>
-
-      <!-- Mode 2 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="mode">
-        <div class="w-full h-32 rounded-2xl bg-purple-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&auto=format&fit=crop&q=80" alt="Chemise Col Mao" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_m2')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-primary block">👗 Mode & Vêtements</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Chemise Homme Lin Col Mao</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">12 500 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Chemise Homme Lin Col Mao', 12500)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Chemise Homme Lin Col Mao', 12500)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- Mode 3 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="mode">
-        <div class="w-full h-32 rounded-2xl bg-purple-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&auto=format&fit=crop&q=80" alt="Sac à Main Cuir" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_m3')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-primary block">👗 Mode & Vêtements</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Sac à Main Cuir Artisanal</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">18 000 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Sac à Main Cuir Artisanal', 18000)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Sac à Main Cuir Artisanal', 18000)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- CATÉGORIE : 💊 PHARMACIE & SANTÉ (3 Articles) -->
-      <!-- ========================================== -->
-
-      <!-- Pharma 1 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="pharmacie">
-        <div class="w-full h-32 rounded-2xl bg-emerald-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80" alt="Paracétamol 500mg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_p1')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-emerald-700 block">💊 Pharmacie & Santé</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Paracétamol 500mg (Boîte 20)</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">800 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Paracétamol 500mg', 800)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Paracétamol 500mg', 800)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- Pharma 2 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="pharmacie">
-        <div class="w-full h-32 rounded-2xl bg-emerald-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?w=500&auto=format&fit=crop&q=80" alt="Tensiomètre Digital" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_p2')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-emerald-700 block">💊 Pharmacie & Santé</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Tensiomètre Bras Électronique</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">22 000 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Tensiomètre Bras Électronique', 22000)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Tensiomètre Bras Électronique', 22000)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- Pharma 3 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="pharmacie">
-        <div class="w-full h-32 rounded-2xl bg-emerald-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1577401239170-897942555fb3?w=500&auto=format&fit=crop&q=80" alt="Vitamine C Zinc" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_p3')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-emerald-700 block">💊 Pharmacie & Santé</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Vitamine C 1000mg + Zinc</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">4 500 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Vitamine C 1000mg + Zinc', 4500)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Vitamine C 1000mg + Zinc', 4500)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- CATÉGORIE : 🥫 ALIMENTATION & VIVRES (3 Articles) -->
-      <!-- ========================================== -->
-
-      <!-- Alimentation 1 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="alimentation">
-        <div class="w-full h-32 rounded-2xl bg-amber-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=500&auto=format&fit=crop&q=80" alt="Pack Eau Minérale" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_a1')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-amber-800 block">🥫 Alimentation & Vivres</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Pack Eau Minérale (6x1.5L)</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">1 500 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Pack Eau Minérale (6x1.5L)', 1500)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Pack Eau Minérale (6x1.5L)', 1500)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- Alimentation 2 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="alimentation">
-        <div class="w-full h-32 rounded-2xl bg-amber-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500&auto=format&fit=crop&q=80" alt="Sac Riz 5kg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_a2')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-amber-800 block">🥫 Alimentation & Vivres</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Sac de Riz 5kg Parfumé Royal</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">4 500 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Sac de Riz 5kg Parfumé Royal', 4500)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Sac de Riz 5kg Parfumé Royal', 4500)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- Alimentation 3 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="alimentation">
-        <div class="w-full h-32 rounded-2xl bg-amber-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500&auto=format&fit=crop&q=80" alt="Huile Végétale 1L" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_a3')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-amber-800 block">🥫 Alimentation & Vivres</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Bouteille Huile Végétale 1L</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">1 100 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Bouteille Huile Végétale 1L', 1100)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Bouteille Huile Végétale 1L', 1100)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- CATÉGORIE : 📱 TÉLÉPHONIE & TECH (3 Articles) -->
-      <!-- ========================================== -->
-
-      <!-- Tech 1 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="tech">
-        <div class="w-full h-32 rounded-2xl bg-indigo-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&auto=format&fit=crop&q=80" alt="Écouteurs TWS" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_t1')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-indigo-700 block">📱 Téléphonie & Tech</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Écouteurs Bluetooth Sans Fil TWS</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">8 500 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Écouteurs Bluetooth Sans Fil TWS', 8500)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Écouteurs Bluetooth Sans Fil TWS', 8500)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- Tech 2 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="tech">
-        <div class="w-full h-32 rounded-2xl bg-indigo-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=500&auto=format&fit=crop&q=80" alt="Chargeur USB-C" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_t2')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-indigo-700 block">📱 Téléphonie & Tech</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Chargeur Rapide USB-C 25W GaN</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">3 500 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Chargeur Rapide USB-C 25W GaN', 3500)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Chargeur Rapide USB-C 25W GaN', 3500)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- Tech 3 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="tech">
-        <div class="w-full h-32 rounded-2xl bg-indigo-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=80" alt="Montre Connectée" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_t3')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-indigo-700 block">📱 Téléphonie & Tech</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Montre Connectée Smartwatch Sport</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">15 000 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Montre Connectée Smartwatch Sport', 15000)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Montre Connectée Smartwatch Sport', 15000)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- CATÉGORIE : 🏗️ MAISON & BTP (3 Articles) -->
-      <!-- ========================================== -->
-
-      <!-- BTP 1 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="quincaillerie">
-        <div class="w-full h-32 rounded-2xl bg-gray-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=500&auto=format&fit=crop&q=80" alt="Sac Ciment Dangote" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_b1')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-gray-700 block">🏗️ Maison & BTP</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Sac de Ciment Dangote 50kg</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">4 200 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Sac de Ciment Dangote 50kg', 4200)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Sac de Ciment Dangote 50kg', 4200)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- BTP 2 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="quincaillerie">
-        <div class="w-full h-32 rounded-2xl bg-gray-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1550985616-10810253b84d?w=500&auto=format&fit=crop&q=80" alt="Ampoules LED" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_b2')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-gray-700 block">🏗️ Maison & BTP</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Pack 4 Ampoules LED 15W Éco</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">3 000 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Pack 4 Ampoules LED 15W Éco', 3000)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Pack 4 Ampoules LED 15W Éco', 3000)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- BTP 3 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="quincaillerie">
-        <div class="w-full h-32 rounded-2xl bg-gray-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=500&auto=format&fit=crop&q=80" alt="Peinture Blanche Acrylique" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_b3')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-gray-700 block">🏗️ Maison & BTP</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Pot Peinture Acrylique 5L</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">9 500 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Pot Peinture Acrylique 5L', 9500)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Pot Peinture Acrylique 5L', 9500)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- CATÉGORIE : 🍲 RESTAURATION & MAQUIS (3 Articles) -->
-      <!-- ========================================== -->
-
-      <!-- Resto 1 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="restauration">
-        <div class="w-full h-32 rounded-2xl bg-orange-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80" alt="Riz Garba Thon" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_r1')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-orange-800 block">🍲 Restauration & Maquis</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Plat Riz Garba & Thon Braisé</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">2 000 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Plat Riz Garba & Thon Braisé', 2000)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Plat Riz Garba & Thon Braisé', 2000)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- Resto 2 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="restauration">
-        <div class="w-full h-32 rounded-2xl bg-orange-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&auto=format&fit=crop&q=80" alt="Poulet Braisé" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_r2')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-orange-800 block">🍲 Restauration & Maquis</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Poulet Braisé & Frites Maison</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">4 500 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Poulet Braisé & Frites Maison', 4500)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Poulet Braisé & Frites Maison', 4500)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
-      <!-- Resto 3 -->
-      <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="restauration">
-        <div class="w-full h-32 rounded-2xl bg-orange-50 relative overflow-hidden flex items-center justify-center">
-          <img src="https://images.unsplash.com/photo-1613478223719-2ab802602423?w=500&auto=format&fit=crop&q=80" alt="Jus Pur Ananas" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-          <button onclick="toggleStock('p_r3')" class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">
-            En Stock
-          </button>
-        </div>
-        <div>
-          <span class="text-[9px] font-bold text-orange-800 block">🍲 Restauration & Maquis</span>
-          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">Bouteille Jus Ananas Gingembre 1L</h3>
-          <span class="text-sm font-black font-mono text-primary block mt-0.5">1 200 FCFA</span>
-        </div>
-        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">
-          <button onclick="shareProductWhatsApp('Bouteille Jus Ananas Gingembre 1L', 1200)" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">
-            <span class="material-symbols-outlined text-xs">share</span> WhatsApp
-          </button>
-          <button onclick="quickQrPayForProduct('Bouteille Jus Ananas Gingembre 1L', 1200)" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">
-            Encaisser
-          </button>
-        </div>
-      </div>
-
     </div>
 
   </main>
@@ -1319,12 +889,9 @@
       };
 
       try {
-        let existingProds = JSON.parse(localStorage.getItem('switch_merchant_custom_products') || '[]');
-        existingProds.unshift(newProductData);
-        localStorage.setItem('switch_merchant_custom_products', JSON.stringify(existingProds));
-
-        if (window.SwitchAPI && window.SwitchAPI.createProduct) {
-          window.SwitchAPI.createProduct({
+        if (window.SwitchAPI && window.SwitchAPI.addMerchantProduct) {
+          window.SwitchAPI.addMerchantProduct({
+            id: uniqueId,
             name: name,
             price: price,
             category: categorySlug,
@@ -1341,19 +908,66 @@
       if (descEl) descEl.value = '';
 
       renderProducts();
-      alert('🎉 Superbe !\nVotre article "' + name + '" a été publié avec succès !\nIl est maintenant immédiatement visible dans la Marketplace des clients Switch Bénin 🇧🇯.');
+      alert('🎉 Superbe !\nVotre article "' + name + '" a été publié avec succès !\nIl est maintenant immédiatement disponible.');
+    }
+
+    function renderProducts() {
+      var grid = document.getElementById('products-list-container');
+      var headerEl = document.getElementById('published-count-header');
+      if (!grid) return;
+
+      var res = window.SwitchAPI ? window.SwitchAPI.getMerchantProducts() : { products: [] };
+      var prods = res.products || [];
+
+      if (headerEl) {
+        headerEl.textContent = prods.length + ' Article' + (prods.length > 1 ? 's' : '') + ' avec Photos en Ligne';
+      }
+
+      if (prods.length === 0) {
+        grid.innerHTML = '\
+          <div id="empty-state-products" class="col-span-2 p-12 text-center flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-outline-variant/40 shadow-xs">\
+            <span class="material-symbols-outlined text-5xl text-gray-300">inventory_2</span>\
+            <h3 class="text-sm font-bold text-gray-700">Votre vitrine est vide</h3>\
+            <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Ajoutez vos premiers articles avec photo et prix pour les rendre disponibles aux clients Switch.</p>\
+            <button onclick="openPublishModal()" class="mt-2 px-5 py-2.5 rounded-full bg-primary hover:bg-primary-hover text-white text-xs font-black shadow-md cursor-pointer flex items-center gap-2">\
+              <span class="material-symbols-outlined text-base">add_photo_alternate</span>\
+              <span>Publier mon premier article</span>\
+            </button>\
+          </div>';
+      } else {
+        grid.innerHTML = prods.map(function(p) {
+          var img = p.image_url || p.photos?.[0] || 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&auto=format&fit=crop&q=80';
+          return '\
+            <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="' + (p.category || 'mode') + '">\
+              <div class="w-full h-32 rounded-2xl bg-purple-50 relative overflow-hidden flex items-center justify-center">\
+                <img src="' + img + '" alt="' + (p.name || '') + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>\
+                <button onclick="toggleStock(\'' + p.id + '\')" class="absolute top-2 right-2 text-[9px] font-black uppercase ' + (p.in_stock !== false ? 'bg-emerald-600' : 'bg-rose-600') + ' text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">\
+                  ' + (p.in_stock !== false ? 'En Stock' : 'Épuisé') + '\
+                </button>\
+              </div>\
+              <div>\
+                <span class="text-[9px] font-bold text-primary block">✨ ' + (p.category || 'Rayon') + '</span>\
+                <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">' + (p.name || '') + '</h3>\
+                <span class="text-sm font-black font-mono text-primary block mt-0.5">' + (p.price || 0).toLocaleString('fr-FR') + ' FCFA</span>\
+              </div>\
+              <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">\
+                <button onclick="shareProductWhatsApp(\'' + (p.name || '').replace(/'/g, "\\'") + '\', ' + (p.price || 0) + ')" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">\
+                  <span class="material-symbols-outlined text-xs">share</span> WhatsApp\
+                </button>\
+                <button onclick="quickQrPayForProduct(\'' + (p.name || '').replace(/'/g, "\\'") + '\', ' + (p.price || 0) + ')" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">\
+                  Encaisser\
+                </button>\
+              </div>\
+            </div>';
+        }).join('');
+      }
     }
 
     // Initialisation
     window.renderProducts = renderProducts;
+    document.addEventListener("DOMContentLoaded", renderProducts);
+    window.addEventListener("pageshow", renderProducts);
     renderProducts();
-
-    // Auto-ouverture si demandé par la navigation / URL
-    if (window.location.search.includes('tab=messages') || window.location.search.includes('openChat=true') || window.location.hash === '#messages') {
-      setTimeout(function () {
-        openMerchantChatHub('Robe Wax Broderie Africaine', 'Amina Kouassi', '25 000 FCFA');
-      }, 150);
-    }
   </script>
 
   <script src="../assets/switch.router.js?v=4.0"></script>

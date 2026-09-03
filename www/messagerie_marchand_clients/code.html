@@ -75,14 +75,14 @@
           <h1 class="text-base sm:text-lg font-black text-on-surface tracking-tight leading-tight">Messages Clients</h1>
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
         </div>
-        <p class="text-[11px] text-on-surface-variant font-medium">Boutique La Plage • 3 discussions actives</p>
+        <p id="merchant-msg-subtitle" class="text-[11px] text-on-surface-variant font-medium">Discussions avec vos acheteurs</p>
       </div>
     </div>
 
     <!-- Switch Pay Security Badge -->
     <div class="bg-purple-50 border border-purple-200 px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-2xs">
       <span class="material-symbols-outlined text-sm text-primary">chat</span>
-      <span class="text-xs font-bold font-mono text-primary">3 non lus</span>
+      <span id="unread-badge-count" class="text-xs font-bold font-mono text-primary">0 non lu</span>
     </div>
   </header>
 
@@ -107,140 +107,24 @@
       <!-- Quick Filter Pills -->
       <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5 text-xs font-bold">
         <button type="button" onclick="setChatFilter('all', this)" class="chat-pill chat-pill-active px-3 py-1.5 rounded-xl border border-transparent transition-colors cursor-pointer shrink-0">
-          Toutes les discussions (3)
+          Toutes les discussions
         </button>
         <button type="button" onclick="setChatFilter('orders', this)" class="chat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
-          🛍️ Commandes en cours (2)
+          🛍️ Commandes en cours
         </button>
         <button type="button" onclick="setChatFilter('paid', this)" class="chat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
-          💳 Paiements validés (1)
+          💳 Paiements validés
         </button>
       </div>
-    </div>
 
-    <!-- 2. Conversations List -->
+    <!-- 2. Conversations List (Rendu Dynamique) -->
     <div class="flex flex-col gap-2.5" id="conversations-list">
-      
-      <!-- Conversation 1 : Amina Kouassi -->
-      <div 
-        onclick="openChatThread('Amina Kouassi', 'Robe Wax Broderie Africaine', '25 000 FCFA', '👗', 'En ligne il y a 2 min', '../assets/images/img_054.jpg', '+229 97 00 11 22')" 
-        class="conv-card bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-xs flex items-center justify-between gap-3 cursor-pointer"
-        data-filter="orders"
-      >
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="relative shrink-0 w-12 h-12 rounded-2xl overflow-hidden border border-purple-100 shadow-2xs" style="width:48px;height:48px;min-width:48px;">
-            <img src="../assets/images/img_054.jpg" alt="Amina Kouassi" class="w-full h-full object-cover" style="width:48px;height:48px;"/>
-            <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white"></span>
-          </div>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center justify-between gap-2">
-              <h3 class="text-xs sm:text-sm font-black text-on-surface truncate">Amina Kouassi</h3>
-              <span class="text-[10px] font-mono font-bold text-primary shrink-0">14:32</span>
-            </div>
-            
-            <!-- Pinned Product Tag -->
-            <div class="flex items-center gap-1.5 my-1">
-              <span class="text-[10px] font-extrabold bg-purple-50 text-primary px-2 py-0.5 rounded-md border border-purple-100 truncate">
-                👗 Robe Wax Broderie • 25 000 F
-              </span>
-            </div>
-
-            <p class="text-xs text-on-surface-variant truncate font-medium">
-              Bonjour, est-ce disponible en taille L à Cotonou ? Je voudrais payer par Switch.
-            </p>
-          </div>
-        </div>
-        
-        <div class="flex flex-col items-end gap-1.5 shrink-0">
-          <span class="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-black flex items-center justify-center shadow-xs">
-            1
-          </span>
-          <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200">
-            Intéressé(e)
-          </span>
-        </div>
+      <div id="empty-state-merchant-messages" class="p-12 text-center flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-outline-variant/40 shadow-xs">
+        <span class="material-symbols-outlined text-5xl text-gray-300">chat_bubble_outline</span>
+        <h3 class="text-sm font-bold text-gray-700">Aucun message client</h3>
+        <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Lorsqu'un acheteur posera une question sur un article de votre vitrine ou passera commande, la discussion s'affichera ici.</p>
       </div>
-
-      <!-- Conversation 2 : Koffi Mensah -->
-      <div 
-        onclick="openChatThread('Koffi Mensah', 'Chemise Homme Lin Col Mao', '12 500 FCFA', '👔', 'En ligne il y a 15 min', '../assets/images/img_053.jpg', '+229 95 00 00 00')" 
-        class="conv-card bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-xs flex items-center justify-between gap-3 cursor-pointer"
-        data-filter="paid"
-      >
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="relative shrink-0 w-12 h-12 rounded-2xl overflow-hidden border border-purple-100 shadow-2xs" style="width:48px;height:48px;min-width:48px;">
-            <img src="../assets/images/img_053.jpg" alt="Koffi Mensah" class="w-full h-full object-cover" style="width:48px;height:48px;"/>
-            <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white"></span>
-          </div>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center justify-between gap-2">
-              <h3 class="text-xs sm:text-sm font-black text-on-surface truncate">Koffi Mensah</h3>
-              <span class="text-[10px] font-mono font-bold text-gray-400 shrink-0">14:15</span>
-            </div>
-            
-            <!-- Pinned Product Tag -->
-            <div class="flex items-center gap-1.5 my-1">
-              <span class="text-[10px] font-extrabold bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-md border border-emerald-200 truncate">
-                👔 Chemise Lin Col Mao • 12 500 F
-              </span>
-            </div>
-
-            <p class="text-xs text-on-surface-variant truncate font-medium">
-              J'ai scanné le QR Code Switch Pay et le paiement est validé !
-            </p>
-          </div>
-        </div>
-        
-        <div class="flex flex-col items-end gap-1.5 shrink-0">
-          <span class="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-black flex items-center justify-center shadow-xs">
-            1
-          </span>
-          <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
-            Payé 🟢
-          </span>
-        </div>
-      </div>
-
-      <!-- Conversation 3 : Tanti Béatrice -->
-      <div 
-        onclick="openChatThread('Tanti Béatrice', 'Sac à Main Cuir Chic', '18 000 FCFA', '👜', 'Vue à 11:30', '../assets/images/img_041.jpg', '+229 61 00 00 02')" 
-        class="conv-card bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-xs flex items-center justify-between gap-3 cursor-pointer"
-        data-filter="orders"
-      >
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="relative shrink-0 w-12 h-12 rounded-2xl overflow-hidden border border-purple-100 shadow-2xs" style="width:48px;height:48px;min-width:48px;">
-            <img src="../assets/images/img_041.jpg" alt="Tanti Béatrice" class="w-full h-full object-cover" style="width:48px;height:48px;"/>
-            <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-gray-400 rounded-full border-2 border-white"></span>
-          </div>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center justify-between gap-2">
-              <h3 class="text-xs sm:text-sm font-black text-on-surface truncate">Tanti Béatrice</h3>
-              <span class="text-[10px] font-mono font-bold text-gray-400 shrink-0">11:30</span>
-            </div>
-            
-            <!-- Pinned Product Tag -->
-            <div class="flex items-center gap-1.5 my-1">
-              <span class="text-[10px] font-extrabold bg-purple-50 text-primary px-2 py-0.5 rounded-md border border-purple-100 truncate">
-                👜 Sac à Main Cuir • 18 000 F
-              </span>
-            </div>
-
-            <p class="text-xs text-on-surface-variant truncate font-medium">
-              Colis bien reçu ce matin par le coursier à Calavi. Merci beaucoup !
-            </p>
-          </div>
-        </div>
-        
-        <div class="flex flex-col items-end gap-1.5 shrink-0">
-          <span class="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-black flex items-center justify-center shadow-xs">
-            1
-          </span>
-          <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-1.5 py-0.2 rounded border border-blue-200">
-            Livré
-          </span>
-        </div>
-      </div>
-
+    </div>
     </div>
 
   </main>
@@ -673,6 +557,45 @@
       container.scrollTop = container.scrollHeight;
       alert(`💳 Demande de paiement Switch Pay envoyée avec succès à ${currentClientName} (${currentProdPrice}) !`);
     }
+
+    function loadConversations() {
+      const listEl = document.getElementById('conversations-list');
+      const subtitleEl = document.getElementById('merchant-msg-subtitle');
+      const badgeEl = document.getElementById('unread-badge-count');
+      const storeName = localStorage.getItem('switch_merchant_business_name') || "Commerce Switch";
+
+      const convs = window.SwitchAPI ? window.SwitchAPI.getMerchantConversations() : [];
+      if (subtitleEl) subtitleEl.textContent = `${storeName} • ${convs.length} discussion${convs.length > 1 ? 's' : ''}`;
+      if (badgeEl) badgeEl.textContent = `${convs.length} conversation${convs.length > 1 ? 's' : ''}`;
+
+      if (!listEl) return;
+      if (convs.length === 0) {
+        listEl.innerHTML = `
+          <div id="empty-state-merchant-messages" class="p-12 text-center flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-outline-variant/40 shadow-xs">
+            <span class="material-symbols-outlined text-5xl text-gray-300">chat_bubble_outline</span>
+            <h3 class="text-sm font-bold text-gray-700">Aucun message client</h3>
+            <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Lorsqu'un acheteur posera une question sur un article de votre vitrine ou passera commande, la discussion s'affichera ici.</p>
+          </div>`;
+      } else {
+        listEl.innerHTML = convs.map(c => `
+          <div onclick="openChatThread('${c.client_name}', '${c.last_message || 'Article'}', '', '🛍️', 'Actif', '', '${c.client_phone || ''}')" class="conv-card bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-xs flex items-center justify-between gap-3 cursor-pointer">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-12 h-12 rounded-2xl bg-purple-100 text-primary flex items-center justify-center font-bold text-sm">
+                ${(c.client_name || 'C').substring(0, 2).toUpperCase()}
+              </div>
+              <div class="min-w-0 flex-1">
+                <h3 class="text-xs sm:text-sm font-black text-on-surface truncate">${c.client_name}</h3>
+                <p class="text-xs text-on-surface-variant truncate font-medium">${c.last_message || 'Discussion ouverte'}</p>
+              </div>
+            </div>
+            <span class="text-[10px] font-mono font-bold text-primary">${c.last_time || ''}</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadConversations);
+    window.addEventListener("pageshow", loadConversations);
 
     // Échap pour fermer
     document.addEventListener('keydown', function(e) {

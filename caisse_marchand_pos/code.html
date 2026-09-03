@@ -507,7 +507,8 @@
 
       try {
         if (window.SwitchAPI && window.SwitchAPI.processPosSale) {
-          await window.SwitchAPI.processPosSale(posItems, 'switch', '+229 01 22 90 19 07', 'Encaissement Caisse POS');
+          const custPhone = localStorage.getItem('switch_user_phone') || null;
+          await window.SwitchAPI.processPosSale(posItems, 'switch', custPhone, 'Encaissement Caisse POS');
         }
       } catch (err) {
         console.warn("Vente POS info :", err);

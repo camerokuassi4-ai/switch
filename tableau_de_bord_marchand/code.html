@@ -54,7 +54,7 @@
           <span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Espace Marchand</span>
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
         </div>
-        <h1 id="merchant-store-name" class="text-base sm:text-lg font-black text-on-surface tracking-tight">Boutique La Plage</h1>
+        <h1 id="merchant-store-name" class="text-base sm:text-lg font-black text-on-surface tracking-tight">Mon Commerce Switch</h1>
       </div>
     </div>
 
@@ -105,12 +105,12 @@
       <!-- Main Amount -->
       <div class="my-2 z-10">
         <h2 id="merchant-balance-amount" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white font-mono">
-          2 450 000 <span class="text-xl sm:text-2xl font-bold font-sans">FCFA</span>
+          0 <span class="text-xl sm:text-2xl font-bold font-sans">FCFA</span>
         </h2>
         <div class="flex items-center gap-3 mt-1.5 text-xs text-emerald-100">
-          <span>Aujourd'hui : <b class="text-white font-mono">+145 000 F</b></span>
+          <span>Aujourd'hui : <b id="today-turnover-badge" class="text-white font-mono">+0 F</b></span>
           <span>•</span>
-          <span class="text-emerald-200 font-bold bg-emerald-800/60 px-2 py-0.5 rounded-full text-[10px]">+12.4% vs hier</span>
+          <span class="text-emerald-200 font-bold bg-emerald-800/60 px-2 py-0.5 rounded-full text-[10px]">Caisse Active</span>
         </div>
       </div>
 
@@ -118,8 +118,8 @@
       <div class="flex justify-between items-center pt-3 border-t border-white/20 z-10">
         <div class="flex items-center gap-1.5 bg-black/20 backdrop-blur-md px-2.5 py-1 rounded-xl border border-white/15">
           <span class="material-symbols-outlined text-xs text-emerald-300">account_balance</span>
-          <span id="merchant-pos-id" class="text-[11px] font-mono font-black tracking-wider text-white">N° Compte : 9700112248</span>
-          <button onclick="navigator.clipboard.writeText('9700112248'); alert('✅ Numéro de compte Marchand copié : 9700112248');" class="text-emerald-300 hover:text-white cursor-pointer ml-1" title="Copier le numéro de compte">
+          <span id="merchant-pos-id" class="text-[11px] font-mono font-black tracking-wider text-white">N° POS : SW-MCH-01</span>
+          <button onclick="copyPosId()" class="text-emerald-300 hover:text-white cursor-pointer ml-1" title="Copier le numéro de compte">
             <span class="material-symbols-outlined text-xs">content_copy</span>
           </button>
         </div>
@@ -199,8 +199,8 @@
           <span class="text-[10px] font-bold uppercase tracking-wider">Aujourd'hui</span>
           <span class="material-symbols-outlined text-emerald-600 text-sm">trending_up</span>
         </div>
-        <span class="text-sm sm:text-base font-extrabold font-mono text-on-surface">145 000 F</span>
-        <span class="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md w-fit">+12% hier</span>
+        <span id="kpi-today-turnover" class="text-sm sm:text-base font-extrabold font-mono text-on-surface">0 F</span>
+        <span class="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md w-fit">En direct</span>
       </div>
 
       <!-- 2. Total Transactions -->
@@ -209,8 +209,8 @@
           <span class="text-[10px] font-bold uppercase tracking-wider">Clients</span>
           <span class="material-symbols-outlined text-indigo-600 text-sm">receipt_long</span>
         </div>
-        <span class="text-sm sm:text-base font-extrabold font-mono text-on-surface">34 tickets</span>
-        <span class="text-[9px] font-medium text-on-surface-variant">En cours</span>
+        <span id="kpi-today-sales-count" class="text-sm sm:text-base font-extrabold font-mono text-on-surface">0 vente</span>
+        <span class="text-[9px] font-medium text-on-surface-variant">Aujourd'hui</span>
       </div>
 
       <!-- 3. Panier Moyen -->
@@ -219,7 +219,7 @@
           <span class="text-[10px] font-bold uppercase tracking-wider">Panier Moy.</span>
           <span class="material-symbols-outlined text-amber-600 text-sm">shopping_cart</span>
         </div>
-        <span class="text-sm sm:text-base font-extrabold font-mono text-on-surface">4 265 F</span>
+        <span id="kpi-average-basket" class="text-sm sm:text-base font-extrabold font-mono text-on-surface">0 F</span>
         <span class="text-[9px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded-md w-fit">Par vente</span>
       </div>
     </div>
@@ -263,7 +263,7 @@
 
       <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center text-xs">
         <span class="text-on-surface-variant">Total cette semaine</span>
-        <span class="font-extrabold font-mono text-emerald-800 text-sm">840 500 FCFA</span>
+        <span id="kpi-week-total" class="font-extrabold font-mono text-emerald-800 text-sm">0 FCFA</span>
       </div>
     </div>
 
@@ -344,57 +344,12 @@
         </a>
       </div>
 
-      <div class="flex flex-col divide-y divide-gray-100">
-        <!-- Transaction 1 : QR Compte Switch -->
-        <a href="../d_tail_d_une_vente/code.html" class="py-3 flex items-center justify-between hover:bg-gray-50/60 px-1 rounded-xl transition-colors no-underline">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs">
-              <span class="material-symbols-outlined text-lg">qr_code_2</span>
-            </div>
-            <div>
-              <h4 class="text-xs font-bold text-on-surface">Paiement QR • Compte Switch</h4>
-              <p class="text-[10px] text-on-surface-variant">Client: Dossou Christian • 14:32</p>
-            </div>
-          </div>
-          <div class="text-right">
-            <span class="text-xs font-black font-mono text-emerald-700 block">+18 500 F</span>
-            <span class="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-full">Réussi</span>
-          </div>
-        </a>
-
-        <!-- Transaction 2 : Caisse Express POS -->
-        <a href="../d_tail_d_une_vente/code.html" class="py-3 flex items-center justify-between hover:bg-gray-50/60 px-1 rounded-xl transition-colors no-underline">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-800 flex items-center justify-center font-bold text-xs">
-              <span class="material-symbols-outlined text-lg">point_of_sale</span>
-            </div>
-            <div>
-              <h4 class="text-xs font-bold text-on-surface">Vente Caisse POS • Compte Switch</h4>
-              <p class="text-[10px] text-on-surface-variant">Client: Jeanne Agbo • 13:15</p>
-            </div>
-          </div>
-          <div class="text-right">
-            <span class="text-xs font-black font-mono text-emerald-700 block">+4 200 F</span>
-            <span class="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-full">Réussi</span>
-          </div>
-        </a>
-
-        <!-- Transaction 3 : Lien de Paiement -->
-        <a href="../d_tail_d_une_vente/code.html" class="py-3 flex items-center justify-between hover:bg-gray-50/60 px-1 rounded-xl transition-colors no-underline">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-800 flex items-center justify-center font-bold text-xs">
-              <span class="material-symbols-outlined text-lg">link</span>
-            </div>
-            <div>
-              <h4 class="text-xs font-bold text-on-surface">Lien Web Pay • Compte Switch</h4>
-              <p class="text-[10px] text-on-surface-variant">Commande en ligne #8821 • 11:40</p>
-            </div>
-          </div>
-          <div class="text-right">
-            <span class="text-xs font-black font-mono text-emerald-700 block">+35 000 F</span>
-            <span class="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-full">Réussi</span>
-          </div>
-        </a>
+      <div id="merchant-recent-sales-list" class="flex flex-col divide-y divide-gray-100">
+        <div id="empty-state-merchant-sales" class="p-8 text-center flex flex-col items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-4xl text-gray-300">point_of_sale</span>
+          <p class="text-xs font-bold text-gray-600">Aucun encaissement aujourd'hui</p>
+          <p class="text-[10px] text-gray-400 max-w-xs">Vos encaissements par QR Code Switch Pay et caisse POS s'afficheront ici en temps réel.</p>
+        </div>
       </div>
     </div>
 
@@ -440,33 +395,81 @@
 
   <script>
     let isBalanceHidden = false;
-    let currentShopBalance = 285000;
+    let currentShopBalance = 0;
     const hiddenBalanceText = "•••••••• FCFA";
+
+    function copyPosId() {
+      const posIdEl = document.getElementById('merchant-pos-id');
+      const val = posIdEl ? posIdEl.textContent.replace('N° POS : ', '').trim() : 'SW-MCH-01';
+      navigator.clipboard.writeText(val);
+      alert('✅ Identifiant POS Marchand copié : ' + val);
+    }
 
     async function loadMerchantData() {
       try {
         if (window.SwitchAPI && window.SwitchAPI.getMerchantDashboard) {
           const data = await window.SwitchAPI.getMerchantDashboard();
           if (data && data.success) {
-            currentShopBalance = parseInt(data.shop_balance) || 285000;
+            currentShopBalance = parseInt(data.shop_balance, 10) || 0;
             const balanceEl = document.getElementById('merchant-balance-amount');
             const storeNameEl = document.getElementById('merchant-store-name');
             const posIdEl = document.getElementById('merchant-pos-id');
+            const turnoverBadge = document.getElementById('today-turnover-badge');
+            const kpiTurnover = document.getElementById('kpi-today-turnover');
+            const kpiCount = document.getElementById('kpi-today-sales-count');
+            const kpiWeek = document.getElementById('kpi-week-total');
 
             if (balanceEl && !isBalanceHidden) {
               balanceEl.innerHTML = `${currentShopBalance.toLocaleString('fr-FR')} <span class="text-xl sm:text-2xl font-bold font-sans">FCFA</span>`;
             }
             if (storeNameEl && data.business_name) {
               storeNameEl.textContent = data.business_name;
-              // ✅ RÈGLE 3 : Avatar initiales de la boutique
               const mAvWrapper = document.getElementById('merchant-avatar-wrapper');
               if (mAvWrapper && window.SwitchAPI) {
                 mAvWrapper.innerHTML = window.SwitchAPI.getAvatarHtml(data.business_name, null, 44);
               }
-              localStorage.setItem('switch_merchant_business_name', data.business_name);
             }
             if (posIdEl && data.qr_code_id) {
               posIdEl.textContent = `N° POS : ${data.qr_code_id}`;
+            }
+
+            const turnover = data.today_turnover || 0;
+            const salesCount = data.today_sales_count || 0;
+            if (turnoverBadge) turnoverBadge.textContent = `+${turnover.toLocaleString('fr-FR')} F`;
+            if (kpiTurnover) kpiTurnover.textContent = `${turnover.toLocaleString('fr-FR')} F`;
+            if (kpiCount) kpiCount.textContent = `${salesCount} vente(s)`;
+            if (kpiWeek) kpiWeek.textContent = `${turnover.toLocaleString('fr-FR')} FCFA`;
+
+            // Rendu dynamique des encaissements
+            const salesListContainer = document.getElementById('merchant-recent-sales-list');
+            if (salesListContainer) {
+              const sales = data.sales || [];
+              if (sales.length === 0) {
+                salesListContainer.innerHTML = `
+                  <div id="empty-state-merchant-sales" class="p-8 text-center flex flex-col items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-4xl text-gray-300">point_of_sale</span>
+                    <p class="text-xs font-bold text-gray-600">Aucun encaissement aujourd'hui</p>
+                    <p class="text-[10px] text-gray-400 max-w-xs">Vos encaissements par QR Code Switch Pay et caisse POS s'afficheront ici en temps réel.</p>
+                  </div>`;
+              } else {
+                salesListContainer.innerHTML = sales.slice(0, 5).map(s => `
+                  <div class="py-3 flex items-center justify-between hover:bg-gray-50/60 px-1 rounded-xl transition-colors">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs">
+                        <span class="material-symbols-outlined text-lg">${s.channel === 'pos' ? 'point_of_sale' : 'qr_code_2'}</span>
+                      </div>
+                      <div>
+                        <h4 class="text-xs font-bold text-on-surface">${s.title || 'Encaissement Client'}</h4>
+                        <p class="text-[10px] text-on-surface-variant">Client : ${s.client_name || 'Client Switch'} • ${s.date || "Aujourd'hui"}</p>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                      <span class="text-xs font-black font-mono text-emerald-700 block">+${(s.amount || 0).toLocaleString('fr-FR')} F</span>
+                      <span class="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-full">Réussi</span>
+                    </div>
+                  </div>
+                `).join('');
+              }
             }
           }
         }
@@ -476,6 +479,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", loadMerchantData);
+    window.addEventListener("pageshow", loadMerchantData);
 
     function switchToPersonalAccount() {
       const hasPersonalAccount = localStorage.getItem('switch_user_registered') === 'true' || localStorage.getItem('switch_user_profile') !== null;

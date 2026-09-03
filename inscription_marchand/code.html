@@ -375,6 +375,21 @@
         localStorage.setItem('switch_active_role', 'merchant');
         sessionStorage.setItem('switchActiveSpace', 'merchant');
 
+        if (window.SwitchAPI) {
+          window.SwitchAPI.setMerchantProfile({
+            business_name: merchantData.businessName,
+            manager_name: merchantData.managerName,
+            ifu: ifu,
+            rccm: merchantData.rccm,
+            phone: formattedDisplayPhone,
+            city: merchantData.city,
+            category: "Commerce & Vente"
+          });
+          if (localStorage.getItem('switch_merchant_balance') === null) {
+            window.SwitchAPI.setMerchantBalance(0);
+          }
+        }
+
         // ⭐ ENVOI DU SMS OTP via notre moteur Telerivet
         try {
           const res = await fetch('/api/otp-send', {

@@ -64,7 +64,7 @@
       </a>
       <div>
         <h1 class="text-sm sm:text-base font-extrabold text-on-surface tracking-tight leading-tight">Journal des Ventes</h1>
-        <p class="text-[10px] text-on-surface-variant font-medium">Kiosque & Boutique Saint-Michel • Ventes certifiées</p>
+        <p id="sales-store-subtitle" class="text-[10px] text-on-surface-variant font-medium">Journal certifié des encaissements</p>
       </div>
     </div>
 
@@ -84,26 +84,26 @@
         <div>
           <span class="text-[10px] font-black uppercase tracking-wider text-emerald-200 block">Total Encaissé (Aujourd'hui)</span>
           <h2 id="total-revenue-kpi" class="text-2xl sm:text-3xl font-extrabold font-mono text-white mt-0.5">
-            385 000 <span class="text-lg font-bold font-sans">FCFA</span>
+            0 <span class="text-lg font-bold font-sans">FCFA</span>
           </h2>
         </div>
-        <span class="text-[10px] font-bold bg-white/20 backdrop-blur-md text-emerald-100 px-2.5 py-1 rounded-full border border-white/25">
-          42 ventes
+        <span id="total-sales-count-badge" class="text-[10px] font-bold bg-white/20 backdrop-blur-md text-emerald-100 px-2.5 py-1 rounded-full border border-white/25">
+          0 vente
         </span>
       </div>
 
       <div class="grid grid-cols-3 gap-2 text-xs pt-3 border-t border-white/20 z-10">
         <div>
           <span class="text-[10px] text-emerald-200 block">QR Switch (0%)</span>
-          <span class="font-bold font-mono text-white">215 000 F</span>
+          <span id="kpi-qr-sales" class="font-bold font-mono text-white">0 F</span>
         </div>
         <div>
-          <span class="text-[10px] text-emerald-200 block">Caisse POS 80mm</span>
-          <span class="font-bold font-mono text-white">125 000 F</span>
+          <span class="text-[10px] text-emerald-200 block">Caisse POS</span>
+          <span id="kpi-pos-sales" class="font-bold font-mono text-white">0 F</span>
         </div>
         <div>
-          <span class="text-[10px] text-emerald-200 block">Dettes Recouvrées</span>
-          <span class="font-bold font-mono text-white">45 000 F</span>
+          <span class="text-[10px] text-emerald-200 block">Autres</span>
+          <span id="kpi-other-sales" class="font-bold font-mono text-white">0 F</span>
         </div>
       </div>
 
@@ -137,6 +137,7 @@
       </div>
 
       <!-- Channel Filters (QR Switch, POS, Espèces, Dettes) -->
+      <!-- Channel Filters -->
       <div class="flex items-center gap-1.5 pt-2 border-t border-gray-100 overflow-x-auto no-scrollbar text-[11px] font-semibold">
         <span class="text-gray-400 font-bold uppercase text-[9px] mr-1 shrink-0">Canal:</span>
         <button onclick="setChannel('all', this)" class="chan-pill bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-lg border border-emerald-300 shrink-0 font-bold">Tous</button>
@@ -146,105 +147,13 @@
       </div>
     </div>
 
-    <!-- 3. Sales Feed (Grouped by Date) -->
+    <!-- 3. Sales Feed (Rendu Dynamique) -->
     <div class="flex flex-col gap-3" id="sales-feed-container">
-      
-      <!-- Group: Aujourd'hui -->
-      <div class="flex flex-col gap-2 sales-group" data-period="today">
-        <div class="flex justify-between items-center px-1">
-          <span class="text-xs font-black uppercase tracking-wider text-on-surface-variant">Aujourd'hui • 26 Août 2026</span>
-          <span class="text-[11px] font-bold font-mono text-emerald-700">385 000 FCFA</span>
-        </div>
-
-        <div class="bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col divide-y divide-gray-100">
-          
-          <!-- Item 1: Switch QR -->
-          <div onclick="showSaleDetail('VNT-8821', 'M. Dossou Christian', 3150, 'QR Switch Pay (0%)', 'Pain + 2 Packs Eau', '14:10')" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors cursor-pointer" data-channel="qr" data-title="Dossou Christian" data-ref="#VNT-8821">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0">
-                <span class="material-symbols-outlined text-lg">qr_code_2</span>
-              </div>
-              <div>
-                <div class="flex items-center gap-1.5">
-                  <span class="text-xs font-bold text-on-surface">M. Dossou Christian</span>
-                  <span class="text-[9px] font-bold bg-emerald-50 text-emerald-700 px-1.5 py-0.2 rounded border border-emerald-200">QR 0%</span>
-                </div>
-                <p class="text-[10px] text-on-surface-variant mt-0.5">Pain + 2 Packs Eau • 14:10</p>
-                <p class="text-[9px] text-gray-400 font-mono">#VNT-8821</p>
-              </div>
-            </div>
-            <div class="text-right">
-              <span class="text-xs font-mono font-black text-emerald-600 block">+3 150 FCFA</span>
-              <span class="text-[9px] text-emerald-700 font-bold">Payé instantané</span>
-            </div>
-          </div>
-
-          <!-- Item 2: POS Espèces -->
-          <div onclick="showSaleDetail('VNT-8820', 'Client Comptoir', 4500, 'Caisse POS 80mm', 'Huile 1L + 4 Savons', '12:45')" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors cursor-pointer" data-channel="pos" data-title="Client Comptoir" data-ref="#VNT-8820">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-800 flex items-center justify-center font-bold text-xs shrink-0">
-                <span class="material-symbols-outlined text-lg">point_of_sale</span>
-              </div>
-              <div>
-                <div class="flex items-center gap-1.5">
-                  <span class="text-xs font-bold text-on-surface">Vente Comptoir POS</span>
-                  <span class="text-[9px] font-bold bg-indigo-50 text-indigo-700 px-1.5 py-0.2 rounded border border-indigo-200">Ticket #042</span>
-                </div>
-                <p class="text-[10px] text-on-surface-variant mt-0.5">Huile 1L + 4 Savons • 12:45</p>
-                <p class="text-[9px] text-gray-400 font-mono">#VNT-8820</p>
-              </div>
-            </div>
-            <div class="text-right">
-              <span class="text-xs font-mono font-black text-emerald-600 block">+4 500 FCFA</span>
-              <span class="text-[9px] text-gray-600 font-medium">Espèces reçues</span>
-            </div>
-          </div>
-
-          <!-- Item 3: Dette Soldée -->
-          <div onclick="showSaleDetail('VNT-8819', 'Tanti Béatrice', 5000, 'Carnet de Dettes', 'Remboursement provisions crédit', '11:20')" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors cursor-pointer" data-channel="debt" data-title="Tanti Béatrice" data-ref="#VNT-8819">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs shrink-0">
-                <span class="material-symbols-outlined text-lg">menu_book</span>
-              </div>
-              <div>
-                <div class="flex items-center gap-1.5">
-                  <span class="text-xs font-bold text-on-surface">Tanti Béatrice (Couturière)</span>
-                  <span class="text-[9px] font-bold bg-amber-50 text-amber-700 px-1.5 py-0.2 rounded border border-amber-200">Dette Soldée</span>
-                </div>
-                <p class="text-[10px] text-on-surface-variant mt-0.5">Remboursement ardoise • 11:20</p>
-                <p class="text-[9px] text-gray-400 font-mono">#VNT-8819</p>
-              </div>
-            </div>
-            <div class="text-right">
-              <span class="text-xs font-mono font-black text-amber-700 block">+5 000 FCFA</span>
-              <span class="text-[9px] text-amber-800 font-bold">Encaissé ✅</span>
-            </div>
-          </div>
-
-          <!-- Item 4: Vente Express Riz -->
-          <div onclick="showSaleDetail('VNT-8818', 'Koffi Paul', 3500, 'QR Switch Pay (0%)', 'Riz 5kg Parfumé', '10:05')" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors cursor-pointer" data-channel="qr" data-title="Koffi Paul" data-ref="#VNT-8818">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0">
-                <span class="material-symbols-outlined text-lg">qr_code_2</span>
-              </div>
-              <div>
-                <div class="flex items-center gap-1.5">
-                  <span class="text-xs font-bold text-on-surface">Koffi Paul</span>
-                  <span class="text-[9px] font-bold bg-emerald-50 text-emerald-700 px-1.5 py-0.2 rounded border border-emerald-200">QR 0%</span>
-                </div>
-                <p class="text-[10px] text-on-surface-variant mt-0.5">Riz 5kg Parfumé • 10:05</p>
-                <p class="text-[9px] text-gray-400 font-mono">#VNT-8818</p>
-              </div>
-            </div>
-            <div class="text-right">
-              <span class="text-xs font-mono font-black text-emerald-600 block">+3 500 FCFA</span>
-              <span class="text-[9px] text-emerald-700 font-bold">Payé instantané</span>
-            </div>
-          </div>
-
-        </div>
+      <div id="empty-state-sales" class="p-12 text-center flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-outline-variant/40 shadow-xs">
+        <span class="material-symbols-outlined text-5xl text-gray-300">receipt_long</span>
+        <h3 class="text-sm font-bold text-gray-700">Aucune vente enregistrée</h3>
+        <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Toutes vos ventes par QR Code Switch Pay et caisse POS s'inscriront automatiquement dans ce journal certifié.</p>
       </div>
-
     </div>
 
   </main>
@@ -265,9 +174,10 @@
       <div class="flex flex-col gap-2">
         <label class="text-[11px] font-bold text-on-surface-variant">Période du Relevé :</label>
         <select id="export-period" class="w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl p-3 text-xs font-bold text-on-surface">
-          <option value="today">Aujourd'hui (26 Août 2026)</option>
-          <option value="week">Cette Semaine (385 000 FCFA)</option>
-          <option value="month">Ce Mois d'Août (1 850 000 FCFA)</option>
+          <option value="today">Aujourd'hui</option>
+          <option value="week">Cette Semaine</option>
+          <option value="month">Ce Mois</option>
+          <option value="all">Tout l'historique</option>
         </select>
       </div>
 
@@ -317,23 +227,77 @@
       });
     }
 
-    function showSaleDetail(ref, client, amount, channel, items, time) {
-      alert(`🧾 DÉTAIL DE LA VENTE #${ref}\n━━━━━━━━━━━━━━━━━━━━\n• Client : ${client}\n• Montant : ${amount.toLocaleString('fr-FR')} FCFA\n• Canal : ${channel}\n• Articles : ${items}\n• Heure : ${time}\n• Statut : Validé et scellé ✅`);
+    function loadSalesData() {
+      const feedEl = document.getElementById('sales-feed-container');
+      const revKpi = document.getElementById('total-revenue-kpi');
+      const countBadge = document.getElementById('total-sales-count-badge');
+      const qrKpi = document.getElementById('kpi-qr-sales');
+      const posKpi = document.getElementById('kpi-pos-sales');
+      const otherKpi = document.getElementById('kpi-other-sales');
+      const subtitleEl = document.getElementById('sales-store-subtitle');
+      const storeName = localStorage.getItem('switch_merchant_business_name') || "Commerce Switch";
+
+      if (subtitleEl) subtitleEl.textContent = `${storeName} • Ventes certifiées`;
+
+      const sales = window.SwitchAPI ? window.SwitchAPI.getMerchantSales() : [];
+
+      let totalRev = 0;
+      let qrRev = 0;
+      let posRev = 0;
+      let otherRev = 0;
+
+      sales.forEach(s => {
+        const amt = s.amount || 0;
+        totalRev += amt;
+        if (s.channel === 'qr') qrRev += amt;
+        else if (s.channel === 'pos') posRev += amt;
+        else otherRev += amt;
+      });
+
+      if (revKpi) revKpi.innerHTML = `${totalRev.toLocaleString('fr-FR')} <span class="text-lg font-bold font-sans">FCFA</span>`;
+      if (countBadge) countBadge.textContent = `${sales.length} vente(s)`;
+      if (qrKpi) qrKpi.textContent = `${qrRev.toLocaleString('fr-FR')} F`;
+      if (posKpi) posKpi.textContent = `${posRev.toLocaleString('fr-FR')} F`;
+      if (otherKpi) otherKpi.textContent = `${otherRev.toLocaleString('fr-FR')} F`;
+
+      if (!feedEl) return;
+      if (sales.length === 0) {
+        feedEl.innerHTML = `
+          <div id="empty-state-sales" class="p-12 text-center flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-outline-variant/40 shadow-xs">
+            <span class="material-symbols-outlined text-5xl text-gray-300">receipt_long</span>
+            <h3 class="text-sm font-bold text-gray-700">Aucune vente enregistrée</h3>
+            <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Toutes vos ventes par QR Code Switch Pay et caisse POS s'inscriront automatiquement dans ce journal certifié.</p>
+          </div>`;
+      } else {
+        feedEl.innerHTML = `
+          <div class="bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col divide-y divide-gray-100">
+            ${sales.map(s => `
+              <div onclick="showSaleDetail('${s.ref}', '${s.client_name}', ${s.amount}, '${s.payment_method}', '${s.title}', '${s.date}')" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors cursor-pointer" data-channel="${s.channel || 'qr'}" data-title="${s.client_name}" data-ref="${s.ref}">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0">
+                    <span class="material-symbols-outlined text-lg">${s.channel === 'pos' ? 'point_of_sale' : 'qr_code_2'}</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-xs font-bold text-on-surface">${s.client_name || 'Client Switch'}</span>
+                      <span class="text-[9px] font-bold bg-emerald-50 text-emerald-700 px-1.5 py-0.2 rounded border border-emerald-200">${s.payment_method || 'QR 0%'}</span>
+                    </div>
+                    <p class="text-[10px] text-on-surface-variant mt-0.5">${s.title || 'Vente'} • ${s.date || ''}</p>
+                    <p class="text-[9px] text-gray-400 font-mono">${s.ref || ''}</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs font-mono font-black text-emerald-600 block">+${(s.amount || 0).toLocaleString('fr-FR')} FCFA</span>
+                  <span class="text-[9px] text-emerald-700 font-bold">Encaissé ✅</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>`;
+      }
     }
 
-    function openExportModal() {
-      document.getElementById('export-modal').classList.remove('hidden');
-    }
-
-    function closeExportModal() {
-      document.getElementById('export-modal').classList.add('hidden');
-    }
-
-    function confirmExport() {
-      const period = document.getElementById('export-period').value;
-      closeExportModal();
-      alert(`✅ Relevé Comptable Certifié Switch (Kiosque & Boutique Saint-Michel - ${period.toUpperCase()}) téléchargé avec succès !`);
-    }
+    document.addEventListener("DOMContentLoaded", loadSalesData);
+    window.addEventListener("pageshow", loadSalesData);
   </script>
 
   <script src="../assets/switch.router.js?v=3.0"></script>

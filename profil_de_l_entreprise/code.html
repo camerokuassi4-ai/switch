@@ -68,8 +68,8 @@
         </span>
       </div>
 
-      <h2 id="profile-store-name" class="text-xl font-black text-white tracking-tight relative z-10">Boutique & Restaurant La Plage</h2>
-      <p id="profile-manager-name" class="text-xs text-emerald-100 mt-0.5 relative z-10">Gérant : Kossivi Jean DOSSOU</p>
+      <h2 id="profile-store-name" class="text-xl font-black text-white tracking-tight relative z-10">Commerce Switch Agréé</h2>
+      <p id="profile-manager-name" class="text-xs text-emerald-100 mt-0.5 relative z-10">Gérant : Commerçant Switch</p>
 
       <div class="flex items-center gap-2 mt-3 relative z-10 flex-wrap justify-center" id="profile-sectors-container">
         <span class="text-[10px] font-bold bg-white/20 backdrop-blur-md px-3 py-1 rounded-full border border-white/25">Boutique & Retail</span>
@@ -96,16 +96,16 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
         <div class="p-3 bg-surface-container-low/50 rounded-2xl border border-outline-variant/40 flex flex-col gap-1">
           <span class="text-[10px] font-bold uppercase text-on-surface-variant">Numéro IFU (13 chiffres)</span>
-          <span id="profile-ifu" class="font-mono font-extrabold text-sm text-emerald-800">3201910293847</span>
+          <span id="profile-ifu" class="font-mono font-extrabold text-sm text-emerald-800">Non renseigné</span>
           <span class="text-[10px] text-emerald-700 font-medium flex items-center gap-1 mt-0.5">
-            <span class="material-symbols-outlined text-xs">verified</span> Actif à la Direction Générale des Impôts
+            <span class="material-symbols-outlined text-xs">verified</span> Registre DGI Bénin
           </span>
         </div>
 
         <div class="p-3 bg-surface-container-low/50 rounded-2xl border border-outline-variant/40 flex flex-col gap-1">
           <span class="text-[10px] font-bold uppercase text-on-surface-variant">Registre de Commerce (RCCM)</span>
-          <span id="profile-rccm" class="font-mono font-bold text-sm text-on-surface">RB/COT/21 B 14920</span>
-          <span class="text-[10px] text-gray-500 mt-0.5">Greffe du Tribunal de Cotonou</span>
+          <span id="profile-rccm" class="font-mono font-bold text-sm text-on-surface">Non renseigné</span>
+          <span class="text-[10px] text-gray-500 mt-0.5">Greffe du Tribunal de Commerce</span>
         </div>
       </div>
     </div>
@@ -130,7 +130,7 @@
           </div>
           <div class="flex-1">
             <span class="text-[10px] text-on-surface-variant block font-bold">Emplacement</span>
-            <span id="profile-address" class="font-semibold text-on-surface">Haie Vive, Face pharmacie du Camp, Cotonou</span>
+            <span id="profile-address" class="font-semibold text-on-surface">Cotonou, Bénin</span>
           </div>
         </div>
 
@@ -141,7 +141,7 @@
           </div>
           <div class="flex-1">
             <span class="text-[10px] text-on-surface-variant block font-bold">Téléphone Principal & Compte Switch</span>
-            <span id="profile-phone" class="font-mono font-bold text-on-surface">+229 97 12 34 56</span>
+            <span id="profile-phone" class="font-mono font-bold text-on-surface">Non renseigné</span>
           </div>
         </div>
 
@@ -152,7 +152,7 @@
           </div>
           <div class="flex-1">
             <span class="text-[10px] text-on-surface-variant block font-bold">Email Relevés Caisse</span>
-            <span id="profile-email" class="font-semibold text-on-surface">contact@boutiquelaplage.bj</span>
+            <span id="profile-email" class="font-semibold text-on-surface">Non renseigné</span>
           </div>
         </div>
       </div>
@@ -264,39 +264,35 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const bName = localStorage.getItem('switch_merchant_business_name') || "Boutique & Restaurant La Plage";
+      const prof = window.SwitchAPI ? window.SwitchAPI.getMerchantProfile() : {};
       const appData = JSON.parse(localStorage.getItem('switch_merchant_application') || '{}');
 
+      const bName = prof.business_name || appData.businessName || "Commerce Switch Agréé";
+      const mName = prof.manager_name || appData.managerName || "Commerçant Switch";
+      const ifu = prof.ifu || appData.ifu || "Non renseigné";
+      const rccm = prof.rccm || appData.rccm || "Non renseigné";
+      const phone = prof.phone || appData.phone || "";
+      const city = prof.city || appData.city || "Cotonou, Bénin";
+      const email = appData.email || "Non renseigné";
+
       document.getElementById('profile-store-name').textContent = bName;
-      if (appData.managerName) {
-        document.getElementById('profile-manager-name').textContent = "Gérant : " + appData.managerName;
-      }
-      if (appData.ifu) {
-        document.getElementById('profile-ifu').textContent = appData.ifu;
-      }
-      if (appData.rccm) {
-        document.getElementById('profile-rccm').textContent = appData.rccm;
-      }
-      if (appData.neighborhood) {
-        document.getElementById('profile-address').textContent = appData.neighborhood + (appData.city ? ', ' + appData.city : '');
-      }
-      if (appData.phone) {
-        document.getElementById('profile-phone').textContent = "+229 " + appData.phone;
-      }
-      if (appData.email) {
-        document.getElementById('profile-email').textContent = appData.email;
-      }
+      document.getElementById('profile-manager-name').textContent = "Gérant : " + mName;
+      document.getElementById('profile-ifu').textContent = ifu;
+      document.getElementById('profile-rccm').textContent = rccm;
+      document.getElementById('profile-address').textContent = city;
+      document.getElementById('profile-phone').textContent = phone ? (phone.startsWith('+') ? phone : "+229 " + phone) : "Non renseigné";
+      document.getElementById('profile-email').textContent = email;
     });
 
     function openEditModal() {
-      const bName = localStorage.getItem('switch_merchant_business_name') || "Boutique & Restaurant La Plage";
+      const prof = window.SwitchAPI ? window.SwitchAPI.getMerchantProfile() : {};
       const appData = JSON.parse(localStorage.getItem('switch_merchant_application') || '{}');
 
-      document.getElementById('edit-business-name').value = bName;
-      document.getElementById('edit-manager-name').value = appData.managerName || "Kossivi Jean DOSSOU";
-      document.getElementById('edit-address').value = appData.neighborhood || "Haie Vive, Cotonou";
-      document.getElementById('edit-phone').value = appData.phone || "97123456";
-      document.getElementById('edit-email').value = appData.email || "contact@boutiquelaplage.bj";
+      document.getElementById('edit-business-name').value = prof.business_name || appData.businessName || "";
+      document.getElementById('edit-manager-name').value = prof.manager_name || appData.managerName || "";
+      document.getElementById('edit-address').value = prof.city || appData.neighborhood || "Cotonou";
+      document.getElementById('edit-phone').value = prof.phone || appData.phone || "";
+      document.getElementById('edit-email').value = appData.email || "";
 
       document.getElementById('edit-modal').classList.remove('hidden');
     }
@@ -313,7 +309,14 @@
       const phone = document.getElementById('edit-phone').value.trim();
       const email = document.getElementById('edit-email').value.trim();
 
-      localStorage.setItem('switch_merchant_business_name', bName);
+      if (window.SwitchAPI && window.SwitchAPI.setMerchantProfile) {
+        window.SwitchAPI.setMerchantProfile({
+          business_name: bName,
+          manager_name: mName,
+          city: addr,
+          phone: phone
+        });
+      }
       
       const appData = JSON.parse(localStorage.getItem('switch_merchant_application') || '{}');
       appData.businessName = bName;
