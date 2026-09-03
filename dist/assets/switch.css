@@ -1,0 +1,464 @@
+/*
+ * switch.css
+ * ─────────────────────────────────────────────────────────────
+ * Feuille de styles globale et adaptative — App Switch (Bénin)
+ * Garantit un affichage 100% complet et non coupé sur :
+ *   • Smartphones Android (toutes résolutions, de 320px à 540px)
+ *   • iPhones (SE, 11, 12, 13, 14, 15, 16 Pro / Max avec encoche / Dynamic Island)
+ *   • Tablettes & iPads (iPad Mini, Air, Pro, Galaxy Tab)
+ *   • Ordinateurs portables et de bureau
+ * ─────────────────────────────────────────────────────────────
+ */
+
+/* ── 1. POLICES ET VARIABLES SYSTÈME ───────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
+
+:root {
+  /* Safe area insets pour encoches iPhone / Dynamic Island & barre tactile */
+  --sat: env(safe-area-inset-top, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+
+  /* Largeur adaptative de l'application */
+  --app-max-width: 520px;
+}
+
+/* Masquage strict des boutons retour sur toutes les pages et formulaires d'inscription */
+body:has(form#registration-form) .switch-back-btn,
+body:has([id*="step-"]) .switch-back-btn,
+body:has(form[onsubmit*="handleAgentRegistration"]) .switch-back-btn,
+body:has(form[onsubmit*="handleMerchantRegistration"]) .switch-back-btn {
+  display: none !important;
+}
+
+/* ── 2. RESET & BASE UNIVERSELLE SANS COUPURE ────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  min-width: 0; /* Empêche le débordement des éléments flex/grid */
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  min-height: 100%;
+  background-color: #120f1e;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+  background-color: #fdf8ff !important;
+  color: #1c1a24 !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  height: auto !important; /* Permet un défilement naturel infini sans coupure */
+  margin: 0 auto !important;
+  padding: 0;
+  padding-top: var(--sat) !important;
+  padding-left: var(--sal) !important;
+  padding-right: var(--sar) !important;
+  padding-bottom: calc(100px + var(--sab)) !important; /* Dégage le bas pour la barre de navigation */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  touch-action: manipulation;
+  width: 100% !important;
+  max-width: var(--app-max-width) !important;
+  position: relative;
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Sur les pages sans barre de navigation basse (Auth, Splash, Onboarding, PIN, etc.), pas de vide inutile */
+body:not(:has(nav)):not(:has(#bottom-nav)):not(:has(.bottom-nav)):not(:has([id*="bottom-nav"])) {
+  padding-bottom: calc(24px + var(--sab)) !important;
+}
+
+main {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 1 0 auto !important;
+  box-sizing: border-box !important;
+}
+
+/* Optimisation images et vidéos */
+img, svg, video, canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Empêche le zoom indésirable sur iOS Safari lors du focus sur un champ */
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+/* ── 3. MEDIA QUERIES : RESPONSIVE UNIVERSEL TOUT SMARTPHONE & TABLETTE ── */
+
+/* ── A0. Très petits smartphones (320px à 360px : iPhone SE 1ère gen, Galaxy Fold écran externe) ── */
+@media (max-width: 360px) {
+  :root {
+    --app-max-width: 100%;
+  }
+
+  body {
+    padding-left: max(8px, var(--sal)) !important;
+    padding-right: max(8px, var(--sar)) !important;
+  }
+
+  .px-container-margin, .px-4, .px-5, .px-6 {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  /* Ajustement proportionnel des boutons d'actions rapides */
+  .grid-cols-4 {
+    gap: 6px !important;
+  }
+
+  .quick-action-btn {
+    padding: 8px 4px !important;
+  }
+
+  h1, h2 {
+    font-size: clamp(1.1rem, 4vw, 1.4rem) !important;
+  }
+}
+
+/* ── A. Smartphones Android & iPhones standards et grands (361px à 580px) ── */
+@media (max-width: 580px) {
+  :root {
+    --app-max-width: 100%;
+  }
+
+  html {
+    background-color: #fdf8ff;
+  }
+
+  body {
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    border: none !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ── B. Tablettes, Pliables dépliés & iPads (581px à 1024px) ── */
+@media (min-width: 581px) and (max-width: 1024px) {
+  :root {
+    --app-max-width: 500px;
+  }
+
+  html {
+    background: #EBEBF2 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  body {
+    max-width: var(--app-max-width) !important;
+    margin: 20px auto !important;
+    box-shadow: 0 16px 40px -10px rgba(94, 59, 220, 0.18), 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+    min-height: calc(100dvh - 40px) !important;
+    border-radius: 32px !important;
+    border: 6px solid #FFFFFF !important;
+    overflow-x: hidden !important;
+    background-color: #F8F9FD !important;
+  }
+}
+
+/* ── C. Ordinateurs & Écrans Larges (> 1024px) ── */
+@media (min-width: 1025px) {
+  :root {
+    --app-max-width: 460px;
+  }
+
+  html {
+    background: linear-gradient(135deg, #F0EFF7 0%, #E5E4F0 100%) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 100vh !important;
+  }
+
+  body {
+    max-width: var(--app-max-width) !important;
+    margin: 30px auto !important;
+    box-shadow: 0 24px 64px -12px rgba(94, 59, 220, 0.2), 0 8px 24px rgba(0, 0, 0, 0.06) !important;
+    min-height: calc(100vh - 60px) !important;
+    min-height: calc(100dvh - 60px) !important;
+    border-radius: 36px !important;
+    border: 8px solid #FFFFFF !important;
+    overflow-x: hidden !important;
+    background-color: #F8F9FD !important;
+  }
+}
+
+/* ── Utilitaires Design System Switch ── */
+.bg-primary { background-color: #5E3BDC !important; }
+.text-primary { color: #5E3BDC !important; }
+.border-primary { border-color: #5E3BDC !important; }
+.bg-primary-container { background-color: #EDE7FE !important; }
+.text-on-surface { color: #1C1A24 !important; }
+.text-on-surface-variant { color: #5D5A68 !important; }
+.border-outline-variant { border-color: #E2E0EC !important; }
+.px-container-margin { padding-left: 20px !important; padding-right: 20px !important; }
+
+
+/* ── 4. ICÔNES MATERIAL SYMBOLS ─────────────────────────────── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-user-select: none;
+  user-select: none;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* ── 5. COMPOSANTS PARTAGÉS & ADAPTATIFS ─────────────────────── */
+
+/* --- Carte de solde hero --- */
+.switch-balance-card {
+  background: linear-gradient(135deg, #5e3bdc 0%, #7758f6 50%, #cabeff 100%);
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.switch-balance-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* --- Fond mesh splash --- */
+.fluid-mesh-bg {
+  background:
+    radial-gradient(circle at top left,    #7758f6 0%, transparent 50%),
+    radial-gradient(circle at bottom right, #cabeff 0%, transparent 50%),
+    linear-gradient(135deg, #f7f1ff 0%, #ebe6f3 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- Boutons universels --- */
+.btn-primary {
+  background-color: #5e3bdc;
+  color: #ffffff;
+  border-radius: 9999px;
+  padding: 15px 20px;
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 24px;
+  box-shadow: 0 10px 20px rgba(94,59,220,0.3);
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s, box-shadow 0.15s, background-color 0.2s;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  transform: scale(0.98);
+  box-shadow: 0 6px 12px rgba(94,59,220,0.25);
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
+}
+
+.btn-secondary {
+  background-color: #ffffff;
+  color: #5e3bdc;
+  border: 1px solid #c9c4d7;
+  border-radius: 9999px;
+  padding: 13px 20px;
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.2s, border-color 0.2s;
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background-color: #f7f1ff;
+  border-color: #5e3bdc;
+}
+
+/* --- Cartes & Conteneurs --- */
+.switch-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+}
+
+.switch-input {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e6e0ee;
+  border-radius: 14px;
+  padding: 13px 16px;
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  color: #1c1a24;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.switch-input:focus {
+  border-color: #5e3bdc;
+  box-shadow: 0 0 0 3px rgba(94,59,220,0.12);
+}
+
+/* --- Badges --- */
+.badge-success { background: #dcfce7; color: #16a34a; }
+.badge-error   { background: #ffdad6; color: #93000a; }
+.badge-warning { background: #fef3c7; color: #b45309; }
+.badge-info    { background: #f7f1ff; color: #5e3bdc; }
+
+.badge-success, .badge-error, .badge-warning, .badge-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+/* --- En-tête d'écran avec safe-area --- */
+.screen-header {
+  display: flex;
+  align-items: center;
+  padding: max(14px, var(--sat)) 16px 10px;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  background: #fdf8ff;
+  z-index: 40;
+}
+
+/* Barres de boutons fixes au bas de l'écran */
+footer.fixed, div.fixed.bottom-0, .fixed.bottom-0:not(#switch-nav) {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 100% !important;
+  max-width: var(--app-max-width) !important;
+  box-sizing: border-box !important;
+  padding-bottom: max(14px, var(--sab)) !important;
+  z-index: 80 !important;
+}
+
+@media (min-width: 581px) and (max-width: 1024px) {
+  footer.fixed, div.fixed.bottom-0, .fixed.bottom-0:not(#switch-nav) {
+    border-bottom-left-radius: 28px !important;
+    border-bottom-right-radius: 28px !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  footer.fixed, div.fixed.bottom-0, .fixed.bottom-0:not(#switch-nav) {
+    border-bottom-left-radius: 32px !important;
+    border-bottom-right-radius: 32px !important;
+  }
+}
+
+/* Cache les barres de navigation natives obsolètes */
+nav:not(#switch-nav) {
+  display: none !important;
+}
+
+/* Barre de navigation universelle Switch (Collée strictement à bottom: 0) */
+#switch-nav {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+  width: 100% !important;
+  max-width: var(--app-max-width, 480px) !important;
+  height: 64px !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-around !important;
+  padding: 6px 10px !important;
+  padding-bottom: max(8px, env(safe-area-inset-bottom, 8px)) !important;
+  background: #ffffff !important;
+  border-top: 1px solid #ECE6F0 !important;
+  border-left: 1px solid #ECE6F0 !important;
+  border-right: 1px solid #ECE6F0 !important;
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom: none !important;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.09) !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 580px) {
+  #switch-nav {
+    max-width: 100% !important;
+    border-left: none !important;
+    border-right: none !important;
+  }
+}
+
+/* En-têtes fixes stables */
+.app-header-fixed, header.sticky {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 40 !important;
+  background: rgba(248, 249, 253, 0.96) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  width: 100% !important;
+  max-width: var(--app-max-width, 480px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Bouton de retour universel */
+.switch-back-btn {
+  position: fixed !important;
+  top: max(14px, var(--sat)) !important;
+  left: max(14px, calc((100vw - var(--app-max-width)) / 2 + 14px)) !important;
+  z-index: 150 !important;
+}
+
+@media (max-width: 580px) {
+  .switch-back-btn {
+    left: 14px !important;
+  }
+}
+

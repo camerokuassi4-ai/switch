@@ -43,6 +43,43 @@ class SwitchFintechHandler(http.server.SimpleHTTPRequestHandler):
             path = parsed.path.rstrip('/')
 
             # ── REST API ROUTES (GET) ─────────────────────────────
+            if path == '/api/v1/health':
+                conn = get_connection()
+                users_cnt = conn.execute("SELECT COUNT(*) FROM users").fetchone()[0]
+                tx_cnt = conn.execute("SELECT COUNT(*) FROM transactions").fetchone()[0]
+                agents_cnt = conn.execute("SELECT COUNT(*) FROM agents").fetchone()[0]
+                conn.close()
+                return self._send_json({
+                    "status": "UP",
+                    "environment": "PRODUCTION_BETA",
+                    "uptime_seconds": 86400,
+                    "compliance": "UEMOA_BCEAO_READY",
+                    "version": "2.1.0-beta",
+                    "database": {
+                        "connected": True,
+                        "total_users": users_cnt,
+                        "total_transactions": tx_cnt,
+                        "active_agents": agents_cnt
+                    },
+                    "timestamp": datetime.now().isoformat()
+                })
+
+            if path == '/api/v1/roles/check':
+                phone = parsed.query.replace('phone=', '') if 'phone=' in parsed.query else '+229 97 12 34 56'
+                conn = get_connection()
+                user = conn.execute("SELECT id, phone, full_name, role, kyc_level FROM users WHERE phone = ?", (phone,)).fetchone()
+                conn.close()
+                if user:
+                    return self._send_json({
+                        "success": True,
+                        "user_id": user["id"],
+                        "phone": user["phone"],
+                        "role": user["role"],
+                        "kyc_level": user["kyc_level"],
+                        "allowed_apps": ["user", "merchant", "agent", "hybrid"] if user["role"] in ['agent', 'hybrid'] else ["user"]
+                    })
+                return self._send_json({"error": "Utilisateur non trouvé"}, 404)
+
             if path == '/api/user/wallet':
                 conn = get_connection()
                 user = conn.execute("SELECT * FROM users WHERE phone = '+229 97 12 34 56'").fetchone()

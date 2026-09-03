@@ -37,7 +37,37 @@ def init_database():
             rib_uemoa TEXT UNIQUE,
             balance INTEGER DEFAULT 110000,
             vault_balance INTEGER DEFAULT 45000,
+            failed_pin_attempts INTEGER DEFAULT 0,
+            locked_until DATETIME,
             is_active INTEGER DEFAULT 1,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+
+    # 1b. Table Sessions Utilisateurs (Sécurité Tokens & Révocation)
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS sessions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            token TEXT UNIQUE NOT NULL,
+            user_id INTEGER NOT NULL,
+            role TEXT NOT NULL,
+            ip_address TEXT,
+            is_revoked INTEGER DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            expires_at DATETIME NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    ''')
+
+    # 1c. Table Journal d'Audit Securisé (Traçabilité Financière UEMOA)
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS audit_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            action TEXT NOT NULL,
+            status TEXT NOT NULL, -- 'SUCCESS', 'FAILED', 'BLOCKED'
+            ip_address TEXT,
+            details TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     ''')
@@ -191,6 +221,18 @@ def seed_data(conn):
         ''', cp)
 
     conn.commit()
+
+def log_audit(user_id, action, status='SUCCESS', ip_address='127.0.0.1', details=''):
+    try:
+        conn = get_connection()
+        conn.execute('''
+            INSERT INTO audit_logs (user_id, action, status, ip_address, details)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (user_id, action, status, ip_address, details))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print("Audit log error:", e)
 
 if __name__ == '__main__':
     init_database()
