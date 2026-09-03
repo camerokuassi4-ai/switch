@@ -1,318 +1,318 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth light">
+<html lang="fr" class="scroll-smooth">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>Switch Beta 🇧🇯 — Centre de Téléchargement des 4 Applications Android</title>
-  <meta name="description" content="Téléchargez les 4 applications Android de Switch Beta : Utilisateur, Marchand, Agent et Hybride. Fichiers APK signés officiels.">
+  <meta name="description" content="Téléchargez les 4 applications Android officielles de Switch Beta : Utilisateur, Marchand, Agent et Hybride. Fichiers APK certifiés v2.1.0 pour le Bénin.">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0B061E;
+      color: #FFFFFF;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    @media (hover: hover) {
+      .glass-card:hover {
+        background: rgba(255, 255, 255, 0.07);
+        transform: translateY(-2px);
+      }
+    }
+    .btn-touch {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
 </head>
-<body class="bg-[#0B061E] text-white font-['Hanken_Grotesk'] min-h-screen flex flex-col justify-between antialiased">
+<body class="bg-[#0B061E] text-white min-h-screen flex flex-col justify-between antialiased pb-12 sm:pb-0">
 
-  <header class="w-full max-w-6xl mx-auto px-4 pt-8 pb-4 flex items-center justify-between border-b border-white/10">
-    <a href="index.html" class="flex items-center gap-3 no-underline text-white">
-      <div class="w-10 h-10 rounded-2xl bg-[#5E3BDC] flex items-center justify-center font-black text-xl shadow-md">S</div>
+  <!-- HEADER -->
+  <header class="w-full max-w-6xl mx-auto px-4 pt-6 pb-4 flex items-center justify-between border-b border-white/10">
+    <a href="index.html" class="flex items-center gap-2.5 no-underline text-white">
+      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#5E3BDC] to-[#7B5CFA] flex items-center justify-center font-black text-xl shadow-md border border-white/20">S</div>
       <div>
-        <h1 class="font-extrabold text-lg leading-tight">Switch Beta 🇧🇯</h1>
-        <span class="text-xs text-purple-300 font-bold">Centre de Téléchargement Certifié</span>
+        <h1 class="font-black text-base sm:text-lg leading-tight">Switch Beta 🇧🇯</h1>
+        <span class="text-[11px] text-purple-300 font-bold">Centre de Téléchargement Certifié</span>
       </div>
     </a>
-    <a href="index.html" class="text-xs bg-white/10 hover:bg-white/20 text-white font-bold px-4 py-2 rounded-xl no-underline flex items-center gap-1">
-      <span class="material-symbols-outlined text-sm">home</span>
+    <a href="index.html" class="text-xs bg-white/10 hover:bg-white/20 text-white font-bold px-3 sm:px-4 py-2 rounded-xl no-underline flex items-center gap-1.5 border border-white/15">
+      <span class="material-symbols-outlined text-base">home</span>
       <span>Accueil</span>
     </a>
   </header>
 
-  <main class="w-full max-w-6xl mx-auto px-4 py-12 flex flex-col gap-10 flex-grow">
+  <main class="w-full max-w-6xl mx-auto px-4 py-8 sm:py-12 flex flex-col gap-8 flex-grow">
     
+    <!-- TITRE CENTRAL -->
     <div class="text-center max-w-2xl mx-auto">
-      <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider">
-        APKs Signés & Vérifiés V2.1.0
+      <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] sm:text-[11px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider">
+        APKs Officiels Signés & Certifiés v2.1.0
       </span>
-      <h2 class="text-3xl sm:text-5xl font-black mt-4">Les 4 Applications Android Switch Beta</h2>
-      <p class="text-purple-200 mt-2 text-sm">Téléchargez directement l'APK officiel correspondant à votre profil d'utilisation au Bénin.</p>
+      <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black mt-3">Téléchargez l'application adaptée à votre profil</h2>
+      <p class="text-purple-200 mt-2 text-xs sm:text-sm max-w-lg mx-auto">
+        Chaque profil possède son APK optimisé pour une rapidité absolue et 0% de frais au Bénin.
+      </p>
     </div>
 
-    <!-- GRID DES 4 CARTE DE TÉLÉCHARGEMENT -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- LES 4 CARTES DÉTAILLÉES PAR CATÉGORIE -->
+    <div class="space-y-8">
 
-      <!-- USER -->
-      <div class="bg-white/5 border border-purple-500/30 rounded-3xl p-6 flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between">
-            <span class="text-3xl">📱</span>
-            <span class="text-xs font-mono bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full font-bold">v2.1.0-user</span>
+      <!-- 1. USER -->
+      <div class="glass-card rounded-3xl p-5 sm:p-8 border-2 border-emerald-500/30 flex flex-col justify-between">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-white/10">
+          <div class="flex items-start sm:items-center gap-3">
+            <span class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-black text-2xl border border-emerald-500/30 shrink-0">📱</span>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-xl sm:text-2xl font-black text-white">1. Profil Utilisateur</h3>
+                <span class="text-[10px] font-mono bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full font-bold">v2.1.0-user</span>
+              </div>
+              <p class="text-xs text-purple-200 mt-0.5">Particuliers, familles et gestion des dépenses du quotidien.</p>
+            </div>
           </div>
-          <h3 class="text-xl font-black text-white mt-3">1. Switch Beta — Utilisateur</h3>
-          <p class="text-xs text-purple-200 mt-1">Dépôt, retrait, transfert P2P gratuit, factures SBEE/SONEB, recharge GSM et épargne Vault.</p>
+          <div class="flex flex-col sm:flex-row gap-2.5 shrink-0">
+            <a href="assets/downloads/switch-beta-user-v2.1.0.apk" download class="w-full sm:w-auto bg-[#059669] hover:bg-[#047857] text-white font-black px-5 py-3 rounded-xl text-xs flex items-center justify-center gap-2 no-underline shadow-md btn-touch">
+              <span class="material-symbols-outlined text-lg">download</span>
+              <span>Télécharger APK Utilisateur (8.4 Mo)</span>
+            </a>
+            <a href="index.html#profil-user" class="glass-card hover:bg-white/10 text-emerald-300 font-bold px-4 py-3 rounded-xl text-xs flex items-center justify-center gap-1 no-underline border border-emerald-500/30">
+              <span>Voir section sur l'accueil</span>
+            </a>
+          </div>
         </div>
-        <div class="mt-6 flex flex-col gap-2">
-          <a href="assets/downloads/switch-beta-user-v2.1.0.apk" download class="w-full bg-[#059669] hover:bg-[#047857] text-white font-extrabold py-3.5 rounded-2xl text-center text-xs flex items-center justify-center gap-2 no-underline">
-            <span class="material-symbols-outlined text-lg">download</span>
-            <span>Télécharger APK Utilisateur (8.4 Mo)</span>
-          </a>
-          <a href="download/user.html" class="text-center text-[11px] text-purple-300 hover:underline">Voir la fiche détaillée /download/user</a>
+
+        <!-- Corps : Points clés + 4 mini-écrans -->
+        <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="lg:col-span-6">
+            <h4 class="text-xs uppercase font-black text-emerald-400 tracking-wider mb-2">Points Clés :</h4>
+            <ul class="space-y-1.5 text-xs text-gray-200">
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-emerald-400 text-sm">check_circle</span> Transfert d'argent P2P à <b>0 FCFA de frais</b></li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-emerald-400 text-sm">check_circle</span> Recharge Factures <b>SBEE Électricité</b> & SONEB Eau</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-emerald-400 text-sm">check_circle</span> Crédit d'appel GSM & Forfaits Data tous réseaux</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-emerald-400 text-sm">check_circle</span> Épargne rémunérée Vault à 6% & Tontines communautaires</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-emerald-400 text-sm">check_circle</span> 2% de cashback sur les paiements marchands</li>
+            </ul>
+          </div>
+          <div class="lg:col-span-6 grid grid-cols-4 gap-2">
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/user_dashboard.jpg" alt="Dashboard" class="w-full h-full object-cover">
+            </div>
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/user_p2p.jpg" alt="P2P" class="w-full h-full object-cover">
+            </div>
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/user_sbee.jpg" alt="SBEE" class="w-full h-full object-cover">
+            </div>
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/user_recharge.jpg" alt="GSM" class="w-full h-full object-cover">
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- MERCHANT -->
-      <div class="bg-white/5 border border-blue-500/30 rounded-3xl p-6 flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between">
-            <span class="text-3xl">🏪</span>
-            <span class="text-xs font-mono bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full font-bold">v2.1.0-merchant</span>
+      <!-- 2. MERCHANT -->
+      <div class="glass-card rounded-3xl p-5 sm:p-8 border-2 border-blue-500/30 flex flex-col justify-between">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-white/10">
+          <div class="flex items-start sm:items-center gap-3">
+            <span class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-300 flex items-center justify-center font-black text-2xl border border-blue-500/30 shrink-0">🏪</span>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-xl sm:text-2xl font-black text-white">2. Profil Marchand</h3>
+                <span class="text-[10px] font-mono bg-blue-500/20 text-blue-300 px-2.5 py-0.5 rounded-full font-bold">v2.1.0-merchant</span>
+              </div>
+              <p class="text-xs text-purple-200 mt-0.5">Boutiques, restaurants, artisans et commerçants du Bénin.</p>
+            </div>
           </div>
-          <h3 class="text-xl font-black text-white mt-3">2. Switch Beta — Marchand</h3>
-          <p class="text-xs text-blue-200 mt-1">Terminal POS tactile, Standee QR Code comptoir, catalogue produits et gestion des recettes.</p>
+          <div class="flex flex-col sm:flex-row gap-2.5 shrink-0">
+            <a href="assets/downloads/switch-beta-merchant-v2.1.0.apk" download class="w-full sm:w-auto bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-black px-5 py-3 rounded-xl text-xs flex items-center justify-center gap-2 no-underline shadow-md btn-touch">
+              <span class="material-symbols-outlined text-lg">download</span>
+              <span>Télécharger APK Marchand (8.4 Mo)</span>
+            </a>
+            <a href="index.html#profil-merchant" class="glass-card hover:bg-white/10 text-blue-300 font-bold px-4 py-3 rounded-xl text-xs flex items-center justify-center gap-1 no-underline border border-blue-500/30">
+              <span>Voir section sur l'accueil</span>
+            </a>
+          </div>
         </div>
-        <div class="mt-6 flex flex-col gap-2">
-          <a href="assets/downloads/switch-beta-merchant-v2.1.0.apk" download class="w-full bg-[#5E3BDC] hover:bg-[#4d2ec4] text-white font-extrabold py-3.5 rounded-2xl text-center text-xs flex items-center justify-center gap-2 no-underline">
-            <span class="material-symbols-outlined text-lg">download</span>
-            <span>Télécharger APK Marchand (8.4 Mo)</span>
-          </a>
-          <a href="download/merchant.html" class="text-center text-[11px] text-blue-300 hover:underline">Voir la fiche détaillée /download/merchant</a>
+
+        <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="lg:col-span-6">
+            <h4 class="text-xs uppercase font-black text-blue-400 tracking-wider mb-2">Points Clés :</h4>
+            <ul class="space-y-1.5 text-xs text-gray-200">
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-blue-400 text-sm">check_circle</span> <b>Caisse tactile POS 0% de frais</b> intégrée</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-blue-400 text-sm">check_circle</span> Standee <b>QR Code comptoir</b> imprimable</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-blue-400 text-sm">check_circle</span> Catalogue produits & gestion des stocks en direct</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-blue-400 text-sm">check_circle</span> Journal des ventes & suivi du chiffre d'affaires</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-blue-400 text-sm">check_circle</span> Retrait instantané des recettes vers compte perso</li>
+            </ul>
+          </div>
+          <div class="lg:col-span-6 grid grid-cols-4 gap-2">
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/merchant_dashboard.jpg" alt="Dashboard" class="w-full h-full object-cover">
+            </div>
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/merchant_pos.jpg" alt="POS" class="w-full h-full object-cover">
+            </div>
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/merchant_catalog.jpg" alt="Catalog" class="w-full h-full object-cover">
+            </div>
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/merchant_qr.jpg" alt="QR" class="w-full h-full object-cover">
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- AGENT -->
-      <div class="bg-white/5 border border-amber-500/30 rounded-3xl p-6 flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between">
-            <span class="text-3xl">🏦</span>
-            <span class="text-xs font-mono bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full font-bold">v2.1.0-agent</span>
+      <!-- 3. AGENT -->
+      <div class="glass-card rounded-3xl p-5 sm:p-8 border-2 border-amber-500/30 flex flex-col justify-between">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-white/10">
+          <div class="flex items-start sm:items-center gap-3">
+            <span class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-300 flex items-center justify-center font-black text-2xl border border-amber-500/30 shrink-0">🏦</span>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-xl sm:text-2xl font-black text-white">3. Profil Agent Guichetier</h3>
+                <span class="text-[10px] font-mono bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full font-bold">v2.1.0-agent</span>
+              </div>
+              <p class="text-xs text-purple-200 mt-0.5">Kiosques agréés, opérations de dépôt/retrait et commissions.</p>
+            </div>
           </div>
-          <h3 class="text-xl font-black text-white mt-3">3. Switch Beta — Agent</h3>
-          <p class="text-xs text-amber-200 mt-1">Cash-In, Cash-Out QR 5 min, reçus d'opérations certifiés, clôture de caisse et commissions.</p>
+          <div class="flex flex-col sm:flex-row gap-2.5 shrink-0">
+            <a href="assets/downloads/switch-beta-agent-v2.1.0.apk" download class="w-full sm:w-auto bg-[#D97706] hover:bg-[#b45309] text-white font-black px-5 py-3 rounded-xl text-xs flex items-center justify-center gap-2 no-underline shadow-md btn-touch">
+              <span class="material-symbols-outlined text-lg">download</span>
+              <span>Télécharger APK Agent (8.4 Mo)</span>
+            </a>
+            <a href="index.html#profil-agent" class="glass-card hover:bg-white/10 text-amber-300 font-bold px-4 py-3 rounded-xl text-xs flex items-center justify-center gap-1 no-underline border border-amber-500/30">
+              <span>Voir section sur l'accueil</span>
+            </a>
+          </div>
         </div>
-        <div class="mt-6 flex flex-col gap-2">
-          <a href="assets/downloads/switch-beta-agent-v2.1.0.apk" download class="w-full bg-amber-600 hover:bg-amber-700 text-white font-extrabold py-3.5 rounded-2xl text-center text-xs flex items-center justify-center gap-2 no-underline">
-            <span class="material-symbols-outlined text-lg">download</span>
-            <span>Télécharger APK Agent (8.4 Mo)</span>
-          </a>
-          <a href="download/agent.html" class="text-center text-[11px] text-amber-300 hover:underline">Voir la fiche détaillée /download/agent</a>
+
+        <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="lg:col-span-6">
+            <h4 class="text-xs uppercase font-black text-amber-400 tracking-wider mb-2">Points Clés :</h4>
+            <ul class="space-y-1.5 text-xs text-gray-200">
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-sm">check_circle</span> <b>Cash-In (Dépôt)</b> instantané en espèces</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-sm">check_circle</span> <b>Cash-Out par QR Code 5 min</b> sécurisé</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-sm">check_circle</span> Commissions d'exploitation créditées en direct</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-sm">check_circle</span> <b>Rapport Z de clôture certifié</b> de fin de journée</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-sm">check_circle</span> Suivi et approvisionnement Float guichetier</li>
+            </ul>
+          </div>
+          <div class="lg:col-span-6 grid grid-cols-4 gap-2">
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/agent_dashboard.jpg" alt="Dashboard" class="w-full h-full object-cover">
+            </div>
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/agent_cashin.jpg" alt="Cash-In" class="w-full h-full object-cover">
+            </div>
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/agent_cashout.jpg" alt="Cash-Out" class="w-full h-full object-cover">
+            </div>
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/agent_closure.jpg" alt="Rapport Z" class="w-full h-full object-cover">
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- HYBRID -->
-      <div class="bg-white/5 border border-teal-500/30 rounded-3xl p-6 flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between">
-            <span class="text-3xl">🏪🏦</span>
-            <span class="text-xs font-mono bg-teal-500/20 text-teal-300 px-3 py-1 rounded-full font-bold">v2.1.0-hybrid</span>
+      <!-- 4. HYBRID -->
+      <div class="glass-card rounded-3xl p-5 sm:p-8 border-2 border-teal-500/30 flex flex-col justify-between">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-white/10">
+          <div class="flex items-start sm:items-center gap-3">
+            <span class="w-12 h-12 rounded-2xl bg-teal-500/20 text-teal-300 flex items-center justify-center font-black text-2xl border border-teal-500/30 shrink-0">🏪🏦</span>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-xl sm:text-2xl font-black text-white">4. Profil Hybride (Mixte)</h3>
+                <span class="text-[10px] font-mono bg-teal-500/20 text-teal-300 px-2.5 py-0.5 rounded-full font-bold">v2.1.0-hybrid</span>
+              </div>
+              <p class="text-xs text-purple-200 mt-0.5">Points de vente combinant encaissement commerce et guichet d'argent.</p>
+            </div>
           </div>
-          <h3 class="text-xl font-black text-white mt-3">4. Switch Beta — Marchand-Agent (Hybride)</h3>
-          <p class="text-xs text-teal-200 mt-1">Commutateur de vue Marchand ↔ Agent et gestion double solde (Caisse boutique & Float agent).</p>
+          <div class="flex flex-col sm:flex-row gap-2.5 shrink-0">
+            <a href="assets/downloads/switch-beta-hybrid-v2.1.0.apk" download class="w-full sm:w-auto bg-[#0D9488] hover:bg-[#0f766e] text-white font-black px-5 py-3 rounded-xl text-xs flex items-center justify-center gap-2 no-underline shadow-md btn-touch">
+              <span class="material-symbols-outlined text-lg">download</span>
+              <span>Télécharger APK Hybride (8.4 Mo)</span>
+            </a>
+            <a href="index.html#profil-hybrid" class="glass-card hover:bg-white/10 text-teal-300 font-bold px-4 py-3 rounded-xl text-xs flex items-center justify-center gap-1 no-underline border border-teal-500/30">
+              <span>Voir section sur l'accueil</span>
+            </a>
+          </div>
         </div>
-        <div class="mt-6 flex flex-col gap-2">
-          <a href="assets/downloads/switch-beta-hybrid-v2.1.0.apk" download class="w-full bg-teal-600 hover:bg-teal-700 text-white font-extrabold py-3.5 rounded-2xl text-center text-xs flex items-center justify-center gap-2 no-underline">
-            <span class="material-symbols-outlined text-lg">download</span>
-            <span>Télécharger APK Hybride (8.4 Mo)</span>
-          </a>
-          <a href="download/hybrid.html" class="text-center text-[11px] text-teal-300 hover:underline">Voir la fiche détaillée /download/hybrid</a>
+
+        <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="lg:col-span-6">
+            <h4 class="text-xs uppercase font-black text-teal-400 tracking-wider mb-2">Points Clés :</h4>
+            <ul class="space-y-1.5 text-xs text-gray-200">
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-teal-400 text-sm">check_circle</span> <b>Commutateur instantané Mode Boutique ↔ Guichet</b></li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-teal-400 text-sm">check_circle</span> Double trésorerie étanche : Caisse boutique & Float agent</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-teal-400 text-sm">check_circle</span> Compte pro unique et identification unifiée</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-teal-400 text-sm">check_circle</span> <b>Rapport Z consolidé</b> des 2 activités en fin de journée</li>
+              <li class="flex items-center gap-2"><span class="material-symbols-outlined text-teal-400 text-sm">check_circle</span> Rentabilité maximale pour pharmacies, supérettes et librairies</li>
+            </ul>
+          </div>
+          <div class="lg:col-span-6 grid grid-cols-4 gap-2">
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/hybrid_dashboard.jpg" alt="Dual mode" class="w-full h-full object-cover">
+            </div>
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/hybrid_caisse.jpg" alt="Caisse" class="w-full h-full object-cover">
+            </div>
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/hybrid_float.jpg" alt="Float" class="w-full h-full object-cover">
+            </div>
+            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
+              <img src="assets/images/real_screens/hybrid_closure.jpg" alt="Clôture" class="w-full h-full object-cover">
+            </div>
+          </div>
         </div>
       </div>
 
     </div>
 
-    <!-- APERÇU DE L'APPLICATION (VRAIES CAPTURES D'ÉCRAN RÉELLES) -->
-    <section id="preview" class="py-12 w-full">
-      <div class="text-center max-w-3xl mx-auto mb-10">
-        <span class="text-xs font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-4 py-1.5 rounded-full border border-emerald-500/30">Interface Officielle In-App</span>
-        <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-white mt-3">Aperçu Réel de l'Application</h2>
-        <p class="text-purple-200 mt-2 text-sm">Explorez les vrais écrans certifiés des 4 applications Android. Cliquez sur un écran pour l'agrandir en HD.</p>
+    <!-- GUIDE D'INSTALLATION RAPIDE -->
+    <div class="glass-card rounded-3xl p-6 border border-white/15">
+      <h3 class="text-lg font-black text-white flex items-center gap-2 mb-3">
+        <span class="material-symbols-outlined text-emerald-400">help</span>
+        Guide d'installation rapide sur smartphone Android
+      </h3>
+      <ol class="space-y-2 text-xs sm:text-sm text-gray-300">
+        <li>1. Téléchargez l'APK correspondant à votre profil (Utilisateur, Marchand, Agent ou Hybride).</li>
+        <li>2. Ouvrez le fichier téléchargé depuis vos notifications ou votre gestionnaire de fichiers.</li>
+        <li>3. Si demandé, autorisez l'installation depuis des sources inconnues dans les paramètres de votre navigateur.</li>
+        <li>4. Lancez Switch Beta et connectez-vous avec votre numéro béninois !</li>
+      </ol>
+      <div class="mt-4 pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-purple-200">
+        <span>Une question ? Contactez notre support 24/7 sur WhatsApp :</span>
+        <a href="https://wa.me/2290190751786" target="_blank" class="text-emerald-400 font-bold hover:underline flex items-center gap-1">
+          <span class="material-symbols-outlined text-base">chat</span>
+          <span>+229 01 90 75 17 86</span>
+        </a>
       </div>
-
-      <!-- TABS PAR APPLICATION -->
-      <div class="flex items-center justify-center gap-2 sm:gap-4 flex-wrap mb-8">
-        <button onclick="filterMockups('all', event)" class="tab-btn font-bold text-xs px-5 py-2.5 rounded-full bg-purple-600 text-white border border-purple-400 shadow-md">Toutes les vues (23 écrans)</button>
-        <button onclick="filterMockups('user', event)" class="tab-btn font-bold text-xs px-5 py-2.5 rounded-full bg-white/5 text-purple-200 hover:bg-white/10 border border-white/15">📱 Utilisateur (7)</button>
-        <button onclick="filterMockups('merchant', event)" class="tab-btn font-bold text-xs px-5 py-2.5 rounded-full bg-white/5 text-purple-200 hover:bg-white/10 border border-white/15">🏪 Marchand (6)</button>
-        <button onclick="filterMockups('agent', event)" class="tab-btn font-bold text-xs px-5 py-2.5 rounded-full bg-white/5 text-purple-200 hover:bg-white/10 border border-white/15">🏦 Agent (6)</button>
-        <button onclick="filterMockups('hybrid', event)" class="tab-btn font-bold text-xs px-5 py-2.5 rounded-full bg-white/5 text-purple-200 hover:bg-white/10 border border-white/15">🏪🏦 Hybride (4)</button>
-      </div>
-
-      <!-- GRILLE DES CAPTURES DE MOCKUP -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-        <!-- USER SCREENS -->
-        <div class="mockup-card user bg-white/5 rounded-3xl p-3.5 border border-purple-500/30 flex flex-col group cursor-pointer hover:border-purple-400 transition-all" onclick="openLightbox('assets/images/real_screens/user_dashboard.jpg', 'Tableau de bord Utilisateur', 'Solde 110,000 FCFA, Coffre Vault 45,000 FCFA, accès rapide Dépôt, Retrait, Transfert P2P et factures SBEE.')">
-          <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black/40 mb-3 border border-white/10">
-            <img src="assets/images/real_screens/user_dashboard.jpg" alt="Tableau de bord utilisateur" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-              <span class="text-xs text-purple-300 font-extrabold flex items-center gap-1"><span class="material-symbols-outlined text-base">zoom_in</span> Agrandir HD</span>
-            </div>
-          </div>
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full">📱 Utilisateur</span>
-            <h4 class="font-extrabold text-white text-sm mt-1">Tableau de bord utilisateur</h4>
-            <p class="text-[11px] text-gray-300 mt-0.5">Solde principal, coffre fort Vault et accès rapide aux services.</p>
-          </div>
-        </div>
-
-        <div class="mockup-card user bg-white/5 rounded-3xl p-3.5 border border-purple-500/30 flex flex-col group cursor-pointer hover:border-purple-400 transition-all" onclick="openLightbox('assets/images/real_screens/user_p2p.jpg', 'Transfert P2P Switch-Switch', 'Envoi instantané de solde sans aucun frais à vos proches par numéro de téléphone.')">
-          <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black/40 mb-3 border border-white/10">
-            <img src="assets/images/real_screens/user_p2p.jpg" alt="Transfert P2P" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-              <span class="text-xs text-purple-300 font-extrabold flex items-center gap-1"><span class="material-symbols-outlined text-base">zoom_in</span> Agrandir HD</span>
-            </div>
-          </div>
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full">📱 Utilisateur</span>
-            <h4 class="font-extrabold text-white text-sm mt-1">Transfert P2P 0% frais</h4>
-            <p class="text-[11px] text-gray-300 mt-0.5">Saisie du numéro destinataire et montant en FCFA.</p>
-          </div>
-        </div>
-
-        <div class="mockup-card user bg-white/5 rounded-3xl p-3.5 border border-purple-500/30 flex flex-col group cursor-pointer hover:border-purple-400 transition-all" onclick="openLightbox('assets/images/real_screens/user_sbee.jpg', 'Paiement Facture SBEE Électricité', 'Achat de recharges d\'électricité par numéro de compteur et génération de jeton STS 20 chiffres.')">
-          <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black/40 mb-3 border border-white/10">
-            <img src="assets/images/real_screens/user_sbee.jpg" alt="Paiement SBEE" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-              <span class="text-xs text-purple-300 font-extrabold flex items-center gap-1"><span class="material-symbols-outlined text-base">zoom_in</span> Agrandir HD</span>
-            </div>
-          </div>
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full">📱 Utilisateur</span>
-            <h4 class="font-extrabold text-white text-sm mt-1">Recharge SBEE Électricité</h4>
-            <p class="text-[11px] text-gray-300 mt-0.5">Saisie du numéro de compteur et obtention du code STS.</p>
-          </div>
-        </div>
-
-        <!-- MERCHANT SCREENS -->
-        <div class="mockup-card merchant bg-white/5 rounded-3xl p-3.5 border border-blue-500/30 flex flex-col group cursor-pointer hover:border-blue-400 transition-all" onclick="openLightbox('assets/images/real_screens/merchant_dashboard.jpg', 'Tableau de bord Marchand', 'Suivi du solde boutique (385,000 FCFA), chiffre d\'affaires et accès rapide POS.')">
-          <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black/40 mb-3 border border-white/10">
-            <img src="assets/images/real_screens/merchant_dashboard.jpg" alt="Tableau de bord Marchand" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-              <span class="text-xs text-blue-300 font-extrabold flex items-center gap-1"><span class="material-symbols-outlined text-base">zoom_in</span> Agrandir HD</span>
-            </div>
-          </div>
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-blue-300 bg-blue-500/20 px-2 py-0.5 rounded-full">🏪 Marchand</span>
-            <h4 class="font-extrabold text-white text-sm mt-1">Tableau de bord marchand</h4>
-            <p class="text-[11px] text-gray-300 mt-0.5">Recettes en temps réel (385 000 FCFA) et raccourcis caisse.</p>
-          </div>
-        </div>
-
-        <div class="mockup-card merchant bg-white/5 rounded-3xl p-3.5 border border-blue-500/30 flex flex-col group cursor-pointer hover:border-blue-400 transition-all" onclick="openLightbox('assets/images/real_screens/merchant_pos.jpg', 'Caisse Tactile POS 0% Frais', 'Terminal d\'encaissement rapide avec sélection des produits et panier d\'achat.')">
-          <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black/40 mb-3 border border-white/10">
-            <img src="assets/images/real_screens/merchant_pos.jpg" alt="Caisse Tactile POS" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-              <span class="text-xs text-blue-300 font-extrabold flex items-center gap-1"><span class="material-symbols-outlined text-base">zoom_in</span> Agrandir HD</span>
-            </div>
-          </div>
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-blue-300 bg-blue-500/20 px-2 py-0.5 rounded-full">🏪 Marchand</span>
-            <h4 class="font-extrabold text-white text-sm mt-1">Caisse tactile POS</h4>
-            <p class="text-[11px] text-gray-300 mt-0.5">Encaissement au comptoir et calcul automatique du total.</p>
-          </div>
-        </div>
-
-        <!-- AGENT SCREENS -->
-        <div class="mockup-card agent bg-white/5 rounded-3xl p-3.5 border border-amber-500/30 flex flex-col group cursor-pointer hover:border-amber-400 transition-all" onclick="openLightbox('assets/images/real_screens/agent_dashboard.jpg', 'Tableau de bord Agent Guichetier', 'Solde Float (1,475,000 FCFA), commissions cumulées (48,500 FCFA) et accès Cash-In / Cash-Out.')">
-          <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black/40 mb-3 border border-white/10">
-            <img src="assets/images/real_screens/agent_dashboard.jpg" alt="Tableau de bord Agent" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-              <span class="text-xs text-amber-300 font-extrabold flex items-center gap-1"><span class="material-symbols-outlined text-base">zoom_in</span> Agrandir HD</span>
-            </div>
-          </div>
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full">🏦 Agent</span>
-            <h4 class="font-extrabold text-white text-sm mt-1">Tableau de bord agent</h4>
-            <p class="text-[11px] text-gray-300 mt-0.5">Solde Float (1 475 000 FCFA) et commissions du guichet.</p>
-          </div>
-        </div>
-
-        <div class="mockup-card agent bg-white/5 rounded-3xl p-3.5 border border-amber-500/30 flex flex-col group cursor-pointer hover:border-amber-400 transition-all" onclick="openLightbox('assets/images/real_screens/agent_cashout.jpg', 'Opération Cash-Out (Retrait Client QR)', 'Validation du QR Code de retrait généré par le client avec fenêtre 5 min.')">
-          <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black/40 mb-3 border border-white/10">
-            <img src="assets/images/real_screens/agent_cashout.jpg" alt="Opération Cash-Out" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-              <span class="text-xs text-amber-300 font-extrabold flex items-center gap-1"><span class="material-symbols-outlined text-base">zoom_in</span> Agrandir HD</span>
-            </div>
-          </div>
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full">🏦 Agent</span>
-            <h4 class="font-extrabold text-white text-sm mt-1">Opération Cash-Out</h4>
-            <p class="text-[11px] text-gray-300 mt-0.5">Scan du QR code de retrait client 5 minutes.</p>
-          </div>
-        </div>
-
-        <!-- HYBRID SCREENS -->
-        <div class="mockup-card hybrid bg-white/5 rounded-3xl p-3.5 border border-teal-500/30 flex flex-col group cursor-pointer hover:border-teal-400 transition-all" onclick="openLightbox('assets/images/real_screens/hybrid_dashboard.jpg', 'Commutateur Mode Hybride Dual', 'Bascule instantanée entre le Mode Boutique et le Mode Agent Guichet.')">
-          <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black/40 mb-3 border border-white/10">
-            <img src="assets/images/real_screens/hybrid_dashboard.jpg" alt="Commutateur Hybride" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-              <span class="text-xs text-teal-300 font-extrabold flex items-center gap-1"><span class="material-symbols-outlined text-base">zoom_in</span> Agrandir HD</span>
-            </div>
-          </div>
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-teal-300 bg-teal-500/20 px-2 py-0.5 rounded-full">🏪🏦 Hybride</span>
-            <h4 class="font-extrabold text-white text-sm mt-1">Commutateur Mode Hybride</h4>
-            <p class="text-[11px] text-gray-300 mt-0.5">Bascule entre l'activité Boutique et Guichet.</p>
-          </div>
-        </div>
-
-      </div>
-    </section>
+    </div>
 
   </main>
 
-  <!-- LIGHTBOX MODAL (ZOOM ET PREVIEW IN-APP) -->
-  <div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
-    <div class="relative max-w-lg w-full flex flex-col items-center">
-      <button onclick="closeLightbox()" class="absolute -top-12 right-0 text-white hover:text-purple-400 bg-white/10 hover:bg-white/20 p-2 rounded-full border border-white/20 transition-all flex items-center justify-center">
-        <span class="material-symbols-outlined text-2xl">close</span>
-      </button>
-      <div class="w-full max-h-[75vh] rounded-3xl overflow-hidden border border-white/20 shadow-2xl bg-black/60 flex items-center justify-center">
-        <img id="lightbox-img" src="" alt="Aperçu application" class="w-full h-full object-contain max-h-[75vh]">
-      </div>
-      <div class="mt-4 text-center">
-        <h3 id="lightbox-title" class="font-black text-xl text-white"></h3>
-        <p id="lightbox-desc" class="text-xs text-purple-200 mt-1 max-w-md"></p>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    function filterMockups(category, evt) {
-      const cards = document.querySelectorAll('.mockup-card');
-      const tabs = document.querySelectorAll('.tab-btn');
-      tabs.forEach(tab => {
-        tab.classList.remove('bg-purple-600', 'text-white', 'shadow-md');
-        tab.classList.add('bg-white/5', 'text-purple-200');
-      });
-      if (evt && evt.target) {
-        evt.target.classList.remove('bg-white/5', 'text-purple-200');
-        evt.target.classList.add('bg-purple-600', 'text-white', 'shadow-md');
-      }
-
-      cards.forEach(card => {
-        if (category === 'all' || card.classList.contains(category)) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-    function openLightbox(imgSrc, title, desc) {
-      const modal = document.getElementById('lightbox-modal');
-      document.getElementById('lightbox-img').src = imgSrc;
-      document.getElementById('lightbox-title').innerText = title;
-      document.getElementById('lightbox-desc').innerText = desc;
-      modal.classList.remove('opacity-0', 'pointer-events-none');
-    }
-
-    function closeLightbox() {
-      const modal = document.getElementById('lightbox-modal');
-      modal.classList.add('opacity-0', 'pointer-events-none');
-    }
-  </script>
-
-  <footer class="w-full max-w-6xl mx-auto px-4 py-6 text-center text-xs text-gray-400 border-t border-white/10">
-    © 2026 Switch Bénin — Tous droits réservés.
+  <footer class="w-full border-t border-white/10 bg-[#070414] py-8 px-4 text-center text-xs text-gray-400">
+    <p>© 2026 Switch Bénin S.A.S — Applications certifiées v2.1.0 • Conforme réglementation UEMOA / BCEAO.</p>
   </footer>
+
 </body>
 </html>
