@@ -1,434 +1,236 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <title>Switch — App Fintech Bénin</title>
-  <meta name="description" content="Switch : la façon la plus rapide et sécurisée de gérer votre argent au Bénin.">
+  <title>Bienvenue sur Switch Bénin — Version Bêta</title>
+  <meta name="description" content="Switch Bénin : la super-app financière la plus rapide, sécurisée et sans frais au Bénin.">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="assets/switch.css">
   <script src="assets/switch.config.js"></script>
+
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+
     body {
-      background: linear-gradient(135deg, #120f1f 0%, #1f1938 40%, #3f19a3 100%) !important;
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh !important;
       min-height: 100dvh !important;
-      max-width: 100% !important;
+      background: linear-gradient(135deg, #0B061E 0%, #170F35 45%, #2A1175 100%) !important;
+      color: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
       display: flex !important;
+      flex-direction: column !important;
       align-items: center !important;
-      justify-content: center !important;
-      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-      padding: clamp(12px, 3vw, 32px) !important;
-      box-shadow: none !important;
-      border: none !important;
+      justify-content: space-between !important;
+      padding: clamp(16px, 3vw, 32px) !important;
     }
 
-    .hub-container {
-      width: 100%;
-      max-width: 1080px;
-      margin: 0 auto;
+    /* Ambient Lighting Orbs */
+    .glow-orb-1 {
+      position: absolute;
+      width: 440px;
+      height: 440px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123, 92, 250, 0.35) 0%, rgba(94, 59, 220, 0) 70%);
+      top: -120px;
+      left: -120px;
+      filter: blur(60px);
+      pointer-events: none;
+      animation: pulseGlow 8s ease-in-out infinite alternate;
     }
 
-    .hub-card {
-      background: rgba(255, 255, 255, 0.05);
-      -webkit-backdrop-filter: blur(24px);
-      backdrop-filter: blur(24px);
-      border: 1px solid rgba(202, 190, 255, 0.22);
-      border-radius: clamp(20px, 4vw, 32px);
-      padding: clamp(20px, 4vw, 40px);
-      width: 100%;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    .glow-orb-2 {
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 212, 170, 0.25) 0%, rgba(94, 59, 220, 0) 70%);
+      bottom: -80px;
+      right: -80px;
+      filter: blur(70px);
+      pointer-events: none;
+      animation: pulseGlow 6s ease-in-out infinite alternate-reverse;
     }
 
-    .spaces-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      margin-top: 20px;
+    @keyframes pulseGlow {
+      0% { transform: scale(1) translateY(0); opacity: 0.5; }
+      100% { transform: scale(1.15) translateY(20px); opacity: 0.9; }
     }
 
-    @media (min-width: 640px) {
-      .spaces-layout {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-      }
+    @keyframes floatSoft {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
     }
 
-    @media (min-width: 1024px) {
-      .spaces-layout {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
-      }
+    .animate-float {
+      animation: floatSoft 4.5s ease-in-out infinite;
     }
 
-    .space-card {
+    .glass-card {
       background: rgba(255, 255, 255, 0.08);
+      -webkit-backdrop-filter: blur(28px);
+      backdrop-filter: blur(28px);
       border: 1px solid rgba(202, 190, 255, 0.25);
-      border-radius: 20px;
-      padding: clamp(14px, 2.5vw, 18px);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      flex-direction: column;
+      border-radius: 32px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
     }
 
-    .space-card:hover {
-      background: rgba(94, 59, 220, 0.3);
-      border-color: rgba(202, 190, 255, 0.6);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(94, 59, 220, 0.35);
+    .btn-shimmer {
+      position: relative;
+      overflow: hidden;
     }
 
-    .screen-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: #F3EEFF !important;
-      font-size: 12.5px;
-      font-weight: 600;
-      padding: 7px 10px;
-      border-radius: 10px;
-      text-decoration: none;
-      transition: all 0.15s ease;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(202, 190, 255, 0.15);
-      margin-bottom: 2px;
+    .btn-shimmer::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.35) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(25deg);
+      animation: shimmer 3.5s infinite;
     }
 
-    .screen-link:hover {
-      background: rgba(94, 59, 220, 0.6) !important;
-      color: #ffffff !important;
-      border-color: rgba(202, 190, 255, 0.5);
-      transform: translateX(3px);
-    }
-
-    .screens-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      max-height: 280px;
-      overflow-y: auto;
-      padding: 6px 2px;
-    }
-
-    .screens-grid::-webkit-scrollbar { width: 4px; }
-    .screens-grid::-webkit-scrollbar-track { background: transparent; }
-    .screens-grid::-webkit-scrollbar-thumb { background: rgba(202, 190, 255, 0.4); border-radius: 4px; }
-
-    .badge {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      padding: 3px 8px;
-      border-radius: 999px;
-      text-transform: uppercase;
-      margin-left: auto;
-    }
-
-    .launch-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 13px 16px;
-      border-radius: 9999px;
-      font-size: 13px;
-      font-weight: 800;
-      text-decoration: none;
-      transition: all 0.25s;
-      cursor: pointer;
-    }
-
-    .launch-btn-primary {
-      background: linear-gradient(135deg, #7b5cfa 0%, #5e3bdc 100%);
-      color: #ffffff;
-      box-shadow: 0 10px 28px rgba(94, 59, 220, 0.45);
-    }
-
-    .launch-btn-primary:hover {
-      background: linear-gradient(135deg, #8a6efb 0%, #6d4ce0 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 14px 34px rgba(94, 59, 220, 0.6);
-    }
-
-    .launch-btn-agent {
-      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-      color: #ffffff;
-      box-shadow: 0 10px 28px rgba(249, 115, 22, 0.35);
-    }
-
-    .launch-btn-agent:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 34px rgba(249, 115, 22, 0.5);
-    }
-
-    .launch-btn-merchant {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: #ffffff;
-      box-shadow: 0 10px 28px rgba(16, 185, 129, 0.35);
-    }
-
-    .launch-btn-merchant:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 34px rgba(16, 185, 129, 0.5);
-    }
-
-    .launch-btn-hybrid {
-      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-      color: #ffffff;
-      box-shadow: 0 10px 28px rgba(217, 119, 6, 0.35);
-    }
-
-    .launch-btn-hybrid:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 34px rgba(217, 119, 6, 0.5);
+    @keyframes shimmer {
+      0% { left: -60%; }
+      30%, 100% { left: 140%; }
     }
   </style>
 </head>
-<body>
+<body class="selection:bg-[#5E3BDC] selection:text-white">
 
-<div class="hub-container">
-  <div class="hub-card">
+  <!-- Background Glowing Elements -->
+  <div class="glow-orb-1"></div>
+  <div class="glow-orb-2"></div>
 
-    <!-- En-tête / Logo -->
-    <div style="text-align: center; margin-bottom: 20px;">
-      <div style="width: 68px; height: 68px; background: rgba(94, 59, 220, 0.45); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; border: 1px solid rgba(202, 190, 255, 0.5); box-shadow: 0 8px 24px rgba(94, 59, 220, 0.4);">
-        <span class="material-symbols-outlined" style="font-size: 36px; color: #cabeff;">swap_horiz</span>
-      </div>
-      <h1 style="color: #ffffff; font-size: clamp(24px, 4vw, 34px); font-weight: 900; margin: 0 0 6px; letter-spacing: -0.02em;">Switch Bénin 🇧🇯</h1>
-      <p style="color: #E2D9FF; font-size: clamp(13px, 2vw, 15px); margin: 0; font-weight: 500;">
-        Application Fintech Multi-Écrans (Android, iPhone, iPad & Tablettes) · 126 écrans
-      </p>
+  <!-- Main Container -->
+  <main class="w-full max-w-md my-auto flex flex-col items-center text-center gap-6 relative z-10 py-6">
+
+    <!-- 1. Mention Version Bêta Bien Visible -->
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/15 border border-amber-300/40 text-amber-300 text-xs font-black uppercase tracking-wider shadow-lg">
+      <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+      <span>Version Bêta Publique v2.1.0 🇧🇯</span>
     </div>
 
-    <!-- Grand Bouton Principal Lancer l'Application Mobile -->
-    <div style="text-align: center; margin-bottom: 24px;">
-      <a href="accueil_splash_mis_jour/code.html" class="launch-btn launch-btn-primary" style="max-width: 460px; margin: 0 auto; padding: 16px 28px; font-size: 16px; box-shadow: 0 12px 32px rgba(94, 59, 220, 0.6);">
-        <span class="material-symbols-outlined" style="font-size: 24px;">rocket_launch</span>
-        <span>Lancer l'application mobile (Écran Splash)</span>
-      </a>
-    </div>
-
-    <!-- 4 Boutons d'accès directs par Espace & Profil -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 28px;">
-      <a href="tableau_de_bord_mis_jour/code.html" class="launch-btn" style="background: rgba(94, 59, 220, 0.35); color: #FFFFFF; border: 1px solid rgba(202, 190, 255, 0.35);">
-        <span class="material-symbols-outlined" style="font-size: 18px; color: #cabeff;">account_balance_wallet</span>
-        <span>Espace Client (58 écrans)</span>
-      </a>
-      <a href="tableau_de_bord_agent/code.html" class="launch-btn" style="background: rgba(249, 115, 22, 0.25); color: #FFFFFF; border: 1px solid rgba(251, 146, 60, 0.35);">
-        <span class="material-symbols-outlined" style="font-size: 18px; color: #fb923c;">support_agent</span>
-        <span>Espace Agent (28 écrans)</span>
-      </a>
-      <a href="tableau_de_bord_marchand/code.html" class="launch-btn" style="background: rgba(16, 185, 129, 0.25); color: #FFFFFF; border: 1px solid rgba(52, 211, 153, 0.35);">
-        <span class="material-symbols-outlined" style="font-size: 18px; color: #34d399;">storefront</span>
-        <span>Espace Marchand (24 écrans)</span>
-      </a>
-      <a href="tableau_de_bord_agent_mixte/code.html" class="launch-btn" style="background: rgba(217, 119, 6, 0.25); color: #FFFFFF; border: 1px solid rgba(245, 158, 11, 0.35);">
-        <span class="material-symbols-outlined" style="font-size: 18px; color: #f59e0b;">hub</span>
-        <span>Point Hybride (16 écrans)</span>
-      </a>
-    </div>
-
-    <!-- Séparateur -->
-    <div style="border-top: 1px solid rgba(202, 190, 255, 0.2); padding-top: 18px;">
-      <p style="color: #D2C4FF; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 800; margin: 0 0 16px; text-align: center;">
-        Catalogue Complet des 126 Écrans par Espace
-      </p>
-
-      <!-- Grille responsive des 4 espaces -->
-      <div class="spaces-layout">
-
-        <!-- 1. Espace Utilisateur -->
-        <div class="space-card">
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(202,190,255,0.2);">
-            <div style="width: 28px; height: 28px; border-radius: 8px; background: rgba(94, 59, 220, 0.5); display: flex; align-items: center; justify-content: center;">
-              <span class="material-symbols-outlined" style="color: #cabeff; font-size: 16px;">person</span>
-            </div>
-            <span style="color: #fff; font-weight: 800; font-size: 14px;">Utilisateur</span>
-            <span class="badge" style="background: rgba(94, 59, 220, 0.5); color: #cabeff;">58 écrans</span>
-          </div>
-          <div class="screens-grid">
-            <a class="screen-link" href="tableau_de_bord_mis_jour/code.html"><b>Tableau de bord Client ⭐</b></a>
-            <a class="screen-link" href="d_p_t_de_fonds/code.html">Dépôt d'espèces</a>
-            <a class="screen-link" href="retrait_de_fonds/code.html">Retrait d'espèces (OTP)</a>
-            <a class="screen-link" href="transfert_switch_switch/code.html">Transfert Switch à Switch</a>
-            <a class="screen-link" href="transfert_mobile_money/code.html">Transfert Mobile Money</a>
-            <a class="screen-link" href="centre_de_notifications/code.html">Centre de Notifications</a>
-            <a class="screen-link" href="historique_des_transactions/code.html">Historique des Transactions</a>
-            <a class="screen-link" href="d_tail_de_transaction/code.html">Détail d'une Transaction</a>
-            <a class="screen-link" href="recu_transaction_partage/code.html">Reçu Transaction & Partage</a>
-            <a class="screen-link" href="marketplace_boutiques_switch/code.html">Marketplace Boutiques</a>
-            <a class="screen-link" href="paiement_sbee_electricite/code.html">Recharge Électricité SBEE</a>
-            <a class="screen-link" href="recu_recharge_sbee/code.html">Reçu Token SBEE</a>
-            <a class="screen-link" href="paiement_soneb_eau/code.html">Facture d'Eau SONEB</a>
-            <a class="screen-link" href="recharge_credit_data/code.html">Crédit & Forfaits Data</a>
-            <a class="screen-link" href="paiement_d_abonnements/code.html">Paiement d'Abonnements</a>
-            <a class="screen-link" href="paiement_scolarite_campus/code.html">Scolarité & Campus</a>
-            <a class="screen-link" href="paiements_recurrents_autopay/code.html">AutoPay & Récurrents</a>
-            <a class="screen-link" href="scanner_qr_code/code.html">Scanner & Payer QR</a>
-            <a class="screen-link" href="confirmation_paiement_qr/code.html">Confirmation Paiement QR</a>
-            <a class="screen-link" href="coffre_epargne_vault/code.html">Coffre Épargne (Vault)</a>
-            <a class="screen-link" href="mes_tontines/code.html">Mes Tontines Digitales</a>
-            <a class="screen-link" href="cr_er_une_tontine/code.html">Créer une Tontine</a>
-            <a class="screen-link" href="d_tail_de_la_tontine/code.html">Détail de la Tontine</a>
-            <a class="screen-link" href="membres_de_la_tontine/code.html">Membres de la Tontine</a>
-            <a class="screen-link" href="mes_cagnottes/code.html">Mes Cagnottes en Ligne</a>
-            <a class="screen-link" href="cr_er_une_cagnotte/code.html">Créer une Cagnotte</a>
-            <a class="screen-link" href="d_tail_de_la_cagnotte/code.html">Détail de la Cagnotte</a>
-            <a class="screen-link" href="achats_en_ligne_cartes_virtuelles/code.html">Cartes Virtuelles Visa/Master</a>
-            <a class="screen-link" href="creer_carte_virtuelle/code.html">Créer une Carte Virtuelle</a>
-            <a class="screen-link" href="micro_credit_express/code.html">Micro-Crédit Express</a>
-            <a class="screen-link" href="investissements_bons_tresor/code.html">Bons du Trésor & Épargne</a>
-            <a class="screen-link" href="switch_kids_famille/code.html">Switch Kids & Famille</a>
-            <a class="screen-link" href="switch_sante_assurance/code.html">Switch Santé & Micro-Assurance</a>
-            <a class="screen-link" href="carte_agents_guichets/code.html">Carte des Agents GPS</a>
-            <a class="screen-link" href="localiser_un_agent_switch/code.html">Localiser un Agent Proche</a>
-            <a class="screen-link" href="d_tail_de_l_agent_switch/code.html">Détail de l'Agent</a>
-            <a class="screen-link" href="budget_analyse_depenses/code.html">Budget & Analyse Dépenses</a>
-            <a class="screen-link" href="conversion_de_devises/code.html">Conversion de Devises</a>
-            <a class="screen-link" href="partage_addition_split/code.html">Partage d'Addition (Split)</a>
-            <a class="screen-link" href="parrainage_recompenses/code.html">Parrainage & Récompenses</a>
-            <a class="screen-link" href="simulateur_de_frais/code.html">Simulateur de Frais</a>
-            <a class="screen-link" href="mode_hors_ligne_ussd/code.html">Mode Hors-Ligne & USSD</a>
-            <a class="screen-link" href="accueil_splash_mis_jour/code.html">Écran Splash Accueil</a>
-            <a class="screen-link" href="choix_type_compte/code.html">Choix du Profil</a>
-            <a class="screen-link" href="connexion/code.html">Connexion</a>
-            <a class="screen-link" href="inscription/code.html">Inscription</a>
-            <a class="screen-link" href="v_rification_otp/code.html">Vérification OTP SMS</a>
-            <a class="screen-link" href="cr_ation_code_pin/code.html">Création Code PIN</a>
-            <a class="screen-link" href="verrouillage_pin/code.html">Écran de Verrouillage PIN</a>
-            <a class="screen-link" href="reinitialisation_code_pin/code.html">Réinitialiser Code PIN</a>
-            <a class="screen-link" href="succes_reinitialisation_pin/code.html">Succès Réinitialisation PIN</a>
-            <a class="screen-link" href="modification_du_code_pin/code.html">Modifier Code PIN</a>
-            <a class="screen-link" href="kyc_verification_identite/code.html">Vérification KYC (CIP/CNI)</a>
-            <a class="screen-link" href="verification_niveau_superieur/code.html">KYC Niveau 3 VIP</a>
-            <a class="screen-link" href="profil_utilisateur/code.html">Mon Profil Utilisateur</a>
-            <a class="screen-link" href="modifier_le_profil/code.html">Modifier le Profil</a>
-            <a class="screen-link" href="appareils_connectes_securite/code.html">Appareils & Sécurité</a>
-            <a class="screen-link" href="support_aide/code.html">Centre d'Assistance & Aide</a>
-          </div>
-        </div>
-
-        <!-- 2. Espace Marchand -->
-        <div class="space-card">
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(52, 211, 153, 0.2);">
-            <div style="width: 28px; height: 28px; border-radius: 8px; background: rgba(52, 211, 153, 0.25); display: flex; align-items: center; justify-content: center;">
-              <span class="material-symbols-outlined" style="color: #34d399; font-size: 16px;">store</span>
-            </div>
-            <span style="color: #fff; font-weight: 800; font-size: 14px;">Marchand</span>
-            <span class="badge" style="background: rgba(52, 211, 153, 0.25); color: #34d399;">24 écrans</span>
-          </div>
-          <div class="screens-grid">
-            <a class="screen-link" href="tableau_de_bord_marchand/code.html"><b>Dashboard Marchand ⭐</b></a>
-            <a class="screen-link" href="caisse_marchand_pos/code.html">Caisse POS Encaissement</a>
-            <a class="screen-link" href="operations_caisse_marchand/code.html">Opérations de Caisse</a>
-            <a class="screen-link" href="g_n_rer_qr_code_de_r_ception/code.html">Générer QR Paiement</a>
-            <a class="screen-link" href="catalogue_produits_services/code.html">Catalogue & Vitrine HD</a>
-            <a class="screen-link" href="messagerie_marchand_clients/code.html">Messagerie Clients & Commandes</a>
-            <a class="screen-link" href="liens_de_paiement_marchand/code.html">Liens de Paiement Web</a>
-            <a class="screen-link" href="carnet_de_dettes_marchand/code.html">Carnet de Dettes Clients</a>
-            <a class="screen-link" href="historique_des_ventes/code.html">Historique des Ventes</a>
-            <a class="screen-link" href="d_tail_d_une_vente/code.html">Détail d'une Vente</a>
-            <a class="screen-link" href="retrait_marchand/code.html">Retrait Ventes Marchand</a>
-            <a class="screen-link" href="setup_point_de_vente_marchand/code.html">Setup Point de Vente POS</a>
-            <a class="screen-link" href="profil_de_l_entreprise/code.html">Profil Entreprise IFU</a>
-            <a class="screen-link" href="quipe_marchand/code.html">Gestion Équipe & Caissiers</a>
-            <a class="screen-link" href="centre_de_notifications_marchand/code.html">Notifications Marchand</a>
-            <a class="screen-link" href="accueil_marchand/code.html">Accueil Marchand</a>
-            <a class="screen-link" href="inscription_marchand/code.html">Inscription Marchand</a>
-            <a class="screen-link" href="v_rification_marchand/code.html">Vérification Commerce</a>
-            <a class="screen-link" href="support_marchand/code.html">Support Dédié Pro</a>
-          </div>
-        </div>
-
-        <!-- 3. Espace Agent -->
-        <div class="space-card">
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(251, 146, 60, 0.2);">
-            <div style="width: 28px; height: 28px; border-radius: 8px; background: rgba(251, 146, 60, 0.25); display: flex; align-items: center; justify-content: center;">
-              <span class="material-symbols-outlined" style="color: #fb923c; font-size: 16px;">support_agent</span>
-            </div>
-            <span style="color: #fff; font-weight: 800; font-size: 14px;">Agent Switch</span>
-            <span class="badge" style="background: rgba(251, 146, 60, 0.25); color: #fb923c;">28 écrans</span>
-          </div>
-          <div class="screens-grid">
-            <a class="screen-link" href="tableau_de_bord_agent/code.html"><b>Dashboard Agent ⭐</b></a>
-            <a class="screen-link" href="tableau_de_bord_agent_simple/code.html">Dashboard Agent Simple</a>
-            <a class="screen-link" href="d_p_t_de_fonds_mis_jour_agent/code.html">Dépôt d'espèces (Cash-In)</a>
-            <a class="screen-link" href="retrait_de_fonds_mis_jour_agent/code.html">Retrait d'espèces (Cash-Out)</a>
-            <a class="screen-link" href="code_depot_especes_agent/code.html">Code Dépôt Espèces</a>
-            <a class="screen-link" href="code_retrait_especes_agent/code.html">Code Retrait Espèces</a>
-            <a class="screen-link" href="recu_operation_agent/code.html">Reçu Opération Agent</a>
-            <a class="screen-link" href="centre_de_notifications_agent/code.html">Notifications Guichet</a>
-            <a class="screen-link" href="historique_des_op_rations_agent/code.html">Journal Opérations</a>
-            <a class="screen-link" href="cloture_de_caisse_agent/code.html">Clôture Caisse & Billetage</a>
-            <a class="screen-link" href="valider_une_op_ration_client/code.html">Servir Client (OTP/QR)</a>
-            <a class="screen-link" href="services_factures_agent/code.html">Factures & KYC ANIP</a>
-            <a class="screen-link" href="demande_de_r_approvisionnement_float/code.html">Recharge Float Caisse</a>
-            <a class="screen-link" href="succes_reapprovisionnement_float/code.html">Succès Recharge Float</a>
-            <a class="screen-link" href="retrait_commissions_agent/code.html">Retrait Commissions</a>
-            <a class="screen-link" href="transfert_float_inter_agent/code.html">Transfert Float Confrère</a>
-            <a class="screen-link" href="confirmation_biometrique_agent/code.html">Confirmation Biométrique</a>
-            <a class="screen-link" href="releve_operations_agent/code.html">Relevé & Export CSV</a>
-            <a class="screen-link" href="gestion_caissiers_agent/code.html">Gestion Caissiers</a>
-            <a class="screen-link" href="bareme_commissions_agent/code.html">Barème & Simulateur</a>
-            <a class="screen-link" href="agent_verification_caution/code.html">Vérification Caution Agent</a>
-            <a class="screen-link" href="documents_contrat_agent/code.html">Agrément & Documents</a>
-            <a class="screen-link" href="connexion_agent/code.html">Connexion Espace Agent</a>
-            <a class="screen-link" href="securite_et_pin_agent/code.html">Sécurité & PIN Agent</a>
-            <a class="screen-link" href="modifier_profil_agent/code.html">Modifier Profil Agent</a>
-            <a class="screen-link" href="param_tres_et_profil_agent/code.html">Profil & Outils Agent</a>
-            <a class="screen-link" href="support_assistance_agent/code.html">Support Assistance Agent</a>
-            <a class="screen-link" href="inscription_agent_switch/code.html">Inscription Agent</a>
-          </div>
-        </div>
-
-        <!-- 4. Espace Agent Mixte (Point Hybride) -->
-        <div class="space-card">
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(245, 158, 11, 0.25);">
-            <div style="width: 28px; height: 28px; border-radius: 8px; background: rgba(245, 158, 11, 0.25); display: flex; align-items: center; justify-content: center;">
-              <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 16px;">hub</span>
-            </div>
-            <span style="color: #fff; font-weight: 800; font-size: 14px;">Point Hybride</span>
-            <span class="badge" style="background: rgba(245, 158, 11, 0.25); color: #f59e0b;">16 écrans</span>
-          </div>
-          <div class="screens-grid">
-            <a class="screen-link" href="tableau_de_bord_agent_mixte/code.html"><b>Dashboard Mixte 2-en-1 ⭐</b></a>
-            <a class="screen-link" href="cloture_de_caisse_hybride/code.html">Clôture Caisse Hybride</a>
-            <a class="screen-link" href="services_factures_hybride/code.html">Factures & Services Hybride</a>
-            <a class="screen-link" href="param_tres_et_profil_hybride/code.html">Paramètres & Profil Hybride</a>
-            <a class="screen-link" href="caisse_marchand_pos/code.html">Caisse POS & Ventes</a>
-            <a class="screen-link" href="operations_caisse_marchand/code.html">Opérations Caisse POS</a>
-            <a class="screen-link" href="catalogue_produits_services/code.html">Vitrine & Catalogue Boutique</a>
-            <a class="screen-link" href="messagerie_marchand_clients/code.html">Messagerie Commandes Clients</a>
-            <a class="screen-link" href="d_p_t_de_fonds_mis_jour_agent/code.html">Dépôts Cash-In Guichet</a>
-            <a class="screen-link" href="retrait_de_fonds_mis_jour_agent/code.html">Retraits Cash-Out Guichet</a>
-            <a class="screen-link" href="recu_operation_agent/code.html">Reçus Opérations Guichet</a>
-            <a class="screen-link" href="historique_des_ventes/code.html">Historique des Ventes</a>
-            <a class="screen-link" href="carnet_de_dettes_marchand/code.html">Carnet de Dettes Clients</a>
-            <a class="screen-link" href="retrait_marchand/code.html">Retrait Ventes Boutique</a>
-            <a class="screen-link" href="transfert_float_inter_agent/code.html">Transfert Float Confrère</a>
-            <a class="screen-link" href="demande_de_r_approvisionnement_float/code.html">Recharge Float Caisse</a>
-          </div>
-        </div>
-
+    <!-- 2. Logo Switch Bénin (Avec Halo lumineux) -->
+    <div class="animate-float relative group my-2">
+      <div class="absolute -inset-3 rounded-full bg-gradient-to-tr from-[#5E3BDC] via-[#7B5CFA] to-[#00D4AA] opacity-50 blur-xl group-hover:opacity-75 transition-opacity"></div>
+      <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-white/95 backdrop-blur-xl p-4 shadow-[0_20px_50px_rgba(94,59,220,0.4)] flex items-center justify-center border-2 border-white/80">
+        <img src="assets/images/img_003.jpg" alt="Logo Switch Bénin" class="w-full h-full object-contain drop-shadow-sm" onerror="this.onerror=null; this.src='assets/images/img_splash_bg.jpg';"/>
       </div>
     </div>
 
-    <!-- Pied de page -->
-    <p style="color: rgba(202, 190, 255, 0.5); font-size: 11px; text-align: center; margin: 24px 0 0; font-weight: 600;">
-      Switch · Fintech Nationale Bénin · Adapté pour Android, iPhone, iPad, Tablettes & Terminaux POS
-    </p>
+    <!-- 3. Titre Court & Accroche Épurée -->
+    <div class="space-y-2 max-w-sm px-2">
+      <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white leading-snug">
+        Bienvenue sur <span class="bg-gradient-to-r from-[#CABEFF] via-[#FFFFFF] to-[#00D4AA] bg-clip-text text-transparent">Switch Bénin</span>
+      </h1>
+      <p class="text-sm text-purple-200 font-medium leading-relaxed">
+        La super-app financière rapide, sécurisée et à 0% de frais conçue pour le Bénin.
+      </p>
+    </div>
 
+    <!-- 4. Badges de Confiance Épurés -->
+    <div class="flex items-center justify-center gap-3 text-[11px] font-bold text-purple-200/90 pt-1">
+      <span class="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full border border-white/15">
+        <span class="text-emerald-400">⚡</span>
+        <span>0% de frais</span>
+      </span>
+      <span class="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full border border-white/15">
+        <span class="text-yellow-400">🛡️</span>
+        <span>Normes BCEAO</span>
+      </span>
+    </div>
+
+    <!-- 5. Les Deux Boutons d'Action Principaux -->
+    <div class="w-full flex flex-col gap-3 pt-4">
+      
+      <!-- Bouton 1 : Commencer (Inscription) -->
+      <a href="inscription/code.html" class="btn-shimmer w-full py-4 px-6 rounded-full bg-gradient-to-r from-[#5E3BDC] via-[#6F47E8] to-[#7B5CFA] hover:from-[#6D4CE0] hover:to-[#8A6EFB] text-white font-black text-base shadow-[0_12px_32px_rgba(94,59,220,0.55)] active:scale-98 transition-all flex items-center justify-center gap-2.5 no-underline cursor-pointer group">
+        <span>Commencer</span>
+        <span class="text-lg group-hover:translate-x-1 transition-transform">→</span>
+      </a>
+
+      <!-- Bouton 2 : Se Connecter -->
+      <a href="connexion/code.html" class="w-full py-4 px-6 rounded-full bg-white/10 hover:bg-white/15 active:scale-98 text-white font-extrabold text-sm sm:text-base border border-white/25 backdrop-blur-md shadow-sm transition-all flex items-center justify-center gap-2 no-underline cursor-pointer">
+        <span>Se connecter</span>
+      </a>
+
+    </div>
+
+    <!-- 6. Lien Discret : Découvrir les Fonctionnalités -->
+    <div class="pt-2">
+      <button type="button" onclick="openDiscoveryModal()" class="text-xs text-purple-300/80 hover:text-white font-semibold underline underline-offset-4 transition-colors cursor-pointer bg-transparent border-none">
+        Découvrir les fonctionnalités
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Modale Découverte des Fonctionnalités (Optionnelle & Non-intrusive) -->
+  <div id="discovery-modal" class="fixed inset-0 bg-black/80 z-50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-[#170F35] text-white border border-purple-400/30 w-full max-w-md rounded-[32px] p-6 shadow-2xl flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-200">
+      <div class="flex items-center justify-between border-b border-purple-400/20 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">✨</span>
+          <h3 class="text-base font-black text-white">Fonctionnalités Bêta Switch</h3>
+        </div>
+        <button onclick="closeDiscoveryModal()" class="w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 flex items-center justify-center font-bold text-sm cursor-pointer border-none">✕</button>
+      </div>
+
+      <div class="flex flex-col gap-3 text-xs">
+        <div class="p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center font-bold text-base">👤</div>
+          <div>
+            <h4 class="font-bold text-white">Espace Particulier</h4>
+            <p class="text-purple-200">Transferts P2P 0%, Dépôt/Retrait Mobile Money, SBEE, SONEB et Recharge GSM.</p>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-base">🏪</div>
+          <div>
+            <h4 class="font-bold text-white">Espace Marchand</h4>
+            <p class="text-purple-200">Encaissements QR Code à 0% de frais, Caisse tactile POS, catalogue et retrait des gains.</p>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center font-bold text-base">🛡️</div>
+          <div>
+            <h4 class="font-bold text-white">Réseau d'Agents Guichets</h4>
+            <p class="text-purple-200">Points relais agréés, opérations de Cash-In / Cash-Out et commissions d'exploitation.</p>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="closeDiscoveryModal()" class="w-full py-3 rounded-full bg-primary hover:bg-primary-hover text-white font-extrabold text-xs shadow-md transition-colors cursor-pointer border-none mt-1">
+        Compris, fermer
+      </button>
+    </div>
   </div>
-</div>
 
-<script>
-  const hasVisited = localStorage.getItem('switch_visited');
-  if (!hasVisited) {
-    localStorage.setItem('switch_visited', '1');
-  }
-</script>
+  <!-- Footer Discret -->
+  <footer class="w-full text-center py-2 text-[11px] text-purple-300/60 font-medium relative z-10">
+    Switch Bénin S.A.S • Tous droits réservés • Bêta Testeurs 🇧🇯
+  </footer>
+
+  <script>
+    function openDiscoveryModal() {
+      document.getElementById('discovery-modal').classList.remove('hidden');
+    }
+    function closeDiscoveryModal() {
+      document.getElementById('discovery-modal').classList.add('hidden');
+    }
+  </script>
 
 </body>
 </html>

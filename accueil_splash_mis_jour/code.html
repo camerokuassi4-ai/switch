@@ -121,10 +121,10 @@
     <!-- Top Badge & Floating Logo -->
     <div class="flex flex-col items-center justify-start w-full pt-2">
       
-      <!-- Top Official Badge -->
-      <div class="mb-5 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/40 text-white text-[11px] font-bold shadow-xl">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span class="tracking-wider uppercase">SWITCH BÉNIN • S.A.S</span>
+      <!-- Top Official Badge : Version Bêta -->
+      <div class="mb-5 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-amber-400/20 backdrop-blur-md border border-amber-300/40 text-amber-300 text-[11px] font-black uppercase shadow-xl">
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+        <span class="tracking-wider">VERSION BÊTA PUBLIQUE v2.1.0 🇧🇯</span>
       </div>
 
       <!-- Floating Logo Box with Neon Aura (Forme Originelle) -->
@@ -192,9 +192,9 @@
     function startNewAccount() {
       localStorage.setItem('switch_kyc_level', '1');
       if (window.switchNavigate) {
-        window.switchNavigate('../choix_type_compte/code.html');
+        window.switchNavigate('../inscription/code.html');
       } else {
-        window.location.href = '../choix_type_compte/code.html';
+        window.location.href = '../inscription/code.html';
       }
     }
 
