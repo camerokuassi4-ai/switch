@@ -2070,6 +2070,91 @@
       }
 
       return { success: false, message: "Type d'opération inconnu." };
+    },
+
+    /**
+     * Dépôt Mobile Money Entrant (MTN / Moov / Celtiis -> Compte Switch)
+     */
+    depositFromMobileMoney: async function (operator, phone, amount) {
+      const amt = parseInt(amount, 10);
+      if (isNaN(amt) || amt <= 0) {
+        return { ok: false, success: false, message: "Montant de recharge invalide." };
+      }
+      if (amt < 100) {
+        return { ok: false, success: false, message: "Le montant minimum de recharge est de 100 FCFA." };
+      }
+
+      const opNames = {
+        mtn: "MTN Mobile Money Bénin",
+        moov: "Moov Money Bénin",
+        celtiis: "Celtiis Cash Bénin"
+      };
+      const opKey = (operator || 'mtn').toLowerCase();
+      const opLabel = opNames[opKey] || (operator ? operator.toUpperCase() : "Mobile Money");
+      const txRef = "DEP-MOMO-" + this._generateSecureCode(8);
+
+      // Crédit atomique du solde principal Switch
+      const curBal = this.getBalance();
+      const newBal = curBal + amt;
+      this.setBalance(newBal);
+
+      // Enregistrer la transaction dans l'historique
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      
+      const newTx = {
+        id: "tx_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
+        type: "deposit_mobile_money",
+        category: "deposit",
+        title: `Recharge via ${opLabel}`,
+        amount: amt,
+        fee: 0,
+        sender: `${opLabel} (${phone || 'Numéro lié'})`,
+        recipient: "Mon Compte Switch",
+        ref: txRef,
+        date: dateStr,
+        status: "success",
+        icon: "add_circle",
+        iconBg: "bg-emerald-50 text-emerald-600"
+      };
+
+      try {
+        const txs = this.getTransactions();
+        txs.unshift(newTx);
+        localStorage.setItem('switch_transactions', JSON.stringify(txs));
+        localStorage.setItem('switch_user_transactions', JSON.stringify(txs));
+      } catch (e) {
+        console.warn("[SwitchAPI] Erreur écriture transaction:", e);
+      }
+
+      // Enregistrer pour la quittance / reçu
+      const receiptData = {
+        title: `Recharge ${opLabel}`,
+        amount: amt,
+        fee: "0 FCFA",
+        beneficiary: "Mon Compte Switch",
+        sender: `${opLabel} (${phone || 'Mon numéro'})`,
+        ref: txRef,
+        date: dateStr,
+        source: opLabel,
+        returnUrl: "../tableau_de_bord_mis_jour/code.html",
+        returnLabel: "Retour à l'Accueil"
+      };
+      localStorage.setItem('switch_last_transaction', JSON.stringify(receiptData));
+
+      if (window.SwitchEngine) {
+        window.SwitchEngine.syncUI();
+      }
+
+      return {
+        ok: true,
+        success: true,
+        tx_ref: txRef,
+        amount: amt,
+        operator: opLabel,
+        balance: newBal,
+        message: `Votre compte Switch a été crédité de ${amt.toLocaleString('fr-FR')} FCFA via ${opLabel}.`
+      };
     }
 
   };
