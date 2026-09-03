@@ -151,6 +151,13 @@
     </div>
 
     <!-- 5. Les Deux Boutons d'Action Principaux -->
+    <!-- Android Download Banner (Visible & Détectable) -->
+    <div id="android-download-banner" class="w-full">
+      <a href="download.html" class="w-full py-3.5 px-5 rounded-full bg-emerald-400/15 hover:bg-emerald-400/25 border border-emerald-300/40 text-emerald-300 font-black text-xs sm:text-sm flex items-center justify-center gap-2.5 no-underline transition-all shadow-md active:scale-98">
+        <span class="text-base">🤖</span>
+        <span>Télécharger l'application Android (.APK)</span>
+      </a>
+    </div>
     <div class="w-full flex flex-col gap-3 pt-4">
       
       <!-- Bouton 1 : Commencer (Inscription) -->
@@ -232,5 +239,15 @@
     }
   </script>
 
+  <script>
+    // Détection automatique appareil Android
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    if (isAndroid) {
+      const banner = document.getElementById('android-download-banner');
+      if (banner) {
+        banner.classList.add('ring-2', 'ring-emerald-400/50', 'animate-pulse');
+      }
+    }
+  </script>
 </body>
 </html>
