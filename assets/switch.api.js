@@ -1294,17 +1294,14 @@
           return data;
         }
       } catch (e) {
-        if (!cfg.OFFLINE_FALLBACK) {
-          return { success: false, message: e.message || "Erreur lors du règlement de la facture." };
-        }
         console.warn("[SwitchAPI] Bill Payment RPC info :", e.message);
       }
 
       // Repli local
-      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
+      const curBal = this.getBalance();
       if (curBal < amount) return { success: false, message: "Solde insuffisant pour régler ce service." };
       const newBal = curBal - amount;
-      localStorage.setItem('switch_user_balance', newBal.toString());
+      this.setBalance(newBal);
       const token = (serviceType === 'sbee') ? "4819 0294 8102 9481 0294" : "REC-" + this._generateSecureCode(6);
       localStorage.setItem('switch_last_bill_token', token);
 

@@ -267,6 +267,19 @@
       const now = new Date();
       const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
+      // Crédit effectif du cashback de 2% sur le compte Switch
+      const postDebitBal = (window.SwitchAPI && typeof window.SwitchAPI.getBalance === 'function') 
+        ? window.SwitchAPI.getBalance() 
+        : parseInt(localStorage.getItem('switch_user_balance') || '0', 10);
+      const finalBal = postDebitBal + cashback;
+      if (window.SwitchAPI && typeof window.SwitchAPI.setBalance === 'function') {
+        window.SwitchAPI.setBalance(finalBal);
+      } else {
+        localStorage.setItem('switch_user_balance', finalBal.toString());
+      }
+
+      const txType = (currentProductType === 'airtime') ? 'recharge_credit' : 'forfait_telco';
+
       const receiptData = {
         title: title,
         amount: amt,
@@ -282,6 +295,35 @@
       };
       localStorage.setItem('switch_last_transaction', JSON.stringify(receiptData));
 
+      // Enregistrement de la transaction dans le journal SwitchAPI
+      const newTx = {
+        id: "tx_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
+        type: txType,
+        category: "telecom",
+        title: title,
+        amount: -amt,
+        cashback: cashback,
+        fee: 0,
+        recipient: `${currentOp} (${phone})`,
+        ref: txRef || receiptData.ref,
+        date: dateStr,
+        status: "success",
+        note: `Cashback 2%: +${cashback} FCFA crédité`,
+        icon: "cell_tower",
+        iconBg: "bg-amber-50 text-amber-800"
+      };
+
+      try {
+        if (window.SwitchAPI && typeof window.SwitchAPI.getTransactions === 'function') {
+          const txs = window.SwitchAPI.getTransactions();
+          txs.unshift(newTx);
+          localStorage.setItem('switch_transactions', JSON.stringify(txs));
+          localStorage.setItem('switch_user_transactions', JSON.stringify(txs));
+        }
+      } catch (errTx) {
+        console.warn("[Recharge] Erreur enregistrement journal:", errTx);
+      }
+
       if (window.SwitchEngine) {
         window.SwitchEngine.addTransaction({
           title: title,
@@ -293,6 +335,9 @@
           icon: "cell_tower",
           iconBg: "bg-amber-50 text-amber-800"
         });
+        if (typeof window.SwitchEngine.syncUI === 'function') {
+          window.SwitchEngine.syncUI();
+        }
       }
 
       document.getElementById('modal-phone').textContent = phone;
