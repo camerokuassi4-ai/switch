@@ -24,7 +24,7 @@
       </button>
       <div>
         <h1 class="text-xl font-bold text-on-surface">Retrait en Agence Switch</h1>
-        <p class="text-xs text-on-surface-variant">Présentez ce code à votre agent</p>
+        <p class="text-xs text-on-surface-variant">Confirmez avec votre code PIN, puis présentez le QR à l'agent</p>
       </div>
     </div>
     <span class="text-xs font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-full flex items-center gap-1">
@@ -57,7 +57,7 @@
       </div>
 
       <p class="text-xs text-purple-200 leading-relaxed max-w-xs">
-        Donnez ce code ou présentez le QR Code à l'agent Switch. Les fonds vous seront remis en espèces immédiatement.
+        Confirmez avec votre code PIN, puis présentez le QR à l'agent. Les fonds vous seront remis en espèces immédiatement.
       </p>
     </div>
 
@@ -80,6 +80,13 @@
       </button>
     </div>
 
+    
+    <!-- Bouton d'annulation de la demande -->
+    <button onclick="cancelWithdrawal()" class="w-full border border-rose-200 bg-rose-50 text-rose-700 font-bold py-3 rounded-full hover:bg-rose-100 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 text-xs cursor-pointer my-2">
+      <span class="material-symbols-outlined text-sm">cancel</span>
+      <span>Annuler la demande de retrait</span>
+    </button>
+  
     <!-- Actions -->
     <div class="flex flex-col gap-2 mt-2">
       <button onclick="window.switchNavigate ? window.switchNavigate('../tableau_de_bord_mis_jour/code.html') : window.location.href='../tableau_de_bord_mis_jour/code.html'" class="w-full bg-primary text-white font-bold py-3.5 rounded-full hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 text-sm cursor-pointer shadow-md">
