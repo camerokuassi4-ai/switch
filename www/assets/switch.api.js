@@ -2018,6 +2018,14 @@
       this._notifyStateChange('agent_transactions_cleared', []);
     },
 
+    processAgentCashIn: async function (clientIdentifier, amount) {
+      return await this.processAgentCash(clientIdentifier, amount, 'DEPOSIT');
+    },
+
+    processAgentCashOut: async function (clientIdentifier, amount, otp = '') {
+      return await this.processAgentCash(clientIdentifier, amount, 'WITHDRAWAL');
+    },
+
     processAgentCash: async function (clientIdentifier, amount, type) {
       const amt = parseInt(amount, 10);
       if (!amt || amt < 500) {
