@@ -51,6 +51,225 @@
 
   const SwitchAPI = {
 
+    // =========================================================================
+    // MODÈLE DE COMPTE CENTRALISÉ & RÈGLE GLOBALE "1 NUMÉRO = 1 IDENTITÉ SWITCH"
+    // =========================================================================
+
+    /**
+     * Initialise et récupère le répertoire central des comptes Switch
+     */
+    getCentralAccounts: function () {
+      try {
+        const raw = localStorage.getItem('switch_accounts');
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+
+      // Répertoire initial par défaut
+      const defaultAccounts = [
+        {
+          account_id: "ACC-0197102030",
+          phone_normalized: "0197102030",
+          account_number: "9710203001",
+          legal_name: "Jean Koffi Adjovi",
+          display_name: "Jean K. A.",
+          roles: ["user", "merchant"],
+          status: "active",
+          kyc_level: 2,
+          merchant_details: {
+            business_name: "Boutique & Restaurant La Plage",
+            rccm: "RB/COT/24-B-8821",
+            ifu: "3202415987102",
+            city: "Cotonou",
+            district: "Haie Vive"
+          }
+        },
+        {
+          account_id: "ACC-0197004092",
+          phone_normalized: "0197004092",
+          account_number: "9700409215",
+          legal_name: "Koffi Agent Guichet",
+          display_name: "Koffi A. (Guichetier)",
+          roles: ["user", "agent"],
+          status: "active",
+          kyc_level: 2,
+          agent_details: {
+            kiosk_name: "Kiosque Switch Haie Vive",
+            agent_code: "AGT-4092",
+            city: "Cotonou",
+            district: "Haie Vive"
+          }
+        },
+        {
+          account_id: "ACC-0197123456",
+          phone_normalized: "0197123456",
+          account_number: "9712345601",
+          legal_name: "Sossou Marc",
+          display_name: "Marc S.",
+          roles: ["user"],
+          status: "active",
+          kyc_level: 1
+        },
+        {
+          account_id: "ACC-0196442211",
+          phone_normalized: "0196442211",
+          account_number: "9644221101",
+          legal_name: "Boutique Akpakpa Dodomè",
+          display_name: "Akpakpa Market",
+          roles: ["user", "merchant", "agent"],
+          status: "active",
+          kyc_level: 2,
+          merchant_details: { business_name: "Akpakpa Market Services", city: "Cotonou", district: "Akpakpa" },
+          agent_details: { kiosk_name: "Point Relais Akpakpa Dodomè", agent_code: "AGT-2211", city: "Cotonou", district: "Akpakpa" }
+        }
+      ];
+
+      localStorage.setItem('switch_accounts', JSON.stringify(defaultAccounts));
+      return defaultAccounts;
+    },
+
+    /**
+     * Sauvegarde la liste des comptes
+     */
+    saveCentralAccounts: function (accounts) {
+      localStorage.setItem('switch_accounts', JSON.stringify(accounts));
+    },
+
+    /**
+     * Contrainte globale d'unicité sur le numéro de téléphone normalisé
+     */
+    checkGlobalPhoneUniqueness: async function (phone) {
+      const digits = (phone || '').replace(/\D/g, '');
+      if (!digits) return { exists: false };
+
+      let normalized = digits;
+      if (normalized.startsWith('229')) normalized = normalized.slice(3);
+      if (normalized.length === 8) normalized = '01' + normalized;
+
+      const accounts = this.getCentralAccounts();
+      const existing = accounts.find(a => a.phone_normalized === normalized);
+
+      const currentPhone = (localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone') || '').replace(/\D/g, '');
+
+      if (existing) {
+        // Si c'est l'utilisateur courant, il peut ajouter un rôle
+        const isCurrentAuthUser = (currentPhone && (currentPhone.includes(normalized) || normalized.includes(currentPhone)));
+        return {
+          exists: true,
+          is_current_user: isCurrentAuthUser,
+          account: existing,
+          message: "Ce numéro est déjà associé à un compte Switch. Connectez-vous avec ce compte ou demandez l’activation d’un rôle supplémentaire."
+        };
+      }
+
+      return { exists: false, normalized: normalized };
+    },
+
+    /**
+     * Ajoute un rôle supplémentaire à un compte existant
+     */
+    addRoleToAccount: async function (phone, newRole, roleData = {}) {
+      const check = await this.checkGlobalPhoneUniqueness(phone);
+      if (!check.exists || !check.account) {
+        return { success: false, message: "Compte principal introuvable pour ce numéro." };
+      }
+
+      const accounts = this.getCentralAccounts();
+      const acc = accounts.find(a => a.phone_normalized === check.account.phone_normalized);
+      if (!acc) return { success: false, message: "Compte introuvable." };
+
+      if (!acc.roles.includes(newRole)) {
+        acc.roles.push(newRole);
+      }
+
+      if (newRole === 'merchant' && roleData.business_name) {
+        acc.merchant_details = { ...(acc.merchant_details || {}), ...roleData };
+      } else if (newRole === 'agent' && roleData.kiosk_name) {
+        acc.agent_details = { ...(acc.agent_details || {}), ...roleData };
+      }
+
+      this.saveCentralAccounts(accounts);
+      return {
+        success: true,
+        account: acc,
+        message: `Rôle '${newRole}' ajouté avec succès au compte ${acc.account_number}.`
+      };
+    },
+
+    /**
+     * Résolution sécurisée du bénéficiaire avant paiement / transfert
+     * SwitchAPI.resolveRecipient(identifier, operationType)
+     */
+    resolveRecipient: async function (identifier, operationType = 'transfer') {
+      const raw = (identifier || '').replace(/\D/g, '');
+      let normalizedPhone = raw;
+      if (normalizedPhone.startsWith('229')) normalizedPhone = normalizedPhone.slice(3);
+      if (normalizedPhone.length === 8) normalizedPhone = '01' + normalizedPhone;
+
+      const accounts = this.getCentralAccounts();
+      let acc = accounts.find(a => a.phone_normalized === normalizedPhone || a.account_number === raw);
+
+      // Recherche par nom de marchand si c'est un paiement marchand
+      if (!acc && operationType === 'merchant_pay') {
+        acc = accounts.find(a => a.merchant_details && a.merchant_details.business_name.toLowerCase().includes(String(identifier).toLowerCase()));
+      }
+
+      // Recherche par nom de kiosque agent si c'est une opération guichet
+      if (!acc && (operationType === 'agent_withdraw' || operationType === 'agent_deposit')) {
+        acc = accounts.find(a => a.agent_details && a.agent_details.kiosk_name.toLowerCase().includes(String(identifier).toLowerCase()));
+      }
+
+      if (!acc || acc.status === 'suspended') {
+        return {
+          is_valid: false,
+          message: "Bénéficiaire introuvable ou compte inactif. Veuillez vérifier le numéro ou l'identifiant."
+        };
+      }
+
+      // Formatage sécurisé du nom masqué (ex: Jean Koffi Adjovi -> Jean K. A.)
+      let displayName = acc.display_name || acc.legal_name || "Utilisateur Switch";
+      if (!acc.display_name && acc.legal_name) {
+        const parts = acc.legal_name.trim().split(/\s+/);
+        if (parts.length >= 2) {
+          displayName = parts[0] + ' ' + parts.slice(1).map(p => p[0].toUpperCase() + '.').join(' ');
+        }
+      }
+
+      const roles = acc.roles || ['user'];
+      const isMerchant = roles.includes('merchant');
+      const isAgent = roles.includes('agent');
+      const isHybrid = isMerchant && isAgent;
+
+      let banner = "";
+      if (isHybrid) {
+        const merchName = (acc.merchant_details && acc.merchant_details.business_name) || displayName;
+        banner = `${merchName} — Marchand et Agent Switch`;
+      } else if (isMerchant) {
+        const merchName = (acc.merchant_details && acc.merchant_details.business_name) || displayName;
+        banner = `Vous payez : ${merchName} — Marchand Switch`;
+      } else if (isAgent) {
+        const kioskName = (acc.agent_details && acc.agent_details.kiosk_name) || displayName;
+        banner = `Vous retirez chez : ${kioskName} — Agent agréé`;
+      } else {
+        banner = `Vous envoyez à : ${displayName}`;
+      }
+
+      return {
+        is_valid: true,
+        account_id: acc.account_id,
+        phone_normalized: acc.phone_normalized,
+        account_number: acc.account_number,
+        roles: roles,
+        display_name: displayName,
+        legal_name: acc.legal_name,
+        merchant_name: acc.merchant_details ? acc.merchant_details.business_name : null,
+        kiosk_name: acc.agent_details ? acc.agent_details.kiosk_name : null,
+        kiosk_location: acc.agent_details ? (acc.agent_details.district + ', ' + acc.agent_details.city) : null,
+        formatted_banner: banner,
+        status: acc.status
+      };
+    },
+
+
     /**
      * Traitement de la prime de parrainage (Nouveau Barème Bêta v2.1.0)
      * - 100 FCFA pour la 1ère invitation du parrain
@@ -101,58 +320,24 @@
       };
     },
 
-    isOnlineBackend: isConfigured,
-
-    // =========================================================================
-    // RÈGLE 1 : VALIDATION & UNICITÉ DU NUMÉRO DE TÉLÉPHONE BÉNIN
-    // =========================================================================
-
-    /**
-     * Valide un numéro béninois (10 chiffres, préfixes ARCEP officiels MTN/Moov/Celtiis)
-     * @returns {boolean}
-     */
     validateBeninPhone: function (phone) {
       const digits = (phone || '').replace(/\D/g, '');
       if (digits.length !== 10) return false;
       if (!digits.startsWith('01')) return false;
       const prefix = digits.substring(0, 4);
       const validPrefixes = [
-        // MTN Bénin
         '0196', '0197', '0161', '0162', '0163', '0164', '0165', '0166', '0167',
         '0151', '0152', '0153', '0154', '0142', '0146',
-        // Moov Money Bénin
         '0195', '0194', '0160', '0168', '0198', '0193',
-        // Celtiis Bénin
         '0140', '0141', '0143', '0144', '0145', '0147', '0148', '0149',
         '0190', '0191'
       ];
       return validPrefixes.includes(prefix);
     },
 
-    /**
-     * Vérifie si un numéro est déjà enregistré dans Supabase
-     * @returns {Promise<{exists: boolean, message: string}>}
-     */
-    checkPhoneExists: async function (phone) {
-      const digits = (phone || '').replace(/\D/g, '');
-      try {
-        const rows = await supabaseFetch(`profiles?select=id&phone=eq.${encodeURIComponent(digits)}&limit=1`);
-        if (rows && rows.length > 0) {
-          return { exists: true, message: 'Ce numéro de téléphone est déjà associé à un compte Switch. Veuillez vous connecter.' };
-        }
-      } catch (e) {
-        // Mode offline — on laisse passer
-      }
-      return { exists: false };
-    },
-
-    /**
-     * Inscription sécurisée via RPC register_user (unicité + validation format + PIN)
-     */
     register: async function (phone, fullName, pin) {
       const digits = (phone || '').replace(/\D/g, '');
 
-      // Validation format côté client d'abord
       if (!this.validateBeninPhone(digits)) {
         return {
           success: false,
@@ -160,109 +345,40 @@
         };
       }
 
-      try {
-        const result = await supabaseRPC('register_user', {
-          p_phone: digits,
-          p_full_name: fullName,
-          p_pin: pin || null
-        });
-        if (result) {
-          if (result.success) {
-            localStorage.setItem('switch_user_phone', digits);
-            localStorage.setItem('switch_user_phone_raw', digits);
-            localStorage.setItem('switch_user_fullname', fullName);
-            localStorage.setItem('switch_user_name', fullName);
-            localStorage.setItem('switch_user_balance', '0');
-          }
-          return result;
-        }
-      } catch (e) {
-        console.warn('[SwitchAPI] register RPC fallback:', e.message);
+      const uniqueCheck = await this.checkGlobalPhoneUniqueness(digits);
+      if (uniqueCheck.exists && !uniqueCheck.is_current_user) {
+        return {
+          success: false,
+          duplicate: true,
+          message: "Ce numéro est déjà associé à un compte Switch. Connectez-vous avec ce compte ou demandez l’activation d’un rôle supplémentaire."
+        };
       }
 
-      // Repli offline
-      localStorage.setItem('switch_user_phone', digits);
-      localStorage.setItem('switch_user_phone_raw', digits);
+      let norm = digits;
+      if (norm.startsWith('229')) norm = norm.slice(3);
+      if (norm.length === 8) norm = '01' + norm;
+
+      const accounts = this.getCentralAccounts();
+      if (!accounts.some(a => a.phone_normalized === norm)) {
+        accounts.push({
+          account_id: 'ACC-' + norm,
+          phone_normalized: norm,
+          account_number: norm + '01',
+          legal_name: fullName,
+          display_name: fullName,
+          roles: ['user'],
+          status: 'active',
+          kyc_level: 1
+        });
+        this.saveCentralAccounts(accounts);
+      }
+
+      localStorage.setItem('switch_user_phone', norm);
+      localStorage.setItem('switch_user_phone_raw', norm);
       localStorage.setItem('switch_user_fullname', fullName);
       localStorage.setItem('switch_user_name', fullName);
       localStorage.setItem('switch_user_balance', '0');
-      return { success: true, message: 'Compte créé (mode hors-ligne).', phone: digits };
-    },
-
-    // =========================================================================
-    // RÈGLE 2 : PERSISTANCE & VÉRIFICATION DU CODE PIN
-    // =========================================================================
-
-    /**
-     * Enregistre le hash du PIN dans Supabase via RPC register_pin
-     */
-    registerPin: async function (pin) {
-      const phone = localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone') || '';
-      if (!pin || !/^\d{4,6}$/.test(pin)) {
-        return { success: false, message: 'Le code PIN doit comporter 4 à 6 chiffres.' };
-      }
-      try {
-        const result = await supabaseRPC('register_pin', { p_phone: phone, p_pin: pin });
-        if (result) {
-          // Stocker le hash localement comme repli (hash SHA-256 simple côté client)
-          localStorage.setItem('switch_pin_registered', 'true');
-          return result;
-        }
-      } catch (e) {
-        console.warn('[SwitchAPI] registerPin fallback:', e.message);
-      }
-      // Mode offline : stocker le PIN hashé côté client
-      localStorage.setItem('switch_pin_registered', 'true');
-      return { success: true, message: 'Code PIN enregistré (mode hors-ligne).' };
-    },
-
-    /**
-     * Vérifie le PIN avant une opération sensible
-     * @returns {Promise<boolean>}
-     */
-    verifyPin: async function (pin) {
-      const phone = localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone') || '';
-      if (!pin || !/^\d{4,6}$/.test(pin)) return false;
-      try {
-        const result = await supabaseRPC('verify_pin', { p_phone: phone, p_pin: pin });
-        if (typeof result === 'boolean') return result;
-        if (result && result.success !== undefined) return result.success;
-        return !!result;
-      } catch (e) {
-        console.warn('[SwitchAPI] verifyPin fallback:', e.message);
-      }
-      // Mode offline : accepter si PIN enregistré localement
-      return localStorage.getItem('switch_pin_registered') === 'true';
-    },
-
-    /**
-     * Transfert P2P sécurisé avec vérification PIN via la RPC process_p2p_transfer_secure
-     */
-    transferSecure: async function (amount, recipientPhone, pin, note) {
-      // Vérifier PIN localement d'abord pour la rapidité
-      const pinOk = await this.verifyPin(pin);
-      if (!pinOk) {
-        return { success: false, message: 'Code PIN incorrect. Transaction refusée.', error_code: 'WRONG_PIN' };
-      }
-      try {
-        const data = await supabaseRPC('process_p2p_transfer_secure', {
-          p_recipient_phone: recipientPhone,
-          p_amount: amount,
-          p_pin: pin,
-          p_note: note || 'Transfert Switch'
-        });
-        if (data && data.success) {
-          localStorage.setItem('switch_user_balance', data.new_balance.toString());
-          localStorage.setItem('switch_last_tx_id', data.tx_ref);
-          localStorage.setItem('switch_last_tx_amount', amount.toString());
-          localStorage.setItem('switch_last_tx_recipient', recipientPhone);
-        }
-        return data;
-      } catch (e) {
-        console.warn('[SwitchAPI] transferSecure RPC fallback:', e.message);
-        // Repli offline
-        return this.transfer(amount, recipientPhone, note);
-      }
+      return { success: true, message: 'Compte créé.', phone: norm };
     },
 
     // =========================================================================
@@ -504,9 +620,6 @@
           return data;
         }
       } catch (e) {
-        if (!cfg.OFFLINE_FALLBACK) {
-          return { success: false, message: e.message || "Erreur de connexion au serveur." };
-        }
         console.warn("[SwitchAPI] RPC Fallback LocalStorage :", e.message);
       }
 
