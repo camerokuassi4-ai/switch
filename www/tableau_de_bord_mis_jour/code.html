@@ -529,7 +529,7 @@
       if (window.SwitchAPI) {
         const isCompleted = window.SwitchAPI.isProfileCompleted();
         const prof = window.SwitchAPI.getProfile();
-        if (!isCompleted && (!prof.full_name || prof.full_name === "Adele Doe")) {
+        if (!isCompleted && (!prof.full_name || prof.full_name.trim() === "")) {
           window.location.href = '../inscription/code.html';
           return;
         }

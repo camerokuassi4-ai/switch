@@ -264,7 +264,7 @@
 
             const avatarEl = document.getElementById('user-profile-avatar');
             const initialsEl = document.getElementById('user-profile-initials');
-            if (prof.avatar_url && !prof.avatar_url.includes('img_046.jpg')) {
+            if (prof.avatar_url && prof.avatar_url.startsWith('http')) {
                 if (avatarEl) {
                     avatarEl.src = prof.avatar_url;
                     avatarEl.classList.remove('hidden');

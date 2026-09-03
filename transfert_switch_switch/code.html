@@ -142,42 +142,42 @@
           <div class="grid grid-cols-1 gap-2" id="dest-accounts-list">
             
             <!-- Vault Epargne -->
-            <div onclick="selectDestAccount('vault', 'Coffre Épargne Vault', '45 000 FCFA', 'savings')" id="acc-dest-vault" class="account-picker-card active p-3 rounded-2xl border border-primary bg-purple-50/50 flex items-center justify-between cursor-pointer">
+            <div onclick="selectDestAccount('vault', 'Coffre Épargne Vault', '0 FCFA', 'savings')" id="acc-dest-vault" class="account-picker-card active p-3 rounded-2xl border border-primary bg-purple-50/50 flex items-center justify-between cursor-pointer">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-purple-600 text-white flex items-center justify-center">
                   <span class="material-symbols-outlined text-lg">savings</span>
                 </div>
                 <div>
                   <h5 class="text-xs font-black text-on-surface">Coffre Épargne Vault (5%/an)</h5>
-                  <span class="text-[10px] font-mono text-gray-500 font-bold">Solde actuel : 45 000 FCFA</span>
+                  <span class="text-[10px] font-mono text-gray-500 font-bold" id="vault-balance-display">Solde actuel : 0 FCFA</span>
                 </div>
               </div>
               <div class="w-5 h-5 rounded-full border-2 border-primary bg-primary text-white flex items-center justify-center text-[10px]" id="radio-dest-vault">✓</div>
             </div>
 
             <!-- Virtual Visa Card -->
-            <div onclick="selectDestAccount('card', 'Carte Virtuelle Visa Switch', '18 500 FCFA', 'credit_card')" id="acc-dest-card" class="account-picker-card p-3 rounded-2xl border border-outline-variant/40 bg-white flex items-center justify-between cursor-pointer">
+            <div onclick="selectDestAccount('card', 'Carte Virtuelle Visa Switch', '0 FCFA', 'credit_card')" id="acc-dest-card" class="account-picker-card p-3 rounded-2xl border border-outline-variant/40 bg-white flex items-center justify-between cursor-pointer">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center">
                   <span class="material-symbols-outlined text-lg">credit_card</span>
                 </div>
                 <div>
                   <h5 class="text-xs font-black text-on-surface">Carte Virtuelle Visa (Achats en ligne)</h5>
-                  <span class="text-[10px] font-mono text-gray-500 font-bold">Solde actuel : 18 500 FCFA</span>
+                  <span class="text-[10px] font-mono text-gray-500 font-bold" id="card-balance-display">Solde actuel : 0 FCFA</span>
                 </div>
               </div>
               <div class="w-5 h-5 rounded-full border-2 border-outline-variant text-transparent flex items-center justify-center text-[10px]" id="radio-dest-card"></div>
             </div>
 
             <!-- Tontine & Cagnotte -->
-            <div onclick="selectDestAccount('tontine', 'Tontine Solidaire Solidarité+', '60 000 FCFA', 'groups')" id="acc-dest-tontine" class="account-picker-card p-3 rounded-2xl border border-outline-variant/40 bg-white flex items-center justify-between cursor-pointer">
+            <div onclick="selectDestAccount('tontine', 'Tontine Solidaire Solidarité+', '0 FCFA', 'groups')" id="acc-dest-tontine" class="account-picker-card p-3 rounded-2xl border border-outline-variant/40 bg-white flex items-center justify-between cursor-pointer">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-amber-600 text-white flex items-center justify-center">
                   <span class="material-symbols-outlined text-lg">groups</span>
                 </div>
                 <div>
                   <h5 class="text-xs font-black text-on-surface">Tontine Solidaire (Cotisation)</h5>
-                  <span class="text-[10px] font-mono text-gray-500 font-bold">Solde actuel : 60 000 FCFA</span>
+                  <span class="text-[10px] font-mono text-gray-500 font-bold" id="tontine-balance-display">Solde actuel : 0 FCFA</span>
                 </div>
               </div>
               <div class="w-5 h-5 rounded-full border-2 border-outline-variant text-transparent flex items-center justify-center text-[10px]" id="radio-dest-tontine"></div>
@@ -471,7 +471,7 @@
     let selectedInternalDest = {
       id: 'vault',
       name: 'Coffre Épargne Vault',
-      balance: '45 000 FCFA'
+      balance: '0 FCFA'
     };
 
     let isSwapped = false;
