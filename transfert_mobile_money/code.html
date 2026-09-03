@@ -7,6 +7,8 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
@@ -39,7 +41,7 @@
         </div>
         <div>
           <span class="text-[10px] uppercase font-bold text-on-surface-variant">Solde disponible</span>
-          <p class="text-sm font-extrabold font-mono text-primary" id="disp-momo-balance">125 000 FCFA</p>
+          <p class="text-sm font-extrabold font-mono text-primary" id="disp-momo-balance">0 FCFA</p>
         </div>
       </div>
       <span class="text-xs bg-emerald-50 text-emerald-700 font-bold px-2.5 py-1 rounded-full border border-emerald-200">Instantané</span>
@@ -246,6 +248,15 @@
         window.location.href = '../confirmation_de_succ_s/code.html';
       }
     }
+
+    function renderMomoBalance() {
+      const bal = window.SwitchAPI ? window.SwitchAPI.getBalance() : (window.SwitchEngine ? window.SwitchEngine.getMainBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 0));
+      const balEl = document.getElementById('disp-momo-balance');
+      if (balEl) balEl.textContent = bal.toLocaleString('fr-FR') + ' FCFA';
+    }
+
+    window.addEventListener('DOMContentLoaded', renderMomoBalance);
+    renderMomoBalance();
   </script>
 
   <script src="../assets/switch.router.js"></script>

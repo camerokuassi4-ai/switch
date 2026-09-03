@@ -73,7 +73,7 @@
     <!-- User Available Balance Chip -->
     <div class="bg-white border border-primary/30 px-3 py-1.5 rounded-full shadow-xs flex items-center gap-1.5">
       <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-      <span class="text-xs font-mono font-black text-primary" id="user-balance-display">125 000 F</span>
+      <span class="text-xs font-mono font-black text-primary" id="user-balance-display">0 F</span>
     </div>
   </header>
 
@@ -120,7 +120,7 @@
               </div>
               <div>
                 <h4 class="text-xs font-black text-on-surface" id="source-acc-name">Compte Principal Switch</h4>
-                <span class="text-[11px] font-mono text-primary font-bold" id="source-acc-bal">Solde : 125 000 FCFA</span>
+                <span class="text-[11px] font-mono text-primary font-bold" id="source-acc-bal">Solde : 0 FCFA</span>
               </div>
             </div>
             <span class="text-xs font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Actif</span>
@@ -269,11 +269,11 @@
               </div>
             </button>
 
-            <button type="button" onclick="setRecipient('Adele Doe', '9712345678', '../assets/images/img_052.jpg')" class="contact-card flex items-center gap-2 p-2 rounded-2xl bg-white border border-outline-variant/40 shrink-0 cursor-pointer shadow-2xs">
+            <button type="button" onclick="setRecipient('Koffi Mensah', '9701020304', '../assets/images/img_052.jpg')" class="contact-card flex items-center gap-2 p-2 rounded-2xl bg-white border border-outline-variant/40 shrink-0 cursor-pointer shadow-2xs">
               <img src="../assets/images/img_052.jpg" class="w-8 h-8 rounded-full object-cover" alt="Illustration Switch"/>
               <div class="text-left pr-1">
-                <span class="text-xs font-black text-on-surface block leading-none">Adele D.</span>
-                <span class="text-[10px] font-mono text-primary font-bold">9712345678</span>
+                <span class="text-xs font-black text-on-surface block leading-none">Koffi M.</span>
+                <span class="text-[10px] font-mono text-primary font-bold">9701020304</span>
               </div>
             </button>
 
@@ -465,7 +465,7 @@
 
   <!-- Interactive Logic -->
   <script>
-    let currentBalance = parseInt(localStorage.getItem('switch_user_balance'), 10) || 50000;
+    let currentBalance = window.SwitchAPI ? window.SwitchAPI.getBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 0);
     let currentMode = 'contact'; // 'contact' or 'internal'
 
     let selectedInternalDest = {
@@ -731,14 +731,11 @@
 
     // Initialize balance
     function initTransferBalance() {
-      const storedBal = localStorage.getItem('switch_user_balance');
-      if (storedBal) {
-        currentBalance = parseInt(storedBal, 10) || 50000;
-      } else {
-        currentBalance = 50000;
-      }
+      currentBalance = window.SwitchAPI ? window.SwitchAPI.getBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 0);
       const balDisplay = document.getElementById('user-balance-display');
       if (balDisplay) balDisplay.textContent = currentBalance.toLocaleString('fr-FR') + ' F';
+      const srcBal = document.getElementById('source-acc-bal');
+      if (srcBal && !isSwapped) srcBal.textContent = "Solde : " + currentBalance.toLocaleString('fr-FR') + " FCFA";
       updateTransferCalculations();
     }
 

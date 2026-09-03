@@ -18,125 +18,24 @@
 
   const DEFAULT_STATE = {
     user: {
-      name: "Adele Doe",
-      phone: "+229 97 12 34 56",
-      avatar: "../assets/images/img_046.jpg",
-      tag: "@adele.switch",
-      kycLevel: "2", // '1', '2', '3'
-      kycVerified: true,
-      nin: "12345678901234",
-      cip: "229-987654321"
+      name: "",
+      phone: "",
+      avatar: null,
+      tag: "",
+      kycLevel: "1",
+      kycVerified: false,
+      nin: "",
+      cip: ""
     },
     balances: {
-      main: 50000,
+      main: 0,
       vault: 0,
       card: 0,
-      points: 500
+      points: 0
     },
     isPrivacyMode: false,
-    transactions: [
-      {
-        id: "SW-8921",
-        title: "Transfert à Maman (Awa GBEGNON)",
-        category: "transfer",
-        amount: -5000,
-        fee: 0,
-        date: "Aujourd'hui • 14:32",
-        timestamp: Date.now() - 3600000 * 2,
-        status: "success",
-        recipient: "Maman (Awa GBEGNON)",
-        phone: "+229 95 00 00 00",
-        note: "Dépense de maison",
-        icon: "send",
-        iconBg: "bg-indigo-50 text-indigo-700"
-      },
-      {
-        id: "SW-8920",
-        title: "Recharge Forfait MTN Data 5 Go",
-        category: "telecom",
-        amount: -2000,
-        fee: 0,
-        date: "Hier • 19:15",
-        timestamp: Date.now() - 3600000 * 20,
-        status: "success",
-        recipient: "MTN Bénin (+229 97 12 34 56)",
-        note: "Forfait Maxi Data 30j",
-        icon: "cell_tower",
-        iconBg: "bg-amber-50 text-amber-800"
-      },
-      {
-        id: "SW-8919",
-        title: "Dépôt Espèces Kiosque Switch Akpakpa",
-        category: "deposit",
-        amount: 50000,
-        fee: 0,
-        date: "23 Août • 11:05",
-        timestamp: Date.now() - 3600000 * 48,
-        status: "success",
-        recipient: "Kiosque Switch 042 (Akpakpa)",
-        note: "Recharge compte principal",
-        icon: "add_circle",
-        iconBg: "bg-emerald-50 text-emerald-700"
-      },
-      {
-        id: "SW-8918",
-        title: "Recharge SBEE Compteur Électrique",
-        category: "utility",
-        amount: -10000,
-        fee: 0,
-        date: "21 Août • 08:40",
-        timestamp: Date.now() - 3600000 * 96,
-        status: "success",
-        recipient: "SBEE Prépayé (1428 5930 192)",
-        token: "5829-1940-5821-9402",
-        note: "Recharge 45 kWh",
-        icon: "bolt",
-        iconBg: "bg-amber-50 text-amber-600"
-      },
-      {
-        id: "SW-8917",
-        title: "Cotisation Tontine Solidarité+",
-        category: "tontine",
-        amount: -15000,
-        fee: 0,
-        date: "18 Août • 17:00",
-        timestamp: Date.now() - 3600000 * 140,
-        status: "success",
-        recipient: "Tontine Solidarité+ (Tour 4)",
-        note: "Cotisation mensuelle",
-        icon: "groups",
-        iconBg: "bg-purple-50 text-purple-700"
-      }
-    ],
-    notifications: [
-      {
-        id: "notif-1",
-        title: "Transfert reçu ⚡",
-        message: "Koffi ADEBAYO vous a envoyé 15 000 FCFA sans frais.",
-        time: "Il y a 2h",
-        read: false,
-        icon: "savings",
-        iconColor: "text-emerald-600"
-      },
-      {
-        id: "notif-2",
-        title: "Intérêts Coffre Vault crédités 📈",
-        message: "+187 FCFA d'intérêts mensuels ajoutés à votre coffre (5%/an).",
-        time: "Hier",
-        read: true,
-        icon: "trending_up",
-        iconColor: "text-primary"
-      },
-      {
-        id: "notif-3",
-        title: "Sécurité & Niveau 2 Actif 🔒",
-        message: "Votre compte Switch est vérifié avec un plafond de 2 000 000 FCFA.",
-        time: "Il y a 3j",
-        read: true,
-        icon: "verified_user",
-        iconColor: "text-blue-600"
-      }
-    ]
+    transactions: [],
+    notifications: []
   };
 
   class SwitchEngine {
@@ -146,43 +45,51 @@
     }
 
     initStorage() {
-      if (!localStorage.getItem("switch_initialized_v2")) {
-        localStorage.setItem("switch_user_name", DEFAULT_STATE.user.name);
-        localStorage.setItem("switch_user_phone", DEFAULT_STATE.user.phone);
-        localStorage.setItem("switch_user_avatar", DEFAULT_STATE.user.avatar);
-        localStorage.setItem("switch_kyc_level", DEFAULT_STATE.user.kycLevel);
-        localStorage.setItem("switch_user_balance", DEFAULT_STATE.balances.main.toString());
-        localStorage.setItem("switch_vault_balance", DEFAULT_STATE.balances.vault.toString());
-        localStorage.setItem("switch_card_balance", DEFAULT_STATE.balances.card.toString());
-        localStorage.setItem("switch_user_points", DEFAULT_STATE.balances.points.toString());
-        localStorage.setItem("switch_transactions", JSON.stringify(DEFAULT_STATE.transactions));
-        localStorage.setItem("switch_notifications", JSON.stringify(DEFAULT_STATE.notifications));
-        localStorage.setItem("switch_privacy_mode", "false");
-        localStorage.setItem("switch_initialized_v2", "true");
+      // Désactivation complète de l'auto-injection de fausses données
+      if (!localStorage.getItem("switch_engine_clean_v1")) {
+        // Si d'anciennes données factices d'Adele Doe sont présentes, les assainir
+        if (localStorage.getItem("switch_user_name") === "Adele Doe") {
+          localStorage.removeItem("switch_user_name");
+          localStorage.removeItem("switch_user_avatar");
+        }
+        if (!localStorage.getItem("switch_user_balance")) {
+          localStorage.setItem("switch_user_balance", "0");
+        }
+        if (!localStorage.getItem("switch_vault_balance")) {
+          localStorage.setItem("switch_vault_balance", "0");
+        }
+        if (!localStorage.getItem("switch_card_balance")) {
+          localStorage.setItem("switch_card_balance", "0");
+        }
+        const currentTx = localStorage.getItem("switch_transactions");
+        if (!currentTx || currentTx.includes("SW-8921") || currentTx.includes("Maman")) {
+          localStorage.setItem("switch_transactions", "[]");
+        }
+        localStorage.setItem("switch_engine_clean_v1", "true");
       }
     }
 
     // ── GESTIONNAIRES UTILISATEUR & SOLDES ──────────────────────
 
     getMainBalance() {
-      return parseInt(localStorage.getItem("switch_user_balance") || "50000", 10);
+      return parseInt(localStorage.getItem("switch_user_balance") || "0", 10);
     }
 
     getVaultBalance() {
-      return parseInt(localStorage.getItem("switch_vault_balance") || "45000", 10);
+      return parseInt(localStorage.getItem("switch_vault_balance") || "0", 10);
     }
 
     getCardBalance() {
-      return parseInt(localStorage.getItem("switch_card_balance") || "18500", 10);
+      return parseInt(localStorage.getItem("switch_card_balance") || "0", 10);
     }
 
     getUser() {
       return {
-        name: localStorage.getItem("switch_user_name") || DEFAULT_STATE.user.name,
-        phone: localStorage.getItem("switch_user_phone") || DEFAULT_STATE.user.phone,
-        avatar: localStorage.getItem("switch_user_avatar") || DEFAULT_STATE.user.avatar,
-        tag: localStorage.getItem("switch_user_tag") || DEFAULT_STATE.user.tag,
-        kycLevel: localStorage.getItem("switch_kyc_level") || DEFAULT_STATE.user.kycLevel
+        name: localStorage.getItem("switch_user_fullname") || localStorage.getItem("switch_user_name") || "",
+        phone: localStorage.getItem("switch_user_phone") || "",
+        avatar: localStorage.getItem("switch_user_avatar") || null,
+        tag: localStorage.getItem("switch_user_tag") || "",
+        kycLevel: localStorage.getItem("switch_kyc_level") || "1"
       };
     }
 
@@ -200,9 +107,15 @@
     getTransactions() {
       try {
         const raw = localStorage.getItem("switch_transactions");
-        return raw ? JSON.parse(raw) : DEFAULT_STATE.transactions;
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        // Filtre de sécurité anti-mock résiduel
+        if (Array.isArray(parsed)) {
+          return parsed.filter(t => !t.id || (!t.id.startsWith("SW-892") && !t.id.startsWith("SW-891")));
+        }
+        return [];
       } catch (e) {
-        return DEFAULT_STATE.transactions;
+        return [];
       }
     }
 

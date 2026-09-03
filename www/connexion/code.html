@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <script>
     tailwind.config = {
@@ -236,34 +237,103 @@
       }
     }
 
-    // Préremplissage si utilisateur déjà existant en mémoire ou compte test
+    function showAccountNotFoundBanner(phoneDigits) {
+      let existing = document.getElementById('account-not-found-banner');
+      if (existing) existing.remove();
+
+      let formatted = '01 ' + phoneDigits.slice(2,4) + ' ' + phoneDigits.slice(4,6) + ' ' + phoneDigits.slice(6,8) + ' ' + phoneDigits.slice(8,10);
+      const banner = document.createElement('div');
+      banner.id = 'account-not-found-banner';
+      banner.className = 'p-4 rounded-2xl bg-rose-50 border border-rose-300 text-rose-950 flex flex-col gap-3 my-2 animate-fade-in text-left';
+      banner.innerHTML = `
+        <div class="flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-rose-600 text-xl shrink-0 mt-0.5">search_off</span>
+          <div>
+            <h4 class="text-xs font-black text-rose-900">Numéro non reconnu 🔍</h4>
+            <p class="text-[11px] text-rose-800 leading-snug mt-0.5">
+              Aucun compte Switch n'est encore associé au <b>+229 ${formatted}</b>.
+            </p>
+          </div>
+        </div>
+        <a href="../inscription/code.html?phone=${encodeURIComponent(phoneDigits)}" 
+           class="w-full py-3 px-4 bg-primary hover:bg-primary-hover text-white rounded-xl text-center font-bold text-xs shadow-sm transition-colors no-underline flex items-center justify-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-base">person_add</span>
+          <span>Créer mon compte en 2 minutes</span>
+        </a>
+      `;
+
+      const form = document.querySelector('form');
+      form.insertBefore(banner, form.firstChild);
+      banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Désactiver temporairement les cases PIN
+      pinInputs.forEach(i => { i.disabled = true; i.classList.add('opacity-50'); });
+    }
+
+    function hideAccountNotFoundBanner() {
+      const banner = document.getElementById('account-not-found-banner');
+      if (banner) banner.remove();
+      pinInputs.forEach(i => { i.disabled = false; i.classList.remove('opacity-50'); });
+    }
+
+    // Préremplissage propre si utilisateur déjà existant ou via URL
     document.addEventListener('DOMContentLoaded', () => {
-      const savedPhone = localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_account_number') || localStorage.getItem('switch_user_phone') || '01 90 75 17 86';
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlPhone = urlParams.get('phone');
+      
+      const savedPhone = urlPhone || localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone') || '';
       const phoneInp = document.getElementById('login-phone');
-      if (phoneInp && !phoneInp.value) {
+      if (phoneInp && !phoneInp.value && savedPhone) {
         let digits = savedPhone.replace(/\D/g, '');
         if (digits.startsWith('229')) digits = digits.slice(3);
         if (digits.length >= 10) {
           phoneInp.value = digits.slice(0,2) + ' ' + digits.slice(2,4) + ' ' + digits.slice(4,6) + ' ' + digits.slice(6,8) + ' ' + digits.slice(8,10);
-        } else {
-          phoneInp.value = '01 90 75 17 86';
+          formatLoginPhone(phoneInp);
         }
       }
     });
 
-    function handleLogin() {
+    async function handleLogin() {
       const pin = pinInputs.map(i => i.value).join('');
       const phoneInput = document.getElementById('login-phone').value.trim();
       const phoneDigits = phoneInput.replace(/\D/g, '');
+
+      hideAccountNotFoundBanner();
 
       if (!phoneDigits || phoneDigits.length !== 10 || !phoneDigits.startsWith('01')) {
         alert("Veuillez saisir un numéro de téléphone béninois valide à 10 chiffres commençant par 01 (ex: 01 97 12 34 56).");
         document.getElementById('login-phone').focus();
         return;
       }
+
+      // ── RÈGLE MÉTIER : VÉRIFICATION D'EXISTENCE DU COMPTE ──
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.checkPhoneRegistration) {
+          const check = await window.SwitchAPI.checkPhoneRegistration(phoneDigits);
+          if (!check.registered) {
+            showAccountNotFoundBanner(phoneDigits);
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn("[Connexion] Erreur vérification existence:", e);
+      }
+
       if (pin.length < 4) {
         alert("Veuillez saisir les 4 chiffres de votre code PIN.");
         pinInputs[0].focus();
+        return;
+      }
+
+      // Vérification si profil complété ou non
+      const isCompleted = window.SwitchAPI ? window.SwitchAPI.isProfileCompleted() : (localStorage.getItem('switch_profile_completed') === 'true');
+      
+      if (!isCompleted) {
+        if (window.switchNavigate) {
+          window.switchNavigate('../modifier_le_profil/code.html?onboarding=true');
+        } else {
+          window.location.href = '../modifier_le_profil/code.html?onboarding=true';
+        }
         return;
       }
 
@@ -277,10 +347,12 @@
     function triggerBiometrics() {
       if (navigator.vibrate) navigator.vibrate([40, 30, 80]);
       alert("🤳 Authentification Biométrique réussie (Face ID / Empreinte digitale reconnue) !");
+      const isCompleted = window.SwitchAPI ? window.SwitchAPI.isProfileCompleted() : true;
+      const dest = isCompleted ? '../tableau_de_bord_mis_jour/code.html' : '../modifier_le_profil/code.html?onboarding=true';
       if (window.switchNavigate) {
-        window.switchNavigate('../tableau_de_bord_mis_jour/code.html');
+        window.switchNavigate(dest);
       } else {
-        window.location.href = '../tableau_de_bord_mis_jour/code.html';
+        window.location.href = dest;
       }
     }
   </script>

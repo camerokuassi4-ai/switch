@@ -37,10 +37,11 @@
 <!-- TopAppBar -->
 <header class="flex justify-between items-center px-container-margin py-stack-md w-full bg-transparent top-0 z-40 relative">
 <div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden shadow-soft-ambient border border-surface-container-highest">
-<img class="w-full h-full object-cover" alt="A close-up, high-quality portrait photograph of a young professional Beninese woman with a warm smile, well-lit in a modern bright environment, serving as an avatar." src="../assets/images/img_022.jpg"/>
+<div id="user-avatar-box" class="w-10 h-10 rounded-full bg-purple-100 overflow-hidden shadow-soft-ambient border border-surface-container-highest flex items-center justify-center">
+<img id="user-avatar-img" class="w-full h-full object-cover hidden" alt="Avatar" src=""/>
+<span id="user-avatar-initials" class="text-sm font-black text-primary">SW</span>
 </div>
-<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Bonjour, Adele</h1>
+<h1 id="user-greeting-title" class="font-headline-md text-headline-md text-on-surface font-bold">Bonjour</h1>
 </div>
 <button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors text-primary">
 <span class="material-symbols-outlined" data-icon="search">search</span>
@@ -93,4 +94,29 @@
     <span class="nav-label" style="font-size:10px;font-weight:500;">Paramètres</span>
   </a>
 </nav>
-</body></html>
+
+<script src="../assets/switch.config.js"></script>
+<script src="../assets/switch.api.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : {
+      first_name: '',
+      full_name: localStorage.getItem('switch_user_fullname') || ''
+    };
+    const name = prof.first_name || (prof.full_name ? prof.full_name.split(' ')[0] : '');
+    const titleEl = document.getElementById('user-greeting-title');
+    if (titleEl) titleEl.textContent = name ? `Bonjour, ${name}` : 'Bonjour';
+    const avatarImg = document.getElementById('user-avatar-img');
+    const initialsEl = document.getElementById('user-avatar-initials');
+    if (prof.avatar_url && !prof.avatar_url.includes('img_022.jpg')) {
+      avatarImg.src = prof.avatar_url;
+      avatarImg.classList.remove('hidden');
+      if (initialsEl) initialsEl.classList.add('hidden');
+    } else if (name) {
+      if (initialsEl) initialsEl.textContent = name.slice(0, 2).toUpperCase();
+    }
+  });
+</script>
+<script src="../assets/switch.router.js"></script>
+</body>
+</html>

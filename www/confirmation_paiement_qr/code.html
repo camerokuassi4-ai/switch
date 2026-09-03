@@ -94,7 +94,7 @@
             <h4 class="text-xs font-bold text-on-surface">Mon Solde Compte Switch</h4>
             <span class="text-[9px] font-black uppercase bg-primary text-white px-1.5 py-0.2 rounded">Débit Direct</span>
           </div>
-          <p class="text-xs font-mono font-bold text-primary mt-0.5" id="user-balance-display">125 000 FCFA disponible</p>
+          <p class="text-xs font-mono font-bold text-primary mt-0.5" id="user-balance-display">0 FCFA disponible</p>
         </div>
       </div>
 
@@ -157,11 +157,9 @@
         const amtEl = document.getElementById('amount-display');
         if (amtEl) amtEl.textContent = paymentAmount.toLocaleString('fr-FR');
       }
-      if (window.SwitchEngine) {
-        const bal = window.SwitchEngine.getMainBalance();
-        const balEl = document.getElementById('user-balance-display');
-        if (balEl) balEl.textContent = bal.toLocaleString('fr-FR') + ' FCFA disponible';
-      }
+      const bal = window.SwitchAPI ? window.SwitchAPI.getBalance() : (window.SwitchEngine ? window.SwitchEngine.getMainBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 0));
+      const balEl = document.getElementById('user-balance-display');
+      if (balEl) balEl.textContent = bal.toLocaleString('fr-FR') + ' FCFA disponible';
     });
 
     function pressKey(num) {

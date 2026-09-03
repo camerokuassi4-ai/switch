@@ -114,7 +114,7 @@
       <!-- Balance Amount -->
       <div class="relative z-10 my-3">
         <h2 id="main-balance-text" data-hidden="false" class="text-3xl sm:text-4xl font-black tracking-tight font-mono">
-          50 000 <span class="text-lg sm:text-xl font-bold font-sans text-purple-200">FCFA</span>
+          0 <span class="text-lg sm:text-xl font-bold font-sans text-purple-200">FCFA</span>
         </h2>
       </div>
 
@@ -377,7 +377,7 @@
         </div>
         <div>
           <h4 class="font-black text-sm">Gagnez 500 FCFA par ami</h4>
-          <p class="text-[11px] text-purple-200">Partagez votre code parrain ADELE500</p>
+          <p class="text-[11px] text-purple-200">Partagez votre code parrain unique</p>
         </div>
       </div>
       <span class="material-symbols-outlined text-white text-xl">arrow_forward</span>
@@ -443,7 +443,7 @@
     }
 
     function renderDashboardBalance() {
-      const bal = window.SwitchEngine ? window.SwitchEngine.getMainBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 125000);
+      const bal = window.SwitchAPI ? window.SwitchAPI.getBalance() : (window.SwitchEngine ? window.SwitchEngine.getMainBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 0));
       const el = document.getElementById("main-balance-text");
       const icon = document.getElementById("eye-icon");
       if (isBalanceHidden) {
@@ -459,13 +459,23 @@
       const feed = document.getElementById("recent-tx-feed");
       if (!feed) return;
 
-      const txList = window.SwitchEngine ? window.SwitchEngine.getTransactions() : JSON.parse(localStorage.getItem('switch_transactions') || '[]');
+      const txList = window.SwitchAPI ? window.SwitchAPI.getTransactions() : (window.SwitchEngine ? window.SwitchEngine.getTransactions() : JSON.parse(localStorage.getItem('switch_transactions') || '[]'));
       if (!txList || txList.length === 0) {
         feed.innerHTML = `
-          <div class="p-6 text-center text-xs text-gray-400 font-bold">
-            Aucune transaction pour le moment.
+          <div class="py-7 px-4 text-center flex flex-col items-center justify-center gap-2 bg-surface-container-low/30 rounded-2xl border border-dashed border-outline-variant/50 my-1">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center mb-0.5">
+              <span class="material-symbols-outlined text-2xl">receipt_long</span>
+            </div>
+            <p class="text-xs text-on-surface font-bold">Aucune transaction pour le moment.</p>
+            <p class="text-[11px] text-on-surface-variant max-w-xs leading-snug">Faites votre premier dépôt d'espèces gratuit chez un agent Switch.</p>
+            <a href="../d_p_t_de_fonds/code.html" class="mt-2 text-xs font-bold bg-primary text-white px-4 py-2 rounded-xl no-underline hover:bg-primary-hover shadow-sm transition-all flex items-center gap-1 cursor-pointer">
+              <span class="material-symbols-outlined text-sm">add</span>
+              <span>Faire un premier dépôt</span>
+            </a>
           </div>
         `;
+        const btn = document.getElementById("btn-toggle-all-tx");
+        if (btn) btn.classList.add('hidden');
         return;
       }
 
@@ -509,12 +519,23 @@
 
       const btn = document.getElementById("btn-toggle-all-tx");
       if (btn) {
+        btn.classList.remove('hidden');
         btn.textContent = isAllTxVisible ? "Réduire ▴" : `Voir tout (${txList.length}) ▾`;
       }
     }
 
     window.applyKycLevel = async function applyKycLevel() {
-      const level = localStorage.getItem('switch_kyc_level') || '2';
+      // Guard : si profil non complété et aucun nom réel, inviter à compléter
+      if (window.SwitchAPI) {
+        const isCompleted = window.SwitchAPI.isProfileCompleted();
+        const prof = window.SwitchAPI.getProfile();
+        if (!isCompleted && (!prof.full_name || prof.full_name === "Adele Doe")) {
+          window.location.href = '../inscription/code.html';
+          return;
+        }
+      }
+
+      const level = localStorage.getItem('switch_kyc_level') || '1';
       const badge = document.getElementById('kyc-badge');
 
       if (level === '3') {
@@ -529,41 +550,31 @@
         }
       } else {
         if (badge) {
-          badge.innerHTML = 'Niveau 1 • Plafond 500 000 FCFA';
-          badge.className = 'text-[10px] font-black uppercase bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-full text-white border border-white/20 shadow-sm';
+          badge.innerHTML = 'Niveau 1 Standard • 500k FCFA';
+          badge.className = 'text-[10px] font-black uppercase bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full text-white border border-white/20';
         }
       }
-      const savedName = localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name');
-      if (savedName) {
-        const uEl = document.getElementById('dashboard-user-name');
-        if (uEl) uEl.textContent = savedName;
-        // ✅ RÈGLE 3 : Avatar dynamique (initiales si pas de photo réelle)
-        const avatarWrapper = document.getElementById('user-avatar-wrapper');
-        if (avatarWrapper && window.SwitchAPI) {
-          const avatarUrl = localStorage.getItem('switch_user_avatar_url');
-          avatarWrapper.innerHTML = window.SwitchAPI.getAvatarHtml(savedName, avatarUrl, 44);
-        }
-      } else {
-        // Avatar par défaut si aucun nom enregistré
-        const avatarWrapper = document.getElementById('user-avatar-wrapper');
-        if (avatarWrapper && window.SwitchAPI) {
-          avatarWrapper.innerHTML = window.SwitchAPI.getAvatarHtml('Utilisateur Switch', null, 44);
-        }
-      }
-      
-      let phone = localStorage.getItem('switch_user_phone') || '0122901907';
-      let accountSuffix = localStorage.getItem('switch_account_suffix');
-      if (!accountSuffix || accountSuffix.length !== 4) {
-        accountSuffix = Math.floor(1000 + Math.random() * 9000).toString();
-        localStorage.setItem('switch_account_suffix', accountSuffix);
-      }
-      let digits = phone.replace(/\D/g, '');
-      if (digits.startsWith('229')) digits = digits.slice(3);
-      if (digits.length < 10) digits = digits.padStart(10, '0');
 
-      const formattedAccount = 'N° Compte : 01 ' + digits.slice(2,4) + ' ' + digits.slice(4,6) + ' ' + digits.slice(6,8) + ' ' + digits.slice(8,10) + ' • ' + accountSuffix;
+      const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : {
+        full_name: localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || 'Utilisateur Switch',
+        phone: localStorage.getItem('switch_user_phone') || '',
+        avatar_url: localStorage.getItem('switch_user_avatar'),
+        account_display: localStorage.getItem('switch_account_display')
+      };
+
+      const savedName = prof.full_name || 'Utilisateur Switch';
+      const uEl = document.getElementById('dashboard-user-name');
+      if (uEl) uEl.textContent = savedName;
+
+      const avatarWrapper = document.getElementById('user-avatar-wrapper');
+      if (avatarWrapper && window.SwitchAPI) {
+        avatarWrapper.innerHTML = window.SwitchAPI.getAvatarHtml(savedName, prof.avatar_url, 44);
+      }
+
       const accEl = document.getElementById('dashboard-account-number');
-      if (accEl) accEl.textContent = formattedAccount;
+      if (accEl) {
+        accEl.textContent = 'N° Compte : ' + (prof.account_display || '01 -- -- -- -- • ----');
+      }
 
       updateGreeting();
       renderDashboardBalance();
@@ -572,11 +583,11 @@
       // Synchronisation en direct avec Supabase Cloud
       if (window.SwitchAPI && window.SwitchAPI.getWallet) {
         try {
-          const oldBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
+          const oldBal = parseInt(localStorage.getItem('switch_user_balance') || '0', 10);
           await window.SwitchAPI.getWallet();
           renderDashboardBalance();
           renderRecentTransactions();
-          const newBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
+          const newBal = parseInt(localStorage.getItem('switch_user_balance') || '0', 10);
           if (newBal > oldBal) {
             showDepositNotification(newBal - oldBal);
           }

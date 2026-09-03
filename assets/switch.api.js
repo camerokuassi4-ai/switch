@@ -1306,6 +1306,293 @@
       localStorage.setItem('switch_agent_notifications', JSON.stringify(list));
       localStorage.setItem('switch_agent_has_unread_notif', 'true');
       return newNotif;
+    },
+
+    // =========================================================================
+    // MODULE UNIFIÉ — COHÉRENCE UTILISATEUR & ÉTAT UNIQUE (PHASE 1)
+    // =========================================================================
+
+    _stateListeners: [],
+
+    onStateChange: function (callback) {
+      if (typeof callback === "function") {
+        this._stateListeners.push(callback);
+      }
+    },
+
+    _notifyStateChange: function (type, data) {
+      this._stateListeners.forEach(cb => {
+        try { cb(type, data); } catch (e) { console.error(e); }
+      });
+      window.dispatchEvent(new CustomEvent('switch:statechange', { detail: { type, data } }));
+    },
+
+    // A. GESTION DU PROFIL
+    getProfile: function () {
+      const fullName = localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || '';
+      let firstName = '';
+      let lastName = '';
+      if (fullName) {
+        const parts = fullName.trim().split(/\s+/);
+        firstName = parts[0] || '';
+        lastName = parts.slice(1).join(' ') || '';
+      }
+      const rawPhone = localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone') || '';
+      const phoneDigits = rawPhone.replace(/\D/g, '');
+      let phoneDisplay = localStorage.getItem('switch_user_phone') || '';
+      if (!phoneDisplay && phoneDigits) {
+        let d = phoneDigits.startsWith('229') ? phoneDigits.slice(3) : phoneDigits;
+        phoneDisplay = '+229 ' + (d.match(/.{1,2}/g) || []).join(' ');
+      }
+
+      let accountSuffix = localStorage.getItem('switch_account_suffix');
+      if (!accountSuffix || accountSuffix.length !== 4) {
+        accountSuffix = Math.floor(1000 + Math.random() * 9000).toString();
+        localStorage.setItem('switch_account_suffix', accountSuffix);
+      }
+      let d = phoneDigits.startsWith('229') ? phoneDigits.slice(3) : phoneDigits;
+      if (d.length < 10) d = d.padStart(10, '0');
+      const accountDisplay = '01 ' + d.slice(2,4) + ' ' + d.slice(4,6) + ' ' + d.slice(6,8) + ' ' + d.slice(8,10) + ' • ' + accountSuffix;
+      const accountNumber = d + accountSuffix;
+
+      const profileCompleted = localStorage.getItem('switch_profile_completed') === 'true';
+
+      return {
+        id: localStorage.getItem('switch_user_id') || null,
+        full_name: fullName,
+        first_name: firstName,
+        last_name: lastName,
+        phone: phoneDigits,
+        phone_display: phoneDisplay || '+229 01 -- -- --',
+        phone_raw: '+229' + (d.startsWith('01') ? d : '01' + d),
+        email: localStorage.getItem('switch_user_email') || '',
+        city: localStorage.getItem('switch_user_city') || 'Cotonou',
+        neighborhood: localStorage.getItem('switch_user_neighborhood') || '',
+        profession: localStorage.getItem('switch_user_profession') || '',
+        avatar_url: localStorage.getItem('switch_user_avatar') || localStorage.getItem('switch_user_avatar_url') || null,
+        account_number: accountNumber,
+        account_display: accountDisplay,
+        kyc_level: localStorage.getItem('switch_kyc_level') || '1',
+        profile_completed: profileCompleted
+      };
+    },
+
+    setProfile: function (partial) {
+      if (!partial || typeof partial !== 'object') return;
+      if (partial.full_name !== undefined) {
+        localStorage.setItem('switch_user_fullname', partial.full_name);
+        localStorage.setItem('switch_user_name', partial.full_name);
+      }
+      if (partial.first_name !== undefined && partial.last_name !== undefined) {
+        const full = `${partial.first_name} ${partial.last_name}`.trim();
+        localStorage.setItem('switch_user_fullname', full);
+        localStorage.setItem('switch_user_name', full);
+      }
+      if (partial.phone !== undefined) {
+        const digits = partial.phone.replace(/\D/g, '');
+        let d = digits.startsWith('229') ? digits.slice(3) : digits;
+        let formatted = '+229 ' + (d.match(/.{1,2}/g) || []).join(' ');
+        localStorage.setItem('switch_user_phone', formatted);
+        localStorage.setItem('switch_user_phone_raw', '+229' + d);
+      }
+      if (partial.email !== undefined) localStorage.setItem('switch_user_email', partial.email);
+      if (partial.city !== undefined) localStorage.setItem('switch_user_city', partial.city);
+      if (partial.neighborhood !== undefined) localStorage.setItem('switch_user_neighborhood', partial.neighborhood);
+      if (partial.profession !== undefined) localStorage.setItem('switch_user_profession', partial.profession);
+      if (partial.avatar_url !== undefined) {
+        localStorage.setItem('switch_user_avatar', partial.avatar_url);
+        localStorage.setItem('switch_user_avatar_url', partial.avatar_url);
+      }
+      if (partial.profile_completed !== undefined) {
+        localStorage.setItem('switch_profile_completed', partial.profile_completed ? 'true' : 'false');
+      }
+      this._notifyStateChange('profile', this.getProfile());
+    },
+
+    isProfileCompleted: function () {
+      const isMarked = localStorage.getItem('switch_profile_completed') === 'true';
+      const prof = this.getProfile();
+      return isMarked || (prof.full_name && prof.full_name.trim().length >= 3 && prof.phone && prof.phone.length >= 8);
+    },
+
+    setProfileCompleted: function (status) {
+      localStorage.setItem('switch_profile_completed', status ? 'true' : 'false');
+      this._notifyStateChange('profile_completed', status);
+    },
+
+    // B. GESTION DU SOLDE
+    getBalance: function () {
+      const val = localStorage.getItem('switch_user_balance');
+      return parseInt(val !== null ? val : '0', 10) || 0;
+    },
+
+    setBalance: function (amount) {
+      const num = Math.max(0, parseInt(amount, 10) || 0);
+      localStorage.setItem('switch_user_balance', num.toString());
+      this._notifyStateChange('balance', num);
+      return num;
+    },
+
+    formatBalance: function (amount) {
+      const num = amount !== undefined ? amount : this.getBalance();
+      return num.toLocaleString('fr-FR') + ' FCFA';
+    },
+
+    credit: function (amount, txData) {
+      const addAmt = Math.abs(parseInt(amount, 10) || 0);
+      const newBal = this.setBalance(this.getBalance() + addAmt);
+      if (txData) {
+        this.addTransaction({
+          title: txData.title || "Dépôt d'espèces",
+          category: txData.category || "deposit",
+          amount: addAmt,
+          fee: 0,
+          recipient: txData.recipient || "Switch Bénin",
+          note: txData.note || "Crédit compte principal",
+          icon: txData.icon || "add_circle",
+          iconBg: "bg-emerald-50 text-emerald-700"
+        });
+      }
+      return newBal;
+    },
+
+    debit: function (amount, txData) {
+      const subAmt = Math.abs(parseInt(amount, 10) || 0);
+      const current = this.getBalance();
+      if (current < subAmt) {
+        throw new Error("Solde insuffisant pour effectuer cette opération.");
+      }
+      const newBal = this.setBalance(current - subAmt);
+      if (txData) {
+        this.addTransaction({
+          title: txData.title || "Paiement / Transfert",
+          category: txData.category || "transfer",
+          amount: -subAmt,
+          fee: txData.fee || 0,
+          recipient: txData.recipient || "Bénéficiaire Switch",
+          phone: txData.phone || "",
+          note: txData.note || "",
+          icon: txData.icon || "payments",
+          iconBg: "bg-purple-50 text-primary"
+        });
+      }
+      return newBal;
+    },
+
+    // C. GESTION DES TRANSACTIONS
+    getTransactions: function () {
+      try {
+        const raw = localStorage.getItem('switch_transactions');
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          return parsed.filter(t => !t.id || (!t.id.startsWith("SW-892") && !t.id.startsWith("SW-891")));
+        }
+        return [];
+      } catch (e) {
+        return [];
+      }
+    },
+
+    addTransaction: function (tx) {
+      const list = this.getTransactions();
+      const newTx = {
+        id: tx.id || "SW-" + Math.floor(1000 + Math.random() * 9000),
+        title: tx.title || "Opération Switch",
+        category: tx.category || "transfer",
+        amount: tx.amount || 0,
+        fee: tx.fee !== undefined ? tx.fee : 0,
+        date: tx.date || "Aujourd'hui • " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: tx.timestamp || Date.now(),
+        status: "success",
+        recipient: tx.recipient || "Switch Bénin",
+        phone: tx.phone || "",
+        note: tx.note || "",
+        icon: tx.icon || (tx.amount > 0 ? "add_circle" : "send"),
+        iconBg: tx.iconBg || (tx.amount > 0 ? "bg-emerald-50 text-emerald-700" : "bg-indigo-50 text-indigo-700")
+      };
+      list.unshift(newTx);
+      localStorage.setItem('switch_transactions', JSON.stringify(list.slice(0, 50)));
+      this._notifyStateChange('transaction_added', newTx);
+      return newTx;
+    },
+
+    clearTransactions: function () {
+      localStorage.setItem('switch_transactions', '[]');
+      this._notifyStateChange('transactions_cleared', []);
+    },
+
+    // D. RÈGLE « UN NUMÉRO = UN COMPTE »
+    checkPhoneRegistration: async function (phone) {
+      const raw = (phone || '').replace(/\D/g, '');
+      if (!raw) return { registered: false, reason: "Numéro vide" };
+
+      let d = raw;
+      if (d.startsWith('229')) d = d.slice(3);
+      if (d.length === 8) d = '01' + d;
+
+      const national = d;
+      const intl = '+229' + d;
+
+      // 1. Interrogation de Supabase si configuré
+      if (isConfigured) {
+        try {
+          const encNat = encodeURIComponent(national);
+          const encIntl = encodeURIComponent(intl);
+          const rows = await supabaseFetch(`profiles?or=(phone.eq.${encNat},phone.eq.${encIntl})&select=id,phone,full_name&limit=1`);
+          if (rows && rows.length > 0) {
+            return {
+              registered: true,
+              user: rows[0],
+              source: "supabase"
+            };
+          }
+        } catch (e) {
+          console.warn("[SwitchAPI] checkPhoneRegistration Supabase error, fallback local:", e.message);
+        }
+      }
+
+      // 2. Vérification locale (Mode hors-ligne / cache)
+      const localPhone = (localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone') || '').replace(/\D/g, '');
+      if (localPhone && (localPhone.includes(national) || national.includes(localPhone.slice(-8)))) {
+        const localName = localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name');
+        if (localName && localName !== "Adele Doe") {
+          return {
+            registered: true,
+            user: { phone: national, full_name: localName },
+            source: "local"
+          };
+        }
+      }
+
+      return { registered: false };
+    },
+
+    isPhoneRegistered: async function (phone) {
+      const res = await this.checkPhoneRegistration(phone);
+      return !!res.registered;
+    },
+
+    // E. SYNCHRONISATION SUPABASE
+    syncWithSupabase: async function () {
+      if (!isConfigured) return;
+      try {
+        const phone = localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone');
+        if (!phone) return;
+        const clean = phone.replace(/\D/g, '');
+        const rows = await supabaseFetch(`profiles?phone=ilike.*${clean.slice(-8)}*&limit=1`);
+        if (rows && rows[0]) {
+          const u = rows[0];
+          if (u.full_name) {
+            localStorage.setItem('switch_user_fullname', u.full_name);
+            localStorage.setItem('switch_user_name', u.full_name);
+          }
+          if (u.avatar_url) localStorage.setItem('switch_user_avatar', u.avatar_url);
+          this._notifyStateChange('synced', u);
+        }
+      } catch (e) {
+        console.warn("[SwitchAPI] Synchro Supabase silencieuse:", e.message);
+      }
     }
   };
 

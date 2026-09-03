@@ -39,6 +39,7 @@
   
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <script>
     (function () {
@@ -290,6 +291,36 @@
       else pill.classList.add('hidden');
     }
 
+    function showAccountExistsBanner(phoneDigits) {
+      let existing = document.getElementById('account-exists-banner');
+      if (existing) existing.remove();
+
+      let formatted = '01 ' + phoneDigits.slice(2,4) + ' ' + phoneDigits.slice(4,6) + ' ' + phoneDigits.slice(6,8) + ' ' + phoneDigits.slice(8,10);
+      const banner = document.createElement('div');
+      banner.id = 'account-exists-banner';
+      banner.className = 'p-4 rounded-2xl bg-amber-50 border border-amber-300 text-amber-950 flex flex-col gap-3 my-1 animate-fade-in';
+      banner.innerHTML = `
+        <div class="flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-amber-600 text-xl shrink-0 mt-0.5">warning</span>
+          <div>
+            <h4 class="text-xs font-black text-amber-900">Compte existant ⚠️</h4>
+            <p class="text-[11px] text-amber-800 leading-snug mt-0.5">
+              Le numéro <b>+229 ${formatted}</b> est déjà associé à un compte Switch. Veuillez vous connecter avec votre code PIN.
+            </p>
+          </div>
+        </div>
+        <a href="../connexion/code.html?phone=${encodeURIComponent(phoneDigits)}" 
+           class="w-full py-3 px-4 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-center font-bold text-xs shadow-sm transition-colors no-underline flex items-center justify-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-base">login</span>
+          <span>Se connecter avec mon code PIN</span>
+        </a>
+      `;
+
+      const form = document.getElementById('registration-form');
+      form.insertBefore(banner, form.firstChild);
+      banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
     async function submitRegistration() {
       const fullName = document.getElementById('full-name').value.trim();
       const phoneInput = document.getElementById('phone-number').value.trim();
@@ -297,6 +328,9 @@
       const btn = document.getElementById('submit-btn');
       const btnText = document.getElementById('btn-text');
       const btnIcon = document.getElementById('btn-icon');
+
+      const existingBanner = document.getElementById('account-exists-banner');
+      if (existingBanner) existingBanner.remove();
 
       if (!nameIsOk(fullName)) {
         alert("Veuillez saisir votre Nom ET votre Prénom complets (au moins 2 mots, ex : Koffi ADEBAYO).");
@@ -314,14 +348,34 @@
         return;
       }
 
-      const formattedFullPhone = '+229' + phoneDigits;
-      const formattedDisplayPhone = '+229 ' + phoneInput;
-
       btn.disabled = true;
       btn.classList.add('opacity-80');
-      btnText.textContent = "Envoi du code SMS...";
+      btnText.textContent = "Vérification du numéro...";
       btnIcon.textContent = "sync";
       btnIcon.classList.add('animate-spin');
+
+      // ── RÈGLE MÉTIER : UN NUMÉRO = UN COMPTE ──
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.checkPhoneRegistration) {
+          const check = await window.SwitchAPI.checkPhoneRegistration(phoneDigits);
+          if (check && check.registered) {
+            btn.disabled = false;
+            btn.classList.remove('opacity-80');
+            btnText.textContent = "Recevoir mon code SMS";
+            btnIcon.textContent = "arrow_forward";
+            btnIcon.classList.remove('animate-spin');
+            showAccountExistsBanner(phoneDigits);
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn("[Inscription] Vérification d'existence du compte:", e);
+      }
+
+      btnText.textContent = "Envoi du code SMS...";
+
+      const formattedFullPhone = '+229' + phoneDigits;
+      const formattedDisplayPhone = '+229 ' + phoneInput;
 
       let accountSuffix = localStorage.getItem('switch_account_suffix');
       if (!accountSuffix || accountSuffix.length !== 4) {
@@ -331,14 +385,27 @@
       const switchAccountNumber = phoneDigits + accountSuffix;
       const formattedAccountDisplay = '01 ' + phoneDigits.slice(2,4) + ' ' + phoneDigits.slice(4,6) + ' ' + phoneDigits.slice(6,8) + ' ' + phoneDigits.slice(8,10) + ' • ' + accountSuffix;
 
-      localStorage.setItem('switch_user_name', fullName);
-      localStorage.setItem('switch_user_fullname', fullName);
-      localStorage.setItem('switch_user_phone', formattedDisplayPhone);
-      localStorage.setItem('switch_user_phone_raw', formattedFullPhone);
-      localStorage.setItem('switch_account_number', switchAccountNumber);
-      localStorage.setItem('switch_account_display', formattedAccountDisplay);
-      localStorage.setItem('switch_kyc_level', '1');
-      localStorage.setItem('switch_user_balance', '50000');
+      const refCode = document.getElementById('referral-code') ? document.getElementById('referral-code').value.trim() : '';
+      const initialBalance = refCode.length >= 4 ? 500 : 0;
+
+      if (window.SwitchAPI) {
+        window.SwitchAPI.setProfile({
+          full_name: fullName,
+          phone: phoneDigits,
+          profile_completed: false
+        });
+        window.SwitchAPI.setBalance(initialBalance);
+      } else {
+        localStorage.setItem('switch_user_name', fullName);
+        localStorage.setItem('switch_user_fullname', fullName);
+        localStorage.setItem('switch_user_phone', formattedDisplayPhone);
+        localStorage.setItem('switch_user_phone_raw', formattedFullPhone);
+        localStorage.setItem('switch_account_number', switchAccountNumber);
+        localStorage.setItem('switch_account_display', formattedAccountDisplay);
+        localStorage.setItem('switch_kyc_level', '1');
+        localStorage.setItem('switch_user_balance', initialBalance.toString());
+        localStorage.setItem('switch_profile_completed', 'false');
+      }
       localStorage.setItem('switch_active_role', 'client');
 
       try {

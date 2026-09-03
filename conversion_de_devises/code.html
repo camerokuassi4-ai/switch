@@ -38,7 +38,7 @@
       <div class="mb-4 relative">
         <div class="flex justify-between items-center mb-1.5">
           <label class="text-xs font-bold text-on-surface-variant uppercase">Vous convertissez</label>
-          <span class="text-xs font-mono font-bold text-primary" id="disp-source-bal">Solde: 125 000 FCFA</span>
+          <span class="text-xs font-mono font-bold text-primary" id="disp-source-bal">Solde: 0 FCFA</span>
         </div>
         <div class="flex items-center justify-between border border-outline-variant rounded-2xl p-3 bg-surface-container-low focus-within:border-primary focus-within:bg-white transition-all">
           <input id="source-amt" class="w-full bg-transparent border-none p-0 text-2xl font-black font-mono text-on-surface focus:ring-0 outline-none" placeholder="0" type="number" value="150000" oninput="calculateRate()"/>
@@ -154,8 +154,16 @@
         window.location.href = '../tableau_de_bord_mis_jour/code.html';
       }
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const bal = window.SwitchAPI ? window.SwitchAPI.getBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 0);
+      const balEl = document.getElementById('disp-source-bal');
+      if (balEl) balEl.textContent = 'Solde: ' + bal.toLocaleString('fr-FR') + ' FCFA';
+    });
   </script>
 
+  <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
   <script src="../assets/switch.router.js"></script>
 </body>
 </html>

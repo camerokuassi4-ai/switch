@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
@@ -54,20 +55,21 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
           <div class="relative">
-            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white/40 shadow-md">
-              <img id="settings-avatar-img" alt="Adele Doe" class="w-full h-full object-cover" src="../assets/images/img_046.jpg"/>
+            <div id="settings-avatar-box" class="w-16 h-16 rounded-full overflow-hidden border-2 border-white/40 shadow-md flex items-center justify-center bg-white/20">
+              <img id="settings-avatar-img" alt="Photo de profil" class="w-full h-full object-cover hidden" src=""/>
+              <span id="settings-avatar-initials" class="text-xl font-black text-white">SW</span>
             </div>
             <span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-green-400 border-2 border-white"></span>
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <h2 id="settings-user-name" class="text-lg sm:text-xl font-extrabold">Adele Doe</h2>
-              <span class="text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full">
+              <h2 id="settings-user-name" class="text-lg sm:text-xl font-extrabold">Utilisateur Switch</h2>
+              <span id="settings-kyc-badge" class="text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full">
                 Vérifié
               </span>
             </div>
-            <p class="text-xs text-purple-200 mt-0.5 font-mono">+229 97 12 34 56</p>
-            <p id="settings-user-email" class="text-[11px] text-purple-300 mt-0.5">adele.doe@gmail.com</p>
+            <p id="settings-user-phone-sub" class="text-xs text-purple-200 mt-0.5 font-mono">+229 01 -- -- --</p>
+            <p id="settings-user-email" class="text-[11px] text-purple-300 mt-0.5">Non renseigné</p>
           </div>
         </div>
 
@@ -80,7 +82,7 @@
       <div class="bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/20 flex items-center justify-between text-xs font-mono">
         <div class="flex flex-col gap-0.5">
           <span class="text-[10px] font-bold uppercase text-purple-200 font-sans">Numéro de Compte Switch</span>
-          <span class="text-white font-bold select-all" id="settings-user-phone">+229 01 -- -- --</span>
+          <span class="text-white font-bold select-all" id="settings-user-account">01 -- -- -- -- • ----</span>
         </div>
         <button onclick="copyUserAccountNumber()" class="px-2.5 py-1 rounded-xl bg-white text-primary text-[11px] font-black uppercase shadow-sm hover:bg-purple-50 transition-colors cursor-pointer">
           Copier
@@ -276,28 +278,56 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const savedName = localStorage.getItem('switch_user_fullname');
-      const savedEmail = localStorage.getItem('switch_user_email');
-      const savedAvatar = localStorage.getItem('switch_user_avatar');
+      const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : {
+        full_name: localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || 'Utilisateur Switch',
+        phone_display: localStorage.getItem('switch_user_phone') || '+229 01 -- -- --',
+        email: localStorage.getItem('switch_user_email') || '',
+        avatar_url: localStorage.getItem('switch_user_avatar'),
+        account_display: localStorage.getItem('switch_account_display')
+      };
 
-      if (savedName) {
-        const nameEl = document.getElementById('settings-user-name');
-        if (nameEl) nameEl.textContent = savedName;
+      const nameEl = document.getElementById('settings-user-name');
+      if (nameEl) nameEl.textContent = prof.full_name || 'Utilisateur Switch';
+
+      const phoneSubEl = document.getElementById('settings-user-phone-sub');
+      if (phoneSubEl && prof.phone_display) phoneSubEl.textContent = prof.phone_display;
+
+      const emailEl = document.getElementById('settings-user-email');
+      if (emailEl) {
+        emailEl.textContent = (prof.email && !prof.email.includes('adele.doe')) ? prof.email : 'Email non renseigné';
       }
-      if (savedEmail) {
-        const emailEl = document.getElementById('settings-user-email');
-        if (emailEl) emailEl.textContent = savedEmail;
+
+      const accEl = document.getElementById('settings-user-account');
+      if (accEl) {
+        accEl.textContent = prof.account_display || '01 -- -- -- -- • ----';
       }
-      if (savedAvatar) {
-        const avatarEl = document.getElementById('settings-avatar-img');
-        if (avatarEl) avatarEl.src = savedAvatar;
+
+      const avatarEl = document.getElementById('settings-avatar-img');
+      const initialsEl = document.getElementById('settings-avatar-initials');
+      if (prof.avatar_url && !prof.avatar_url.includes('img_046.jpg')) {
+        if (avatarEl) {
+          avatarEl.src = prof.avatar_url;
+          avatarEl.classList.remove('hidden');
+        }
+        if (initialsEl) initialsEl.classList.add('hidden');
+      } else {
+        const parts = (prof.full_name || 'SW').trim().split(/\s+/);
+        const initials = ((parts[0] ? parts[0][0] : '') + (parts[1] ? parts[1][0] : '')).toUpperCase() || 'SW';
+        if (initialsEl) {
+          initialsEl.textContent = initials;
+          initialsEl.classList.remove('hidden');
+        }
+        if (avatarEl) avatarEl.classList.add('hidden');
       }
     });
 
     function copyUserAccountNumber() {
-      const phone = localStorage.getItem('switch_user_phone') || '+229 01 -- -- --';
-      navigator.clipboard.writeText(phone);
-      alert("Numéro de Compte Switch copié : " + phone);
+      const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : {};
+      const num = prof.account_number || prof.account_display || localStorage.getItem('switch_account_number') || '';
+      if (num) {
+        navigator.clipboard.writeText(num);
+        alert("Numéro de Compte Switch copié :\n" + num);
+      }
     }
   </script>
 

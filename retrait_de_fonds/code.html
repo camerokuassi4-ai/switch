@@ -42,7 +42,7 @@
     <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex items-center justify-between">
       <div>
         <span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Solde disponible</span>
-        <h2 class="text-2xl sm:text-3xl font-black font-mono text-primary mt-0.5" id="available-balance-val">125 000 FCFA</h2>
+        <h2 class="text-2xl sm:text-3xl font-black font-mono text-primary mt-0.5" id="available-balance-val">0 FCFA</h2>
       </div>
       <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold">
         <span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
@@ -208,6 +208,15 @@
         window.location.href = '../code_retrait_especes_agent/code.html';
       }
     }
+
+    function renderWithdrawalBalance() {
+      const bal = window.SwitchAPI ? window.SwitchAPI.getBalance() : (window.SwitchEngine ? window.SwitchEngine.getMainBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 0));
+      const balEl = document.getElementById('available-balance-val');
+      if (balEl) balEl.textContent = bal.toLocaleString('fr-FR') + ' FCFA';
+    }
+
+    window.addEventListener('DOMContentLoaded', renderWithdrawalBalance);
+    renderWithdrawalBalance();
   </script>
 
   <script src="../assets/switch.router.js"></script>

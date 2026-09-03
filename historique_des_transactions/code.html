@@ -332,12 +332,12 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-gray-50 p-4 rounded-2xl border border-gray-200 text-xs">
         <div>
           <span class="text-[10px] font-bold uppercase text-gray-400">Titulaire</span>
-          <p class="font-black text-sm text-gray-900 mt-0.5" id="stmt-user-name">Adele DOE</p>
-          <p class="text-gray-600 font-mono mt-0.5">+229 97 12 34 56</p>
+          <p class="font-black text-sm text-gray-900 mt-0.5" id="stmt-user-name">Utilisateur Switch</p>
+          <p class="text-gray-600 font-mono mt-0.5" id="stmt-user-phone-sub">+229 01 -- -- --</p>
         </div>
         <div class="sm:border-l sm:border-gray-200 sm:pl-4">
           <span class="text-[10px] font-bold uppercase text-gray-400">Numéro de Compte Switch</span>
-          <p class="font-mono font-bold text-xs text-primary mt-0.5" id="stmt-user-phone">+229 01 -- -- --</p>
+          <p class="font-mono font-bold text-xs text-primary mt-0.5" id="stmt-user-phone">01 -- -- -- -- • ----</p>
           <p class="text-gray-600">Devise : <b>Franc CFA (XOF)</b></p>
         </div>
       </div>
@@ -422,88 +422,27 @@
     let searchQuery = '';
     let selectedTx = null;
 
-    const defaultTransactionsFallback = [
-      {
-        id: "SW-8921",
-        title: "Transfert à Maman (Awa GBEGNON)",
-        category: "transfer",
-        amount: -5000,
-        fee: 0,
-        date: "Aujourd'hui • 14:32",
-        status: "success",
-        recipient: "Maman (Awa GBEGNON)",
-        phone: "+229 95 00 00 00",
-        note: "Dépense de maison",
-        icon: "send",
-        iconBg: "bg-indigo-50 text-indigo-700"
-      },
-      {
-        id: "SW-8920",
-        title: "Recharge Forfait MTN Data 5 Go",
-        category: "telecom",
-        amount: -2000,
-        fee: 0,
-        date: "Hier • 19:15",
-        status: "success",
-        recipient: "MTN Bénin (+229 97 12 34 56)",
-        note: "Forfait Maxi Data 30j",
-        icon: "cell_tower",
-        iconBg: "bg-amber-50 text-amber-800"
-      },
-      {
-        id: "SW-8919",
-        title: "Dépôt Espèces Kiosque Switch Akpakpa",
-        category: "telecom",
-        amount: 50000,
-        fee: 0,
-        date: "23 Août • 11:05",
-        status: "success",
-        recipient: "Kiosque Switch 042 (Akpakpa)",
-        note: "Recharge compte principal",
-        icon: "add_circle",
-        iconBg: "bg-emerald-50 text-emerald-700"
-      },
-      {
-        id: "SW-8918",
-        title: "Recharge SBEE Compteur Électrique",
-        category: "utility",
-        amount: -10000,
-        fee: 0,
-        date: "21 Août • 08:40",
-        status: "success",
-        recipient: "SBEE Prépayé (1428 5930 192)",
-        note: "Token généré: 5829-1940-5821-9402",
-        icon: "bolt",
-        iconBg: "bg-amber-50 text-amber-600"
-      },
-      {
-        id: "SW-8917",
-        title: "Cotisation Tontine Solidarité+",
-        category: "tontine",
-        amount: -15000,
-        fee: 0,
-        date: "18 Août • 17:00",
-        status: "success",
-        recipient: "Tontine Solidarité+ (Tour 4)",
-        note: "Cotisation mensuelle",
-        icon: "groups",
-        iconBg: "bg-purple-50 text-purple-700"
-      }
-    ];
+    const defaultTransactionsFallback = [];
 
     function getTxList() {
+      if (window.SwitchAPI && typeof window.SwitchAPI.getTransactions === 'function') {
+        const list = window.SwitchAPI.getTransactions();
+        if (Array.isArray(list)) return list;
+      }
       if (window.SwitchEngine && typeof window.SwitchEngine.getTransactions === 'function') {
         const list = window.SwitchEngine.getTransactions();
-        if (list && list.length > 0) return list;
+        if (Array.isArray(list)) return list;
       }
       const raw = localStorage.getItem('switch_transactions');
       if (raw) {
         try {
           const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed)) {
+            return parsed.filter(t => !t.id || (!t.id.startsWith("SW-892") && !t.id.startsWith("SW-891")));
+          }
         } catch (e) {}
       }
-      return defaultTransactionsFallback;
+      return [];
     }
 
     function renderTransactions() {
@@ -717,8 +656,15 @@
       const select = document.getElementById('stmt-period-select');
       const period = select ? select.value : 'current';
       const txList = getTxList();
-      const user = window.SwitchEngine ? window.SwitchEngine.getUser() : { name: "Adele Doe" };
-      const mainBal = window.SwitchEngine ? window.SwitchEngine.getMainBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 50000);
+      const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : { full_name: localStorage.getItem('switch_user_fullname') || 'Utilisateur Switch' };
+      const mainBal = window.SwitchAPI ? window.SwitchAPI.getBalance() : (window.SwitchEngine ? window.SwitchEngine.getMainBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 0));
+
+      const nameEl = document.getElementById('stmt-user-name');
+      if (nameEl) nameEl.textContent = prof.full_name || 'Utilisateur Switch';
+      const phoneSubEl = document.getElementById('stmt-user-phone-sub');
+      if (phoneSubEl && prof.phone_display) phoneSubEl.textContent = prof.phone_display;
+      const accEl = document.getElementById('stmt-user-phone');
+      if (accEl && prof.account_display) accEl.textContent = prof.account_display;
 
       let filtered = txList;
       if (period === 'last') {

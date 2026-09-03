@@ -20,7 +20,7 @@
     // 3. Mode de fonctionnement
     OFFLINE_FALLBACK: false, // Strictement bloquant : les erreurs Supabase RPC affichent de vraies erreurs et ne basculent plus sur localStorage
     DEMO_ONSCREEN_OTP: true, // Mode démo BCEAO : affiche l'OTP sécurisé généré directement à l'écran (sans SMS réel)
-    INITIAL_TEST_BALANCE: 50000, // Solde symbolique de départ pour les nouveaux comptes testeurs (50 000 FCFA)
+    INITIAL_TEST_BALANCE: 0, // Solde initial de départ réel pour les nouveaux comptes (0 FCFA)
     ENV: "production"
   };
 })();

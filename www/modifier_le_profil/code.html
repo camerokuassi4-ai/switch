@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="../assets/switch.css">
   <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
@@ -112,8 +113,9 @@
     <!-- Avatar Upload Section -->
     <div class="flex flex-col items-center justify-center pt-2 pb-1">
       <div class="relative group cursor-pointer" onclick="document.getElementById('avatar-file-input').click()">
-        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-white shadow-md ring-2 ring-primary/20 group-hover:ring-primary transition-all">
-          <img id="profile-avatar-img" alt="Photo de profil Adele Doe" class="w-full h-full object-cover" src="../assets/images/img_046.jpg"/>
+        <div id="profile-avatar-container" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-white shadow-md ring-2 ring-primary/20 group-hover:ring-primary transition-all flex items-center justify-center bg-purple-100">
+          <img id="profile-avatar-img" alt="Photo de profil" class="w-full h-full object-cover hidden" src=""/>
+          <span id="profile-avatar-initials" class="text-2xl sm:text-3xl font-black text-primary">SW</span>
         </div>
         
         <!-- Camera Action Badge -->
@@ -148,7 +150,7 @@
             <label for="input-firstname" class="text-[11px] font-bold text-on-surface-variant">Prénom</label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">person</span>
-              <input type="text" id="input-firstname" required value="Adele" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+              <input type="text" id="input-firstname" required placeholder="Votre prénom" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
             </div>
           </div>
 
@@ -157,7 +159,7 @@
             <label for="input-lastname" class="text-[11px] font-bold text-on-surface-variant">Nom de famille</label>
             <div class="relative flex items-center">
               <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">badge</span>
-              <input type="text" id="input-lastname" required value="Doe" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
+              <input type="text" id="input-lastname" required placeholder="Votre nom" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-3 text-xs sm:text-sm font-semibold text-on-surface"/>
             </div>
           </div>
         </div>
@@ -391,34 +393,63 @@
     let currentEnteredPin = "";
     let resendTimerInterval = null;
     let resendSecondsRemaining = 30;
+    let isOnboardingMode = false;
 
     // 1. Charger les valeurs sauvegardées au chargement
     document.addEventListener('DOMContentLoaded', () => {
-      const fullName = localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || '';
-      let savedFirstname = localStorage.getItem('switch_user_firstname');
-      let savedLastname = localStorage.getItem('switch_user_lastname');
+      const urlParams = new URLSearchParams(window.location.search);
+      isOnboardingMode = urlParams.get('onboarding') === 'true';
 
-      if (fullName && (!savedFirstname || !savedLastname)) {
-        const parts = fullName.trim().split(' ');
-        savedFirstname = parts[0] || '';
-        savedLastname = parts.slice(1).join(' ') || '';
+      const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : {
+        first_name: localStorage.getItem('switch_user_firstname') || '',
+        last_name: localStorage.getItem('switch_user_lastname') || '',
+        full_name: localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || '',
+        phone_display: localStorage.getItem('switch_user_phone') || '',
+        email: localStorage.getItem('switch_user_email') || '',
+        city: localStorage.getItem('switch_user_city') || 'Cotonou',
+        neighborhood: localStorage.getItem('switch_user_address') || '',
+        profession: localStorage.getItem('switch_user_profession') || '',
+        avatar_url: localStorage.getItem('switch_user_avatar') || null
+      };
+
+      let firstName = prof.first_name;
+      let lastName = prof.last_name;
+      if (!firstName && prof.full_name) {
+        const parts = prof.full_name.trim().split(/\s+/);
+        firstName = parts[0] || '';
+        lastName = parts.slice(1).join(' ') || '';
       }
 
-      const savedPhone = localStorage.getItem('switch_user_phone');
-      const savedEmail = localStorage.getItem('switch_user_email');
-      const savedCity = localStorage.getItem('switch_user_city');
-      const savedAddress = localStorage.getItem('switch_user_address');
-      const savedProfession = localStorage.getItem('switch_user_profession');
-      const savedAvatar = localStorage.getItem('switch_user_avatar');
+      if (firstName && firstName !== "Adele") document.getElementById('input-firstname').value = firstName;
+      if (lastName && lastName !== "Doe") document.getElementById('input-lastname').value = lastName;
+      if (prof.phone_display) document.getElementById('input-phone').value = prof.phone_display;
+      if (prof.email && !prof.email.includes('adele.doe')) document.getElementById('input-email').value = prof.email;
+      if (prof.city) document.getElementById('input-city').value = prof.city;
+      if (prof.neighborhood) document.getElementById('input-address').value = prof.neighborhood;
+      if (prof.profession) document.getElementById('input-profession').value = prof.profession;
 
-      if (savedFirstname) document.getElementById('input-firstname').value = savedFirstname;
-      if (savedLastname) document.getElementById('input-lastname').value = savedLastname;
-      if (savedPhone) document.getElementById('input-phone').value = savedPhone;
-      if (savedEmail) document.getElementById('input-email').value = savedEmail;
-      if (savedCity) document.getElementById('input-city').value = savedCity;
-      if (savedAddress) document.getElementById('input-address').value = savedAddress;
-      if (savedProfession) document.getElementById('input-profession').value = savedProfession;
-      if (savedAvatar) document.getElementById('profile-avatar-img').src = savedAvatar;
+      const imgEl = document.getElementById('profile-avatar-img');
+      const initialsEl = document.getElementById('profile-avatar-initials');
+      if (prof.avatar_url && !prof.avatar_url.includes('img_046.jpg')) {
+        imgEl.src = prof.avatar_url;
+        imgEl.classList.remove('hidden');
+        if (initialsEl) initialsEl.classList.add('hidden');
+      } else {
+        const initials = ((firstName[0] || '') + (lastName[0] || '')).toUpperCase() || 'SW';
+        if (initialsEl) {
+          initialsEl.textContent = initials;
+          initialsEl.classList.remove('hidden');
+        }
+        if (imgEl) imgEl.classList.add('hidden');
+      }
+
+      // Adaptation en mode Onboarding
+      if (isOnboardingMode) {
+        const submitBtn = document.querySelector('button[type="submit"] span:last-child');
+        if (submitBtn) submitBtn.textContent = "Enregistrer & Activer mon Compte";
+        const pageTitle = document.querySelector('header h1');
+        if (pageTitle) pageTitle.textContent = "Compléter mon Profil";
+      }
     });
 
     // 2. Gestion du changement d'avatar photo
@@ -432,8 +463,17 @@
         const reader = new FileReader();
         reader.onload = function(e) {
           const dataUrl = e.target.result;
-          document.getElementById('profile-avatar-img').src = dataUrl;
-          localStorage.setItem('switch_user_avatar', dataUrl);
+          const imgEl = document.getElementById('profile-avatar-img');
+          const initialsEl = document.getElementById('profile-avatar-initials');
+          imgEl.src = dataUrl;
+          imgEl.classList.remove('hidden');
+          if (initialsEl) initialsEl.classList.add('hidden');
+
+          if (window.SwitchAPI) {
+            window.SwitchAPI.setProfile({ avatar_url: dataUrl });
+          } else {
+            localStorage.setItem('switch_user_avatar', dataUrl);
+          }
         };
         reader.readAsDataURL(file);
       }
@@ -484,11 +524,14 @@
     // 5. Action Renvoyer le code (SMS ou WhatsApp)
     function resendCode(channel) {
       const statusEl = document.getElementById('pin-status-msg');
+      const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : {};
+      const phoneStr = prof.phone_display || "+229 01 -- -- --";
+
       if (channel === 'sms') {
-        statusEl.innerHTML = `<span class="text-emerald-700 font-bold">📨 Nouveau code SMS envoyé au +229 97 12 34 56</span>`;
+        statusEl.innerHTML = `<span class="text-emerald-700 font-bold">📨 Nouveau code SMS envoyé au ${phoneStr}</span>`;
         startResendCountdown(45);
       } else if (channel === 'whatsapp') {
-        statusEl.innerHTML = `<span class="text-emerald-700 font-bold">💬 Code sécurisé envoyé sur votre WhatsApp (+229 97 12 34 56)</span>`;
+        statusEl.innerHTML = `<span class="text-emerald-700 font-bold">💬 Code sécurisé envoyé sur votre WhatsApp (${phoneStr})</span>`;
       }
     }
 
@@ -536,7 +579,6 @@
       statusEl.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-primary border-t-transparent rounded-full mr-1"></span> Validation du code...`;
 
       setTimeout(() => {
-        // Sauvegarde des champs dans localStorage
         const firstname = document.getElementById('input-firstname').value.trim();
         const lastname = document.getElementById('input-lastname').value.trim();
         const email = document.getElementById('input-email').value.trim();
@@ -544,14 +586,28 @@
         const address = document.getElementById('input-address').value.trim();
         const profession = document.getElementById('input-profession').value.trim();
 
-        localStorage.setItem('switch_user_firstname', firstname);
-        localStorage.setItem('switch_user_lastname', lastname);
-        localStorage.setItem('switch_user_fullname', `${firstname} ${lastname}`);
-        localStorage.setItem('switch_user_name', `${firstname} ${lastname}`);
-        localStorage.setItem('switch_user_email', email);
-        localStorage.setItem('switch_user_city', city);
-        localStorage.setItem('switch_user_address', address);
-        localStorage.setItem('switch_user_profession', profession);
+        if (window.SwitchAPI) {
+          window.SwitchAPI.setProfile({
+            first_name: firstname,
+            last_name: lastname,
+            email: email,
+            city: city,
+            neighborhood: address,
+            profession: profession,
+            profile_completed: true
+          });
+          window.SwitchAPI.setProfileCompleted(true);
+        } else {
+          localStorage.setItem('switch_user_firstname', firstname);
+          localStorage.setItem('switch_user_lastname', lastname);
+          localStorage.setItem('switch_user_fullname', `${firstname} ${lastname}`);
+          localStorage.setItem('switch_user_name', `${firstname} ${lastname}`);
+          localStorage.setItem('switch_user_email', email);
+          localStorage.setItem('switch_user_city', city);
+          localStorage.setItem('switch_user_address', address);
+          localStorage.setItem('switch_user_profession', profession);
+          localStorage.setItem('switch_profile_completed', 'true');
+        }
 
         // Fermer la modale PIN
         closePinModal();
@@ -563,9 +619,13 @@
           toast.classList.add('toast-animate');
         }
 
-        // Redirection vers Paramètres & Profil
+        // Redirection adaptée
         setTimeout(() => {
-          window.location.href = '../param_tres_g_n_raux/code.html';
+          if (isOnboardingMode) {
+            window.location.href = '../bienvenue_succes_onboarding/code.html';
+          } else {
+            window.location.href = '../param_tres_g_n_raux/code.html';
+          }
         }, 1000);
       }, 500);
     }

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="fr"><head>
 <meta charset="utf-8"/>
@@ -25,10 +25,11 @@
 <!-- TopAppBar -->
 <header class="flex justify-between items-center px-container-margin py-stack-md w-full bg-transparent full-width top-0 docked z-40">
 <div class="flex items-center gap-4">
-<button class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high hover:bg-surface-container-high transition-colors flex items-center justify-center">
-<img class="w-full h-full object-cover" data-alt="Portrait of a young Beninese professional woman, smiling subtly, wearing a crisp white blouse. Studio lighting with a soft gradient purple background, shot on 85mm lens. Corporate modern aesthetic, high resolution." src="../assets/images/img_032.jpg"/>
-</button>
-<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Bonjour, Adele</h1>
+<div id="user-avatar-box" class="w-10 h-10 rounded-full overflow-hidden bg-purple-100 flex items-center justify-center">
+<img id="user-avatar-img" class="w-full h-full object-cover hidden" src=""/>
+<span id="user-avatar-initials" class="text-sm font-black text-primary">SW</span>
+</div>
+<h1 id="user-greeting-title" class="font-headline-md text-headline-md text-on-surface font-bold">Bonjour</h1>
 </div>
 <button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
 <span class="material-symbols-outlined" data-icon="search">search</span>
@@ -73,4 +74,28 @@
     <span class="nav-label" style="font-size:10px;font-weight:500;">Paramètres</span>
   </a>
 </nav>
+
+<script src="../assets/switch.config.js"></script>
+<script src="../assets/switch.api.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : {
+      first_name: '',
+      full_name: localStorage.getItem('switch_user_fullname') || ''
+    };
+    const name = prof.first_name || (prof.full_name ? prof.full_name.split(' ')[0] : '');
+    const titleEl = document.getElementById('user-greeting-title');
+    if (titleEl) titleEl.textContent = name ? `Bonjour, ${name}` : 'Bonjour';
+    const avatarImg = document.getElementById('user-avatar-img');
+    const initialsEl = document.getElementById('user-avatar-initials');
+    if (prof.avatar_url && !prof.avatar_url.includes('img_032.jpg')) {
+      avatarImg.src = prof.avatar_url;
+      avatarImg.classList.remove('hidden');
+      if (initialsEl) initialsEl.classList.add('hidden');
+    } else if (name) {
+      if (initialsEl) initialsEl.textContent = name.slice(0, 2).toUpperCase();
+    }
+  });
+</script>
+<script src="../assets/switch.router.js"></script>
 </body></html>

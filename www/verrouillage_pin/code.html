@@ -3,7 +3,7 @@
 <html class="light" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
-<title>Beninese Fintech - Security Lock</title>
+<title>Sécurité PIN - Switch Bénin</title>
 <!-- Material Symbols -->
 
 <!-- Google Fonts: Hanken Grotesk -->
@@ -14,6 +14,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link rel="stylesheet" href="../assets/switch.css">
 <script src="../assets/switch.config.js"></script>
+<script src="../assets/switch.api.js"></script>
 
 <style>
         .material-symbols-outlined {
@@ -56,9 +57,12 @@
 <div class="relative w-24 h-24 mb-6">
 <!-- Blurred background element for depth -->
 <div class="absolute inset-0 bg-primary/20 rounded-full blur-xl scale-110"></div>
-<img alt="Avatar Adele" class="relative w-full h-full object-cover rounded-full border-4 border-surface-container-lowest shadow-sm z-10" data-alt="A portrait photography shot of a professional West African woman in her late 20s, styled with modern corporate flair. She has an approachable, confident expression. The lighting is soft and bright, emphasizing a premium light-mode aesthetic with clean white surroundings and subtle purple undertones." src="../assets/images/img_056.jpg"/>
+<div id="user-avatar-box" class="relative w-full h-full rounded-full border-4 border-surface-container-lowest shadow-sm z-10 overflow-hidden bg-purple-100 flex items-center justify-center">
+  <img id="user-avatar-img" alt="Avatar" class="w-full h-full object-cover hidden" src=""/>
+  <span id="user-avatar-initials" class="text-3xl font-black text-primary">SW</span>
 </div>
-<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-2 text-center">Bonjour, Adele</h1>
+</div>
+<h1 id="user-greeting-title" class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-2 text-center">Bonjour</h1>
 <p class="font-body-lg text-body-lg text-on-surface-variant text-center max-w-[250px]">Saisissez votre code PIN pour déverrouiller</p>
 </header>
 <!-- PIN Dots Display -->
@@ -102,6 +106,23 @@
 <script>
         // Simple script to handle visual feedback on keypad press (for demonstration)
         document.addEventListener('DOMContentLoaded', () => {
+            const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : {
+              first_name: '',
+              full_name: localStorage.getItem('switch_user_fullname') || ''
+            };
+            const name = prof.first_name || (prof.full_name ? prof.full_name.split(' ')[0] : '');
+            const titleEl = document.getElementById('user-greeting-title');
+            if (titleEl) titleEl.textContent = name ? `Bonjour, ${name}` : 'Bonjour';
+            const avatarImg = document.getElementById('user-avatar-img');
+            const initialsEl = document.getElementById('user-avatar-initials');
+            if (prof.avatar_url && !prof.avatar_url.includes('img_056.jpg')) {
+              avatarImg.src = prof.avatar_url;
+              avatarImg.classList.remove('hidden');
+              if (initialsEl) initialsEl.classList.add('hidden');
+            } else if (name) {
+              if (initialsEl) initialsEl.textContent = name.slice(0, 2).toUpperCase();
+            }
+
             const keypadButtons = document.querySelectorAll('.grid button');
             const dots = document.querySelectorAll('.pin-dot');
             let currentPinLength = 2; // Starting with 2 dots filled as per HTML state

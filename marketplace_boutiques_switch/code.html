@@ -83,7 +83,7 @@
     <!-- User Switch Balance Pill -->
     <div class="bg-white border border-purple-200 px-3 py-1.5 rounded-full shadow-xs flex items-center gap-1.5">
       <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-      <span class="text-xs font-mono font-black text-[#5E3BDC]" id="header-user-balance">125 000 F</span>
+      <span class="text-xs font-mono font-black text-[#5E3BDC]" id="header-user-balance">0 F</span>
     </div>
   </header>
 
@@ -351,7 +351,7 @@
       <div class="bg-emerald-50 rounded-2xl p-3.5 border border-emerald-200 text-xs flex flex-col gap-1.5 text-emerald-950">
         <div class="flex justify-between">
           <span>Source de paiement :</span>
-          <b class="text-emerald-900">Solde Compte Switch (125 000 F dispo)</b>
+          <b class="text-emerald-900" id="checkout-balance-label">Solde Compte Switch (<span id="modal-user-balance-dispo">0 F</span> dispo)</b>
         </div>
         <div class="flex justify-between">
           <span>Frais de transaction :</span>
@@ -980,8 +980,17 @@
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
+    function renderMarketplaceBalance() {
+      const bal = window.SwitchAPI ? window.SwitchAPI.getBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 0);
+      const hBal = document.getElementById('header-user-balance');
+      if (hBal) hBal.textContent = bal.toLocaleString('fr-FR') + ' F';
+      const mBal = document.getElementById('modal-user-balance-dispo');
+      if (mBal) mBal.textContent = bal.toLocaleString('fr-FR') + ' F';
+    }
+
     // Execute immediately
     syncMarketplaceFromStorage();
+    renderMarketplaceBalance();
   </script>
 
   <script src="../assets/switch.router.js" defer></script>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="fr"><head>
 <meta charset="utf-8"/>
@@ -50,11 +50,12 @@
 <div class="flex justify-between items-center px-container-margin py-stack-md w-full max-w-2xl mx-auto">
 <!-- Leading Avatar -->
 <div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container shadow-sm flex-shrink-0 bg-surface-variant flex items-center justify-center">
-<img alt="User profile picture" class="w-full h-full object-cover" data-alt="A close-up portrait of a modern professional Beninese woman with a warm smile, wearing stylish casual attire, against a clean light background. The lighting is soft and flattering, creating a premium and approachable vibe." src="../assets/images/img_033.jpg"/>
+<div id="user-avatar-box" class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container shadow-sm flex-shrink-0 bg-purple-100 flex items-center justify-center">
+<img id="user-avatar-img" alt="Avatar" class="w-full h-full object-cover hidden" src=""/>
+<span id="user-avatar-initials" class="text-sm font-black text-primary">SW</span>
 </div>
 <div>
-<h1 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">Bonjour, Adele</h1>
+<h1 id="user-greeting-title" class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">Bonjour</h1>
 </div>
 </div>
 <!-- Trailing Icon -->
@@ -192,5 +193,27 @@
 </main>
 <!-- BottomNavBar -->
 
+<script src="../assets/switch.config.js"></script>
+<script src="../assets/switch.api.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : {
+      first_name: '',
+      full_name: localStorage.getItem('switch_user_fullname') || ''
+    };
+    const name = prof.first_name || (prof.full_name ? prof.full_name.split(' ')[0] : '');
+    const titleEl = document.getElementById('user-greeting-title');
+    if (titleEl) titleEl.textContent = name ? `Bonjour, ${name}` : 'Bonjour';
+    const avatarImg = document.getElementById('user-avatar-img');
+    const initialsEl = document.getElementById('user-avatar-initials');
+    if (prof.avatar_url && !prof.avatar_url.includes('img_033.jpg')) {
+      avatarImg.src = prof.avatar_url;
+      avatarImg.classList.remove('hidden');
+      if (initialsEl) initialsEl.classList.add('hidden');
+    } else if (name) {
+      if (initialsEl) initialsEl.textContent = name.slice(0, 2).toUpperCase();
+    }
+  });
+</script>
 <script src="../assets/switch.router.js"></script>
 </body></html>
