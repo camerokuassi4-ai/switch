@@ -1143,6 +1143,21 @@
     },
 
     /**
+     * Alias Paiement Marchand pour la Marketplace & Checkout
+     */
+    payMerchant: async function (storeName, amount, note = "Achat Marchand Switch") {
+      const customerPhone = localStorage.getItem('switch_user_phone') || "0190751786";
+      const items = [{ name: note, quantity: 1, unit_price: amount }];
+      const res = await this.processMerchantPayment(customerPhone, amount, items, note);
+      return {
+        success: res.success,
+        tx_ref: res.ref,
+        message: res.message,
+        ...res
+      };
+    },
+
+    /**
      * 15. Virement des Encaissements Marchand vers Compte Personnel Switch
      */
     withdrawMerchantFunds: async function (amount) {

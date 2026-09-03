@@ -381,9 +381,9 @@
 
       const extras = n.extras || {};
       let extraHtml = `
-        <div class="flex justify-between"><span>Montant crédité :</span><b class="text-emerald-700 font-mono">${extras.amount || n.amount || '+50 000 FCFA'}</b></div>
-        <div class="flex justify-between"><span>Point Réseau :</span><b>${extras.source || 'Kiosque Switch Saint-Michel'}</b></div>
-        <div class="flex justify-between"><span>Réf. Transaction :</span><b class="font-mono">${extras.ref || '#TRX-DEP-66419'}</b></div>
+        <div class="flex justify-between"><span>Montant crédité :</span><b class="text-emerald-700 font-mono">${extras.amount || n.amount || '0 FCFA'}</b></div>
+        <div class="flex justify-between"><span>Point Réseau :</span><b>${extras.source || 'Guichet Switch'}</b></div>
+        <div class="flex justify-between"><span>Réf. Transaction :</span><b class="font-mono">${extras.ref || '#TRX-SW-00000'}</b></div>
       `;
       document.getElementById('modal-extra-details').innerHTML = extraHtml;
       document.getElementById('modal-action-label').textContent = "Voir mon Solde";
