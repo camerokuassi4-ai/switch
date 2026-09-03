@@ -1,0 +1,15 @@
+{
+  "appId": "bj.switch.agent.beta",
+  "appName": "Switch Beta — Agent",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#5E3BDC"
+    }
+  }
+}
