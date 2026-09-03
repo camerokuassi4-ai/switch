@@ -72,7 +72,7 @@
     <div class="flex flex-col items-end">
       <span class="text-[9px] font-bold uppercase text-on-surface-variant">Float Caisse</span>
       <span id="current-float-badge" class="text-xs font-mono font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-        1 500 000 F
+        0 F
       </span>
     </div>
   </header>
@@ -550,13 +550,15 @@
 
     // Initialisation
     function initAgentWithdrawal() {
-      const storedFloat = localStorage.getItem('switch_agent_float');
-      if (storedFloat) {
-        currentAgentFloat = parseInt(storedFloat.replace(/\s/g, ''), 10);
+      if (window.SwitchAPI && window.SwitchAPI.getAgentFloat) {
+        currentAgentFloat = window.SwitchAPI.getAgentFloat();
+      } else {
+        const storedFloat = localStorage.getItem('switch_agent_float');
+        currentAgentFloat = storedFloat ? parseInt(storedFloat.replace(/\s/g, ''), 10) : 0;
       }
       const floatBadge = document.getElementById('current-float-badge');
       if (floatBadge) floatBadge.textContent = currentAgentFloat.toLocaleString('fr-FR') + ' F';
-      calculateWithdrawal(25000);
+      calculateWithdrawal(document.getElementById('withdrawAmount') ? (parseInt(document.getElementById('withdrawAmount').value, 10) || 0) : 0);
     }
 
     document.addEventListener('DOMContentLoaded', initAgentWithdrawal);

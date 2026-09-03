@@ -82,17 +82,17 @@
     <a href="../modifier_profil_agent/code.html" class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex items-center justify-between hover:border-indigo-600 transition-all no-underline text-on-surface group">
       <div class="flex items-center gap-3.5">
         <div class="relative">
-          <div class="w-14 h-14 rounded-2xl overflow-hidden border-2 border-indigo-600/30 shadow-sm p-0.5 bg-white">
-            <img id="profile-agent-avatar" src="../assets/images/img_054.jpg" alt="Amina K." class="w-full h-full object-cover rounded-xl"/>
+          <div id="agent-avatar-box" class="w-14 h-14 rounded-2xl overflow-hidden border-2 border-indigo-600/30 shadow-sm p-0.5 bg-white flex items-center justify-center font-black text-indigo-700 font-mono">
+            AG
           </div>
           <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white shadow-xs" title="Guichet Agréé"></span>
         </div>
         <div>
           <div class="flex items-center gap-1.5">
-            <h2 id="profile-agent-name" class="text-base font-black text-gray-950">Amina K.</h2>
+            <h2 id="profile-agent-name" class="text-base font-black text-gray-950">Guichet Switch Agréé</h2>
             <span class="text-[9px] font-black uppercase text-indigo-900 bg-indigo-100 border border-indigo-300 px-1.5 py-0.5 rounded-md">Agent Agréé</span>
           </div>
-          <p class="text-xs text-gray-600 font-mono mt-0.5" id="profile-agent-id-span">ID: AGT-4092 • N° Compte : 9700409215</p>
+          <p class="text-xs text-gray-600 font-mono mt-0.5" id="profile-agent-id-span">Compte Agent Guichet</p>
           <span class="text-[10px] text-indigo-700 font-bold" id="profile-agent-store-location">Guichet Agréé Switch (Cotonou, Bénin)</span>
         </div>
       </div>
@@ -384,20 +384,33 @@
 
     document.addEventListener('DOMContentLoaded', function () {
       const isHybrid = localStorage.getItem('switch_is_hybrid') === 'true';
-      const agentName = localStorage.getItem('switch_agent_name') || 'Adele Doe';
-      const agentAcc = localStorage.getItem('switch_agent_account') || '9700112233';
-      const agentId = localStorage.getItem('switch_agent_id') || 'AGT-4092';
-      const storeName = localStorage.getItem('switch_store_name') || 'Boutique La Plage';
+      const prof = window.SwitchAPI ? window.SwitchAPI.getAgentProfile() : {
+        manager_name: localStorage.getItem('switch_agent_name') || 'Agent Switch',
+        account_number: localStorage.getItem('switch_agent_account') || '',
+        agent_code: localStorage.getItem('switch_agent_code') || 'AGT-GUICHET'
+      };
+
+      const agentName = prof.manager_name;
+      const agentAcc = prof.account_number;
+      const agentId = prof.agent_code;
+      const storeName = localStorage.getItem('switch_store_name') || 'Point Relais Switch';
 
       const nameEl = document.getElementById('profile-agent-name');
-      if (nameEl) nameEl.textContent = agentName;
+      if (nameEl && agentName && !/adele|amina/i.test(agentName)) {
+        nameEl.textContent = agentName;
+      }
 
       const idSpan = document.getElementById('profile-agent-id-span');
       if (idSpan) idSpan.textContent = `ID: ${agentId} • N° Compte : ${agentAcc}`;
 
+      const avatarBox = document.getElementById('agent-avatar-box');
+      if (avatarBox && window.SwitchAPI) {
+        avatarBox.innerHTML = window.SwitchAPI.getAvatarHtml(agentName, prof.avatar_url, 48);
+      }
+
       const locSpan = document.getElementById('profile-agent-store-location');
       if (locSpan) {
-        locSpan.textContent = isHybrid ? `Point Agréé : ${storeName} (Cotonou, Bénin)` : 'Guichet Agréé Switch (Cotonou, Bénin)';
+        locSpan.textContent = isHybrid ? `Point Agréé : ${storeName} (Bénin)` : 'Guichet Agréé Switch (Bénin)';
       }
 
       // N'afficher les passerelles vers la boutique que pour un compte hybride

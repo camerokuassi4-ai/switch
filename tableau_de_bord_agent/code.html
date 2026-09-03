@@ -71,14 +71,14 @@
       </div>
       <div>
         <div class="flex items-center gap-1.5">
-          <h1 id="agent-name" class="text-sm sm:text-base font-black text-gray-950 leading-tight group-hover:text-indigo-600 transition-colors">Amina K.</h1>
+          <h1 id="agent-name" class="text-sm sm:text-base font-black text-gray-950 leading-tight group-hover:text-indigo-600 transition-colors">Point Guichet Switch</h1>
           <span class="text-[9px] font-black uppercase bg-indigo-100 text-indigo-800 border border-indigo-200 px-1.5 py-0.5 rounded-md flex items-center gap-0.5">
             <span class="material-symbols-outlined text-[10px]">verified</span>
             <span>Agréé</span>
           </span>
         </div>
         <div class="flex items-center gap-1 mt-0.5 text-gray-500">
-          <span class="text-[10px] font-mono font-bold" id="agent-account-display">N° 9700409215</span>
+          <span class="text-[10px] font-mono font-bold" id="agent-account-display">N° Guichet</span>
           <button type="button" onclick="event.preventDefault(); event.stopPropagation(); copyAgentAccount();" class="text-indigo-600 hover:text-indigo-900 cursor-pointer p-0.5 rounded" title="Copier mon numéro de compte">
             <span class="material-symbols-outlined text-xs">content_copy</span>
           </button>
@@ -126,7 +126,7 @@
         </div>
 
         <div class="z-10 flex items-baseline gap-2 my-0.5">
-          <span id="float-balance-amount" class="text-3xl sm:text-4xl font-black font-mono tracking-tight text-white drop-shadow-sm">1 500 000</span>
+          <span id="float-balance-amount" class="text-3xl sm:text-4xl font-black font-mono tracking-tight text-white drop-shadow-sm">0</span>
           <span class="text-lg font-bold text-purple-200">FCFA</span>
         </div>
 
@@ -176,10 +176,10 @@
           <div>
             <span class="text-[10px] uppercase font-black text-gray-500 tracking-wider">Commissions Disponibles</span>
             <div class="flex items-baseline gap-1.5">
-              <span id="commission-balance-amount" class="text-xl sm:text-2xl font-black font-mono text-emerald-600">48 750</span>
+              <span id="commission-balance-amount" class="text-xl sm:text-2xl font-black font-mono text-emerald-600">0</span>
               <span class="text-xs font-bold text-emerald-700">FCFA</span>
             </div>
-            <p class="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.2 rounded-md inline-block mt-0.5">+12 450 FCFA générés aujourd'hui</p>
+            <p id="today-comm-badge" class="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.2 rounded-md inline-block mt-0.5">+0 FCFA générés aujourd'hui</p>
           </div>
         </div>
 
@@ -293,10 +293,10 @@
           <span class="text-[11px] font-bold">Volume Traité Aujourd'hui</span>
         </div>
         <div class="flex items-baseline gap-1">
-          <span class="text-xl font-black font-mono text-gray-950">845 000</span>
+          <span id="today-volume-amount" class="text-xl font-black font-mono text-gray-950">0</span>
           <span class="text-xs font-bold text-gray-500">FCFA</span>
         </div>
-        <p class="text-[10px] text-gray-500 font-medium">32 dépôts • 16 retraits</p>
+        <p id="today-ops-count-text" class="text-[10px] text-gray-500 font-medium">0 dépôt • 0 retrait</p>
       </div>
 
       <!-- Taux de Service -->
@@ -323,59 +323,12 @@
         </a>
       </div>
 
-      <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-soft divide-y divide-outline-variant/30 overflow-hidden">
-        
-        <!-- Opération 1 : Dépôt Espèces Client Switch -->
-        <div class="p-3.5 flex items-center justify-between hover:bg-surface-container-low/40 transition-colors">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-purple-50 text-indigo-700 flex items-center justify-center font-bold text-sm">
-              <span class="material-symbols-outlined text-lg">arrow_downward</span>
-            </div>
-            <div>
-              <h4 class="text-xs font-bold text-gray-900">Dépôt Espèces Client Switch</h4>
-              <p class="text-[10px] text-gray-500 font-mono">Client : Compte Switch • Il y a 12 min</p>
-            </div>
-          </div>
-          <div class="text-right">
-            <span class="text-xs font-black font-mono text-indigo-700 block">+50 000 F</span>
-            <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded-md">+350 F com.</span>
-          </div>
+      <div id="recent-operations-list" class="bg-white rounded-3xl border border-outline-variant/40 shadow-soft divide-y divide-outline-variant/30 overflow-hidden">
+        <div id="empty-state-agent-ops" class="p-8 text-center flex flex-col items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-4xl text-gray-300">receipt_long</span>
+          <p class="text-xs font-bold text-gray-600">Aucune opération aujourd'hui</p>
+          <p class="text-[10px] text-gray-400 max-w-xs">Vos opérations de dépôts et retraits clients s'afficheront ici en temps réel.</p>
         </div>
-
-        <!-- Opération 2 : Retrait Client Switch -->
-        <div class="p-3.5 flex items-center justify-between hover:bg-surface-container-low/40 transition-colors">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-purple-50 text-indigo-700 flex items-center justify-center font-bold text-sm">
-              <span class="material-symbols-outlined text-lg">arrow_upward</span>
-            </div>
-            <div>
-              <h4 class="text-xs font-bold text-gray-900">Retrait Client (Code #882104)</h4>
-              <p class="text-[10px] text-gray-500 font-mono">Client : Mariam S. • Il y a 45 min</p>
-            </div>
-          </div>
-          <div class="text-right">
-            <span class="text-xs font-black font-mono text-gray-800 block">-25 000 F</span>
-            <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded-md">+200 F com.</span>
-          </div>
-        </div>
-
-        <!-- Opération 3 : Recharge Facture SBEE -->
-        <div class="p-3.5 flex items-center justify-between hover:bg-surface-container-low/40 transition-colors">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-sm">
-              <span class="material-symbols-outlined text-lg">bolt</span>
-            </div>
-            <div>
-              <h4 class="text-xs font-bold text-gray-900">Paiement SBEE Électricité</h4>
-              <p class="text-[10px] text-gray-500 font-mono">Compteur: 1428 9012 34 • Il y a 1h</p>
-            </div>
-          </div>
-          <div class="text-right">
-            <span class="text-xs font-black font-mono text-gray-900 block">+10 000 F</span>
-            <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded-md">+100 F com.</span>
-          </div>
-        </div>
-
       </div>
     </section>
 
@@ -402,7 +355,7 @@
         </div>
         <div>
           <h3 class="text-base font-black text-on-surface">Transférer mes Commissions</h3>
-          <p class="text-xs text-on-surface-variant">Solde disponible : <b class="text-emerald-700 font-mono">48 750 FCFA</b></p>
+          <p class="text-xs text-on-surface-variant">Solde disponible : <b id="modal-comm-balance" class="text-emerald-700 font-mono">0 FCFA</b></p>
         </div>
       </div>
 
@@ -450,8 +403,10 @@
       const eyeIcon = document.getElementById('balance-eye-icon');
 
       if (isBalanceVisible) {
-        floatEl.textContent = "1 500 000";
-        commEl.textContent = "48 750";
+        const curFloat = window.SwitchAPI ? window.SwitchAPI.getAgentFloat() : (parseInt(localStorage.getItem('switch_agent_float') || '0', 10));
+        const curComm = window.SwitchAPI ? window.SwitchAPI.getAgentCommissions() : (parseInt(localStorage.getItem('switch_agent_commissions') || '0', 10));
+        floatEl.textContent = curFloat.toLocaleString('fr-FR');
+        commEl.textContent = curComm.toLocaleString('fr-FR');
         eyeIcon.textContent = "visibility";
       } else {
         floatEl.textContent = "••••••••";
@@ -512,7 +467,8 @@
       text.textContent = "Virement en cours...";
 
       setTimeout(() => {
-        alert(`✅ Virement de ${amt} FCFA effectué avec succès vers votre compte personnel Adele Doe !`);
+        const destName = localStorage.getItem('switch_agent_manager_name') || localStorage.getItem('switch_user_fullname') || 'votre compte personnel';
+        alert(`✅ Virement de ${amt} FCFA effectué avec succès vers votre compte personnel (${destName}) !`);
         document.getElementById('commission-balance-amount').textContent = "0";
         closeCommissionModal();
         btn.disabled = false;
@@ -542,8 +498,9 @@
 
     // Hydratation dynamique de la session de l'agent connecté
     document.addEventListener('DOMContentLoaded', function () {
-      const agentName = localStorage.getItem('switch_agent_name') || 'Amina K.';
-      const agentAcc = localStorage.getItem('switch_agent_account') || '9700409215';
+      const prof = window.SwitchAPI ? window.SwitchAPI.getAgentProfile() : {};
+      const agentName = prof.business_name || localStorage.getItem('switch_agent_name') || 'Point Guichet Switch';
+      const agentAcc = prof.account_number || localStorage.getItem('switch_agent_account') || 'Guichet Switch';
       const agentFloat = localStorage.getItem('switch_agent_float');
 
       const nameEl = document.getElementById('agent-name');
@@ -638,11 +595,49 @@
             const commEl = document.getElementById('commission-balance-amount');
             const codeEl = document.getElementById('agent-account-display');
             const nameEl = document.getElementById('agent-name');
+            const volEl = document.getElementById('today-volume-amount');
+            const countEl = document.getElementById('today-ops-count-text');
+            const commBadge = document.getElementById('today-comm-badge');
 
-            if (floatEl) floatEl.textContent = parseInt(data.float_balance).toLocaleString('fr-FR');
-            if (commEl) commEl.textContent = parseInt(data.commissions_balance).toLocaleString('fr-FR');
-            if (codeEl) codeEl.textContent = `Code : ${data.agent_code}`;
+            if (floatEl) floatEl.textContent = (parseInt(data.float_balance, 10) || 0).toLocaleString('fr-FR');
+            if (commEl) commEl.textContent = (parseInt(data.commissions_balance, 10) || 0).toLocaleString('fr-FR');
+            if (codeEl) codeEl.textContent = `N° ${data.account_number || data.agent_code}`;
             if (nameEl && data.business_name) nameEl.textContent = data.business_name;
+            if (volEl) volEl.textContent = (data.today_volume || 0).toLocaleString('fr-FR');
+            if (countEl) countEl.textContent = `${data.today_ops_count || 0} opération(s) aujourd'hui`;
+            if (commBadge) commBadge.textContent = `+${(parseInt(data.commissions_balance, 10) || 0).toLocaleString('fr-FR')} FCFA générés`;
+
+            // Rendu des opérations récentes
+            const opsContainer = document.getElementById('recent-operations-list');
+            if (opsContainer) {
+              const txs = data.transactions || [];
+              if (txs.length === 0) {
+                opsContainer.innerHTML = `
+                  <div id="empty-state-agent-ops" class="p-8 text-center flex flex-col items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-4xl text-gray-300">receipt_long</span>
+                    <p class="text-xs font-bold text-gray-600">Aucune opération aujourd'hui</p>
+                    <p class="text-[10px] text-gray-400 max-w-xs">Vos opérations de dépôts et retraits clients s'afficheront ici en temps réel.</p>
+                  </div>`;
+              } else {
+                opsContainer.innerHTML = txs.slice(0, 5).map(t => `
+                  <div class="p-3.5 flex items-center justify-between hover:bg-surface-container-low/40 transition-colors">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-2xl ${t.type === 'depot' ? 'bg-purple-50 text-indigo-700' : 'bg-amber-50 text-amber-700'} flex items-center justify-center font-bold text-sm">
+                        <span class="material-symbols-outlined text-lg">${t.type === 'depot' ? 'arrow_downward' : 'arrow_upward'}</span>
+                      </div>
+                      <div>
+                        <h4 class="text-xs font-bold text-gray-900">${t.title || 'Opération Guichet'}</h4>
+                        <p class="text-[10px] text-gray-500 font-mono">Client : ${t.client || 'Client'} • ${t.date || "Aujourd'hui"}</p>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                      <span class="text-xs font-black font-mono text-gray-900 block">${(t.amount || 0).toLocaleString('fr-FR')} F</span>
+                      <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded-md">+${t.commission || 0} F com.</span>
+                    </div>
+                  </div>
+                `).join('');
+              }
+            }
           }
         }
       } catch (err) {

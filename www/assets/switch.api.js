@@ -1593,7 +1593,250 @@
       } catch (e) {
         console.warn("[SwitchAPI] Synchro Supabase silencieuse:", e.message);
       }
+    },
+
+    // F. MODULE AGENT GUICHET (PHASE 2)
+    getAgentProfile: function () {
+      const stored = localStorage.getItem('switch_agent_profile');
+      if (stored) {
+        try { return JSON.parse(stored); } catch (e) {}
+      }
+      const acc = localStorage.getItem('switch_agent_account') || localStorage.getItem('switch_account_number') || '9700409215';
+      const suffix = acc.replace(/\D/g, '').slice(-4) || '4092';
+      return {
+        business_name: localStorage.getItem('switch_agent_business_name') || 'Guichet Switch Agréé',
+        manager_name: localStorage.getItem('switch_agent_manager_name') || localStorage.getItem('switch_user_fullname') || 'Agent Switch',
+        agent_code: localStorage.getItem('switch_agent_code') || ('AGT-' + suffix),
+        account_number: acc,
+        phone: localStorage.getItem('switch_agent_phone') || localStorage.getItem('switch_user_phone') || '+229 01 97 00 40 92',
+        avatar_url: localStorage.getItem('switch_agent_avatar_url') || null,
+        city: localStorage.getItem('switch_agent_city') || 'Cotonou',
+        is_open: localStorage.getItem('switch_guichet_is_open') !== 'false'
+      };
+    },
+
+    setAgentProfile: function (data) {
+      if (!data || typeof data !== 'object') return;
+      const current = this.getAgentProfile();
+      const updated = { ...current, ...data };
+      localStorage.setItem('switch_agent_profile', JSON.stringify(updated));
+      if (data.business_name) localStorage.setItem('switch_agent_business_name', data.business_name);
+      if (data.manager_name) localStorage.setItem('switch_agent_manager_name', data.manager_name);
+      if (data.agent_code) localStorage.setItem('switch_agent_code', data.agent_code);
+      if (data.account_number) localStorage.setItem('switch_agent_account', data.account_number);
+      if (data.avatar_url) localStorage.setItem('switch_agent_avatar_url', data.avatar_url);
+      this._notifyStateChange('agent_profile_changed', updated);
+      return updated;
+    },
+
+    getAgentFloat: function () {
+      const v = localStorage.getItem('switch_agent_float');
+      if (v === null) return 0;
+      const parsed = parseInt(String(v).replace(/\s/g, ''), 10);
+      return isNaN(parsed) ? 0 : parsed;
+    },
+
+    setAgentFloat: function (amount) {
+      const amt = Math.max(0, parseInt(amount, 10) || 0);
+      localStorage.setItem('switch_agent_float', amt.toString());
+      this._notifyStateChange('agent_float_changed', amt);
+      return amt;
+    },
+
+    getAgentCommissions: function () {
+      const v = localStorage.getItem('switch_agent_commissions');
+      if (v === null) return 0;
+      const parsed = parseInt(String(v).replace(/\s/g, ''), 10);
+      return isNaN(parsed) ? 0 : parsed;
+    },
+
+    setAgentCommissions: function (amount) {
+      const amt = Math.max(0, parseInt(amount, 10) || 0);
+      localStorage.setItem('switch_agent_commissions', amt.toString());
+      this._notifyStateChange('agent_commissions_changed', amt);
+      return amt;
+    },
+
+    getAgentDashboard: async function () {
+      const prof = this.getAgentProfile();
+      const floatBal = this.getAgentFloat();
+      const commBal = this.getAgentCommissions();
+      const txs = this.getAgentTransactions();
+
+      let todayVolume = 0;
+      let todayOps = 0;
+      txs.forEach(t => {
+        todayVolume += (t.amount || 0);
+        todayOps++;
+      });
+
+      return {
+        success: true,
+        business_name: prof.business_name,
+        manager_name: prof.manager_name,
+        agent_code: prof.agent_code,
+        account_number: prof.account_number,
+        float_balance: floatBal,
+        commissions_balance: commBal,
+        is_open: prof.is_open,
+        today_volume: todayVolume,
+        today_ops_count: todayOps,
+        transactions: txs
+      };
+    },
+
+    getAgentTransactions: function () {
+      try {
+        const raw = localStorage.getItem('switch_agent_transactions');
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    },
+
+    addAgentTransaction: function (tx) {
+      const txs = this.getAgentTransactions();
+      const now = new Date();
+      const fullTx = {
+        id: tx.id || ('TRX-' + Date.now().toString().slice(-6)),
+        type: tx.type || 'operation',
+        title: tx.title || "Opération Guichet",
+        amount: parseInt(tx.amount, 10) || 0,
+        commission: parseInt(tx.commission, 10) || 0,
+        client: tx.client || 'Client Switch',
+        phone: tx.phone || '',
+        date: tx.date || (now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })),
+        status: tx.status || 'success',
+        ref: tx.ref || ('TRX-' + Math.floor(10000 + Math.random() * 90000))
+      };
+      txs.unshift(fullTx);
+      localStorage.setItem('switch_agent_transactions', JSON.stringify(txs));
+      this._notifyStateChange('agent_transaction_added', fullTx);
+      return fullTx;
+    },
+
+    clearAgentTransactions: function () {
+      localStorage.setItem('switch_agent_transactions', '[]');
+      this._notifyStateChange('agent_transactions_cleared', []);
+    },
+
+    processAgentCash: async function (clientIdentifier, amount, type) {
+      const amt = parseInt(amount, 10);
+      if (!amt || amt < 500) {
+        return { success: false, message: "Le montant minimum pour une opération guichet est de 500 FCFA." };
+      }
+
+      const opType = String(type).toUpperCase();
+      const currentFloat = this.getAgentFloat();
+      const currentComms = this.getAgentCommissions();
+
+      if (opType === 'DEPOSIT') {
+        if (currentFloat < amt) {
+          return {
+            success: false,
+            message: `Trésorerie Float insuffisante (${currentFloat.toLocaleString('fr-FR')} F disponible, ${amt.toLocaleString('fr-FR')} F requis). Veuillez recharger votre float.`
+          };
+        }
+
+        // Barème commission dépôt guichetier : 0.7% (min 150 F, max 1500 F)
+        const comm = Math.min(1500, Math.max(150, Math.round(amt * 0.007)));
+        const newFloat = currentFloat - amt;
+        const newComms = currentComms + comm;
+
+        this.setAgentFloat(newFloat);
+        this.setAgentCommissions(newComms);
+
+        const ref = `TRX-DEP-${Math.floor(10000 + Math.random() * 90000)}`;
+        const agentTx = this.addAgentTransaction({
+          type: 'depot',
+          title: "Dépôt d'espèces (Cash-In)",
+          amount: amt,
+          commission: comm,
+          client: clientIdentifier,
+          ref: ref
+        });
+
+        // Liaison atomique : si le client servi est l'utilisateur connecté ou dans le cache
+        try {
+          const userPhone = (localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone') || '').replace(/\D/g, '');
+          const cleanIdent = String(clientIdentifier).replace(/\D/g, '');
+          if (userPhone && cleanIdent && (userPhone.includes(cleanIdent) || cleanIdent.includes(userPhone))) {
+            const curBal = this.getBalance();
+            this.setBalance(curBal + amt);
+            this.addTransaction({
+              type: 'deposit',
+              category: 'deposit',
+              title: "Dépôt d'espèces (Kiosque Switch)",
+              amount: amt,
+              fee: 0,
+              recipient: `Kiosque Switch (${this.getAgentProfile().agent_code})`,
+              ref: ref,
+              status: 'success'
+            });
+          }
+        } catch (e) {
+          console.warn("[SwitchAPI] Synchronisation ledger client:", e);
+        }
+
+        return {
+          success: true,
+          tx_ref: ref,
+          commission: `+${comm} FCFA`,
+          new_float: newFloat,
+          message: "Dépôt effectué avec succès."
+        };
+
+      } else if (opType === 'WITHDRAWAL') {
+        // Barème commission retrait guichetier : 0.5% (min 100 F, max 1000 F)
+        const comm = Math.min(1000, Math.max(100, Math.round(amt * 0.005)));
+        const newFloat = currentFloat + amt;
+        const newComms = currentComms + comm;
+
+        this.setAgentFloat(newFloat);
+        this.setAgentCommissions(newComms);
+
+        const ref = `TRX-RET-${Math.floor(10000 + Math.random() * 90000)}`;
+        const agentTx = this.addAgentTransaction({
+          type: 'retrait',
+          title: "Retrait d'espèces (Cash-Out)",
+          amount: amt,
+          commission: comm,
+          client: clientIdentifier,
+          ref: ref
+        });
+
+        // Liaison atomique côté client
+        try {
+          const curBal = this.getBalance();
+          if (curBal >= amt) {
+            this.setBalance(curBal - amt);
+            this.addTransaction({
+              type: 'withdrawal',
+              category: 'withdrawal',
+              title: "Retrait d'espèces (Guichet Switch)",
+              amount: -amt,
+              fee: 0,
+              recipient: `Guichet Switch (${this.getAgentProfile().agent_code})`,
+              ref: ref,
+              status: 'success'
+            });
+          }
+        } catch (e) {
+          console.warn("[SwitchAPI] Synchronisation ledger retrait client:", e);
+        }
+
+        return {
+          success: true,
+          tx_ref: ref,
+          commission: `+${comm} FCFA`,
+          new_float: newFloat,
+          message: "Retrait validé avec succès."
+        };
+      }
+
+      return { success: false, message: "Type d'opération inconnu." };
     }
+
   };
 
   window.SwitchAPI = SwitchAPI;

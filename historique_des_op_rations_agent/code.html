@@ -64,12 +64,12 @@
     <div class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft flex items-center justify-between">
       <div class="flex flex-col">
         <span class="text-[10px] uppercase font-bold text-gray-500">Volume Total Encaissé</span>
-        <b class="text-lg font-mono font-black text-on-surface">505 000 FCFA</b>
+        <b id="summary-volume" class="text-lg font-mono font-black text-on-surface">0 FCFA</b>
       </div>
       <div class="h-8 w-px bg-outline-variant/40"></div>
       <div class="flex flex-col items-end">
         <span class="text-[10px] uppercase font-bold text-emerald-700">Commissions Acquises</span>
-        <b class="text-lg font-mono font-black text-emerald-700">+8 750 FCFA</b>
+        <b id="summary-commissions" class="text-lg font-mono font-black text-emerald-700">+0 FCFA</b>
       </div>
     </div>
 
@@ -100,99 +100,14 @@
 
     <!-- 3. Liste des Transactions -->
     <section class="flex flex-col gap-4">
-      
-      <!-- Groupe 1 : Aujourd'hui -->
-      <div class="flex flex-col gap-2" id="group-today">
-        <span class="text-[11px] font-black uppercase text-gray-500 tracking-wider px-1">Aujourd'hui • 25 Août 2026</span>
-
-        <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-soft divide-y divide-outline-variant/30 overflow-hidden">
-          
-          <!-- Item 1: Dépôt Cash-In -->
-          <div onclick="openTrxDetail('Dépôt Cash-In Client', '50 000', '+350 F', 'Koffi MENSAH (+229 97 00 11 22)', 'Switch Bénin', 'TRX-DEP-84920', 'Aujourd hui • 15:30', '0 FCFA', 'Trésorerie Float')" data-cat="depot" data-text="koffi mensah 97001122 trx-dep-84920 depot 50000" class="trx-card p-4 flex items-center justify-between hover:bg-purple-50/30 cursor-pointer transition-colors">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-purple-50 text-primary flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-xl">arrow_downward</span>
-              </div>
-              <div>
-                <div class="flex items-center gap-1.5">
-                  <b class="text-xs font-bold text-on-surface">Dépôt Cash-In</b>
-                  <span class="text-[9px] font-black text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded-md">+350 F com.</span>
-                </div>
-                <span class="text-[11px] text-gray-500 block mt-0.5">Koffi MENSAH • 15:30</span>
-                <span class="text-[9px] font-mono text-gray-400">#TRX-DEP-84920</span>
-              </div>
-            </div>
-            <div class="text-right">
-              <span class="font-mono font-black text-xs text-on-surface block">50 000 F</span>
-              <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-full">Succès</span>
-            </div>
-          </div>
-
-          <!-- Item 2: Retrait Cash-Out -->
-          <div onclick="openTrxDetail('Retrait Cash-Out Client', '25 000', '+200 F', 'Mariam SANNI (+229 96 44 33 22)', 'Switch Bénin', 'TRX-RET-91204', 'Aujourd hui • 14:15', '0 FCFA', 'Caisse Espèces Guichet')" data-cat="retrait" data-text="mariam sanni 96443322 trx-ret-91204 retrait 25000" class="trx-card p-4 flex items-center justify-between hover:bg-purple-50/30 cursor-pointer transition-colors">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-xl">arrow_upward</span>
-              </div>
-              <div>
-                <div class="flex items-center gap-1.5">
-                  <b class="text-xs font-bold text-on-surface">Retrait Cash-Out (OTP)</b>
-                  <span class="text-[9px] font-black text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded-md">+200 F com.</span>
-                </div>
-                <span class="text-[11px] text-gray-500 block mt-0.5">Mariam SANNI • 14:15</span>
-                <span class="text-[9px] font-mono text-gray-400">#TRX-RET-91204</span>
-              </div>
-            </div>
-            <div class="text-right">
-              <span class="font-mono font-black text-xs text-on-surface block">25 000 F</span>
-              <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-full">Espèces Remises</span>
-            </div>
-          </div>
-
-          <!-- Item 3: Enrôlement KYC Client ANIP -->
-          <div onclick="openTrxDetail('Enrôlement Client KYC ANIP', '0', '+500 F', 'Jean DOSSOU (NPI: 1098234871239)', 'ANIP Bénin / Switch', 'KYC-ENR-40291', 'Aujourd hui • 12:40', '0 FCFA', 'Prime Directe')" data-cat="service" data-text="jean dossou anip kyc enrolement 1098234871239" class="trx-card p-4 flex items-center justify-between hover:bg-purple-50/30 cursor-pointer transition-colors">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-xl">how_to_reg</span>
-              </div>
-              <div>
-                <div class="flex items-center gap-1.5">
-                  <b class="text-xs font-bold text-on-surface">Enrôlement Client ANIP</b>
-                  <span class="text-[9px] font-black text-purple-800 bg-purple-100 px-1.5 py-0.2 rounded-md">+500 F Prime</span>
-                </div>
-                <span class="text-[11px] text-gray-500 block mt-0.5">Jean DOSSOU • 12:40</span>
-                <span class="text-[9px] font-mono text-gray-400">#KYC-ENR-40291</span>
-              </div>
-            </div>
-            <div class="text-right">
-              <span class="font-mono font-black text-xs text-emerald-700 block">+500 F</span>
-              <span class="text-[9px] text-purple-800 font-bold bg-purple-50 px-1.5 py-0.2 rounded-full">Compte Activé</span>
-            </div>
-          </div>
-
-          <!-- Item 4: SBEE Électricité Recharge -->
-          <div onclick="openTrxDetail('Recharge SBEE Compteur Prépayé', '10 000', '+150 F', 'Compteur N° 14283920192', 'SBEE Bénin', 'SRV-SBE-11029', 'Aujourd hui • 10:20', '0 FCFA', 'Caisse Guichet')" data-cat="service" data-text="sbee electricite compteur 14283920192 10000" class="trx-card p-4 flex items-center justify-between hover:bg-purple-50/30 cursor-pointer transition-colors">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-xl">electric_bolt</span>
-              </div>
-              <div>
-                <div class="flex items-center gap-1.5">
-                  <b class="text-xs font-bold text-on-surface">Recharge SBEE</b>
-                  <span class="text-[9px] font-black text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded-md">+150 F com.</span>
-                </div>
-                <span class="text-[11px] text-gray-500 block mt-0.5">Compteur 1428... • 10:20</span>
-                <span class="text-[9px] font-mono text-gray-400">#SRV-SBE-11029</span>
-              </div>
-            </div>
-            <div class="text-right">
-              <span class="font-mono font-black text-xs text-on-surface block">10 000 F</span>
-              <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-full">Code Émis</span>
-            </div>
-          </div>
-
+      <div id="agent-tx-list" class="flex flex-col gap-2">
+        <div id="empty-state-agent-history" class="p-12 text-center flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-outline-variant/40 shadow-soft">
+          <span class="material-symbols-outlined text-5xl text-gray-300">receipt_long</span>
+          <h3 class="text-sm font-bold text-gray-700">Aucune opération enregistrée</h3>
+          <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Vos opérations de dépôts d'espèces, retraits et encaissements clients apparaîtront ici.</p>
         </div>
       </div>
+    </section>
 
     </section>
 
@@ -225,7 +140,7 @@
       <div class="p-4 rounded-3xl bg-surface-container-low/60 border border-outline-variant/60 flex flex-col gap-2.5 text-xs">
         <div class="flex items-center justify-between">
           <span class="text-gray-500 font-medium">Bénéficiaire / Client :</span>
-          <b id="modal-client" class="text-on-surface font-bold">Koffi MENSAH</b>
+          <b id="modal-client" class="text-on-surface font-bold">Client Switch</b>
         </div>
         <div class="flex items-center justify-between">
           <span class="text-gray-500 font-medium">Réseau :</span>
@@ -343,10 +258,67 @@
 
     function shareWhatsApp() {
       if (activeTrxData) {
-        const msg = encodeURIComponent(`📄 Reçu Guichet Switch Bénin (Agent AGT-4092) :\nOpération : ${activeTrxData.title}\nMontant : ${activeTrxData.amount.toLocaleString('fr-FR')} FCFA\nBénéficiaire : ${activeTrxData.beneficiary}\nRéf : #${activeTrxData.ref}\nMerci de votre fidélité !`);
+        const agtCode = (window.SwitchAPI ? window.SwitchAPI.getAgentProfile().agent_code : (localStorage.getItem('switch_agent_code') || 'Switch'));
+        const msg = encodeURIComponent(`📄 Reçu Guichet Switch Bénin (${agtCode}) :\nOpération : ${activeTrxData.title}\nMontant : ${activeTrxData.amount.toLocaleString('fr-FR')} FCFA\nBénéficiaire : ${activeTrxData.beneficiary}\nRéf : #${activeTrxData.ref}\nMerci de votre fidélité !`);
         window.open("https://wa.me/?text=" + msg, "_blank");
       }
     }
+
+    // Chargement dynamique des opérations réelles
+    function loadAgentHistory() {
+      const txs = window.SwitchAPI ? window.SwitchAPI.getAgentTransactions() : [];
+      let totalVol = 0;
+      let totalComm = 0;
+      txs.forEach(t => {
+        totalVol += (t.amount || 0);
+        totalComm += (t.commission || 0);
+      });
+
+      const volEl = document.getElementById('summary-volume');
+      const commEl = document.getElementById('summary-commissions');
+      if (volEl) volEl.textContent = `${totalVol.toLocaleString('fr-FR')} FCFA`;
+      if (commEl) commEl.textContent = `+${totalComm.toLocaleString('fr-FR')} FCFA`;
+
+      const container = document.getElementById('agent-tx-list');
+      if (!container) return;
+
+      if (txs.length === 0) {
+        container.innerHTML = `
+          <div id="empty-state-agent-history" class="p-12 text-center flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-outline-variant/40 shadow-soft">
+            <span class="material-symbols-outlined text-5xl text-gray-300">receipt_long</span>
+            <h3 class="text-sm font-bold text-gray-700">Aucune opération enregistrée</h3>
+            <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Vos opérations de dépôts d'espèces, retraits et encaissements clients apparaîtront ici.</p>
+          </div>`;
+      } else {
+        container.innerHTML = `
+          <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-soft divide-y divide-outline-variant/30 overflow-hidden">
+            ${txs.map(t => `
+              <div onclick="openTrxDetail('${t.title || 'Opération'}', '${(t.amount || 0).toLocaleString('fr-FR')}', '+${t.commission || 0} F', '${t.client || 'Client'}', 'Switch Bénin', '${t.ref || 'TRX'}', '${t.date || "Aujourd'hui"}', '0 FCFA', 'Caisse Guichet')" data-cat="${t.type || 'all'}" data-text="${(t.client || '')} ${(t.ref || '')} ${(t.amount || '')}" class="trx-card p-4 flex items-center justify-between hover:bg-purple-50/30 cursor-pointer transition-colors">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-2xl ${t.type === 'depot' ? 'bg-purple-50 text-primary' : 'bg-amber-50 text-amber-700'} flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-xl">${t.type === 'depot' ? 'arrow_downward' : 'arrow_upward'}</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-1.5">
+                      <b class="text-xs font-bold text-on-surface">${t.title || 'Opération Guichet'}</b>
+                      <span class="text-[9px] font-black text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded-md">+${t.commission || 0} F com.</span>
+                    </div>
+                    <span class="text-[11px] text-gray-500 block mt-0.5">${t.client || 'Client'} • ${t.date || "Aujourd'hui"}</span>
+                    <span class="text-[9px] font-mono text-gray-400">#${t.ref || ''}</span>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <span class="font-mono font-black text-xs text-on-surface block">${(t.amount || 0).toLocaleString('fr-FR')} F</span>
+                  <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded-full">Succès</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAgentHistory);
+    window.addEventListener('pageshow', loadAgentHistory);
   </script>
 
   <!-- Bottom Navigation Bar Agent (5 Piliers Opérationnels) -->

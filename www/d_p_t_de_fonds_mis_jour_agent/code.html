@@ -72,7 +72,7 @@
     <div class="flex flex-col items-end">
       <span class="text-[9px] font-bold uppercase text-on-surface-variant">Float Caisse</span>
       <span id="current-float-badge" class="text-xs font-mono font-black text-primary bg-primary/10 px-2.5 py-0.5 rounded-full border border-primary/20">
-        1 500 000 F
+        0 F
       </span>
     </div>
   </header>
@@ -190,7 +190,7 @@
           <div class="flex items-center justify-between text-xs pt-2 border-t border-purple-200/60">
             <span class="text-gray-600 font-medium">Votre Float restant après opération :</span>
             <span id="remaining-float-text" class="font-mono font-black text-primary text-xs">
-              1 475 000 FCFA
+              0 FCFA
             </span>
           </div>
 
@@ -523,13 +523,15 @@
 
     // Initialisation
     function initAgentDeposit() {
-      const storedFloat = localStorage.getItem('switch_agent_float');
-      if (storedFloat) {
-        currentAgentFloat = parseInt(storedFloat.replace(/\s/g, ''), 10);
+      if (window.SwitchAPI && window.SwitchAPI.getAgentFloat) {
+        currentAgentFloat = window.SwitchAPI.getAgentFloat();
+      } else {
+        const storedFloat = localStorage.getItem('switch_agent_float');
+        currentAgentFloat = storedFloat ? parseInt(storedFloat.replace(/\s/g, ''), 10) : 0;
       }
       const floatBadge = document.getElementById('current-float-badge');
       if (floatBadge) floatBadge.textContent = currentAgentFloat.toLocaleString('fr-FR') + ' F';
-      calculateCommission(25000);
+      calculateCommission(document.getElementById('depositAmount') ? (parseInt(document.getElementById('depositAmount').value, 10) || 0) : 0);
     }
 
     document.addEventListener('DOMContentLoaded', initAgentDeposit);

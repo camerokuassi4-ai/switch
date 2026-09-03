@@ -118,19 +118,19 @@
         <div class="flex justify-between items-center">
           <span class="text-gray-500 font-medium">Client Titulaire :</span>
           <div class="flex items-center gap-1">
-            <b id="op-client-name" class="text-on-surface font-bold">Mariam SANNI</b>
+            <b id="op-client-name" class="text-on-surface font-bold">Client Switch</b>
             <span class="material-symbols-outlined text-emerald-600 text-sm" title="Vérifié">verified</span>
           </div>
         </div>
 
         <div class="flex justify-between items-center">
           <span class="text-gray-500 font-medium">Téléphone lié :</span>
-          <span id="op-client-phone" class="font-mono font-bold text-gray-700">+229 95 12 34 56</span>
+          <span id="op-client-phone" class="font-mono font-bold text-gray-700">--</span>
         </div>
 
         <div class="flex justify-between items-center pt-2 border-t border-gray-100">
           <span class="text-gray-700 font-bold">Montant à décaisser :</span>
-          <b id="op-amount" class="text-lg font-black font-mono text-primary">25 000 FCFA</b>
+          <b id="op-amount" class="text-lg font-black font-mono text-primary">-- FCFA</b>
         </div>
 
         <!-- Commission Agent Earned -->
@@ -140,7 +140,7 @@
             Commission Agent :
           </span>
           <span id="op-commission" class="font-mono font-black text-emerald-700 bg-white px-2 py-0.5 rounded-md border border-emerald-200">
-            +200 FCFA
+            +0 FCFA
           </span>
         </div>
       </div>
@@ -249,7 +249,7 @@
       <div class="p-3.5 rounded-2xl bg-surface-container-low/60 border border-outline-variant/60 flex flex-col gap-2">
         <div class="flex items-center justify-between text-xs">
           <span class="text-gray-500 font-medium">Bénéficiaire :</span>
-          <b id="pin-modal-client" class="text-on-surface font-bold">Mariam SANNI (+229 95 12 34 56)</b>
+          <b id="pin-modal-client" class="text-on-surface font-bold">Client Switch (Compte Vérifié)</b>
         </div>
         <div class="flex items-center justify-between text-xs pt-1.5 border-t border-outline-variant/40">
           <span class="text-gray-700 font-bold">Espèces à remettre :</span>
@@ -328,11 +328,11 @@
       if (currentOtp.length === 6) {
         previewCard.classList.remove('opacity-40', 'pointer-events-none');
         if (currentOtp === '882104') {
-          setOperationDetails("Mariam SANNI", "+229 95 12 34 56", 25000, 200);
+          setOperationDetails("Client Switch Bénin", "+229 01 XX XX XX 04", 25000, 200);
         } else if (currentOtp === '409152') {
-          setOperationDetails("Koffi MENSAH", "+229 97 45 67 89", 50000, 400);
+          setOperationDetails("Client Switch Bénin", "+229 01 XX XX XX 52", 50000, 400);
         } else {
-          setOperationDetails("Client Switch Vérifié", "+229 97 00 00 00", 15000, 120);
+          setOperationDetails("Client Switch Vérifié", "+229 01 XX XX XX XX", 15000, 120);
         }
       } else {
         previewCard.classList.add('opacity-40', 'pointer-events-none');
@@ -387,7 +387,7 @@
       closeQrScannerModal();
       currentOtp = "882104";
       updateOtpBoxes();
-      alert("✅ QR Code détecté : Retrait de 25 000 FCFA pour Mariam SANNI !");
+      alert("✅ QR Code détecté : Retrait de 25 000 FCFA pour Client Switch !");
     }
 
     // 4. Modale PIN & Validation Finale
@@ -439,7 +439,7 @@
         title: "Retrait d'espèces Client (Cash-Out)",
         amount: 25000,
         fee: "0 FCFA",
-        beneficiary: "Mariam SANNI (+229 96 44 33 22)",
+        beneficiary: "Client Switch (+229 01 XX XX XX XX)",
         network: "Switch Bénin",
         commission: "+200 FCFA",
         source: "Caisse Espèces Guichet",
@@ -493,12 +493,25 @@
 
       localStorage.setItem('switch_last_transaction', JSON.stringify(trxData));
 
-      // Update Agent Commissions & Daily Stats
-      const prevComm = parseInt(localStorage.getItem('switch_agent_commissions') || '14200');
-      localStorage.setItem('switch_agent_commissions', (prevComm + 200).toString());
-      
-      const prevOps = parseInt(localStorage.getItem('switch_agent_ops_count') || '18');
-      localStorage.setItem('switch_agent_ops_count', (prevOps + 1).toString());
+      // Mise à jour via SwitchAPI
+      if (window.SwitchAPI) {
+        const commAmt = parseInt(commission.replace(/\D/g, ''), 10) || 200;
+        const curComms = window.SwitchAPI.getAgentCommissions();
+        window.SwitchAPI.setAgentCommissions(curComms + commAmt);
+        window.SwitchAPI.addAgentTransaction({
+          type: 'retrait',
+          title: "Retrait d'espèces (Code Validé)",
+          amount: parseInt(amountStr, 10) || 25000,
+          commission: commAmt,
+          client: client,
+          ref: ref
+        });
+      } else {
+        const prevComm = parseInt(localStorage.getItem('switch_agent_commissions') || '0', 10);
+        localStorage.setItem('switch_agent_commissions', (prevComm + 200).toString());
+        const prevOps = parseInt(localStorage.getItem('switch_agent_ops_count') || '0', 10);
+        localStorage.setItem('switch_agent_ops_count', (prevOps + 1).toString());
+      }
 
       if (window.switchNavigate) {
         window.switchNavigate('../recu_operation_agent/code.html');
