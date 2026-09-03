@@ -50,6 +50,57 @@
   }
 
   const SwitchAPI = {
+
+    /**
+     * Traitement de la prime de parrainage (Nouveau Barème Bêta v2.1.0)
+     * - 100 FCFA pour la 1ère invitation du parrain
+     * - 50 FCFA pour chaque invitation suivante du parrain
+     * - 0 FCFA pour le filleul (ne reçoit rien à l'inscription)
+     */
+    processReferralReward: async function (referrerPhone, newUserId) {
+      const rPhone = (referrerPhone || '').replace(/\D/g, '');
+      if (!rPhone) return { success: false, message: "Numéro de parrain invalide." };
+
+      const refKey = 'switch_referrals_' + rPhone;
+      const prevRefList = JSON.parse(localStorage.getItem(refKey) || '[]');
+      const refCount = prevRefList.length;
+
+      // 100 FCFA pour la 1ère invitation, 50 FCFA pour les suivantes
+      const rewardAmt = (refCount === 0) ? 100 : 50;
+
+      // Créditer le solde du parrain
+      const parrainBalKey = 'switch_user_balance_' + rPhone;
+      const myPhone = (localStorage.getItem('switch_user_phone_raw') || localStorage.getItem('switch_user_phone') || '').replace(/\D/g, '');
+
+      let curParrainBal = 0;
+      if (rPhone === myPhone) {
+        curParrainBal = this.getBalance();
+        const newParrainBal = curParrainBal + rewardAmt;
+        this.setBalance(newParrainBal);
+      } else {
+        curParrainBal = parseInt(localStorage.getItem(parrainBalKey) || '0', 10);
+        const newParrainBal = curParrainBal + rewardAmt;
+        localStorage.setItem(parrainBalKey, newParrainBal.toString());
+      }
+
+      // Enregistrer le filleul dans l'historique du parrain
+      prevRefList.push({ id: newUserId || `USER-${Date.now()}`, date: new Date().toISOString(), reward: rewardAmt });
+      localStorage.setItem(refKey, JSON.stringify(prevRefList));
+
+      // Mettre à jour le cumul des primes pour le parrain
+      const totalPrimesKey = 'switch_ref_total_primes_' + rPhone;
+      const curPrimes = parseInt(localStorage.getItem(totalPrimesKey) || '0', 10);
+      localStorage.setItem(totalPrimesKey, (curPrimes + rewardAmt).toString());
+
+      return {
+        success: true,
+        reward_parrain: rewardAmt,
+        reward_filleul: 0,
+        referral_count: refCount + 1,
+        message: `Prime de parrainage de ${rewardAmt} FCFA attribuée au parrain (${refCount === 0 ? '1ère invitation' : 'invitation n°' + (refCount + 1)}). Filleul crédité de 0 FCFA.`
+      };
+    },
+
     isOnlineBackend: isConfigured,
 
     // =========================================================================
@@ -121,7 +172,7 @@
             localStorage.setItem('switch_user_phone_raw', digits);
             localStorage.setItem('switch_user_fullname', fullName);
             localStorage.setItem('switch_user_name', fullName);
-            localStorage.setItem('switch_user_balance', '50000');
+            localStorage.setItem('switch_user_balance', '0');
           }
           return result;
         }
@@ -134,7 +185,7 @@
       localStorage.setItem('switch_user_phone_raw', digits);
       localStorage.setItem('switch_user_fullname', fullName);
       localStorage.setItem('switch_user_name', fullName);
-      localStorage.setItem('switch_user_balance', '50000');
+      localStorage.setItem('switch_user_balance', '0');
       return { success: true, message: 'Compte créé (mode hors-ligne).', phone: digits };
     },
 
@@ -409,7 +460,7 @@
       // Repli local
       return {
         success: true,
-        balance: parseInt(localStorage.getItem('switch_user_balance') || '50000', 10),
+        balance: parseInt(localStorage.getItem('switch_user_balance') || '0', 10),
         vault_balance: parseInt(localStorage.getItem('switch_vault_balance') || '0', 10),
         full_name: localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || 'Camero Kuassis',
         kyc_level: parseInt(localStorage.getItem('switch_kyc_level') || '2', 10),
@@ -460,7 +511,7 @@
       }
 
       // Repli local sécurisé
-      const currentBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
+      const currentBal = parseInt(localStorage.getItem('switch_user_balance') || '0', 10);
       if (currentBal < amount) {
         return { success: false, message: "Solde insuffisant dans votre Compte Switch." };
       }
@@ -696,7 +747,7 @@
       }
 
       // Repli local
-      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
+      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '0', 10);
       if (curBal < amount) {
         return { success: false, message: "Solde insuffisant pour payer ce marchand." };
       }
@@ -774,7 +825,7 @@
       }
       const newComm = curComm - amount;
       localStorage.setItem('switch_agent_commissions', newComm.toString());
-      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
+      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '0', 10);
       localStorage.setItem('switch_user_balance', (curBal + amount).toString());
 
       return {
@@ -1226,7 +1277,7 @@
       }
 
       // Repli local
-      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
+      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '0', 10);
       const curVault = parseInt(localStorage.getItem('switch_user_vault') || '25000', 10);
       let newBal = curBal;
       let newVault = curVault;
@@ -1277,7 +1328,7 @@
       }
 
       // Repli local
-      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '50000', 10);
+      const curBal = parseInt(localStorage.getItem('switch_user_balance') || '0', 10);
       if (curBal < amount) return { success: false, message: "Solde insuffisant pour cotiser à la tontine." };
       const newBal = curBal - amount;
       localStorage.setItem('switch_user_balance', newBal.toString());
