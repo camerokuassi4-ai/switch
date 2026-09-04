@@ -1,4 +1,4 @@
-package bj.switch.merchant.beta;
+package bj.switchuser.beta;
 
 import com.getcapacitor.BridgeActivity;
 

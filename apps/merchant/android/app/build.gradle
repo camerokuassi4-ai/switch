@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "bj.switch.merchant.beta"
+    namespace = "bj.switchmerchant.beta"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "bj.switch.merchant.beta"
+        applicationId "bj.switchmerchant.beta"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

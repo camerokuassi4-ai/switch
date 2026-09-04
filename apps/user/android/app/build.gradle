@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "bj.switch.user.beta"
+    namespace = "bj.switchuser.beta"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "bj.switch.user.beta"
+        applicationId "bj.switchuser.beta"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

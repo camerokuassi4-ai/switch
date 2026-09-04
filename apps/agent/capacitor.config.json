@@ -1,5 +1,5 @@
 {
-  "appId": "bj.switch.agent.beta",
+  "appId": "bj.switchagent.beta",
   "appName": "Switch Beta — Agent",
   "webDir": "www",
   "bundledWebRuntime": false,

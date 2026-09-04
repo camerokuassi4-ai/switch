@@ -1,4 +1,4 @@
-package bj.switch.agent.beta;
+package bj.switchmerchant.beta;
 
 import com.getcapacitor.BridgeActivity;
 

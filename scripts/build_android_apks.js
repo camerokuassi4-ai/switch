@@ -16,7 +16,7 @@ const apps = [
   {
     id: 'user',
     name: 'Switch Beta — Utilisateur',
-    package: 'bj.switch.user.beta',
+    package: 'bj.switchuser.beta',
     dashboard: 'tableau_de_bord_mis_jour',
     apkName: 'switch-beta-user-v2.1.0.apk',
     alias: 'switch_user_beta.apk'
@@ -24,7 +24,7 @@ const apps = [
   {
     id: 'merchant',
     name: 'Switch Beta — Marchand',
-    package: 'bj.switch.merchant.beta',
+    package: 'bj.switchmerchant.beta',
     dashboard: 'tableau_de_bord_marchand',
     apkName: 'switch-beta-merchant-v2.1.0.apk',
     alias: 'switch_merchant_beta.apk'
@@ -32,7 +32,7 @@ const apps = [
   {
     id: 'agent',
     name: 'Switch Beta — Agent',
-    package: 'bj.switch.agent.beta',
+    package: 'bj.switchagent.beta',
     dashboard: 'tableau_de_bord_agent',
     apkName: 'switch-beta-agent-v2.1.0.apk',
     alias: 'switch_agent_beta.apk'
@@ -40,7 +40,7 @@ const apps = [
   {
     id: 'hybrid',
     name: 'Switch Beta — Hybride',
-    package: 'bj.switch.hybrid.beta',
+    package: 'bj.switchhybrid.beta',
     dashboard: 'tableau_de_bord_agent_mixte',
     apkName: 'switch-beta-hybrid-v2.1.0.apk',
     alias: 'switch_hybrid_beta.apk'

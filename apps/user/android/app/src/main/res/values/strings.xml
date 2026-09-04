@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">Switch Beta — Utilisateur</string>
     <string name="title_activity_main">Switch Beta — Utilisateur</string>
-    <string name="package_name">bj.switch.user.beta</string>
-    <string name="custom_url_scheme">bj.switch.user.beta</string>
+    <string name="package_name">bj.switchuser.beta</string>
+    <string name="custom_url_scheme">bj.switchuser.beta</string>
 </resources>

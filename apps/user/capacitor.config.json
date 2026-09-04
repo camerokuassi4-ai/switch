@@ -1,5 +1,5 @@
 {
-  "appId": "bj.switch.user.beta",
+  "appId": "bj.switchuser.beta",
   "appName": "Switch Beta — Utilisateur",
   "webDir": "www",
   "bundledWebRuntime": false,

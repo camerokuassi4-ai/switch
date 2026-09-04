@@ -1,4 +1,4 @@
-package bj.switch.user.beta;
+package bj.switchhybrid.beta;
 
 import com.getcapacitor.BridgeActivity;
 

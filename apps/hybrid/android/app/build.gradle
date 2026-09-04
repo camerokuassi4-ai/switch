@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "bj.switch.hybrid.beta"
+    namespace = "bj.switchhybrid.beta"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "bj.switch.hybrid.beta"
+        applicationId "bj.switchhybrid.beta"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

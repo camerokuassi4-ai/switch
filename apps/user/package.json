@@ -1,5 +1,5 @@
 {
-  "name": "bj.switch.user.beta",
+  "name": "bj.switchuser.beta",
   "version": "2.1.0-user",
   "description": "Application mobile de paiement, transfert gratuit, retraits QR, recharge GSM et paiement de factures SBEE/SONEB au Bénin.",
   "main": "index.js",
