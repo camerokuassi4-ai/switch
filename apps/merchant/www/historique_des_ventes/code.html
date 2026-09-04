@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Journal des Ventes & Encaissements — Switch Bénin 🇧🇯</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../assets/switch.css"/>
+  <link rel="manifest" href="../manifest.json"/>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#5E3BDC',
+            'primary-hover': '#4D2EC2',
+            'on-primary': '#FFFFFF',
+            surface: '#FFFFFF',
+            'on-surface': '#1C1B1F',
+            'on-surface-variant': '#49454F',
+            outline: '#79747E',
+            'outline-variant': '#CAC4D0',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          spacing: {
+            'container-margin': '16px',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    .sales-hero-gradient {
+      background: linear-gradient(135deg, #064E3B 0%, #047857 50%, #059669 100%);
+      box-shadow: 0 16px 36px -10px rgba(5, 150, 105, 0.35);
+    }
+
+    .pill-active {
+      background-color: #059669;
+      color: #ffffff;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/95 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <a href="../tableau_de_bord_marchand/code.html" aria-label="Retour" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-emerald-700 hover:bg-emerald-50 transition-all cursor-pointer no-underline">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </a>
+      <div>
+        <h1 class="text-sm sm:text-base font-extrabold text-on-surface tracking-tight leading-tight">Journal des Ventes</h1>
+        <p id="sales-store-subtitle" class="text-[10px] text-on-surface-variant font-medium">Journal certifié des encaissements</p>
+      </div>
+    </div>
+
+    <!-- Export Relevé Button -->
+    <button onclick="openExportModal()" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-xs transition-all cursor-pointer active:scale-95">
+      <span class="material-symbols-outlined text-sm">download</span>
+      <span>Export PDF</span>
+    </button>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. KPI Summary Card (Ventes & Volume) -->
+    <div class="sales-hero-gradient rounded-[28px] p-5 text-white shadow-md flex flex-col gap-3 relative overflow-hidden">
+      <div class="flex justify-between items-start z-10">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-emerald-200 block">Total Encaissé (Aujourd'hui)</span>
+          <h2 id="total-revenue-kpi" class="text-2xl sm:text-3xl font-extrabold font-mono text-white mt-0.5">
+            0 <span class="text-lg font-bold font-sans">FCFA</span>
+          </h2>
+        </div>
+        <span id="total-sales-count-badge" class="text-[10px] font-bold bg-white/20 backdrop-blur-md text-emerald-100 px-2.5 py-1 rounded-full border border-white/25">
+          0 vente
+        </span>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 text-xs pt-3 border-t border-white/20 z-10">
+        <div>
+          <span class="text-[10px] text-emerald-200 block">QR Switch (0%)</span>
+          <span id="kpi-qr-sales" class="font-bold font-mono text-white">0 F</span>
+        </div>
+        <div>
+          <span class="text-[10px] text-emerald-200 block">Caisse POS</span>
+          <span id="kpi-pos-sales" class="font-bold font-mono text-white">0 F</span>
+        </div>
+        <div>
+          <span class="text-[10px] text-emerald-200 block">Autres</span>
+          <span id="kpi-other-sales" class="font-bold font-mono text-white">0 F</span>
+        </div>
+      </div>
+
+      <!-- Glow Orb -->
+      <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+    </div>
+
+    <!-- 2. Interactive Timeframe & Search Bar -->
+    <div class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-xs flex flex-col gap-3">
+      
+      <!-- Search Input -->
+      <div class="relative flex items-center">
+        <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">search</span>
+        <input type="text" id="sales-search-input" oninput="filterSales()" placeholder="Rechercher par client, article ou réf #VNT..." class="w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-4 text-xs font-semibold text-on-surface focus:outline-none focus:border-emerald-600"/>
+      </div>
+
+      <!-- Timeframe Chips -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 text-xs font-bold">
+        <button type="button" onclick="setTimeframe('today', this)" class="time-pill pill-active px-3 py-1.5 rounded-xl border border-transparent transition-colors cursor-pointer shrink-0">
+          Aujourd'hui
+        </button>
+        <button type="button" onclick="setTimeframe('week', this)" class="time-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          7 Derniers Jours
+        </button>
+        <button type="button" onclick="setTimeframe('month', this)" class="time-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          Ce Mois (Août)
+        </button>
+        <button type="button" onclick="setTimeframe('all', this)" class="time-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          Tout
+        </button>
+      </div>
+
+      <!-- Channel Filters (QR Switch, POS, Espèces, Dettes) -->
+      <!-- Channel Filters -->
+      <div class="flex items-center gap-1.5 pt-2 border-t border-gray-100 overflow-x-auto no-scrollbar text-[11px] font-semibold">
+        <span class="text-gray-400 font-bold uppercase text-[9px] mr-1 shrink-0">Canal:</span>
+        <button onclick="setChannel('all', this)" class="chan-pill bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-lg border border-emerald-300 shrink-0 font-bold">Tous</button>
+        <button onclick="setChannel('qr', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">QR Switch 0%</button>
+        <button onclick="setChannel('pos', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">Caisse POS</button>
+        <button onclick="setChannel('debt', this)" class="chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0">Dettes Soldées</button>
+      </div>
+    </div>
+
+    <!-- 3. Sales Feed (Rendu Dynamique) -->
+    <div class="flex flex-col gap-3" id="sales-feed-container">
+      <div id="empty-state-sales" class="p-12 text-center flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-outline-variant/40 shadow-xs">
+        <span class="material-symbols-outlined text-5xl text-gray-300">receipt_long</span>
+        <h3 class="text-sm font-bold text-gray-700">Aucune vente enregistrée</h3>
+        <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Toutes vos ventes par QR Code Switch Pay et caisse POS s'inscriront automatiquement dans ce journal certifié.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal Export Relevé PDF -->
+  <div id="export-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+    <div class="w-full max-w-md bg-white rounded-t-[32px] sm:rounded-[32px] p-6 shadow-2xl flex flex-col gap-4 border border-outline-variant/40">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-emerald-600 text-xl">picture_as_pdf</span>
+          <h3 class="text-sm font-black text-on-surface uppercase">Exporter le Journal des Ventes</h3>
+        </div>
+        <button onclick="closeExportModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:text-black">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-[11px] font-bold text-on-surface-variant">Période du Relevé :</label>
+        <select id="export-period" class="w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl p-3 text-xs font-bold text-on-surface">
+          <option value="today">Aujourd'hui</option>
+          <option value="week">Cette Semaine</option>
+          <option value="month">Ce Mois</option>
+          <option value="all">Tout l'historique</option>
+        </select>
+      </div>
+
+      <button onclick="confirmExport()" class="w-full bg-emerald-600 text-white py-3.5 rounded-full font-bold text-xs sm:text-sm shadow-md hover:bg-emerald-500 transition-all flex items-center justify-center gap-2 cursor-pointer">
+        <span class="material-symbols-outlined text-lg">download</span>
+        <span>Télécharger le PDF Certifié</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let activeChannel = 'all';
+
+    function setTimeframe(tf, btn) {
+      document.querySelectorAll('.time-pill').forEach(p => {
+        p.className = 'time-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0';
+      });
+      btn.className = 'time-pill pill-active px-3 py-1.5 rounded-xl border border-transparent transition-colors cursor-pointer shrink-0';
+    }
+
+    function setChannel(chan, btn) {
+      activeChannel = chan;
+      document.querySelectorAll('.chan-pill').forEach(p => {
+        p.className = 'chan-pill text-gray-600 bg-gray-100 px-2 py-0.5 rounded-lg hover:bg-gray-200 shrink-0';
+      });
+      btn.className = 'chan-pill bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-lg border border-emerald-300 shrink-0 font-bold';
+      filterSales();
+    }
+
+    function filterSales() {
+      const query = document.getElementById('sales-search-input').value.toLowerCase().trim();
+      const items = document.querySelectorAll('.sales-item');
+
+      items.forEach(item => {
+        const title = (item.getAttribute('data-title') || '').toLowerCase();
+        const ref = (item.getAttribute('data-ref') || '').toLowerCase();
+        const chan = item.getAttribute('data-channel');
+
+        const matchQuery = !query || title.includes(query) || ref.includes(query);
+        const matchChannel = (activeChannel === 'all') || (chan === activeChannel);
+
+        if (matchQuery && matchChannel) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    function loadSalesData() {
+      const feedEl = document.getElementById('sales-feed-container');
+      const revKpi = document.getElementById('total-revenue-kpi');
+      const countBadge = document.getElementById('total-sales-count-badge');
+      const qrKpi = document.getElementById('kpi-qr-sales');
+      const posKpi = document.getElementById('kpi-pos-sales');
+      const otherKpi = document.getElementById('kpi-other-sales');
+      const subtitleEl = document.getElementById('sales-store-subtitle');
+      const storeName = localStorage.getItem('switch_merchant_business_name') || "Commerce Switch";
+
+      if (subtitleEl) subtitleEl.textContent = `${storeName} • Ventes certifiées`;
+
+      const sales = window.SwitchAPI ? window.SwitchAPI.getMerchantSales() : [];
+
+      let totalRev = 0;
+      let qrRev = 0;
+      let posRev = 0;
+      let otherRev = 0;
+
+      sales.forEach(s => {
+        const amt = s.amount || 0;
+        totalRev += amt;
+        if (s.channel === 'qr') qrRev += amt;
+        else if (s.channel === 'pos') posRev += amt;
+        else otherRev += amt;
+      });
+
+      if (revKpi) revKpi.innerHTML = `${totalRev.toLocaleString('fr-FR')} <span class="text-lg font-bold font-sans">FCFA</span>`;
+      if (countBadge) countBadge.textContent = `${sales.length} vente(s)`;
+      if (qrKpi) qrKpi.textContent = `${qrRev.toLocaleString('fr-FR')} F`;
+      if (posKpi) posKpi.textContent = `${posRev.toLocaleString('fr-FR')} F`;
+      if (otherKpi) otherKpi.textContent = `${otherRev.toLocaleString('fr-FR')} F`;
+
+      if (!feedEl) return;
+      if (sales.length === 0) {
+        feedEl.innerHTML = `
+          <div id="empty-state-sales" class="p-12 text-center flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-outline-variant/40 shadow-xs">
+            <span class="material-symbols-outlined text-5xl text-gray-300">receipt_long</span>
+            <h3 class="text-sm font-bold text-gray-700">Aucune vente enregistrée</h3>
+            <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Toutes vos ventes par QR Code Switch Pay et caisse POS s'inscriront automatiquement dans ce journal certifié.</p>
+          </div>`;
+      } else {
+        feedEl.innerHTML = `
+          <div class="bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col divide-y divide-gray-100">
+            ${sales.map(s => `
+              <div onclick="showSaleDetail('${s.ref}', '${s.client_name}', ${s.amount}, '${s.payment_method}', '${s.title}', '${s.date}')" class="sales-item py-2.5 px-2 flex items-center justify-between hover:bg-emerald-50/40 rounded-2xl transition-colors cursor-pointer" data-channel="${s.channel || 'qr'}" data-title="${s.client_name}" data-ref="${s.ref}">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0">
+                    <span class="material-symbols-outlined text-lg">${s.channel === 'pos' ? 'point_of_sale' : 'qr_code_2'}</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-xs font-bold text-on-surface">${s.client_name || 'Client Switch'}</span>
+                      <span class="text-[9px] font-bold bg-emerald-50 text-emerald-700 px-1.5 py-0.2 rounded border border-emerald-200">${s.payment_method || 'QR 0%'}</span>
+                    </div>
+                    <p class="text-[10px] text-on-surface-variant mt-0.5">${s.title || 'Vente'} • ${s.date || ''}</p>
+                    <p class="text-[9px] text-gray-400 font-mono">${s.ref || ''}</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs font-mono font-black text-emerald-600 block">+${(s.amount || 0).toLocaleString('fr-FR')} FCFA</span>
+                  <span class="text-[9px] text-emerald-700 font-bold">Encaissé ✅</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>`;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadSalesData);
+    window.addEventListener("pageshow", loadSalesData);
+  </script>
+
+  <script src="../assets/switch.router.js?v=3.0"></script>
+</body>
+</html>

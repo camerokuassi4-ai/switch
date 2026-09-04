@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Gestion de Ma Boutique & Catalogue Photo — Switch Marchand 🇧🇯</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../assets/switch.css"/>
+  <link rel="manifest" href="../manifest.json"/>
+  <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#5E3BDC',
+            'primary-hover': '#4D2EC2',
+            'primary-container': '#EADDFF',
+            'on-primary': '#FFFFFF',
+            secondary: '#059669',
+            surface: '#FFFFFF',
+            'on-surface': '#1C1B1F',
+            'on-surface-variant': '#49454F',
+            outline: '#79747E',
+            'outline-variant': '#CAC4D0',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          spacing: {
+            'container-margin': '16px',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    .cat-hero-gradient {
+      background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%);
+      box-shadow: 0 16px 36px -10px rgba(49, 46, 129, 0.4);
+    }
+
+    .pill-active {
+      background-color: #5E3BDC !important;
+      color: #ffffff !important;
+      font-weight: 800 !important;
+    }
+
+    .prod-card {
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s;
+    }
+    .prod-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -4px rgba(94, 59, 220, 0.12);
+      border-color: rgba(94, 59, 220, 0.4);
+    }
+
+    .modal-enter {
+      animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes modalSlideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/95 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <a href="../tableau_de_bord_marchand/code.html" aria-label="Retour" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-purple-50 transition-all cursor-pointer no-underline">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </a>
+      <div>
+        <h1 class="text-sm sm:text-base font-extrabold text-on-surface tracking-tight leading-tight">Ma Vitrine en Ligne</h1>
+        <p id="merchant-shop-subtitle" class="text-[10px] text-on-surface-variant font-medium">Catalogue photos haute définition</p>
+      </div>
+    </div>
+
+    <!-- Top Action Buttons -->
+    <div class="flex items-center gap-2">
+      <!-- Add Product Button -->
+      <button onclick="openPublishModal()" class="bg-primary hover:bg-primary-hover text-white text-xs font-bold px-3.5 py-2 rounded-full flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-base">add_photo_alternate</span>
+        <span>+ Publier Photo</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Hero Inventory & Marketplace Sync Banner -->
+    <div class="cat-hero-gradient rounded-[28px] p-5 text-white shadow-md flex flex-col gap-3.5 relative overflow-hidden">
+      <div class="flex justify-between items-start z-10">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-purple-200 block">Vitrine Commerçant Switch</span>
+          <h2 class="text-xl sm:text-2xl font-black text-white mt-0.5" id="published-count-header">
+            0 Article en Ligne
+          </h2>
+          <p class="text-xs text-purple-200 mt-0.5 font-medium">Tous vos produits sont visibles avec photos nettes dans les rayons de l'application client.</p>
+        </div>
+        <span class="text-[10px] font-bold bg-white/20 backdrop-blur-md text-emerald-300 px-2.5 py-1 rounded-full border border-white/25 flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          HD Live
+        </span>
+      </div>
+
+      <!-- Preview Store in Marketplace link -->
+      <a href="../marketplace_boutiques_switch/code.html" class="z-10 py-2.5 px-3.5 rounded-2xl bg-white/15 hover:bg-white/25 border border-white/20 text-white text-xs font-bold flex items-center justify-between no-underline transition-colors">
+        <span class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-base text-amber-300">visibility</span>
+          <span>Voir le rendu chez les clients Switch (Marketplace)</span>
+        </span>
+        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </a>
+
+      <!-- Glow Orb -->
+      <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+    </div>
+
+    <!-- 2. Search & Category Filter Chips -->
+    <div class="bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-xs flex flex-col gap-3">
+      
+      <!-- Search Input -->
+      <div class="relative flex items-center">
+        <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">search</span>
+        <input type="text" id="cat-search-input" oninput="renderProducts()" placeholder="Rechercher par article, catégorie ou prix..." class="w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-4 text-xs font-semibold text-on-surface focus:outline-none focus:border-primary"/>
+      </div>
+
+      <!-- Category Filter Chips (Rayons Métiers Exhaustifs Bénin) -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 text-xs font-bold">
+        <button type="button" onclick="setCategoryFilter('all', this)" class="cat-pill pill-active px-3 py-1.5 rounded-xl border border-transparent transition-colors cursor-pointer shrink-0">
+          Tous les Rayons (18)
+        </button>
+        <button type="button" onclick="setCategoryFilter('mode', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          👗 Mode & Vêtements
+        </button>
+        <button type="button" onclick="setCategoryFilter('pharmacie', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          💊 Pharmacie & Santé
+        </button>
+        <button type="button" onclick="setCategoryFilter('alimentation', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          🥫 Alimentation & Vivres
+        </button>
+        <button type="button" onclick="setCategoryFilter('restauration', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          🍲 Restauration & Maquis
+        </button>
+        <button type="button" onclick="setCategoryFilter('tech', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          📱 Téléphonie & Tech
+        </button>
+        <button type="button" onclick="setCategoryFilter('quincaillerie', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          🏗️ Quincaillerie & BTP
+        </button>
+        <button type="button" onclick="setCategoryFilter('beaute', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          💄 Beauté & Cosmétique
+        </button>
+        <button type="button" onclick="setCategoryFilter('maison', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          🛋️ Meubles & Maison
+        </button>
+        <button type="button" onclick="setCategoryFilter('auto', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          🚗 Auto & Moto
+        </button>
+        <button type="button" onclick="setCategoryFilter('librairie', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          📚 Librairie & Scolaire
+        </button>
+        <button type="button" onclick="setCategoryFilter('bebe', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          👶 Bébés & Enfants
+        </button>
+        <button type="button" onclick="setCategoryFilter('sport', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          ⚽ Sport & Loisirs
+        </button>
+        <button type="button" onclick="setCategoryFilter('agriculture', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          🌾 Agriculture & Élevage
+        </button>
+        <button type="button" onclick="setCategoryFilter('artisanat', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          🎨 Art & Artisanat
+        </button>
+        <button type="button" onclick="setCategoryFilter('service', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          💼 Services & Prestations
+        </button>
+        <button type="button" onclick="setCategoryFilter('bazar', this)" class="cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0">
+          🛍️ Bazar & Quotidien
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. Grid of Merchant's Published Products (Rendu Dynamique) -->
+    <div class="grid grid-cols-2 gap-3" id="products-list-container">
+      <div id="empty-state-products" class="col-span-2 p-12 text-center flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-outline-variant/40 shadow-xs">
+        <span class="material-symbols-outlined text-5xl text-gray-300">inventory_2</span>
+        <h3 class="text-sm font-bold text-gray-700">Votre vitrine est vide</h3>
+        <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Ajoutez vos premiers articles avec photo et prix pour les rendre disponibles aux clients Switch.</p>
+        <button onclick="openPublishModal()" class="mt-2 px-5 py-2.5 rounded-full bg-primary hover:bg-primary-hover text-white text-xs font-black shadow-md cursor-pointer flex items-center gap-2">
+          <span class="material-symbols-outlined text-base">add_photo_alternate</span>
+          <span>Publier mon premier article</span>
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal Publication Produit avec 3 à 4 Photos Multi-Angles -->
+  <div id="publish-modal" onclick="if(event.target === this) closePublishModal()" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] sm:rounded-[36px] p-6 shadow-2xl flex flex-col gap-4 border border-outline-variant/40 modal-enter max-h-[92vh] overflow-y-auto">
+      
+      <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-2xl bg-primary text-white flex items-center justify-center font-bold shadow-xs">
+            <span class="material-symbols-outlined text-xl">collections</span>
+          </div>
+          <div>
+            <h3 class="text-xs font-black text-on-surface uppercase tracking-tight">Publier un Article (3 à 4 Photos HD)</h3>
+            <p class="text-[10px] text-on-surface-variant font-medium">Ajoutez plusieurs angles de vue pour rassurer les acheteurs</p>
+          </div>
+        </div>
+        <button onclick="closePublishModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:text-black cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-3.5">
+        
+        <!-- SECTION : 4 PHOTOS DU PRODUIT (AVEC GALERIE & SUPPRESSION) -->
+        <div class="bg-surface-container-low/50 p-3.5 rounded-3xl border border-outline-variant/50 flex flex-col gap-2.5">
+          <div class="flex items-center justify-between">
+            <div>
+              <label class="text-[11px] font-extrabold text-on-surface flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm text-primary">add_photo_alternate</span>
+                <span>Photos du Produit (3 à 4 Photos) *</span>
+              </label>
+              <span class="text-[9px] text-gray-500">Cliquez sur un cadre pour choisir depuis votre galerie</span>
+            </div>
+            <button type="button" onclick="loadCategoryPhotoBatch()" class="text-[10px] font-black text-primary hover:underline bg-purple-100 hover:bg-purple-200 px-2.5 py-1 rounded-xl transition-colors cursor-pointer flex items-center gap-1 shrink-0">
+              <span>⚡ Lot Démo</span>
+            </button>
+          </div>
+
+          <!-- 4 Photo Slots Grid with Local Gallery Upload & Delete Button -->
+          <div class="grid grid-cols-4 gap-2">
+            
+            <!-- Photo 1 (Face / Principale) -->
+            <div class="flex flex-col gap-1 text-center relative">
+              <input type="file" id="file-input-1" accept="image/*" class="hidden" onchange="handleDeviceImageUpload(this, 1)"/>
+              <input type="hidden" id="form-img-1" value="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&auto=format&fit=crop&q=80"/>
+              
+              <div onclick="triggerGalleryUpload(1)" class="w-full aspect-square rounded-2xl bg-white border-2 border-primary/40 overflow-hidden relative group flex flex-col items-center justify-center shadow-xs cursor-pointer hover:border-primary transition-colors">
+                <img id="preview-img-1" src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Illustration Switch"/>
+                <div id="placeholder-1" class="hidden flex flex-col items-center justify-center p-1 text-primary">
+                  <span class="material-symbols-outlined text-lg">add_a_photo</span>
+                  <span class="text-[8px] font-bold mt-0.5">Galerie</span>
+                </div>
+                <span id="badge-1" class="absolute bottom-0 inset-x-0 bg-primary/90 text-white text-[8px] font-black py-0.5 pointer-events-none">Face (P1)</span>
+              </div>
+              
+              <!-- Touche Retirer / Supprimer Photo 1 -->
+              <button type="button" onclick="removePhotoSlot(event, 1)" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center shadow-md cursor-pointer text-xs font-black z-10" title="Retirer cette photo">
+                ✕
+              </button>
+            </div>
+
+            <!-- Photo 2 (Profil) -->
+            <div class="flex flex-col gap-1 text-center relative">
+              <input type="file" id="file-input-2" accept="image/*" class="hidden" onchange="handleDeviceImageUpload(this, 2)"/>
+              <input type="hidden" id="form-img-2" value="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&auto=format&fit=crop&q=80"/>
+              
+              <div onclick="triggerGalleryUpload(2)" class="w-full aspect-square rounded-2xl bg-white border border-outline-variant/60 overflow-hidden relative group flex flex-col items-center justify-center shadow-xs cursor-pointer hover:border-primary transition-colors">
+                <img id="preview-img-2" src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Illustration Switch"/>
+                <div id="placeholder-2" class="hidden flex flex-col items-center justify-center p-1 text-primary">
+                  <span class="material-symbols-outlined text-lg">add_a_photo</span>
+                  <span class="text-[8px] font-bold mt-0.5">Galerie</span>
+                </div>
+                <span id="badge-2" class="absolute bottom-0 inset-x-0 bg-gray-900/80 text-white text-[8px] font-bold py-0.5 pointer-events-none">Profil (P2)</span>
+              </div>
+              
+              <!-- Touche Retirer / Supprimer Photo 2 -->
+              <button type="button" onclick="removePhotoSlot(event, 2)" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center shadow-md cursor-pointer text-xs font-black z-10" title="Retirer cette photo">
+                ✕
+              </button>
+            </div>
+
+            <!-- Photo 3 (Détail) -->
+            <div class="flex flex-col gap-1 text-center relative">
+              <input type="file" id="file-input-3" accept="image/*" class="hidden" onchange="handleDeviceImageUpload(this, 3)"/>
+              <input type="hidden" id="form-img-3" value="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&auto=format&fit=crop&q=80"/>
+              
+              <div onclick="triggerGalleryUpload(3)" class="w-full aspect-square rounded-2xl bg-white border border-outline-variant/60 overflow-hidden relative group flex flex-col items-center justify-center shadow-xs cursor-pointer hover:border-primary transition-colors">
+                <img id="preview-img-3" src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Illustration Switch"/>
+                <div id="placeholder-3" class="hidden flex flex-col items-center justify-center p-1 text-primary">
+                  <span class="material-symbols-outlined text-lg">add_a_photo</span>
+                  <span class="text-[8px] font-bold mt-0.5">Galerie</span>
+                </div>
+                <span id="badge-3" class="absolute bottom-0 inset-x-0 bg-gray-900/80 text-white text-[8px] font-bold py-0.5 pointer-events-none">Détail (P3)</span>
+              </div>
+              
+              <!-- Touche Retirer / Supprimer Photo 3 -->
+              <button type="button" onclick="removePhotoSlot(event, 3)" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center shadow-md cursor-pointer text-xs font-black z-10" title="Retirer cette photo">
+                ✕
+              </button>
+            </div>
+
+            <!-- Photo 4 (Porté / Boîte) -->
+            <div class="flex flex-col gap-1 text-center relative">
+              <input type="file" id="file-input-4" accept="image/*" class="hidden" onchange="handleDeviceImageUpload(this, 4)"/>
+              <input type="hidden" id="form-img-4" value="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=80"/>
+              
+              <div onclick="triggerGalleryUpload(4)" class="w-full aspect-square rounded-2xl bg-white border border-outline-variant/60 overflow-hidden relative group flex flex-col items-center justify-center shadow-xs cursor-pointer hover:border-primary transition-colors">
+                <img id="preview-img-4" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Illustration Switch"/>
+                <div id="placeholder-4" class="hidden flex flex-col items-center justify-center p-1 text-primary">
+                  <span class="material-symbols-outlined text-lg">add_a_photo</span>
+                  <span class="text-[8px] font-bold mt-0.5">Galerie</span>
+                </div>
+                <span id="badge-4" class="absolute bottom-0 inset-x-0 bg-gray-900/80 text-white text-[8px] font-bold py-0.5 pointer-events-none">Porté (P4)</span>
+              </div>
+              
+              <!-- Touche Retirer / Supprimer Photo 4 -->
+              <button type="button" onclick="removePhotoSlot(event, 4)" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center shadow-md cursor-pointer text-xs font-black z-10" title="Retirer cette photo">
+                ✕
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Nom du Produit -->
+        <div>
+          <label class="text-[11px] font-bold text-on-surface-variant">Nom de l'article / Produit *</label>
+          <input type="text" id="form-prod-name" placeholder="Ex: Robe Wax Africaine, Paracétamol, Riz Parfumé..." class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl p-2.5 text-xs font-semibold text-on-surface"/>
+        </div>
+
+        <!-- Catégorie Métier Saisie Libre & Prix -->
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="text-[11px] font-bold text-on-surface-variant">Rayon / Catégorie du Produit *</label>
+            <input type="text" id="form-prod-cat" placeholder="Ex: Mode, Pharmacie, Vivres, Tech, Bijoux..." class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl p-2.5 text-xs font-bold text-on-surface"/>
+          </div>
+
+          <!-- Prix -->
+          <div>
+            <label class="text-[11px] font-bold text-on-surface-variant">Prix de Vente (FCFA) *</label>
+            <input type="number" id="form-prod-price" placeholder="Ex: 5000" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl p-2.5 text-xs font-mono font-bold text-on-surface"/>
+          </div>
+        </div>
+
+        <!-- Description & Caractéristiques -->
+        <div>
+          <label class="text-[11px] font-bold text-on-surface-variant">Description & Tailles disponibles</label>
+          <input type="text" id="form-prod-desc" placeholder="Ex: 100% Coton Wax, Tailles S/M/L/XL, Finition brodée" class="input-focus w-full bg-surface-container-low/50 border border-outline-variant/60 rounded-2xl p-2.5 text-xs text-on-surface"/>
+        </div>
+
+        <div class="bg-purple-50 p-2.5 rounded-2xl border border-purple-200 flex items-center gap-2 text-[11px] text-purple-950 font-bold">
+          <span class="material-symbols-outlined text-base text-primary">verified</span>
+          <span>Les 4 photos seront affichées en carrousel interactif avec zoom chez tous les clients Switch.</span>
+        </div>
+      </div>
+
+      <button onclick="saveAndPublishProductWithGallery()" class="w-full bg-primary hover:bg-primary-hover text-white py-3.5 rounded-full font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+        <span class="material-symbols-outlined text-lg">publish</span>
+        <span>Publier les 4 Photos sur Switch</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Merchant <-> Buyer Chat Modal (Messagerie Vendeur Switch) -->
+  <div id="merchant-chat-modal" class="fixed inset-0 bg-black/70 z-50 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md rounded-t-[36px] sm:rounded-3xl flex flex-col h-[85vh] sm:h-[600px] shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom duration-200">
+      
+      <!-- Merchant Chat Header -->
+      <div class="p-4 bg-primary text-white flex items-center justify-between shadow-md shrink-0">
+        <div class="flex items-center gap-3">
+          <button onclick="closeMerchantChatHub()" class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 cursor-pointer">
+            <span class="material-symbols-outlined text-lg">arrow_back</span>
+          </button>
+          <div class="relative">
+            <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-lg font-black border border-white/30">
+              👤
+            </div>
+            <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-primary"></span>
+          </div>
+          <div>
+            <h4 id="merchant-chat-client-name" class="text-xs sm:text-sm font-black leading-tight">Amina Kouassi</h4>
+            <span class="text-[10px] text-purple-200 flex items-center gap-1">
+              <span>Client Vérifié Switch • Cotonou</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <button onclick="callClient()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white cursor-pointer" title="Appeler l'acheteur">
+            <span class="material-symbols-outlined text-base">call</span>
+          </button>
+          <button onclick="sendDirectPaymentRequest()" class="px-2.5 py-1.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-[10px] flex items-center gap-1 cursor-pointer" title="Demander Paiement">
+            <span class="material-symbols-outlined text-xs">request_quote</span>
+            <span>Facturer</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pinned Product Context Banner -->
+      <div class="p-2.5 bg-purple-50 border-b border-purple-100 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-white border border-purple-200 flex items-center justify-center text-base overflow-hidden font-bold">
+            👗
+          </div>
+          <div>
+            <h5 id="merchant-chat-prod-title" class="text-[11px] font-bold text-on-surface line-clamp-1">Robe Wax Broderie Africaine</h5>
+            <span id="merchant-chat-prod-price" class="text-[11px] font-black font-mono text-primary">25 000 FCFA</span>
+          </div>
+        </div>
+        <span class="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full">
+          Intéressé(e)
+        </span>
+      </div>
+
+      <!-- Chat Messages Scroll Area -->
+      <div id="merchant-chat-messages-container" class="flex-1 p-4 overflow-y-auto flex flex-col gap-3 bg-[#F9FAFC]">
+        
+        <!-- Welcome Note -->
+        <div class="text-center my-1">
+          <span class="text-[9px] bg-gray-200/80 text-gray-600 px-2.5 py-1 rounded-full font-medium">Discussion directe avec l'acheteur 🔒</span>
+        </div>
+
+        <!-- Buyer Inquiry Message (Reçu) -->
+        <div class="flex items-start gap-2 max-w-[85%]">
+          <div class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-800 text-[10px] flex items-center justify-center font-bold shrink-0 mt-1">
+            👤
+          </div>
+          <div class="bg-white p-3 rounded-2xl rounded-tl-xs border border-outline-variant/30 shadow-xs text-xs text-on-surface">
+            <p>Bonjour cher commerçant ! Est-ce que cette robe est disponible en taille XL ? Est-il possible de livrer à Akpakpa aujourd'hui ?</p>
+            <span class="text-[8px] text-gray-400 block text-right mt-1 font-mono">18:14</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Merchant Response Suggestions -->
+      <div class="px-3 pt-2 pb-1 bg-white border-t border-outline-variant/20 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0 text-[10px]">
+        <button onclick="sendMerchantQuickReply('Oui, parfaitement disponible en taille XL ! Nous pouvons vous livrer sous 2 heures.')" class="px-2.5 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-primary font-bold border border-purple-200 shrink-0 cursor-pointer">
+          ✅ Dispo en XL + Livraison 2h
+        </button>
+        <button onclick="sendMerchantQuickReply('Bonjour ! Vous pouvez aussi venir retirer directement à notre boutique.')" class="px-2.5 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-primary font-bold border border-purple-200 shrink-0 cursor-pointer">
+          🏪 Retrait en boutique
+        </button>
+        <button onclick="sendMerchantQuickReply('Je vous accorde une réduction de 1 000 F si vous commandez maintenant !')" class="px-2.5 py-1 rounded-full bg-purple-50 hover:bg-purple-100 text-primary font-bold border border-purple-200 shrink-0 cursor-pointer">
+          🎁 Offre spéciale -1 000 F
+        </button>
+      </div>
+
+      <!-- Merchant Chat Input Field -->
+      <div class="p-3 bg-white border-t border-outline-variant/20 flex items-center gap-2 shrink-0">
+        <input type="text" id="merchant-chat-input-text" onkeypress="if(event.key==='Enter') sendMerchantChatMessage()" placeholder="Répondre à l'acheteur..." class="flex-1 bg-surface-container-low/60 border border-outline-variant/50 rounded-2xl px-3.5 py-2.5 text-xs text-on-surface focus:outline-none focus:border-primary"/>
+        <button onclick="sendMerchantChatMessage()" class="w-10 h-10 rounded-2xl bg-primary hover:bg-primary-hover text-white flex items-center justify-center shadow-md active:scale-95 transition-all cursor-pointer shrink-0">
+          <span class="material-symbols-outlined text-lg">send</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    var currentFilterCategory = 'all';
+
+    function setCategoryFilter(cat, btn) {
+      currentFilterCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(function(b) {
+        b.className = "cat-pill px-3 py-1.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-colors cursor-pointer shrink-0";
+      });
+      btn.className = "cat-pill pill-active px-3 py-1.5 rounded-xl border border-transparent transition-colors cursor-pointer shrink-0";
+      renderProducts();
+    }
+
+    function renderProducts() {
+      var searchEl = document.getElementById('cat-search-input');
+      var query = (searchEl ? searchEl.value : '').toLowerCase().trim();
+      var items = document.querySelectorAll('.prod-card');
+      var visibleCount = 0;
+
+      items.forEach(function(card) {
+        var cat = card.getAttribute('data-category');
+        var text = card.textContent.toLowerCase();
+
+        var matchCategory = (currentFilterCategory === 'all') || (cat === currentFilterCategory);
+        var matchQuery = !query || text.includes(query);
+
+        if (matchCategory && matchQuery) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      var headerCount = document.getElementById('published-count-header');
+      if (headerCount) {
+        headerCount.textContent = visibleCount + " Articles avec Photos en Ligne";
+      }
+    }
+
+    function toggleStock(id) {
+      alert("✅ Statut du stock mis à jour pour cet article !");
+    }
+
+    function shareProductWhatsApp(name, price) {
+      var store = localStorage.getItem('switch_merchant_business_name') || "Ma Boutique Switch";
+      var text = 'Bonjour ! Retrouvez notre article "' + name + '" à ' + price.toLocaleString('fr-FR') + ' FCFA chez ' + store + '. Commandez en direct avec l\'application Switch Bénin (0% de frais) : https://switch.bj/pay/boutique';
+      var url = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(text);
+      window.open(url, '_blank');
+    }
+
+    function quickQrPayForProduct(name, price) {
+      alert('📲 QR Code généré pour "' + name + '" (' + price.toLocaleString('fr-FR') + ' FCFA) !\nPrésentez l\'écran au client pour encaissement instantané.');
+    }
+
+    /* ─── MESSAGERIE COMMERÇANT <-> ACHETEURS ─── */
+    function openMerchantChatHub(prodName, clientName, price) {
+      document.getElementById('merchant-chat-prod-title').textContent = prodName || 'Robe Wax Broderie Africaine';
+      document.getElementById('merchant-chat-client-name').textContent = clientName || 'Amina Kouassi';
+      document.getElementById('merchant-chat-prod-price').textContent = price || '25 000 FCFA';
+      document.getElementById('merchant-chat-modal').classList.remove('hidden');
+    }
+
+    function closeMerchantChatHub() {
+      document.getElementById('merchant-chat-modal').classList.add('hidden');
+    }
+
+    function sendMerchantQuickReply(txt) {
+      document.getElementById('merchant-chat-input-text').value = txt;
+      sendMerchantChatMessage();
+    }
+
+    function sendMerchantChatMessage() {
+      var input = document.getElementById('merchant-chat-input-text');
+      var text = (input.value || '').trim();
+      if (!text) return;
+
+      var container = document.getElementById('merchant-chat-messages-container');
+      var now = new Date();
+      var timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+      var msg = document.createElement('div');
+      msg.className = "flex items-start justify-end gap-2 max-w-[85%] self-end";
+      msg.innerHTML = '\
+        <div class="bg-primary text-white p-3 rounded-2xl rounded-tr-xs shadow-xs text-xs">\
+          <p>' + text + '</p>\
+          <div class="flex items-center justify-end gap-1 mt-1 text-[8px] text-purple-200 font-mono">\
+            <span>' + timeStr + '</span>\
+            <span>✓✓</span>\
+          </div>\
+        </div>';
+      container.appendChild(msg);
+      input.value = '';
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function callClient() {
+      alert("📞 Appel direct de l'acheteur via Switch...");
+    }
+
+    function sendDirectPaymentRequest() {
+      alert("💳 Lien de paiement sécurisé Switch envoyé directement dans la discussion de l'acheteur !");
+    }
+
+    function openPublishModal() {
+      var el = document.getElementById('publish-modal');
+      if (el) el.classList.remove('hidden');
+    }
+
+    function closePublishModal() {
+      var el = document.getElementById('publish-modal');
+      if (el) el.classList.add('hidden');
+    }
+
+    // Fermeture automatique avec la touche Échap
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closePublishModal();
+        closeMerchantChatHub();
+      }
+    });
+
+    function triggerGalleryUpload(slot) {
+      var fileInp = document.getElementById('file-input-' + slot);
+      if (fileInp) {
+        fileInp.click();
+      }
+    }
+
+    function handleDeviceImageUpload(inputEl, slot) {
+      if (inputEl.files && inputEl.files[0]) {
+        var file = inputEl.files[0];
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          var base64Url = e.target.result;
+          document.getElementById('form-img-' + slot).value = base64Url;
+          
+          var img = document.getElementById('preview-img-' + slot);
+          var placeholder = document.getElementById('placeholder-' + slot);
+          var badge = document.getElementById('badge-' + slot);
+
+          if (img) {
+            img.src = base64Url;
+            img.classList.remove('hidden');
+          }
+          if (placeholder) placeholder.classList.add('hidden');
+          if (badge) badge.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function removePhotoSlot(event, slot) {
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+      
+      document.getElementById('form-img-' + slot).value = '';
+      var fileInp = document.getElementById('file-input-' + slot);
+      if (fileInp) fileInp.value = '';
+
+      var img = document.getElementById('preview-img-' + slot);
+      var placeholder = document.getElementById('placeholder-' + slot);
+      var badge = document.getElementById('badge-' + slot);
+
+      if (img) {
+        img.src = '';
+        img.classList.add('hidden');
+      }
+      if (placeholder) placeholder.classList.remove('hidden');
+      if (badge) badge.classList.add('hidden');
+    }
+
+    var CATEGORY_PHOTO_SETS = {
+      'mode': [
+        'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=80'
+      ],
+      'pharmacie': [
+        'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1577401239170-897942555fb3?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=500&auto=format&fit=crop&q=80'
+      ],
+      'alimentation': [
+        'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=500&auto=format&fit=crop&q=80'
+      ],
+      'restauration': [
+        'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1613478223719-2ab802602423?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=500&auto=format&fit=crop&q=80'
+      ],
+      'tech': [
+        'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&auto=format&fit=crop&q=80'
+      ],
+      'quincaillerie': [
+        'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1550985616-10810253b84d?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1581783342308-f792dbdd27c5?w=500&auto=format&fit=crop&q=80'
+      ],
+      'beaute': [
+        'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1583209814683-c023dd293cc6?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=500&auto=format&fit=crop&q=80'
+      ],
+      'maison': [
+        'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=500&auto=format&fit=crop&q=80'
+      ],
+      'auto': [
+        'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=500&auto=format&fit=crop&q=80'
+      ],
+      'librairie': [
+        'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=500&auto=format&fit=crop&q=80'
+      ],
+      'bebe': [
+        'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1519689680058-324335c77eba?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=500&auto=format&fit=crop&q=80'
+      ],
+      'sport': [
+        'https://images.unsplash.com/photo-1517649763962-0c623266ddc0?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=500&auto=format&fit=crop&q=80'
+      ],
+      'agriculture': [
+        'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=500&auto=format&fit=crop&q=80'
+      ],
+      'artisanat': [
+        'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=500&auto=format&fit=crop&q=80'
+      ],
+      'service': [
+        'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1450133064473-71024230f91b?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1556742049-0a67e557b4f5?w=500&auto=format&fit=crop&q=80'
+      ],
+      'bazar': [
+        'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500&auto=format&fit=crop&q=80'
+      ]
+    };
+
+    function handleCategorySelectionChange() {
+      var cat = document.getElementById('form-prod-cat').value;
+      var customContainer = document.getElementById('form-custom-category-container');
+      
+      if (cat === 'autre') {
+        if (customContainer) customContainer.classList.remove('hidden');
+      } else {
+        if (customContainer) customContainer.classList.add('hidden');
+        loadCategoryPhotoBatch();
+      }
+    }
+
+    function loadCategoryPhotoBatch() {
+      var cat = document.getElementById('form-prod-cat').value;
+      if (cat === 'autre') cat = 'mode';
+      var photos = CATEGORY_PHOTO_SETS[cat] || CATEGORY_PHOTO_SETS.mode;
+      for (var i = 1; i <= 4; i++) {
+        var input = document.getElementById('form-img-' + i);
+        var preview = document.getElementById('preview-img-' + i);
+        var placeholder = document.getElementById('placeholder-' + i);
+        var badge = document.getElementById('badge-' + i);
+
+        if (input && photos[i - 1]) {
+          input.value = photos[i - 1];
+          if (preview) {
+            preview.src = photos[i - 1];
+            preview.classList.remove('hidden');
+          }
+          if (placeholder) placeholder.classList.add('hidden');
+          if (badge) badge.classList.remove('hidden');
+        }
+      }
+    }
+
+    function changeCardActivePhoto(thumbBtn, targetImgId, photoUrl) {
+      var mainImg = document.getElementById(targetImgId);
+      if (mainImg) {
+        mainImg.src = photoUrl;
+      }
+      var parent = thumbBtn.parentElement;
+      if (parent) {
+        parent.querySelectorAll('button').forEach(function(b) {
+          b.className = "w-5 h-5 rounded-md border border-gray-200 overflow-hidden opacity-60 hover:opacity-100 transition-opacity cursor-pointer";
+        });
+        thumbBtn.className = "w-5 h-5 rounded-md border-2 border-primary overflow-hidden opacity-100 shadow-xs cursor-pointer";
+      }
+    }
+
+    function saveAndPublishProductWithGallery() {
+      var nameEl = document.getElementById('form-prod-name');
+      var priceEl = document.getElementById('form-prod-price');
+      var catEl = document.getElementById('form-prod-cat');
+      var descEl = document.getElementById('form-prod-desc');
+
+      var name = nameEl ? nameEl.value.trim() : '';
+      var price = priceEl ? parseInt(priceEl.value) : 0;
+      var typedCategory = (catEl ? catEl.value.trim() : '') || 'Général';
+      var desc = descEl ? descEl.value.trim() : '';
+
+      var categorySlug = typedCategory.toLowerCase().replace(/[^a-z0-9]/g, '_');
+      var displayCategoryName = typedCategory;
+
+      var defaultSet = CATEGORY_PHOTO_SETS.mode;
+      var p1 = (document.getElementById('form-img-1')?.value || '').trim() || defaultSet[0];
+      var p2 = (document.getElementById('form-img-2')?.value || '').trim() || p1;
+      var p3 = (document.getElementById('form-img-3')?.value || '').trim() || p1;
+      var p4 = (document.getElementById('form-img-4')?.value || '').trim() || p1;
+
+      if (!name || isNaN(price) || price <= 0) {
+        alert("⚠️ Veuillez indiquer un nom d'article et un prix valide.");
+        return;
+      }
+
+      if (!typedCategory) {
+        alert("⚠️ Veuillez indiquer le type ou rayon de votre produit (ex: Mode, Pharmacie, Tech, Vivres...).");
+        if (catEl) catEl.focus();
+        return;
+      }
+
+      var uniqueId = 'prod_img_' + Date.now();
+      var grid = document.getElementById('products-list-container');
+      var newCard = document.createElement('div');
+      newCard.className = "prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group";
+      newCard.setAttribute('data-category', categorySlug);
+      
+      newCard.innerHTML = '\
+        <div class="w-full h-32 rounded-2xl bg-gray-50 relative overflow-hidden flex items-center justify-center">\
+          <img id="' + uniqueId + '" src="' + p1 + '" alt="' + name + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>\
+          <button class="absolute top-2 right-2 text-[9px] font-black uppercase bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-xs">\
+            En Stock\
+          </button>\
+          <span class="absolute bottom-2 left-2 text-[8px] font-black bg-black/60 backdrop-blur-xs text-white px-1.5 py-0.5 rounded-md flex items-center gap-0.5">\
+            <span class="material-symbols-outlined text-[10px]">photo_library</span> 4 Photos\
+          </span>\
+        </div>\
+        \
+        <!-- Mini-Vignettes des 4 angles de vue cliquables -->\
+        <div class="flex items-center gap-1.5 justify-center py-0.5">\
+          <button onclick="changeCardActivePhoto(this, \'' + uniqueId + '\', \'' + p1 + '\')" class="w-5 h-5 rounded-md border-2 border-primary overflow-hidden opacity-100 shadow-xs cursor-pointer" title="Vue Face">\
+            <img src="' + p1 + '" class="w-full h-full object-cover" alt="Illustration Switch"/>\
+          </button>\
+          <button onclick="changeCardActivePhoto(this, \'' + uniqueId + '\', \'' + p2 + '\')" class="w-5 h-5 rounded-md border border-gray-200 overflow-hidden opacity-60 hover:opacity-100 transition-opacity cursor-pointer" title="Vue Profil">\
+            <img src="' + p2 + '" class="w-full h-full object-cover" alt="Illustration Switch"/>\
+          </button>\
+          <button onclick="changeCardActivePhoto(this, \'' + uniqueId + '\', \'' + p3 + '\')" class="w-5 h-5 rounded-md border border-gray-200 overflow-hidden opacity-60 hover:opacity-100 transition-opacity cursor-pointer" title="Vue Détail">\
+            <img src="' + p3 + '" class="w-full h-full object-cover" alt="Illustration Switch"/>\
+          </button>\
+          <button onclick="changeCardActivePhoto(this, \'' + uniqueId + '\', \'' + p4 + '\')" class="w-5 h-5 rounded-md border border-gray-200 overflow-hidden opacity-60 hover:opacity-100 transition-opacity cursor-pointer" title="Vue Porté">\
+            <img src="' + p4 + '" class="w-full h-full object-cover" alt="Illustration Switch"/>\
+          </button>\
+        </div>\
+        \
+        <div>\
+          <span class="text-[9px] font-bold text-primary block truncate">✨ ' + displayCategoryName + '</span>\
+          <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">' + name + '</h3>\
+          <span class="text-sm font-black font-mono text-primary block mt-0.5">' + price.toLocaleString('fr-FR') + ' FCFA</span>\
+        </div>\
+        \
+        <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">\
+          <button onclick="shareProductWhatsApp(\'' + name.replace(/'/g, "\\'") + '\', ' + price + ')" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">\
+            <span class="material-symbols-outlined text-xs">share</span> WhatsApp\
+          </button>\
+          <button onclick="quickQrPayForProduct(\'' + name.replace(/'/g, "\\'") + '\', ' + price + ')" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">\
+            Encaisser\
+          </button>\
+        </div>';
+
+      grid.insertBefore(newCard, grid.firstChild);
+      closePublishModal();
+
+      const storeName = localStorage.getItem('switch_merchant_business_name') || "Boutique Partenaire Switch";
+      const newProductData = {
+        id: uniqueId,
+        title: name,
+        name: name,
+        price: price,
+        category: categorySlug,
+        categoryName: displayCategoryName,
+        desc: desc,
+        photos: [p1, p2, p3, p4],
+        image: p1,
+        image_url: p1,
+        stock: 25,
+        store: storeName
+      };
+
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.addMerchantProduct) {
+          window.SwitchAPI.addMerchantProduct({
+            id: uniqueId,
+            name: name,
+            price: price,
+            category: categorySlug,
+            image_url: p1,
+            description: desc
+          });
+        }
+      } catch (err) {
+        console.warn("[Catalogue] Info sauvegarde produit :", err);
+      }
+
+      if (nameEl) nameEl.value = '';
+      if (priceEl) priceEl.value = '';
+      if (descEl) descEl.value = '';
+
+      renderProducts();
+      alert('🎉 Superbe !\nVotre article "' + name + '" a été publié avec succès !\nIl est maintenant immédiatement disponible.');
+    }
+
+    function renderProducts() {
+      var grid = document.getElementById('products-list-container');
+      var headerEl = document.getElementById('published-count-header');
+      if (!grid) return;
+
+      var res = window.SwitchAPI ? window.SwitchAPI.getMerchantProducts() : { products: [] };
+      var prods = res.products || [];
+
+      if (headerEl) {
+        headerEl.textContent = prods.length + ' Article' + (prods.length > 1 ? 's' : '') + ' avec Photos en Ligne';
+      }
+
+      if (prods.length === 0) {
+        grid.innerHTML = '\
+          <div id="empty-state-products" class="col-span-2 p-12 text-center flex flex-col items-center justify-center gap-3 bg-white rounded-3xl border border-outline-variant/40 shadow-xs">\
+            <span class="material-symbols-outlined text-5xl text-gray-300">inventory_2</span>\
+            <h3 class="text-sm font-bold text-gray-700">Votre vitrine est vide</h3>\
+            <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Ajoutez vos premiers articles avec photo et prix pour les rendre disponibles aux clients Switch.</p>\
+            <button onclick="openPublishModal()" class="mt-2 px-5 py-2.5 rounded-full bg-primary hover:bg-primary-hover text-white text-xs font-black shadow-md cursor-pointer flex items-center gap-2">\
+              <span class="material-symbols-outlined text-base">add_photo_alternate</span>\
+              <span>Publier mon premier article</span>\
+            </button>\
+          </div>';
+      } else {
+        grid.innerHTML = prods.map(function(p) {
+          var img = p.image_url || p.photos?.[0] || 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&auto=format&fit=crop&q=80';
+          return '\
+            <div class="prod-card bg-white rounded-3xl p-3 border border-outline-variant/40 shadow-xs flex flex-col justify-between gap-2.5 relative group" data-category="' + (p.category || 'mode') + '">\
+              <div class="w-full h-32 rounded-2xl bg-purple-50 relative overflow-hidden flex items-center justify-center">\
+                <img src="' + img + '" alt="' + (p.name || '') + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>\
+                <button onclick="toggleStock(\'' + p.id + '\')" class="absolute top-2 right-2 text-[9px] font-black uppercase ' + (p.in_stock !== false ? 'bg-emerald-600' : 'bg-rose-600') + ' text-white px-2 py-0.5 rounded-full shadow-xs cursor-pointer">\
+                  ' + (p.in_stock !== false ? 'En Stock' : 'Épuisé') + '\
+                </button>\
+              </div>\
+              <div>\
+                <span class="text-[9px] font-bold text-primary block">✨ ' + (p.category || 'Rayon') + '</span>\
+                <h3 class="text-xs font-black text-on-surface line-clamp-1 mt-0.5">' + (p.name || '') + '</h3>\
+                <span class="text-sm font-black font-mono text-primary block mt-0.5">' + (p.price || 0).toLocaleString('fr-FR') + ' FCFA</span>\
+              </div>\
+              <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-[10px]">\
+                <button onclick="shareProductWhatsApp(\'' + (p.name || '').replace(/'/g, "\\'") + '\', ' + (p.price || 0) + ')" class="text-emerald-700 font-bold hover:underline flex items-center gap-0.5 cursor-pointer">\
+                  <span class="material-symbols-outlined text-xs">share</span> WhatsApp\
+                </button>\
+                <button onclick="quickQrPayForProduct(\'' + (p.name || '').replace(/'/g, "\\'") + '\', ' + (p.price || 0) + ')" class="px-2.5 py-1 rounded-xl bg-primary text-white font-bold shadow-xs cursor-pointer">\
+                  Encaisser\
+                </button>\
+              </div>\
+            </div>';
+        }).join('');
+      }
+    }
+
+    // Initialisation
+    window.renderProducts = renderProducts;
+    document.addEventListener("DOMContentLoaded", renderProducts);
+    window.addEventListener("pageshow", renderProducts);
+    renderProducts();
+  </script>
+
+  <script src="../assets/switch.router.js?v=4.0"></script>
+</body>
+</html>

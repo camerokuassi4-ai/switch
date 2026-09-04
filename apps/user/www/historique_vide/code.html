@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Historique - État Vide</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen flex flex-col font-body-lg text-on-background relative overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-container-margin py-stack-md w-full bg-transparent top-0 z-40 relative">
+<div class="flex items-center gap-3">
+<div id="user-avatar-box" class="w-10 h-10 rounded-full bg-purple-100 overflow-hidden shadow-soft-ambient border border-surface-container-highest flex items-center justify-center">
+<img id="user-avatar-img" class="w-full h-full object-cover hidden" alt="Avatar" src=""/>
+<span id="user-avatar-initials" class="text-sm font-black text-primary">SW</span>
+</div>
+<h1 id="user-greeting-title" class="font-headline-md text-headline-md text-on-surface font-bold">Bonjour</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors text-primary">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</header>
+<!-- Main Content Canvas (Empty State) -->
+<main class="flex-1 flex flex-col items-center justify-center px-container-margin pb-32 pt-8">
+<div class="w-full max-w-sm flex flex-col items-center text-center animate-fade-in-up">
+<!-- Empty State Illustration -->
+<div class="relative w-64 h-64 mb-stack-lg flex items-center justify-center rounded-full bg-surface-container-lowest shadow-soft-ambient">
+<!-- Subtle fluid mesh background effect behind the icon -->
+<div class="absolute inset-0 rounded-full opacity-20" style="background: radial-gradient(circle at 50% 50%, rgba(119, 88, 246, 0.4) 0%, rgba(253, 248, 255, 0) 70%);"></div>
+<img class="w-48 h-48 object-contain relative z-10 drop-shadow-lg" alt="A highly polished, modern 3D illustration of an elegant, stylized empty wallet floating softly in mid-air. The design uses a fluid, organic aesthetic with ultra-rounded corners typical of high-end fintech platforms. The lighting is soft and bright, creating a premium light-mode atmosphere with pristine whites, pale grey (#F8F9FA) tones, and subtle ambient reflections of vibrant purple (#7B5CFA). The overall mood is calm, modern, and reassuring." src="../assets/images/img_023.jpg"/>
+</div>
+<!-- Text Content -->
+<h2 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-stack-sm">
+                Aucune transaction pour le moment
+            </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-lg max-w-[280px]">
+                Faites votre premier dépôt pour commencer
+            </p>
+<!-- Action Button -->
+<button class="bg-primary text-on-primary rounded-full py-4 px-8 flex items-center justify-center gap-2 shadow-soft-ambient hover:bg-on-primary-fixed-variant transition-all active:scale-95 group">
+<div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="add" style="font-variation-settings: 'FILL' 1;">add</span>
+</div>
+<span class="font-label-caps text-label-caps tracking-widest uppercase">Dépôt</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+
+<script src="../assets/switch.router.js"></script>
+
+<nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+  <a href="../tableau_de_bord_mis_jour/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">home</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+  </a>
+  <a href="../historique_des_transactions/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5e3bdc;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">receipt_long</span>
+    <span class="nav-label" style="font-size:10px;font-weight:700;">Historique</span>
+  </a>
+  <a href="../achats_en_ligne_cartes_virtuelles/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">account_balance_wallet</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Portefeuille</span>
+  </a>
+  <a href="../param_tres_g_n_raux/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+    <span class="material-symbols-outlined" style="font-size:22px;">settings</span>
+    <span class="nav-label" style="font-size:10px;font-weight:500;">Paramètres</span>
+  </a>
+</nav>
+
+<script src="../assets/switch.config.js"></script>
+<script src="../assets/switch.api.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : {
+      first_name: '',
+      full_name: localStorage.getItem('switch_user_fullname') || ''
+    };
+    const name = prof.first_name || (prof.full_name ? prof.full_name.split(' ')[0] : '');
+    const titleEl = document.getElementById('user-greeting-title');
+    if (titleEl) titleEl.textContent = name ? `Bonjour, ${name}` : 'Bonjour';
+    const avatarImg = document.getElementById('user-avatar-img');
+    const initialsEl = document.getElementById('user-avatar-initials');
+    if (prof.avatar_url && !prof.avatar_url.includes('img_022.jpg')) {
+      avatarImg.src = prof.avatar_url;
+      avatarImg.classList.remove('hidden');
+      if (initialsEl) initialsEl.classList.add('hidden');
+    } else if (name) {
+      if (initialsEl) initialsEl.textContent = name.slice(0, 2).toUpperCase();
+    }
+  });
+</script>
+<script src="../assets/switch.router.js"></script>
+</body>
+</html>

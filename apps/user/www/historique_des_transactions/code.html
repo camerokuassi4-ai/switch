@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Historique des Transactions - Switch Bénin</title>
+  
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..900;1,300..900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS & Switch Design System -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+  <!-- Load SwitchEngine explicitly to prevent race conditions -->
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
+
+  <style>
+    body {
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .stat-gradient {
+      background: linear-gradient(135deg, #5E3BDC 0%, #4323B0 60%, #2A1175 100%);
+      box-shadow: 0 12px 32px -8px rgba(94, 59, 220, 0.3);
+    }
+    .tx-item {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tx-item:hover {
+      transform: translateY(-2px);
+      background-color: #FAF8FF;
+    }
+    .tx-item:active {
+      transform: scale(0.98);
+    }
+    .filter-pill {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .filter-pill.active {
+      background-color: #5E3BDC !important;
+      color: #ffffff !important;
+      border-color: #5E3BDC !important;
+    }
+    .cat-chip.active {
+      background-color: #5E3BDC !important;
+      color: #ffffff !important;
+      font-weight: 800 !important;
+      border-color: #5E3BDC !important;
+    }
+
+    /* Print Styles for Bank Statement */
+    @media print {
+      @page { size: A4 portrait; margin: 10mm; }
+      body > header, body > main, body > #search-container, body > #tx-detail-modal, body > #switch-nav, .no-print {
+        display: none !important;
+      }
+      #statement-modal {
+        display: block !important;
+        position: static !important;
+        background: #ffffff !important;
+        padding: 0 !important;
+      }
+      #statement-document {
+        box-shadow: none !important;
+        border: 1px solid #e5e7eb !important;
+        padding: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
+
+  <!-- Fixed Immobile Top App Bar Navigation (No jitter, No User Avatar) -->
+  <header class="w-full max-w-xl mx-auto px-4 pt-4 pb-3 flex items-center justify-between z-40 sticky top-0 bg-[#F8F9FD] border-b border-outline-variant/30 shadow-xs">
+    <!-- Single Clean Back Button + Screen Title -->
+    <div class="flex items-center gap-3">
+      <button 
+        type="button"
+        aria-label="Retour" 
+        onclick="window.history.back()" 
+        class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-xs flex items-center justify-center text-on-surface hover:text-primary hover:bg-purple-50 active:scale-95 transition-all cursor-pointer shrink-0"
+      >
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      
+      <div>
+        <h1 class="text-base sm:text-lg font-black text-on-surface tracking-tight leading-tight">Historique des Flux</h1>
+        <p class="text-[11px] text-on-surface-variant font-medium">Toutes vos opérations Switch Bénin 🇧🇯</p>
+      </div>
+    </div>
+
+    <!-- Right Actions: Search & Statement -->
+    <div class="flex items-center gap-2">
+      <button 
+        type="button"
+        id="toggle-search-btn" 
+        onclick="toggleSearch()" 
+        class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-xs flex items-center justify-center text-on-surface hover:text-primary hover:bg-purple-50 active:scale-95 transition-colors cursor-pointer" 
+        aria-label="Rechercher"
+      >
+        <span class="material-symbols-outlined text-xl">search</span>
+      </button>
+
+      <button 
+        type="button"
+        onclick="openStatementModal()" 
+        class="flex items-center gap-1 px-3 py-2 rounded-full bg-primary/10 hover:bg-primary/20 text-primary text-xs font-black transition-colors cursor-pointer border border-primary/20"
+      >
+        <span class="material-symbols-outlined text-base">receipt_long</span>
+        <span class="hidden sm:inline">Relevé</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Live Search Box (Expandable) -->
+  <div id="search-container" class="w-full max-w-xl mx-auto px-4 hidden transition-all duration-300 my-2">
+    <div class="relative flex items-center">
+      <span class="material-symbols-outlined absolute left-3.5 text-gray-400 text-lg">search</span>
+      <input 
+        type="text" 
+        id="tx-search-input" 
+        oninput="applyFilterAndSearch()" 
+        placeholder="Rechercher par nom, montant, opérateur, SBEE..." 
+        class="w-full bg-white border border-outline-variant/60 rounded-2xl py-2.5 pl-10 pr-10 text-xs font-bold text-on-surface placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary shadow-xs"
+      />
+      <button id="clear-search-btn" onclick="clearSearch()" class="material-symbols-outlined absolute right-3 text-gray-400 hover:text-on-surface text-lg hidden cursor-pointer">close</button>
+    </div>
+  </div>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-4 flex flex-col gap-4 pt-3 flex-1">
+
+    <!-- Monthly Summary Stat Hero Card -->
+    <section class="stat-gradient text-white rounded-3xl p-5 shadow-lg flex flex-col gap-3 relative overflow-hidden">
+      <div class="flex items-center justify-between relative z-10">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-xs font-bold text-purple-200 uppercase tracking-wider" id="stat-month-label">Août 2026</span>
+        </div>
+        <div class="bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase text-white border border-white/20">
+          UEMOA • 0% Frais
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 pt-1 relative z-10 border-t border-white/15">
+        <div>
+          <span class="text-[11px] text-purple-200 font-semibold block">Total Reçu (+)</span>
+          <span class="text-base sm:text-lg font-black font-mono text-emerald-300 block" id="stat-total-received">+0 FCFA</span>
+        </div>
+        <div>
+          <span class="text-[11px] text-purple-200 font-semibold block">Total Dépensé (-)</span>
+          <span class="text-base sm:text-lg font-black font-mono text-white block" id="stat-total-spent">-0 FCFA</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter Buttons (Tout / Reçu / Envoyé) -->
+    <section class="flex flex-col gap-2">
+      <!-- Direction Filters -->
+      <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+        <button id="filter-all" onclick="setDirectionFilter('all')" class="filter-pill active bg-primary text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-full whitespace-nowrap shadow-xs transition-all cursor-pointer flex items-center gap-1.5">
+          <span>Tout</span>
+          <span id="badge-all" class="bg-white/25 text-white text-[10px] px-1.5 py-0.2 rounded-full font-black">0</span>
+        </button>
+
+        <button id="filter-received" onclick="setDirectionFilter('received')" class="filter-pill bg-white text-on-surface-variant border border-outline-variant/60 font-bold text-xs sm:text-sm px-4 py-2 rounded-full whitespace-nowrap hover:bg-purple-50 transition-all cursor-pointer flex items-center gap-1.5">
+          <span>Reçu (+)</span>
+          <span id="badge-received" class="bg-emerald-100 text-emerald-800 text-[10px] px-1.5 py-0.2 rounded-full font-black">0</span>
+        </button>
+
+        <button id="filter-sent" onclick="setDirectionFilter('sent')" class="filter-pill bg-white text-on-surface-variant border border-outline-variant/60 font-bold text-xs sm:text-sm px-4 py-2 rounded-full whitespace-nowrap hover:bg-purple-50 transition-all cursor-pointer flex items-center gap-1.5">
+          <span>Envoyé (-)</span>
+          <span id="badge-sent" class="bg-surface-container text-on-surface-variant text-[10px] px-1.5 py-0.2 rounded-full font-black">0</span>
+        </button>
+      </div>
+
+      <!-- Category Filter Chips -->
+      <div class="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar text-[11px]">
+        <button onclick="setCategoryFilter('all', this)" class="cat-chip active bg-primary text-white px-3 py-1 rounded-full font-bold transition-all whitespace-nowrap cursor-pointer shadow-2xs">Tous les services</button>
+        <button onclick="setCategoryFilter('transfer', this)" class="cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer">Transferts</button>
+        <button onclick="setCategoryFilter('utility', this)" class="cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer">Factures SBEE / Eau</button>
+        <button onclick="setCategoryFilter('telecom', this)" class="cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer">Mobile Money & Forfaits</button>
+        <button onclick="setCategoryFilter('tontine', this)" class="cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer">Tontines</button>
+      </div>
+    </section>
+
+    <!-- Dynamic Transactions List Container -->
+    <div id="tx-list-container" class="bg-white rounded-3xl p-2 border border-outline-variant/40 shadow-xs flex flex-col divide-y divide-outline-variant/30">
+      <!-- Injected via JavaScript -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="tx-empty-state" class="hidden bg-white rounded-3xl p-8 border border-outline-variant/40 shadow-xs flex flex-col items-center justify-center text-center gap-3 my-2">
+      <div class="w-14 h-14 rounded-full bg-purple-50 text-primary flex items-center justify-center">
+        <span class="material-symbols-outlined text-3xl">receipt_long</span>
+      </div>
+      <h3 class="text-sm font-black text-on-surface">Aucune transaction trouvée</h3>
+      <p class="text-xs text-on-surface-variant max-w-xs">
+        Aucune écriture ne correspond à vos critères de recherche.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- MODAL 1 : Tiroir de Détail de Transaction Instantané -->
+  <!-- ============================================================ -->
+  <div id="tx-detail-modal" class="fixed inset-0 z-[1000] bg-black/60 backdrop-blur-xs hidden flex items-end justify-center p-0 sm:p-4">
+    <div class="w-full max-w-md bg-white rounded-t-[32px] sm:rounded-3xl p-6 shadow-2xl flex flex-col gap-4 animate-in fade-in slide-in-from-bottom duration-200">
+      
+      <!-- Top Handle & Close -->
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-black text-on-surface">Détail de l'opération</h3>
+        <button onclick="closeTxDetail()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <!-- Icon & Status -->
+      <div class="text-center flex flex-col items-center gap-2 pt-1">
+        <div id="modal-icon-container" class="w-14 h-14 rounded-2xl flex items-center justify-center font-black text-sm shadow-xs bg-purple-50 text-primary">
+          <span class="material-symbols-outlined text-2xl" id="modal-icon-symbol">payments</span>
+        </div>
+        <h4 id="modal-title" class="text-sm font-black text-on-surface">Transfert Switch</h4>
+        <div id="modal-amount" class="text-2xl sm:text-3xl font-black font-mono text-primary">-5 000 FCFA</div>
+        <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 text-[11px] font-extrabold px-3 py-0.5 rounded-full border border-emerald-200">
+          <span class="material-symbols-outlined text-sm">check_circle</span>
+          Opération Réussie
+        </span>
+      </div>
+
+      <!-- Information List -->
+      <div class="bg-surface-container-low/70 rounded-2xl p-4 border border-outline-variant/30 flex flex-col gap-2.5 text-xs">
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-bold">Date & Heure :</span>
+          <b id="modal-date" class="text-on-surface font-extrabold">Aujourd'hui • 14:32</b>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-bold">Référence :</span>
+          <b id="modal-ref" class="font-mono text-primary font-black select-all">--</b>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-bold">Bénéficiaire / Tiers :</span>
+          <b id="modal-dest" class="text-on-surface font-extrabold">Maman</b>
+        </div>
+        <div class="flex justify-between items-center hidden" id="modal-token-row">
+          <span class="text-gray-500 font-bold">Code Token SBEE :</span>
+          <b id="modal-token-val" class="font-mono text-primary font-black select-all"></b>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 font-bold">Frais Switch :</span>
+          <b id="modal-fee" class="text-emerald-700 font-extrabold">0 FCFA (Gratuit)</b>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex flex-col gap-2 pt-1">
+        <button onclick="shareWhatsAppModal()" class="w-full bg-[#25D366] text-white font-black py-3.5 rounded-2xl shadow-xs hover:opacity-95 flex items-center justify-center gap-2 text-xs sm:text-sm cursor-pointer">
+          <span class="material-symbols-outlined text-lg">chat</span>
+          <span>Partager le Reçu sur WhatsApp</span>
+        </button>
+
+        <div class="grid grid-cols-2 gap-2">
+          <a id="modal-full-receipt-link" href="../recu_transaction_partage/code.html" class="py-2.5 rounded-2xl bg-white border border-outline-variant text-on-surface font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-purple-50 cursor-pointer no-underline">
+            <span class="material-symbols-outlined text-base text-primary">receipt</span>
+            <span>Reçu Complet</span>
+          </a>
+          <button onclick="copyModalRef()" class="py-2.5 rounded-2xl bg-white border border-outline-variant text-on-surface font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-purple-50 cursor-pointer">
+            <span class="material-symbols-outlined text-base text-primary">content_copy</span>
+            <span>Copier Réf</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL 2 : Relevé de Compte Bancaire Officiel Switch Bénin -->
+  <!-- ============================================================ -->
+  <div id="statement-modal" class="fixed inset-0 z-[1000] bg-black/70 backdrop-blur-xs hidden flex items-start justify-center p-3 sm:p-6 overflow-y-auto">
+    <div id="statement-document" class="w-full max-w-2xl bg-white rounded-3xl p-5 sm:p-8 shadow-2xl border border-outline-variant/60 my-4 sm:my-8 relative flex flex-col gap-6">
+      
+      <!-- Toolbar -->
+      <div class="no-print flex items-center justify-between pb-3 border-b border-outline-variant/40">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+          <span class="text-xs font-black text-on-surface uppercase tracking-wider">Aperçu du Relevé Officiel</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="printStatement()" class="px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-black flex items-center gap-1.5 shadow-xs hover:opacity-90 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">print</span>
+            <span>Imprimer / PDF</span>
+          </button>
+          <button onclick="closeStatementModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-gray-200 cursor-pointer">
+            <span class="material-symbols-outlined text-lg">close</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- En-tête Switch Bénin -->
+      <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center font-black text-2xl shadow-xs shrink-0">
+            S
+          </div>
+          <div>
+            <h2 class="text-lg font-black text-on-surface tracking-tight">SWITCH BÉNIN S.A.S</h2>
+            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Établissement de Monnaie Électronique</p>
+            <p class="text-[10px] text-gray-400 font-mono">Agrément BCEAO N° EME-BJ-04/2024</p>
+          </div>
+        </div>
+
+        <div class="bg-purple-50/70 p-3 rounded-2xl border border-purple-100 sm:min-w-[200px] w-full sm:w-auto">
+          <span class="text-[10px] font-black uppercase text-primary block">Relevé de Compte</span>
+          <p class="text-xs font-bold text-gray-800 mt-0.5">Période : Mois en cours (Août 2026)</p>
+          <p class="text-[10px] font-mono text-purple-700 font-bold">Réf : REL-BJ-202608-882104</p>
+        </div>
+      </div>
+
+      <!-- Info Titulaire -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-gray-50 p-4 rounded-2xl border border-gray-200 text-xs">
+        <div>
+          <span class="text-[10px] font-bold uppercase text-gray-400">Titulaire</span>
+          <p class="font-black text-sm text-gray-900 mt-0.5" id="stmt-user-name">Utilisateur Switch</p>
+          <p class="text-gray-600 font-mono mt-0.5" id="stmt-user-phone-sub">+229 01 -- -- --</p>
+        </div>
+        <div class="sm:border-l sm:border-gray-200 sm:pl-4">
+          <span class="text-[10px] font-bold uppercase text-gray-400">Numéro de Compte Switch</span>
+          <p class="font-mono font-bold text-xs text-primary mt-0.5" id="stmt-user-phone">01 -- -- -- -- • ----</p>
+          <p class="text-gray-600">Devise : <b>Franc CFA (XOF)</b></p>
+        </div>
+      </div>
+
+      <!-- Sélecteur de période -->
+      <div class="flex items-center justify-between bg-gray-50 p-2.5 rounded-xl border border-gray-200 text-xs font-sans">
+        <label class="font-bold text-gray-700">Période du Relevé :</label>
+        <select id="stmt-period-select" onchange="renderStatementPeriod()" class="bg-white border border-gray-300 rounded-lg px-2.5 py-1 text-xs font-bold text-gray-800 focus:outline-none focus:border-primary">
+          <option value="current" selected>Mois en cours (Août 2026)</option>
+          <option value="last">Mois précédent (Juillet 2026)</option>
+          <option value="q3">3e Trimestre 2026 (Juil - Sept)</option>
+          <option value="year">Année 2026 complète</option>
+        </select>
+      </div>
+
+      <!-- Synthèse financière -->
+      <div class="grid grid-cols-3 gap-2 text-center text-xs">
+        <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200">
+          <span class="text-[10px] text-emerald-800 font-bold uppercase block">Total Crédits (+)</span>
+          <b class="font-mono text-sm text-emerald-700 block mt-0.5" id="stmt-total-credits">+0 F</b>
+        </div>
+        <div class="bg-rose-50 p-3 rounded-xl border border-rose-200">
+          <span class="text-[10px] text-rose-800 font-bold uppercase block">Total Débits (-)</span>
+          <b class="font-mono text-sm text-rose-700 block mt-0.5" id="stmt-total-debits">-0 F</b>
+        </div>
+        <div class="bg-purple-50 p-3 rounded-xl border border-purple-200">
+          <span class="text-[10px] text-primary font-bold uppercase block">Solde Actuel</span>
+          <b class="font-mono text-sm text-primary block mt-0.5" id="stmt-current-bal">0 F</b>
+        </div>
+      </div>
+
+      <!-- Tableau des écritures -->
+      <div class="overflow-x-auto rounded-2xl border border-gray-200">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-gray-100 text-gray-700 font-bold uppercase text-[10px] border-b border-gray-200">
+              <th class="p-3">Date</th>
+              <th class="p-3">Opération</th>
+              <th class="p-3 text-right">Montant</th>
+              <th class="p-3 text-right">Statut</th>
+            </tr>
+          </thead>
+          <tbody id="stmt-table-body" class="divide-y divide-gray-100 font-mono text-[11px]">
+            <!-- Injected dynamically -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <nav id="switch-nav" role="navigation" aria-label="Navigation principale" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+    <a href="../tableau_de_bord_mis_jour/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">home</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+    </a>
+    <a href="../achats_en_ligne_cartes_virtuelles/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">credit_card</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Cartes</span>
+    </a>
+    <a href="../scanner_qr_code/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;text-decoration:none;position:relative;top:-12px;margin:0 2px;flex:1;">
+      <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(94,59,220,0.35);transition:transform 0.15s ease;">
+        <span class="material-symbols-outlined" style="font-size:24px;font-variation-settings:'FILL' 1;">qr_code_scanner</span>
+      </div>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:2px;">Payer QR</span>
+    </a>
+    <a href="../coffre_epargne_vault/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">savings</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Vault</span>
+    </a>
+    <a href="../param_tres_g_n_raux/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">settings</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Paramètres</span>
+    </a>
+  </nav>
+
+  <!-- Interactive Logic -->
+  <script>
+    let currentDirection = 'all';
+    let currentCategory = 'all';
+    let searchQuery = '';
+    let selectedTx = null;
+
+    const defaultTransactionsFallback = [];
+
+    function getTxList() {
+      if (window.SwitchAPI && typeof window.SwitchAPI.getTransactions === 'function') {
+        const list = window.SwitchAPI.getTransactions();
+        if (Array.isArray(list)) return list;
+      }
+      if (window.SwitchEngine && typeof window.SwitchEngine.getTransactions === 'function') {
+        const list = window.SwitchEngine.getTransactions();
+        if (Array.isArray(list)) return list;
+      }
+      const raw = localStorage.getItem('switch_transactions');
+      if (raw) {
+        try {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) {
+            return parsed.filter(t => !t.id || (!t.id.startsWith("SW-892") && !t.id.startsWith("SW-891")));
+          }
+        } catch (e) {}
+      }
+      return [];
+    }
+
+    function renderTransactions() {
+      const container = document.getElementById('tx-list-container');
+      const emptyState = document.getElementById('tx-empty-state');
+      if (!container) return;
+
+      const txList = getTxList();
+      let totalReceived = 0;
+      let totalSpent = 0;
+      let countAll = txList.length;
+      let countReceived = 0;
+      let countSent = 0;
+
+      // Calculate totals
+      txList.forEach(tx => {
+        if (tx.amount > 0) {
+          totalReceived += tx.amount;
+          countReceived++;
+        } else {
+          totalSpent += Math.abs(tx.amount);
+          countSent++;
+        }
+      });
+
+      // Update badges & stats
+      const statRec = document.getElementById('stat-total-received');
+      const statSpent = document.getElementById('stat-total-spent');
+      if (statRec) statRec.textContent = '+' + totalReceived.toLocaleString('fr-FR') + ' FCFA';
+      if (statSpent) statSpent.textContent = '-' + totalSpent.toLocaleString('fr-FR') + ' FCFA';
+
+      const bAll = document.getElementById('badge-all');
+      const bRec = document.getElementById('badge-received');
+      const bSent = document.getElementById('badge-sent');
+      if (bAll) bAll.textContent = countAll;
+      if (bRec) bRec.textContent = countReceived;
+      if (bSent) bSent.textContent = countSent;
+
+      // Filter
+      const filtered = txList.filter(tx => {
+        const isReceived = tx.amount > 0;
+        if (currentDirection === 'received' && !isReceived) return false;
+        if (currentDirection === 'sent' && isReceived) return false;
+
+        if (currentCategory !== 'all') {
+          if (currentCategory === 'utility' && tx.category !== 'utility') return false;
+          if (currentCategory === 'telecom' && tx.category !== 'telecom' && tx.category !== 'deposit') return false;
+          if (currentCategory === 'tontine' && tx.category !== 'tontine') return false;
+          if (currentCategory === 'transfer' && tx.category !== 'transfer' && tx.category !== 'internal') return false;
+        }
+
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          const matchTitle = (tx.title || '').toLowerCase().includes(q);
+          const matchRecip = (tx.recipient || '').toLowerCase().includes(q);
+          const matchNote = (tx.note || '').toLowerCase().includes(q);
+          const matchAmt = Math.abs(tx.amount).toString().includes(q);
+          if (!matchTitle && !matchRecip && !matchNote && !matchAmt) return false;
+        }
+
+        return true;
+      });
+
+      container.innerHTML = '';
+      if (filtered.length === 0) {
+        if (emptyState) emptyState.classList.remove('hidden');
+        container.classList.add('hidden');
+        return;
+      }
+
+      if (emptyState) emptyState.classList.add('hidden');
+      container.classList.remove('hidden');
+
+      filtered.forEach(tx => {
+        const isPos = tx.amount > 0;
+        const sign = isPos ? '+' : '-';
+        const amtColor = isPos ? 'text-emerald-600 font-mono' : 'text-on-surface font-mono';
+        const badgeBg = isPos ? 'bg-emerald-50 text-emerald-700' : 'bg-surface-container text-on-surface-variant';
+        const badgeLabel = isPos ? 'Reçu' : (tx.category === 'utility' ? 'Facture' : (tx.category === 'telecom' ? 'Recharge' : 'Débit'));
+
+        const item = document.createElement('div');
+        item.className = 'tx-item p-3.5 flex items-center justify-between hover:bg-purple-50/40 rounded-2xl transition-colors text-on-surface cursor-pointer';
+        item.onclick = () => openTxDetail(tx);
+
+        item.innerHTML = `
+          <div class="flex items-center gap-3 min-w-0 pr-2">
+            <div class="w-11 h-11 rounded-2xl ${tx.iconBg || 'bg-purple-50 text-primary'} flex items-center justify-center font-black text-xs shrink-0 shadow-2xs">
+              <span class="material-symbols-outlined text-xl">${tx.icon || 'payments'}</span>
+            </div>
+            <div class="min-w-0">
+              <h4 class="text-xs sm:text-sm font-bold text-on-surface truncate">${tx.title}</h4>
+              <p class="text-[10px] text-on-surface-variant truncate">${tx.date} • ${tx.recipient || 'Switch Bénin'}</p>
+            </div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="text-xs sm:text-sm font-black ${amtColor} block">${sign}${Math.abs(tx.amount).toLocaleString('fr-FR')} F</span>
+            <span class="text-[9px] font-extrabold ${badgeBg} px-2 py-0.5 rounded-full inline-block mt-0.5">${badgeLabel}</span>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function setDirectionFilter(dir) {
+      currentDirection = dir;
+      ['all', 'received', 'sent'].forEach(d => {
+        const btn = document.getElementById('filter-' + d);
+        if (btn) {
+          if (d === dir) {
+            btn.className = 'filter-pill active bg-primary text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-full whitespace-nowrap shadow-xs transition-all cursor-pointer flex items-center gap-1.5';
+          } else {
+            btn.className = 'filter-pill bg-white text-on-surface-variant border border-outline-variant/60 font-bold text-xs sm:text-sm px-4 py-2 rounded-full whitespace-nowrap hover:bg-purple-50 transition-all cursor-pointer flex items-center gap-1.5';
+          }
+        }
+      });
+      renderTransactions();
+    }
+
+    function setCategoryFilter(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-chip').forEach(c => {
+        c.className = 'cat-chip bg-white border border-outline-variant/50 px-3 py-1 rounded-full font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer';
+      });
+      if (btn) {
+        btn.className = 'cat-chip active bg-primary text-white px-3 py-1 rounded-full font-bold transition-all whitespace-nowrap cursor-pointer shadow-2xs';
+      }
+      renderTransactions();
+    }
+
+    function toggleSearch() {
+      const box = document.getElementById('search-container');
+      const input = document.getElementById('tx-search-input');
+      if (box.classList.contains('hidden')) {
+        box.classList.remove('hidden');
+        input.focus();
+      } else {
+        box.classList.add('hidden');
+        clearSearch();
+      }
+    }
+
+    function applyFilterAndSearch() {
+      const input = document.getElementById('tx-search-input');
+      searchQuery = input.value.trim();
+      const clearBtn = document.getElementById('clear-search-btn');
+      if (clearBtn) {
+        if (searchQuery.length > 0) {
+          clearBtn.classList.remove('hidden');
+        } else {
+          clearBtn.classList.add('hidden');
+        }
+      }
+      renderTransactions();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('tx-search-input');
+      if (input) input.value = '';
+      searchQuery = '';
+      const clearBtn = document.getElementById('clear-search-btn');
+      if (clearBtn) clearBtn.classList.add('hidden');
+      renderTransactions();
+    }
+
+    function openTxDetail(tx) {
+      selectedTx = tx;
+      document.getElementById('modal-title').textContent = tx.title;
+      document.getElementById('modal-amount').textContent = (tx.amount > 0 ? '+' : '-') + Math.abs(tx.amount).toLocaleString('fr-FR') + ' FCFA';
+      document.getElementById('modal-amount').className = tx.amount > 0 ? 'text-2xl sm:text-3xl font-black font-mono text-emerald-600' : 'text-2xl sm:text-3xl font-black font-mono text-on-surface';
+      document.getElementById('modal-date').textContent = tx.date;
+      document.getElementById('modal-ref').textContent = tx.id;
+      document.getElementById('modal-dest').textContent = tx.recipient || 'Switch Bénin';
+      document.getElementById('modal-icon-symbol').textContent = tx.icon || 'payments';
+
+      const tokenRow = document.getElementById('modal-token-row');
+      const tokenVal = document.getElementById('modal-token-val');
+      if (tx.note && tx.note.includes('Token')) {
+        tokenRow.classList.remove('hidden');
+        tokenVal.textContent = tx.note.replace('Token généré: ', '').replace('Code Token: ', '');
+      } else {
+        tokenRow.classList.add('hidden');
+      }
+
+      localStorage.setItem('switch_last_tx_id', tx.id);
+      localStorage.setItem('switch_last_tx_amount', Math.abs(tx.amount).toString());
+      localStorage.setItem('switch_last_tx_recipient', tx.recipient || tx.title);
+      localStorage.setItem('switch_last_tx_note', tx.note || '');
+
+      document.getElementById('tx-detail-modal').classList.remove('hidden');
+    }
+
+    function closeTxDetail() {
+      document.getElementById('tx-detail-modal').classList.add('hidden');
+    }
+
+    function shareWhatsAppModal() {
+      if (!selectedTx) return;
+      const msg = encodeURIComponent(
+        `✅ *REÇU SWITCH BÉNIN*\n━━━━━━━━━━━━━━━━━━━━\n💰 *Montant :* ${selectedTx.amount > 0 ? '+' : '-'}${Math.abs(selectedTx.amount).toLocaleString('fr-FR')} FCFA\n📝 *Opération :* ${selectedTx.title}\n📅 *Date :* ${selectedTx.date}\n🔢 *Réf :* ${selectedTx.id}\n━━━━━━━━━━━━━━━━━━━━\n🔒 *Vérifié par Switch Bénin*`
+      );
+      window.open('https://wa.me/?text=' + msg, '_blank');
+    }
+
+    function copyModalRef() {
+      if (!selectedTx) return;
+      navigator.clipboard.writeText(selectedTx.id);
+      alert('Référence copiée : ' + selectedTx.id);
+    }
+
+    function renderStatementPeriod() {
+      const select = document.getElementById('stmt-period-select');
+      const period = select ? select.value : 'current';
+      const txList = getTxList();
+      const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : { full_name: localStorage.getItem('switch_user_fullname') || 'Utilisateur Switch' };
+      const mainBal = window.SwitchAPI ? window.SwitchAPI.getBalance() : (window.SwitchEngine ? window.SwitchEngine.getMainBalance() : (parseInt(localStorage.getItem('switch_user_balance'), 10) || 0));
+
+      const nameEl = document.getElementById('stmt-user-name');
+      if (nameEl) nameEl.textContent = prof.full_name || 'Utilisateur Switch';
+      const phoneSubEl = document.getElementById('stmt-user-phone-sub');
+      if (phoneSubEl && prof.phone_display) phoneSubEl.textContent = prof.phone_display;
+      const accEl = document.getElementById('stmt-user-phone');
+      if (accEl && prof.account_display) accEl.textContent = prof.account_display;
+
+      let filtered = txList;
+      if (period === 'last') {
+        filtered = txList.filter(t => (t.date || '').includes('Juil') || (t.date || '').includes('2024') || (t.id || '').includes('9'));
+      } else if (period === 'q3') {
+        filtered = txList;
+      } else if (period === 'year') {
+        filtered = txList;
+      }
+
+      let credits = 0;
+      let debits = 0;
+      filtered.forEach(t => {
+        if (t.amount > 0) credits += t.amount;
+        else debits += Math.abs(t.amount);
+      });
+
+      document.getElementById('stmt-user-name').textContent = user.name;
+      document.getElementById('stmt-total-credits').textContent = '+' + credits.toLocaleString('fr-FR') + ' F';
+      document.getElementById('stmt-total-debits').textContent = '-' + debits.toLocaleString('fr-FR') + ' F';
+      document.getElementById('stmt-current-bal').textContent = mainBal.toLocaleString('fr-FR') + ' F';
+
+      const tbody = document.getElementById('stmt-table-body');
+      tbody.innerHTML = '';
+
+      filtered.forEach(tx => {
+        const isPos = tx.amount > 0;
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-50';
+        tr.innerHTML = `
+          <td class="p-3 text-gray-500 whitespace-nowrap">${tx.date}</td>
+          <td class="p-3 font-sans">
+            <b class="text-gray-900 block">${tx.title}</b>
+            <span class="text-[10px] text-gray-400 font-mono">${tx.id} • ${tx.recipient || ''}</span>
+          </td>
+          <td class="p-3 text-right font-bold ${isPos ? 'text-emerald-600' : 'text-rose-600'}">
+            ${isPos ? '+' : '-'}${Math.abs(tx.amount).toLocaleString('fr-FR')} F
+          </td>
+          <td class="p-3 text-right">
+            <span class="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">Succès</span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openStatementModal() {
+      renderStatementPeriod();
+      document.getElementById('statement-modal').classList.remove('hidden');
+    }
+
+    function closeStatementModal() {
+      document.getElementById('statement-modal').classList.add('hidden');
+    }
+
+    function printStatement() {
+      window.print();
+    }
+
+    async function syncTransactionsFromCloud() {
+      if (window.SwitchAPI && window.SwitchAPI.getWallet) {
+        try {
+          const w = await window.SwitchAPI.getWallet();
+          if (w && Array.isArray(w.transactions) && w.transactions.length > 0) {
+            const liveTxs = w.transactions.map((t, idx) => ({
+              id: t.tx_ref || `TRX-${idx}`,
+              title: t.title || t.note || (t.amount > 0 ? "Dépôt d'espèces reçu" : "Paiement / Transfert Switch"),
+              category: t.category || (t.amount > 0 ? "deposit" : "transfer"),
+              amount: t.amount,
+              fee: t.fee || 0,
+              date: t.date || "À l'instant",
+              status: "success",
+              recipient: t.recipient || "Kiosque Switch Saint-Michel",
+              note: t.note || "",
+              icon: t.amount > 0 ? "add_circle" : "send",
+              iconBg: t.amount > 0 ? "bg-emerald-50 text-emerald-700" : "bg-purple-50 text-primary"
+            }));
+
+            // Merge with local engine transactions
+            if (window.SwitchEngine && window.SwitchEngine.getTransactions) {
+              const localList = window.SwitchEngine.getTransactions();
+              const merged = [...liveTxs];
+              localList.forEach(lt => {
+                if (!merged.some(m => m.id === lt.id || m.title === lt.title)) {
+                  merged.push(lt);
+                }
+              });
+              localStorage.setItem('switch_transactions', JSON.stringify(merged));
+            } else {
+              localStorage.setItem('switch_transactions', JSON.stringify(liveTxs));
+            }
+            renderTransactions();
+          }
+        } catch (e) {
+          console.info("[Historique] Synchro Cloud :", e.message);
+        }
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderTransactions();
+      syncTransactionsFromCloud();
+    });
+  </script>
+
+  <script src="../assets/switch.router.js" defer></script>
+</body>
+</html>

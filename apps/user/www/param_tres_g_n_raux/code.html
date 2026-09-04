@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Paramètres & Profil - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.api.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+    .profile-hero {
+      background: linear-gradient(135deg, #5E3BDC 0%, #4323B0 50%, #2A1175 100%);
+      box-shadow: 0 16px 36px -10px rgba(94, 59, 220, 0.3);
+    }
+    .setting-item {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .setting-item:hover {
+      background-color: #FBF9FF;
+      border-color: rgba(94, 59, 220, 0.3);
+    }
+    .setting-item:active {
+      transform: scale(0.99);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
+
+  <!-- Top Header -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30">
+    <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 shadow-sm hover:bg-surface-container transition-colors cursor-pointer text-on-surface">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    <h1 class="text-lg font-extrabold text-on-surface">Paramètres & Profil</h1>
+    <a href="../support_aide/code.html" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-primary hover:bg-primary/5 transition-colors cursor-pointer no-underline" title="Aide & Support">
+      <span class="material-symbols-outlined text-xl">support_agent</span>
+    </a>
+  </header>
+
+  <!-- Main Content -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-6 pt-1">
+
+    <!-- 1. Hero Profile Card (Adele Doe + RIB Copy) -->
+    <section class="profile-hero rounded-[32px] p-6 text-white relative overflow-hidden flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <div id="settings-avatar-box" class="w-16 h-16 rounded-full overflow-hidden border-2 border-white/40 shadow-md flex items-center justify-center bg-white/20">
+              <img id="settings-avatar-img" alt="Photo de profil" class="w-full h-full object-cover hidden" src=""/>
+              <span id="settings-avatar-initials" class="text-xl font-black text-white">SW</span>
+            </div>
+            <span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-green-400 border-2 border-white"></span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 id="settings-user-name" class="text-lg sm:text-xl font-extrabold">Utilisateur Switch</h2>
+              <span id="settings-kyc-badge" class="text-[10px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full">
+                Vérifié
+              </span>
+            </div>
+            <p id="settings-user-phone-sub" class="text-xs text-purple-200 mt-0.5 font-mono">+229 01 -- -- --</p>
+            <p id="settings-user-email" class="text-[11px] text-purple-300 mt-0.5">Non renseigné</p>
+          </div>
+        </div>
+
+        <a href="../modifier_le_profil/code.html" class="w-9 h-9 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/25 transition-colors no-underline cursor-pointer" title="Modifier le profil">
+          <span class="material-symbols-outlined text-base">edit</span>
+        </a>
+      </div>
+
+      <!-- Account Number Box -->
+      <div class="bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/20 flex items-center justify-between text-xs font-mono">
+        <div class="flex flex-col gap-0.5">
+          <span class="text-[10px] font-bold uppercase text-purple-200 font-sans">Numéro de Compte Switch</span>
+          <span class="text-white font-bold select-all" id="settings-user-account">01 -- -- -- -- • ----</span>
+        </div>
+        <button onclick="copyUserAccountNumber()" class="px-2.5 py-1 rounded-xl bg-white text-primary text-[11px] font-black uppercase shadow-sm hover:bg-purple-50 transition-colors cursor-pointer">
+          Copier
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. Espaces Professionnels (Commerce, Guichet & Agent Mixte) -->
+    <section class="flex flex-col gap-3">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Espaces Professionnels</h3>
+
+      <!-- Point Hybride Mise en Avant -->
+      <a href="../tableau_de_bord_agent_mixte/code.html" class="setting-item bg-gradient-to-r from-purple-900 via-indigo-900 to-[#1C0F4A] p-4 rounded-3xl text-white shadow-md flex items-center justify-between no-underline border border-purple-400/30 group">
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-white/15 text-amber-300 border border-white/20 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-2xl">hub</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <h4 class="font-extrabold text-xs sm:text-sm text-white">Commerce & Guichet (Agent Mixte)</h4>
+              <span class="text-[9px] font-black uppercase bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded-full border border-amber-300/30">Hybride</span>
+            </div>
+            <p class="text-[10px] text-purple-200 mt-0.5">Terminal 2-en-1 : Caisse Boutique POS + Guichet Cash-in/out</p>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-white/80 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+      </a>
+
+      <div class="grid grid-cols-2 gap-3">
+        <!-- Espace Marchand Simple -->
+        <a href="../tableau_de_bord_marchand/code.html" class="setting-item bg-white p-4 rounded-3xl border border-outline-variant/40 shadow-sm flex flex-col gap-2 no-underline text-on-surface cursor-pointer">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+            <span class="material-symbols-outlined text-xl">storefront</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-xs sm:text-sm">Espace Marchand</h4>
+            <p class="text-[10px] text-on-surface-variant mt-0.5">Caisse POS & Ventes QR 0%</p>
+          </div>
+        </a>
+
+        <!-- Espace Agent Pur -->
+        <a href="../tableau_de_bord_agent/code.html" class="setting-item bg-white p-4 rounded-3xl border border-outline-variant/40 shadow-sm flex flex-col gap-2 no-underline text-on-surface cursor-pointer">
+          <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center">
+            <span class="material-symbols-outlined text-xl">support_agent</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-xs sm:text-sm">Espace Agent Pur</h4>
+            <p class="text-[10px] text-on-surface-variant mt-0.5">Guichet & Commissions</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 3. Sécurité & Accès -->
+    <section class="flex flex-col gap-3">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Sécurité & Confidentialité</h3>
+
+      <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-sm divide-y divide-outline-variant/30 overflow-hidden">
+        
+        <!-- Sécurité PIN & Biométrie -->
+        <a href="../s_curit/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">lock</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Sécurité & Code PIN</h4>
+              <p class="text-[11px] text-on-surface-variant">Changer PIN, FaceID et empreinte</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+
+        <!-- Appareils Connectés -->
+        <a href="../appareils_connectes_securite/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">devices</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Appareils Connectés</h4>
+              <p class="text-[11px] text-on-surface-variant">2 sessions actives • Déconnexion à distance</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+
+        <!-- Limites & Plafonds -->
+        <a href="../limites_de_transaction/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">speed</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Plafonds de Transaction</h4>
+              <p class="text-[11px] text-on-surface-variant">Niveau 2 • Jusqu'à 2 000 000 F / jour</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+
+        <!-- Moyens de paiement liés -->
+        <a href="../moyens_de_paiement_li_s/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">account_balance</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Comptes & Moyens Liés</h4>
+              <p class="text-[11px] text-on-surface-variant">MTN MoMo, Moov Money, Comptes bancaires</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 4. Outils & Préférences -->
+    <section class="flex flex-col gap-3">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Outils & Connectivité</h3>
+
+      <div class="bg-white rounded-3xl border border-outline-variant/40 shadow-sm divide-y divide-outline-variant/30 overflow-hidden">
+        
+        <!-- Notifications & Alertes -->
+        <a href="../centre_de_notifications/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-purple-50 text-primary flex items-center justify-center relative">
+              <span class="material-symbols-outlined text-xl">notifications_active</span>
+              <span class="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full"></span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Centre de Notifications</h4>
+              <p class="text-[11px] text-on-surface-variant">Alertes transferts, sécurité et reçus</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+
+        <!-- Mode Hors-Ligne USSD -->
+        <a href="../mode_hors_ligne_ussd/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">signal_cellular_nodata</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Mode Hors-Ligne (*880# / *155#)</h4>
+              <p class="text-[11px] text-on-surface-variant">Opérations sans connexion internet</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+
+        <!-- Simulateur de Frais -->
+        <a href="../simulateur_de_frais/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-sky-50 text-sky-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">calculate</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Simulateur de Frais Transparent</h4>
+              <p class="text-[11px] text-on-surface-variant">Calculer les tarifs avant d'envoyer</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+
+        <!-- Conditions d'utilisation & Confidentialité -->
+        <a href="../conditions_utilisation/code.html" class="setting-item p-4 flex items-center justify-between no-underline text-on-surface cursor-pointer">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-purple-50 text-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-xl">policy</span>
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold">Conditions & Confidentialité</h4>
+              <p class="text-[11px] text-on-surface-variant">Réglementation BCEAO et APDP Bénin</p>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 5. Déconnexion -->
+    <div class="pt-2">
+      <button onclick="switchLogout()" class="w-full bg-rose-50 border border-rose-200 text-rose-600 font-bold py-4 rounded-3xl hover:bg-rose-100 transition-colors flex items-center justify-center gap-2 text-sm cursor-pointer shadow-xs active:scale-98">
+        <span class="material-symbols-outlined text-xl">logout</span>
+        <span>Se déconnecter de Switch</span>
+      </button>
+      <p class="text-center text-[10px] text-on-surface-variant mt-3">Switch Bénin v2.4 • Conforme Réglementation BCEAO / ANIP</p>
+    </div>
+
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : {
+        full_name: localStorage.getItem('switch_user_fullname') || localStorage.getItem('switch_user_name') || 'Utilisateur Switch',
+        phone_display: localStorage.getItem('switch_user_phone') || '+229 01 -- -- --',
+        email: localStorage.getItem('switch_user_email') || '',
+        avatar_url: localStorage.getItem('switch_user_avatar'),
+        account_display: localStorage.getItem('switch_account_display')
+      };
+
+      const nameEl = document.getElementById('settings-user-name');
+      if (nameEl) nameEl.textContent = prof.full_name || 'Utilisateur Switch';
+
+      const phoneSubEl = document.getElementById('settings-user-phone-sub');
+      if (phoneSubEl && prof.phone_display) phoneSubEl.textContent = prof.phone_display;
+
+      const emailEl = document.getElementById('settings-user-email');
+      if (emailEl) {
+        emailEl.textContent = (prof.email && !prof.email.includes('adele.doe')) ? prof.email : 'Email non renseigné';
+      }
+
+      const accEl = document.getElementById('settings-user-account');
+      if (accEl) {
+        accEl.textContent = prof.account_display || '01 -- -- -- -- • ----';
+      }
+
+      const avatarEl = document.getElementById('settings-avatar-img');
+      const initialsEl = document.getElementById('settings-avatar-initials');
+      if (prof.avatar_url && prof.avatar_url.startsWith('http')) {
+        if (avatarEl) {
+          avatarEl.src = prof.avatar_url;
+          avatarEl.classList.remove('hidden');
+        }
+        if (initialsEl) initialsEl.classList.add('hidden');
+      } else {
+        const parts = (prof.full_name || 'SW').trim().split(/\s+/);
+        const initials = ((parts[0] ? parts[0][0] : '') + (parts[1] ? parts[1][0] : '')).toUpperCase() || 'SW';
+        if (initialsEl) {
+          initialsEl.textContent = initials;
+          initialsEl.classList.remove('hidden');
+        }
+        if (avatarEl) avatarEl.classList.add('hidden');
+      }
+    });
+
+    function copyUserAccountNumber() {
+      const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : {};
+      const num = prof.account_number || prof.account_display || localStorage.getItem('switch_account_number') || '';
+      if (num) {
+        navigator.clipboard.writeText(num);
+        alert("Numéro de Compte Switch copié :\n" + num);
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Retrait d'espèces Client (Cash-Out) - Terminal Agent Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+  <script src="../assets/switch.engine.js"></script>
+  <script src="../assets/switch.api.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .input-focus {
+      transition: all 0.2s ease;
+    }
+
+    .input-focus:focus-within {
+      border-color: #5E3BDC;
+      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.12);
+    }
+
+    .modal-enter {
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .pill-active {
+      background-color: #5E3BDC !important;
+      color: #FFFFFF !important;
+      border-color: #5E3BDC !important;
+      box-shadow: 0 4px 12px rgba(94, 59, 220, 0.25);
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <button aria-label="Retour" onclick="goBack()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Retrait d'espèces (Cash-Out)</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Décaisser des espèces pour un client Switch</p>
+    </div>
+
+    <!-- Active Float Indicator Badge -->
+    <div class="flex flex-col items-end">
+      <span class="text-[9px] font-bold uppercase text-on-surface-variant">Float Caisse</span>
+      <span id="current-float-badge" class="text-xs font-mono font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+        0 F
+      </span>
+    </div>
+  </header>
+
+  <!-- Main Content Form Area -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- Mode Selector Tabs (Code OTP vs Saisie Directe Compte) -->
+    <div class="grid grid-cols-2 p-1 bg-surface-container rounded-2xl border border-outline-variant/60">
+      <button type="button" onclick="setWithdrawalMode('code')" id="tab-btn-code" class="py-2.5 rounded-xl font-bold text-xs bg-white text-primary shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+        <span class="material-symbols-outlined text-base">pin</span>
+        <span>Code OTP (Recommandé)</span>
+      </button>
+      <button type="button" onclick="setWithdrawalMode('direct')" id="tab-btn-direct" class="py-2.5 rounded-xl font-bold text-xs text-gray-500 hover:text-on-surface transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+        <span class="material-symbols-outlined text-base">person</span>
+        <span>Numéro de Compte</span>
+      </button>
+    </div>
+
+    <!-- Form Container -->
+    <form id="withdraw-form" onsubmit="event.preventDefault(); openPinConfirmation();" class="flex flex-col gap-4">
+
+      <!-- MODE 1 : CODE RETRAIT OTP SWITCH (6 chiffres) -->
+      <section id="section-mode-code" class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3.5">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">pin</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">1. Code Secret de Retrait Switch (6 chiffres)</h2>
+          </div>
+          <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Généré sur l'app Client</span>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <div class="flex gap-2">
+            <div class="input-focus relative flex-1 flex items-center rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 overflow-hidden">
+              <span class="material-symbols-outlined absolute left-3.5 text-primary text-lg">pin</span>
+              <input 
+                type="text" 
+                id="withdrawalCode" 
+                maxlength="6" 
+                oninput="handleCodeInput(this.value)" 
+                value="" 
+                placeholder="Ex: 582914" 
+                class="w-full bg-transparent border-0 py-3.5 pl-10 pr-3 text-base sm:text-lg font-mono font-black tracking-wider text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <!-- Verified Code Card -->
+          <div id="verified-code-box" class="hidden p-3.5 rounded-2xl bg-emerald-50/90 border border-emerald-200 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold">
+                <span class="material-symbols-outlined text-xl">verified</span>
+              </div>
+              <div class="flex flex-col">
+                <span id="code-client-name" class="text-xs font-black text-emerald-950">Client Switch</span>
+                <span class="text-[10px] text-emerald-700 font-mono">Code de Retrait Actif • Switch Bénin</span>
+              </div>
+            </div>
+            <span id="code-amount-badge" class="text-xs font-black font-mono text-emerald-800 bg-white px-2.5 py-1 rounded-xl border border-emerald-200">
+              25 000 F
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODE 2 : SAISIE DIRECTE DU COMPTE SWITCH DU CLIENT -->
+      <section id="section-mode-direct" class="hidden bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">badge</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">1. Compte Switch Client</h2>
+          </div>
+          <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">Switch Bénin 🇧🇯</span>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-[11px] font-semibold text-gray-600">Numéro de Téléphone (10 chiffres) ou Numéro de Compte Switch :</label>
+          <div class="input-focus flex items-center rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 overflow-hidden">
+            <div class="flex items-center gap-1.5 px-3.5 py-3.5 bg-purple-50 border-r border-outline-variant/50 text-xs font-bold text-primary select-none shrink-0">
+              <span class="material-symbols-outlined text-base">person</span>
+              <span class="font-mono font-bold">Client</span>
+            </div>
+            <input 
+              type="tel" 
+              id="directClientIdentifier" 
+              value="" 
+              placeholder="01 97 12 34 56" 
+              class="w-full bg-transparent border-0 py-3 px-3.5 text-sm sm:text-base font-mono font-bold text-on-surface placeholder:text-gray-400 focus:ring-0 focus:outline-none"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- MONTANT DU RETRAIT & CALCUL COMMISSIONS -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">payments</span>
+            <h2 class="text-xs font-black text-on-surface uppercase tracking-wider">2. Montant en espèces à décaisser</h2>
+          </div>
+          <span class="text-[10px] font-mono text-gray-500 font-bold">Min: 500 F</span>
+        </div>
+
+        <!-- Amount Input -->
+        <div class="flex flex-col gap-2">
+          <div class="input-focus flex items-center justify-between rounded-2xl border border-outline-variant/60 bg-surface-container-low/50 px-4 py-3.5">
+            <input 
+              type="number" 
+              id="withdrawAmount" 
+              required 
+              oninput="calculateWithdrawal(this.value)" 
+              value="25000" 
+              min="500" 
+              max="5000000" 
+              class="w-full bg-transparent border-0 p-0 text-2xl sm:text-3xl font-mono font-black text-on-surface placeholder:text-gray-300 focus:ring-0 focus:outline-none"
+            />
+            <span class="text-base sm:text-lg font-extrabold text-primary shrink-0 ml-2">FCFA</span>
+          </div>
+
+          <!-- Quick Amount Selection Pills -->
+          <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5 pt-1">
+            <button type="button" onclick="setWithdrawAmount(5000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">5 000</button>
+            <button type="button" onclick="setWithdrawAmount(10000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">10 000</button>
+            <button type="button" onclick="setWithdrawAmount(25000)" class="quick-pill pill-active py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">25 000</button>
+            <button type="button" onclick="setWithdrawAmount(50000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">50 000</button>
+            <button type="button" onclick="setWithdrawAmount(100000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">100 000</button>
+            <button type="button" onclick="setWithdrawAmount(250000)" class="quick-pill py-2 rounded-xl bg-gray-100 text-xs font-mono font-bold text-on-surface hover:bg-purple-50 hover:text-primary transition-all cursor-pointer">250 000</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Calculation Card -->
+        <div class="mt-2 p-4 rounded-2xl bg-gradient-to-br from-purple-50 to-emerald-50/40 border border-purple-200/80 flex flex-col gap-2.5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-gray-700 font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-emerald-600 text-base">savings</span>
+              Votre Commission Agent :
+            </span>
+            <span id="withdraw-commission-text" class="font-mono font-black text-emerald-700 text-sm bg-white px-2 py-0.5 rounded-lg border border-emerald-200">
+              +200 FCFA
+            </span>
+          </div>
+
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-gray-600 font-medium">Frais facturés au client (0.5%) :</span>
+            <span id="client-fee-text" class="font-mono font-bold text-gray-900">125 FCFA</span>
+          </div>
+
+          <div class="flex items-center justify-between text-xs pt-2 border-t border-purple-200/60">
+            <span class="text-gray-600 font-medium">Impact Float Caisse :</span>
+            <span id="withdraw-float-impact-text" class="font-mono font-black text-emerald-700 text-xs">
+              +25 000 FCFA (Crédité sur votre caisse)
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Submit Action Button -->
+      <div class="pt-2">
+        <button type="submit" id="submit-withdraw-btn" data-no-router="true" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm cursor-pointer">
+          <span class="material-symbols-outlined text-xl">payments</span>
+          <span>Valider le Décaissement Espèces</span>
+        </button>
+      </div>
+
+    </form>
+
+  </main>
+
+  <!-- MODAL : Confirmation PIN Sécurité de l'Agent -->
+  <div id="pin-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm hidden flex items-end justify-center">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-10 shadow-2xl modal-enter flex flex-col gap-4">
+      
+      <div class="w-full flex items-center justify-between">
+        <span class="w-12 h-1 bg-outline-variant rounded-full mx-auto -mr-6"></span>
+        <button onclick="closePinModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-2xl">lock</span>
+        </div>
+        <div>
+          <h3 class="text-base font-black text-on-surface">Confirmer le Retrait Client</h3>
+          <p class="text-xs text-on-surface-variant">Code PIN Agent (saisissez <b>1234</b> ou cliquez sur l'empreinte)</p>
+        </div>
+      </div>
+
+      <div class="p-3.5 rounded-2xl bg-surface-container-low/60 border border-outline-variant/60 flex flex-col gap-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-gray-500 font-medium">Bénéficiaire :</span>
+          <b id="modal-recap-client" class="text-on-surface font-bold">Client Switch</b>
+        </div>
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-gray-500 font-medium">Type d'opération :</span>
+          <b class="text-primary font-bold">Retrait Espèces Switch 🇧🇯</b>
+        </div>
+        <div class="flex items-center justify-between text-xs pt-1.5 border-t border-outline-variant/40">
+          <span class="text-gray-700 font-bold">Montant à décaisser :</span>
+          <b id="modal-recap-amount" class="text-base font-black font-mono text-primary">25 000 FCFA</b>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-center gap-3 my-2">
+        <div id="pindot-1" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-2" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-3" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-4" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2.5 max-w-xs mx-auto w-full">
+        <button type="button" onclick="pressPin('1')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">1</button>
+        <button type="button" onclick="pressPin('2')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">2</button>
+        <button type="button" onclick="pressPin('3')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">3</button>
+        
+        <button type="button" onclick="pressPin('4')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">4</button>
+        <button type="button" onclick="pressPin('5')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">5</button>
+        <button type="button" onclick="pressPin('6')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">6</button>
+        
+        <button type="button" onclick="pressPin('7')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">7</button>
+        <button type="button" onclick="pressPin('8')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">8</button>
+        <button type="button" onclick="pressPin('9')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">9</button>
+        
+        <button type="button" onclick="pressBiometric()" class="h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center cursor-pointer active:scale-95 transition-transform" title="Empreinte">
+          <span class="material-symbols-outlined text-xl">fingerprint</span>
+        </button>
+        <button type="button" onclick="pressPin('0')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">0</button>
+        <button type="button" onclick="deletePin()" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface cursor-pointer active:scale-95 transition-transform">
+          <span class="material-symbols-outlined text-lg">backspace</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../assets/switch.router.js"></script>
+
+  <script>
+    let withdrawalMode = 'code'; // 'code' or 'direct'
+    let currentAgentFloat = parseInt((localStorage.getItem('switch_agent_float') || '1500000').replace(/\s/g, ''), 10);
+    let pinCode = "";
+
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../tableau_de_bord_agent/code.html';
+      }
+    }
+
+    function setWithdrawalMode(mode) {
+      withdrawalMode = mode;
+      const btnCode = document.getElementById('tab-btn-code');
+      const btnDirect = document.getElementById('tab-btn-direct');
+      const secCode = document.getElementById('section-mode-code');
+      const secDirect = document.getElementById('section-mode-direct');
+
+      if (mode === 'code') {
+        btnCode.className = "py-2.5 rounded-xl font-bold text-xs bg-white text-primary shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+        btnDirect.className = "py-2.5 rounded-xl font-bold text-xs text-gray-500 hover:text-on-surface transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+        secCode.classList.remove('hidden');
+        secDirect.classList.add('hidden');
+      } else {
+        btnDirect.className = "py-2.5 rounded-xl font-bold text-xs bg-white text-primary shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+        btnCode.className = "py-2.5 rounded-xl font-bold text-xs text-gray-500 hover:text-on-surface transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+        secCode.classList.add('hidden');
+        secDirect.classList.remove('hidden');
+      }
+    }
+
+    function handleCodeInput(val) {
+      const clean = val.replace(/\D/g, '');
+      const box = document.getElementById('verified-code-box');
+      const nameEl = document.getElementById('code-client-name');
+
+      if (clean.length === 6) {
+        box.classList.remove('hidden');
+        nameEl.textContent = "Code OTP Vérifié (#" + clean + ")";
+      } else {
+        box.classList.add('hidden');
+      }
+    }
+
+    function setWithdrawAmount(amt) {
+      document.getElementById('withdrawAmount').value = amt;
+      const pills = document.querySelectorAll('.quick-pill');
+      pills.forEach(p => {
+        if (parseInt(p.textContent.replace(/\s+/g, '')) === amt) {
+          p.classList.add('pill-active');
+        } else {
+          p.classList.remove('pill-active');
+        }
+      });
+      calculateWithdrawal(amt);
+    }
+
+    function calculateWithdrawal(amount) {
+      const amt = parseInt(amount) || 0;
+      const commission = Math.max(100, Math.round(amt * 0.008));
+      const fee = Math.max(50, Math.round(amt * 0.005));
+
+      document.getElementById('withdraw-commission-text').textContent = `+${commission.toLocaleString('fr-FR')} FCFA`;
+      document.getElementById('client-fee-text').textContent = `${fee.toLocaleString('fr-FR')} FCFA`;
+      document.getElementById('withdraw-float-impact-text').textContent = `+${amt.toLocaleString('fr-FR')} FCFA (Crédité sur votre caisse)`;
+    }
+
+    async function openPinConfirmation() {
+      let clientIdentifier = "";
+      if (withdrawalMode === 'code') {
+        clientIdentifier = document.getElementById('withdrawalCode').value.trim();
+        if (!clientIdentifier || clientIdentifier.length !== 6) {
+          alert("Veuillez saisir le code OTP à 6 chiffres présenté par le client.");
+          document.getElementById('withdrawalCode').focus();
+          return;
+        }
+      } else {
+        clientIdentifier = document.getElementById('directClientIdentifier').value.trim();
+        if (!clientIdentifier || clientIdentifier.length < 6) {
+          alert("Veuillez renseigner le numéro de compte ou téléphone du client.");
+          document.getElementById('directClientIdentifier').focus();
+          return;
+        }
+      }
+
+      const amount = parseInt(document.getElementById('withdrawAmount').value, 10);
+      if (!amount || amount < 500) {
+        alert("Le montant minimum de retrait est de 500 FCFA.");
+        return;
+      }
+
+      // Si mode compte direct, on génère et envoie le code secret OTP sur le téléphone client !
+      if (withdrawalMode === 'direct') {
+        const submitBtn = document.getElementById('submit-withdraw-btn');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = "<span>Envoi du Code au Client...</span>";
+        }
+
+        try {
+          if (window.SwitchAPI && window.SwitchAPI.requestWithdrawalOtp) {
+            const reqRes = await window.SwitchAPI.requestWithdrawalOtp(clientIdentifier, amount);
+            if (reqRes && reqRes.success) {
+              const enteredOtp = prompt(`🔒 Demande de retrait envoyée au client !\n\nLe client (${clientIdentifier}) a reçu son Code Secret sur son écran.\n\nVeuillez demander et saisir le code secret à 6 chiffres communiqué par le client :`, reqRes.otp_code || "");
+              if (!enteredOtp || enteredOtp.trim().length !== 6) {
+                alert("Retrait annulé : Le code secret du client est obligatoire pour sécuriser le décaissement.");
+                if (submitBtn) {
+                  submitBtn.disabled = false;
+                  submitBtn.innerHTML = '<span class="material-symbols-outlined text-xl">payments</span><span>Valider le Décaissement Espèces</span>';
+                }
+                return;
+              }
+              clientIdentifier = enteredOtp.trim();
+              document.getElementById('withdrawalCode').value = clientIdentifier;
+            }
+          }
+        } catch(e) {
+          console.warn("Erreur envoi OTP retrait:", e.message);
+        }
+
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span class="material-symbols-outlined text-xl">payments</span><span>Valider le Décaissement Espèces</span>';
+        }
+      }
+
+      document.getElementById('modal-recap-client').textContent = (withdrawalMode === 'code') ? `Code OTP #${clientIdentifier}` : `Client (${clientIdentifier})`;
+      document.getElementById('modal-recap-amount').textContent = `${amount.toLocaleString('fr-FR')} FCFA`;
+
+      pinCode = "";
+      updatePinDots();
+      document.getElementById('pin-modal').classList.remove('hidden');
+    }
+
+    function closePinModal() {
+      document.getElementById('pin-modal').classList.add('hidden');
+    }
+
+    function pressPin(num) {
+      if (pinCode.length < 4) {
+        pinCode += num;
+        updatePinDots();
+        if (pinCode.length === 4) {
+          setTimeout(executeWithdrawal, 200);
+        }
+      }
+    }
+
+    function deletePin() {
+      if (pinCode.length > 0) {
+        pinCode = pinCode.slice(0, -1);
+        updatePinDots();
+      }
+    }
+
+    function pressBiometric() {
+      pinCode = "••••";
+      updatePinDots();
+      setTimeout(executeWithdrawal, 300);
+    }
+
+    function updatePinDots() {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`pindot-${i}`);
+        if (i <= pinCode.length) {
+          dot.className = "w-3.5 h-3.5 rounded-full border-2 border-primary bg-primary transition-all scale-110";
+        } else {
+          dot.className = "w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all";
+        }
+      }
+    }
+
+    // Exécution du Retrait Switch (Strictement bloquant)
+    async function executeWithdrawal() {
+      const amount = parseInt(document.getElementById('withdrawAmount').value, 10) || 25000;
+      let clientIdent = (withdrawalMode === 'code') ? document.getElementById('withdrawalCode').value.trim() : document.getElementById('directClientIdentifier').value.trim();
+
+      let opSuccess = false;
+      let txRef = "";
+      let errorMessage = "Échec du retrait. Code OTP expiré ou solde client insuffisant.";
+
+      try {
+        if (window.SwitchAPI && window.SwitchAPI.processAgentCash) {
+          const res = await window.SwitchAPI.processAgentCash(clientIdent, amount, 'WITHDRAWAL');
+          if (res && res.success) {
+            opSuccess = true;
+            txRef = res.tx_ref;
+          } else if (res && res.message) {
+            errorMessage = res.message;
+          }
+        }
+      } catch (err) {
+        errorMessage = err.message || errorMessage;
+      }
+
+      if (!opSuccess) {
+        alert("❌ Retrait rejeté : " + errorMessage);
+        pinCode = "";
+        updatePinDots();
+        closePinModal();
+        return; // Strictement bloquant
+      }
+
+      closePinModal();
+
+      const isHybrid = localStorage.getItem('switch_is_hybrid') === 'true';
+      const homeTarget = isHybrid ? "../tableau_de_bord_agent_mixte/code.html" : "../tableau_de_bord_agent/code.html";
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+      const trxData = {
+        title: "Retrait d'espèces (Cash-Out Client)",
+        amount: amount,
+        fee: "0 FCFA",
+        beneficiary: (withdrawalMode === 'code') ? `Code OTP #${clientIdent}` : `Compte ${clientIdent}`,
+        network: "Compte Switch Bénin",
+        commission: document.getElementById('withdraw-commission-text').textContent,
+        source: "Caisse Espèces Guichet",
+        ref: txRef || `TRX-RET-${Date.now().toString().slice(-5)}`,
+        date: dateStr,
+        returnUrl: homeTarget,
+        returnLabel: "Retour au Tableau de Bord Agent"
+      };
+
+      localStorage.setItem('switch_last_transaction', JSON.stringify(trxData));
+
+      if (window.switchNavigate) {
+        window.switchNavigate('../recu_operation_agent/code.html');
+      } else {
+        window.location.href = '../recu_operation_agent/code.html';
+      }
+    }
+
+    // Initialisation
+    function initAgentWithdrawal() {
+      if (window.SwitchAPI && window.SwitchAPI.getAgentFloat) {
+        currentAgentFloat = window.SwitchAPI.getAgentFloat();
+      } else {
+        const storedFloat = localStorage.getItem('switch_agent_float');
+        currentAgentFloat = storedFloat ? parseInt(storedFloat.replace(/\s/g, ''), 10) : 0;
+      }
+      const floatBadge = document.getElementById('current-float-badge');
+      if (floatBadge) floatBadge.textContent = currentAgentFloat.toLocaleString('fr-FR') + ' F';
+      calculateWithdrawal(document.getElementById('withdrawAmount') ? (parseInt(document.getElementById('withdrawAmount').value, 10) || 0) : 0);
+    }
+
+    document.addEventListener('DOMContentLoaded', initAgentWithdrawal);
+    initAgentWithdrawal();
+  </script>
+
+</body>
+</html>

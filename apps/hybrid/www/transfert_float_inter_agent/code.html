@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Transfert Float Inter-Agents - Espace Distributeur Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .modal-enter {
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <button aria-label="Retour" onclick="window.location.href='../tableau_de_bord_agent/code.html'" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Transfert Float Inter-Agents</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Dépannage de trésorerie entre confrères Switch</p>
+    </div>
+
+    <!-- Active Float Indicator Badge -->
+    <div class="flex flex-col items-end">
+      <span class="text-[9px] font-bold uppercase text-on-surface-variant">Mon Float</span>
+      <span class="text-xs font-mono font-black text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20">
+        1 500 000 F
+      </span>
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- Hero Banner Info Inter-Agents -->
+    <div class="bg-gradient-to-r from-purple-900 to-indigo-900 rounded-3xl p-5 text-white shadow-soft flex items-center justify-between">
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-2xl bg-amber-400 text-purple-950 flex items-center justify-center font-black text-xl shrink-0 shadow-md">
+          <span class="material-symbols-outlined text-2xl">swap_horizontal_circle</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h2 class="text-sm font-black">Virement Float Instantané</h2>
+            <span class="text-[9px] font-black uppercase text-emerald-300 bg-emerald-400/20 border border-emerald-300/40 px-1.5 py-0.2 rounded-md">0 F FRAIS</span>
+          </div>
+          <p class="text-xs text-purple-200 mt-0.5">Échange de liquidité d'urgence entre points de vente agréés</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Container -->
+    <form onsubmit="event.preventDefault(); openPinModal();" class="flex flex-col gap-4">
+
+      <!-- 1. Sélection de l'Agent Bénéficiaire -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">storefront</span>
+            <h3 class="text-xs font-black text-on-surface uppercase tracking-wider">1. Agent Confrère Destinataire</h3>
+          </div>
+          <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Réseau Agréé</span>
+        </div>
+
+        <!-- Saisie ID Agent / Téléphone -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-bold text-gray-700">Identifiant Agent ou N° Mobile (+229) *</label>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3.5 text-gray-400 text-lg">badge</span>
+            <input type="text" id="targetAgentInput" required value="AGT-3104" oninput="verifyTargetAgent()" placeholder="Ex: AGT-3104 ou 97 12 34 56" class="w-full rounded-2xl border border-outline-variant/60 bg-gray-50 py-3 pl-10 pr-4 text-xs font-mono font-bold text-on-surface focus:border-primary focus:ring-primary"/>
+          </div>
+        </div>
+
+        <!-- Badge Agent Vérifié en Direct -->
+        <div id="verified-agent-badge" class="p-3 rounded-2xl bg-emerald-50/80 border border-emerald-200 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">
+              <span class="material-symbols-outlined text-base">verified</span>
+            </div>
+            <div>
+              <b id="target-agent-name" class="text-emerald-950 font-bold block">Kiosque Saint-Michel (Brice A.)</b>
+              <span id="target-agent-details" class="text-[10px] text-emerald-700 font-mono">ID: AGT-3104 • Saint-Michel Cotonou</span>
+            </div>
+          </div>
+          <span class="text-[9px] font-black uppercase text-emerald-800 bg-white px-2 py-1 rounded-lg border border-emerald-200">
+            Valide
+          </span>
+        </div>
+
+        <!-- Confrères Récents / Favoris -->
+        <div class="flex flex-col gap-1.5 pt-1">
+          <span class="text-[10px] uppercase font-bold text-gray-400">Agents Confrères à Proximité</span>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <button type="button" onclick="selectQuickAgent('AGT-3104', 'Kiosque Saint-Michel (Brice A.)', 'Saint-Michel Cotonou')" class="p-2.5 rounded-2xl bg-gray-50 hover:bg-purple-50 border border-outline-variant/40 text-left transition-colors flex items-center gap-2 cursor-pointer">
+              <span class="material-symbols-outlined text-primary text-base">store</span>
+              <div class="truncate">
+                <b class="text-xs text-on-surface block truncate">Saint-Michel (Brice)</b>
+                <span class="text-[10px] text-gray-500 font-mono">AGT-3104</span>
+              </div>
+            </button>
+
+            <button type="button" onclick="selectQuickAgent('AGT-8821', 'Point Relais Akpakpa (Saliou M.)', 'Akpakpa Cotonou')" class="p-2.5 rounded-2xl bg-gray-50 hover:bg-purple-50 border border-outline-variant/40 text-left transition-colors flex items-center gap-2 cursor-pointer">
+              <span class="material-symbols-outlined text-primary text-base">store</span>
+              <div class="truncate">
+                <b class="text-xs text-on-surface block truncate">Akpakpa (Saliou)</b>
+                <span class="text-[10px] text-gray-500 font-mono">AGT-8821</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Montant du Float à Transférer -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">payments</span>
+            <h3 class="text-xs font-black text-on-surface uppercase tracking-wider">2. Montant du Virement Float</h3>
+          </div>
+          <span class="text-[10px] font-bold text-gray-500 font-mono">Max: 1 500 000 F</span>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-bold text-gray-700">Montant en FCFA *</label>
+          <div class="relative flex items-center">
+            <input type="number" id="transferFloatAmt" required min="5000" max="1500000" step="5000" value="100000" oninput="updateCalculation()" class="w-full rounded-2xl border border-outline-variant/60 bg-gray-50 py-3.5 px-4 text-base font-mono font-black text-on-surface focus:border-primary focus:ring-primary"/>
+            <span class="absolute right-4 font-bold text-xs text-gray-500">FCFA</span>
+          </div>
+        </div>
+
+        <!-- Quick Amount Pills -->
+        <div class="grid grid-cols-4 gap-2">
+          <button type="button" onclick="setQuickAmount(50000)" class="py-2 rounded-xl bg-gray-100 hover:bg-primary hover:text-white text-xs font-mono font-bold text-gray-700 transition-colors cursor-pointer">50 000 F</button>
+          <button type="button" onclick="setQuickAmount(100000)" class="py-2 rounded-xl bg-primary text-white text-xs font-mono font-bold transition-colors cursor-pointer">100 000 F</button>
+          <button type="button" onclick="setQuickAmount(250000)" class="py-2 rounded-xl bg-gray-100 hover:bg-primary hover:text-white text-xs font-mono font-bold text-gray-700 transition-colors cursor-pointer">250 000 F</button>
+          <button type="button" onclick="setQuickAmount(500000)" class="py-2 rounded-xl bg-gray-100 hover:bg-primary hover:text-white text-xs font-mono font-bold text-gray-700 transition-colors cursor-pointer">500 000 F</button>
+        </div>
+
+        <!-- Synthèse Trésorerie Débitée -->
+        <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200/80 flex flex-col gap-1.5 text-xs">
+          <div class="flex items-center justify-between">
+            <span class="text-gray-600">Frais de transfert inter-agents :</span>
+            <b class="text-emerald-700 font-mono font-bold">0 FCFA (Gratuit)</b>
+          </div>
+          <div class="flex items-center justify-between pt-1 border-t border-purple-200/50">
+            <span class="text-gray-700 font-bold">Nouveau solde Float prévisionnel :</span>
+            <b id="calc-remaining-float" class="font-mono font-black text-primary text-sm">1 400 000 FCFA</b>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Nature de l'Opération (Comptabilité) -->
+      <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-2.5">
+        <h3 class="text-xs font-black text-on-surface uppercase tracking-wider">3. Motif de l'Échange de Trésorerie</h3>
+        
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <label class="p-3 rounded-2xl border-2 border-primary bg-primary/5 cursor-pointer flex items-center gap-2">
+            <input type="radio" name="exchangeReason" checked value="cash" class="text-primary focus:ring-primary"/>
+            <div>
+              <b class="block text-on-surface font-bold">Espèces Encaissées</b>
+              <span class="text-[10px] text-gray-500">Cash physique reçu</span>
+            </div>
+          </label>
+
+          <label class="p-3 rounded-2xl border border-outline-variant/60 bg-gray-50 hover:bg-purple-50 cursor-pointer flex items-center gap-2">
+            <input type="radio" name="exchangeReason" value="loan" class="text-primary focus:ring-primary"/>
+            <div>
+              <b class="block text-on-surface font-bold">Dépannage Confrère</b>
+              <span class="text-[10px] text-gray-500">Prêt temporaire Float</span>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <!-- Submit Action Button -->
+      <div class="pt-1">
+        <button type="submit" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm cursor-pointer">
+          <span class="material-symbols-outlined text-xl">send</span>
+          <span>Confirmer le Virement Float</span>
+        </button>
+      </div>
+
+    </form>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : Confirmation PIN Sécurité de l'Agent -->
+  <!-- ============================================================ -->
+  <div id="pin-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-sm hidden flex items-end justify-center">
+    <div class="w-full max-w-lg bg-white rounded-t-[36px] p-6 pb-10 shadow-2xl modal-enter flex flex-col gap-4">
+      
+      <div class="w-full flex items-center justify-between">
+        <span class="w-12 h-1 bg-outline-variant rounded-full mx-auto -mr-6"></span>
+        <button onclick="closePinModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-2xl">lock</span>
+        </div>
+        <div>
+          <h3 class="text-base font-black text-on-surface">Autoriser le Transfert Float</h3>
+          <p class="text-xs text-on-surface-variant">Saisissez votre code PIN Agent à 4 chiffres</p>
+        </div>
+      </div>
+
+      <!-- Recap Box -->
+      <div class="p-3.5 rounded-2xl bg-surface-container-low/60 border border-outline-variant/60 flex flex-col gap-2 text-xs">
+        <div class="flex items-center justify-between">
+          <span class="text-gray-500 font-medium">Bénéficiaire :</span>
+          <b id="modal-agent-name" class="text-primary font-bold">Kiosque Saint-Michel (Brice A.)</b>
+        </div>
+        <div class="flex items-center justify-between pt-1 border-t border-outline-variant/40">
+          <span class="text-gray-700 font-bold">Montant Float transféré :</span>
+          <b id="modal-transfer-amount" class="text-base font-black font-mono text-primary">100 000 FCFA</b>
+        </div>
+      </div>
+
+      <!-- PIN Dots -->
+      <div class="flex items-center justify-center gap-3 my-2">
+        <div id="pindot-1" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-2" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-3" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+        <div id="pindot-4" class="w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all"></div>
+      </div>
+
+      <!-- Keypad -->
+      <div class="grid grid-cols-3 gap-2.5 max-w-xs mx-auto w-full">
+        <button type="button" onclick="pressPin('1')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">1</button>
+        <button type="button" onclick="pressPin('2')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">2</button>
+        <button type="button" onclick="pressPin('3')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">3</button>
+        
+        <button type="button" onclick="pressPin('4')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">4</button>
+        <button type="button" onclick="pressPin('5')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">5</button>
+        <button type="button" onclick="pressPin('6')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">6</button>
+        
+        <button type="button" onclick="pressPin('7')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">7</button>
+        <button type="button" onclick="pressPin('8')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">8</button>
+        <button type="button" onclick="pressPin('9')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">9</button>
+        
+        <button type="button" onclick="pressBiometric()" class="h-12 rounded-2xl bg-purple-50 text-primary flex items-center justify-center cursor-pointer active:scale-95 transition-transform" title="Empreinte">
+          <span class="material-symbols-outlined text-xl">fingerprint</span>
+        </button>
+        <button type="button" onclick="pressPin('0')" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container font-mono font-extrabold text-lg text-on-surface cursor-pointer active:scale-95 transition-transform">0</button>
+        <button type="button" onclick="deletePin()" class="h-12 rounded-2xl bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface cursor-pointer active:scale-95 transition-transform">
+          <span class="material-symbols-outlined text-lg">backspace</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Logic -->
+  <script>
+    let currentAgent = {
+      id: "AGT-3104",
+      name: "Kiosque Saint-Michel (Brice A.)",
+      location: "Saint-Michel Cotonou"
+    };
+
+    let pinCode = "";
+
+    function selectQuickAgent(id, name, location) {
+      document.getElementById('targetAgentInput').value = id;
+      currentAgent = { id, name, location };
+      document.getElementById('target-agent-name').textContent = name;
+      document.getElementById('target-agent-details').textContent = `ID: ${id} • ${location}`;
+      document.getElementById('verified-agent-badge').classList.remove('hidden');
+    }
+
+    function verifyTargetAgent() {
+      const val = document.getElementById('targetAgentInput').value.trim().toUpperCase();
+      if (val.length >= 4) {
+        document.getElementById('verified-agent-badge').classList.remove('hidden');
+      }
+    }
+
+    function setQuickAmount(amt) {
+      document.getElementById('transferFloatAmt').value = amt;
+      updateCalculation();
+    }
+
+    function updateCalculation() {
+      const amt = parseInt(document.getElementById('transferFloatAmt').value) || 0;
+      const remaining = Math.max(0, 1500000 - amt);
+      document.getElementById('calc-remaining-float').textContent = `${remaining.toLocaleString('fr-FR')} FCFA`;
+    }
+
+    function openPinModal() {
+      const amt = parseInt(document.getElementById('transferFloatAmt').value) || 100000;
+      document.getElementById('modal-agent-name').textContent = currentAgent.name;
+      document.getElementById('modal-transfer-amount').textContent = `${amt.toLocaleString('fr-FR')} FCFA`;
+      pinCode = "";
+      updatePinDots();
+      document.getElementById('pin-modal').classList.remove('hidden');
+    }
+
+    function closePinModal() {
+      document.getElementById('pin-modal').classList.add('hidden');
+    }
+
+    function pressPin(digit) {
+      if (pinCode.length < 4) {
+        pinCode += digit;
+        updatePinDots();
+        if (pinCode.length === 4) {
+          setTimeout(executeFloatTransfer, 300);
+        }
+      }
+    }
+
+    function deletePin() {
+      if (pinCode.length > 0) {
+        pinCode = pinCode.slice(0, -1);
+        updatePinDots();
+      }
+    }
+
+    function pressBiometric() {
+      const amt = parseInt(document.getElementById('transferFloatAmt').value) || 100000;
+      const ref = `FLT-TRF-${Math.floor(10000 + Math.random() * 90000)}`;
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+      const trxData = {
+        title: "Transfert Float Inter-Agents",
+        amount: amt,
+        fee: "0 FCFA",
+        beneficiary: `${currentAgent.name} (${currentAgent.id})`,
+        network: "Réseau Distributeurs Switch",
+        commission: "0 FCFA (Gratuit)",
+        source: "Trésorerie Float Agent",
+        ref: ref,
+        date: dateStr,
+        returnUrl: "../tableau_de_bord_agent/code.html",
+        returnLabel: "Retour au Tableau de Bord Agent"
+      };
+
+      localStorage.setItem('switch_last_transaction', JSON.stringify(trxData));
+      window.location.href = '../confirmation_biometrique_agent/code.html';
+    }
+
+    function updatePinDots() {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`pindot-${i}`);
+        if (i <= pinCode.length) {
+          dot.className = "w-3.5 h-3.5 rounded-full border-2 border-primary bg-primary scale-110 transition-all";
+        } else {
+          dot.className = "w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-all";
+        }
+      }
+    }
+
+    function executeFloatTransfer() {
+      closePinModal();
+      const amt = parseInt(document.getElementById('transferFloatAmt').value) || 100000;
+      const ref = `FLT-TRF-${Math.floor(10000 + Math.random() * 90000)}`;
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) + ' • ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+      const trxData = {
+        title: "Transfert Float Inter-Agents",
+        amount: amt,
+        fee: "0 FCFA",
+        beneficiary: `${currentAgent.name} (${currentAgent.id})`,
+        network: "Réseau Distributeurs Switch",
+        commission: "0 FCFA (Gratuit)",
+        source: "Trésorerie Float Agent",
+        ref: ref,
+        date: dateStr,
+        returnUrl: "../tableau_de_bord_agent/code.html",
+        returnLabel: "Retour au Tableau de Bord Agent"
+      };
+
+      localStorage.setItem('switch_last_transaction', JSON.stringify(trxData));
+      window.location.href = '../recu_operation_agent/code.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', updateCalculation);
+  </script>
+
+  <!-- Bottom Navigation Bar Agent (5 Piliers Opérationnels) -->
+  <nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+    <!-- 1. Accueil -->
+    <a href="../tableau_de_bord_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">dashboard</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+    </a>
+    <!-- 2. Services -->
+    <a href="../services_factures_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">apps</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Services</span>
+    </a>
+    <!-- 3. Servir (Centre en relief) -->
+    <a href="../valider_une_op_ration_client/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.3);position:relative;top:-6px;">
+        <span class="material-symbols-outlined" style="font-size:22px;">qr_code_scanner</span>
+      </div>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-4px;">Servir</span>
+    </a>
+    <!-- 4. Caisse (Actif) -->
+    <a href="../cloture_de_caisse_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5E3BDC;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">point_of_sale</span>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;">Caisse</span>
+    </a>
+    <!-- 5. Profil -->
+    <a href="../param_tres_et_profil_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">manage_accounts</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Profil</span>
+    </a>
+  </nav>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Vérification Niveau Supérieur - Niveau 3 VIP Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+    .vip-gradient {
+      background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 50%, #5B4002 100%);
+      box-shadow: 0 16px 36px -10px rgba(170, 124, 17, 0.35);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed">
+
+  <!-- Top App Bar -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full flex items-center justify-center bg-amber-50 text-amber-800 border border-amber-200 shadow-sm">
+        <span class="material-symbols-outlined text-xl">workspace_premium</span>
+      </div>
+      <div>
+        <h1 class="text-lg sm:text-xl font-extrabold text-on-surface">Mise à Niveau du Compte</h1>
+        <p class="text-xs text-on-surface-variant">Débloquer les plafonds Niveau 3 VIP</p>
+      </div>
+    </div>
+    <span class="text-xs font-black uppercase text-amber-900 bg-amber-100 px-3 py-1 rounded-full border border-amber-300">VIP</span>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-6 pt-1">
+
+    <!-- 1. VIP Level 3 Advantages Hero -->
+    <section class="vip-gradient rounded-[32px] p-6 text-white relative overflow-hidden flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-amber-200 block">Plafond Maximum</span>
+          <h2 class="text-2xl sm:text-3xl font-black mt-0.5 font-mono">10 000 000 <span class="text-sm font-sans font-bold text-amber-200">FCFA / jour</span></h2>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-amber-100 shadow-inner">
+          <span class="material-symbols-outlined text-3xl font-bold">workspace_premium</span>
+        </div>
+      </div>
+
+      <!-- Perks List -->
+      <div class="grid grid-cols-2 gap-2 text-xs text-amber-100 font-semibold pt-1 border-t border-white/20">
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-amber-300">check_circle</span>
+          <span>Retraits Kiosques Illimités</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-amber-300">check_circle</span>
+          <span>Conseiller VIP Dédié</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-amber-300">check_circle</span>
+          <span>Cartes Visa Gold Switch</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-amber-300">check_circle</span>
+          <span>Validation sous 2h</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Required Documents Form -->
+    <section class="flex flex-col gap-4">
+      <h3 class="text-xs font-black text-on-surface uppercase tracking-wider px-1">Documents Réglementaires Requis</h3>
+
+      <!-- Step 1: Numéro IFU (Numéro Fiscal Béninois) -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-bold text-on-surface flex items-center gap-1.5" for="ifu-input">
+            <span class="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-black flex items-center justify-center">1</span>
+            <span>Numéro IFU (Identifiant Fiscal Unique)</span>
+          </label>
+          <span class="text-[10px] text-green-700 font-bold bg-green-50 px-2 py-0.5 rounded-full">Vérification Instantanée</span>
+        </div>
+        <input type="text" id="ifu-input" placeholder="Ex: 0202112345678" value="0202114892019" class="w-full bg-surface-container border border-outline-variant rounded-2xl py-3 px-4 font-mono font-bold text-sm text-on-surface focus:outline-none focus:border-primary"/>
+      </div>
+
+      <!-- Step 2: Facture SBEE ou SONEB (Justificatif de domicile) -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-bold text-on-surface flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-black flex items-center justify-center">2</span>
+            <span>Justificatif de Domicile (< 3 mois)</span>
+          </label>
+          <span class="text-[10px] text-on-surface-variant font-medium">Facture SBEE / SONEB</span>
+        </div>
+
+        <div onclick="simulateUploadDoc('Facture de Domicile SBEE')" class="border-2 border-dashed border-primary/30 rounded-2xl p-4 flex flex-col items-center justify-center gap-1.5 bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer text-center">
+          <span class="material-symbols-outlined text-2xl text-primary">cloud_upload</span>
+          <span class="text-xs font-bold text-primary" id="doc1-name">Importer la facture (PDF ou Photo)</span>
+          <p class="text-[10px] text-on-surface-variant">PNG, JPG ou PDF jusqu'à 10 Mo</p>
+        </div>
+      </div>
+
+      <!-- Step 3: Justificatif de Revenus ou Registre RCCM -->
+      <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-bold text-on-surface flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-black flex items-center justify-center">3</span>
+            <span>Preuve d'activité ou de revenus</span>
+          </label>
+          <span class="text-[10px] text-on-surface-variant font-medium">RCCM / Fiche de paie / Relevé</span>
+        </div>
+
+        <div onclick="simulateUploadDoc('Preuve de revenus / RCCM')" class="border-2 border-dashed border-outline-variant rounded-2xl p-4 flex flex-col items-center justify-center gap-1.5 bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer text-center">
+          <span class="material-symbols-outlined text-2xl text-on-surface-variant">attach_file</span>
+          <span class="text-xs font-bold text-on-surface" id="doc2-name">Importer le document complémentaire</span>
+          <p class="text-[10px] text-on-surface-variant">Attestation employeur ou RCCM</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Submit Button -->
+    <button onclick="submitUpgradeRequest()" class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base cursor-pointer">
+      <span class="material-symbols-outlined text-xl">verified_user</span>
+      <span>Soumettre ma demande Niveau 3 VIP</span>
+    </button>
+  </main>
+
+  <script>
+    function simulateUploadDoc(docTitle) {
+      alert(`📎 Document « ${docTitle} » sélectionné et prêt pour analyse !`);
+    }
+
+    function submitUpgradeRequest() {
+      const ifu = document.getElementById('ifu-input')?.value;
+      if (!ifu) {
+        alert("Veuillez renseigner votre numéro IFU.");
+        return;
+      }
+      if (window.switchNavigate) {
+        window.switchNavigate('../resultat_verification_kyc/code.html');
+      } else {
+        window.location.href = '../resultat_verification_kyc/code.html';
+      }
+    }
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

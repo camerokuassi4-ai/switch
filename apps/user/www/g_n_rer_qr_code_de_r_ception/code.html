@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Générateur de QR Code & Chevalet Caisse - Switch Marchand</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .qr-standee-gradient {
+      background: linear-gradient(135deg, #064E3B 0%, #047857 50%, #059669 100%);
+      box-shadow: 0 16px 36px -10px rgba(5, 150, 105, 0.35);
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(5, 150, 105, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .tab-pill-active {
+      background-color: #059669;
+      color: #ffffff;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-emerald-700 hover:bg-emerald-50 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-base sm:text-lg font-black text-on-surface tracking-tight">QR Code Caisse</h1>
+        <p id="qr-store-subname" class="text-[11px] text-on-surface-variant font-medium">Boutique La Plage • Encaissement 0% Frais</p>
+      </div>
+    </div>
+
+    <!-- Mode Plein Écran Client -->
+    <button onclick="toggleFullscreenQr()" class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-xs flex items-center justify-center hover:bg-emerald-100 transition-all cursor-pointer active:scale-95" title="Mode Présentation Comptoir">
+      <span class="material-symbols-outlined text-lg">fullscreen</span>
+    </button>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Mode Selector Tabs (Fixe vs Dynamique) -->
+    <div class="bg-white p-1.5 rounded-2xl border border-outline-variant/40 shadow-xs flex gap-1 text-xs font-bold">
+      <button type="button" id="tab-fixed" onclick="setQrMode('fixed')" class="tab-pill-active flex-1 py-2.5 rounded-xl transition-all cursor-pointer text-center">
+        QR Fixe (Comptoir / Standee)
+      </button>
+      <button type="button" id="tab-dynamic" onclick="setQrMode('dynamic')" class="flex-1 py-2.5 rounded-xl bg-transparent text-on-surface-variant hover:text-on-surface transition-all cursor-pointer text-center">
+        QR Dynamique (Montant Précis)
+      </button>
+    </div>
+
+    <!-- 2. Dynamic Amount Input Box (Hidden by default) -->
+    <div id="dynamic-amount-box" class="hidden bg-white rounded-3xl p-4 border border-outline-variant/40 shadow-soft flex flex-col gap-2.5 animate-in fade-in slide-in-from-top-2 duration-200">
+      <div class="flex justify-between items-center">
+        <label class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Montant exact à payer (FCFA)</label>
+        <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">QR à usage unique</span>
+      </div>
+
+      <div class="flex items-center gap-2 border-b-2 border-emerald-600 pb-1.5 pt-0.5">
+        <input type="number" id="qr-amount-input" value="15000" min="100" step="500" oninput="updateDynamicQr()" class="w-full bg-transparent border-none p-0 text-2xl font-black font-mono text-on-surface focus:ring-0 outline-none" placeholder="0"/>
+        <span class="text-base font-bold font-sans text-gray-500">FCFA</span>
+      </div>
+
+      <!-- Preset quick chips -->
+      <div class="flex flex-wrap gap-1.5 pt-1">
+        <button type="button" onclick="setQrAmount(2000)" class="px-2.5 py-1 rounded-xl bg-gray-100 hover:bg-gray-200 text-[11px] font-mono font-bold text-on-surface transition-colors cursor-pointer">2 000 F</button>
+        <button type="button" onclick="setQrAmount(5000)" class="px-2.5 py-1 rounded-xl bg-gray-100 hover:bg-gray-200 text-[11px] font-mono font-bold text-on-surface transition-colors cursor-pointer">5 000 F</button>
+        <button type="button" onclick="setQrAmount(15000)" class="px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-300 text-[11px] font-mono font-bold transition-colors cursor-pointer">15 000 F</button>
+        <button type="button" onclick="setQrAmount(50000)" class="px-2.5 py-1 rounded-xl bg-gray-100 hover:bg-gray-200 text-[11px] font-mono font-bold text-on-surface transition-colors cursor-pointer">50 000 F</button>
+      </div>
+    </div>
+
+    <!-- 3. Master Standee QR Preview Card (Emerald Silk) -->
+    <div id="standee-card" class="qr-standee-gradient rounded-[32px] p-6 text-white shadow-soft flex flex-col items-center text-center relative overflow-hidden">
+      
+      <!-- Brand & Store Header -->
+      <div class="flex items-center gap-2 mb-3 z-10">
+        <div class="w-8 h-8 rounded-xl bg-white text-emerald-800 flex items-center justify-center font-black text-sm shadow-xs">
+          S
+        </div>
+        <span class="font-black text-xs tracking-wider uppercase text-emerald-100">SWITCH PAY BÉNIN</span>
+      </div>
+
+      <!-- White Standee Body Box -->
+      <div class="bg-white p-5 rounded-3xl shadow-2xl text-black flex flex-col items-center gap-3 w-64 max-w-full z-10 border border-white/40 relative">
+        
+        <!-- Scan Header Label -->
+        <span class="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+          Scannez pour payer
+        </span>
+
+        <!-- QR Image Display with Brackets Frame -->
+        <div class="relative p-2 bg-gray-50 rounded-2xl border border-gray-200 w-44 h-44 flex items-center justify-center">
+          <div class="absolute top-1 left-1 w-4 h-4 border-t-2 border-l-2 border-emerald-600 rounded-tl"></div>
+          <div class="absolute top-1 right-1 w-4 h-4 border-t-2 border-r-2 border-emerald-600 rounded-tr"></div>
+          <div class="absolute bottom-1 left-1 w-4 h-4 border-b-2 border-l-2 border-emerald-600 rounded-bl"></div>
+          <div class="absolute bottom-1 right-1 w-4 h-4 border-b-2 border-r-2 border-emerald-600 rounded-br"></div>
+          
+          <img src="../assets/images/img_019.jpg" alt="QR Code Switch" class="w-36 h-36 object-contain"/>
+        </div>
+
+        <!-- Dynamic Amount or Store Name -->
+        <div class="text-center">
+          <h3 id="qr-display-amount" class="hidden text-xl font-black font-mono text-emerald-700">15 000 FCFA</h3>
+          <h3 id="qr-display-store" class="text-sm font-black text-on-surface uppercase tracking-tight">BOUTIQUE LA PLAGE</h3>
+          <span id="qr-display-id" class="text-[10px] text-gray-400 font-mono block mt-0.5">ID: SW-MCH-99201</span>
+        </div>
+
+        <!-- Switch Account Direct Debit Badge -->
+        <div class="pt-2 border-t border-gray-100 w-full flex items-center justify-center gap-1.5 text-[9px] font-extrabold text-emerald-800 bg-emerald-50/60 rounded-xl py-1">
+          <span class="material-symbols-outlined text-xs text-emerald-700">account_balance_wallet</span>
+          <span>Débit Direct du Compte Switch • 0% Frais</span>
+        </div>
+      </div>
+
+      <p class="text-xs text-emerald-100 mt-4 z-10 max-w-xs font-medium">
+        Le client scanne avec son application Switch et le montant est prélevé instantanément de son compte Switch.
+      </p>
+
+      <!-- Glow Orbs -->
+      <div class="absolute -right-8 -bottom-8 w-44 h-44 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="absolute -left-8 -top-8 w-32 h-32 bg-emerald-400/20 rounded-full blur-xl pointer-events-none"></div>
+    </div>
+
+    <!-- 4. Quick Action Buttons -->
+    <div class="grid grid-cols-2 gap-3">
+      <!-- Télécharger PDF Chevalet -->
+      <button onclick="downloadQrKitPdf()" class="py-3.5 px-4 rounded-2xl bg-white border border-outline-variant/60 text-on-surface font-bold text-xs shadow-soft hover:bg-surface-container-low flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-lg text-emerald-700">download</span>
+        <span>Télécharger PDF (A4/A5)</span>
+      </button>
+
+      <!-- Partager sur WhatsApp -->
+      <button onclick="shareQrWhatsApp()" class="py-3.5 px-4 rounded-2xl bg-[#25D366] text-white font-bold text-xs shadow-md hover:opacity-90 flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-lg">share</span>
+        <span>Partager WhatsApp</span>
+      </button>
+    </div>
+
+    <!-- 5. POS Hardware Standee Info Box -->
+    <div class="bg-white rounded-3xl p-4.5 border border-outline-variant/40 shadow-soft flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-2xl">storefront</span>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold text-on-surface">Chevalet de Caisse Physique</h4>
+          <p class="text-[11px] text-on-surface-variant mt-0.5">Commandez un support acrylique rigide pour votre comptoir</p>
+        </div>
+      </div>
+
+      <a href="../support_marchand/code.html" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold shrink-0 no-underline">
+        Commander
+      </a>
+    </div>
+
+  </main>
+
+  <script src="../assets/switch.router.js"></script>
+
+  <script>
+    let currentMode = 'fixed';
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const bName = localStorage.getItem('switch_merchant_business_name') || "Boutique & Restaurant La Plage";
+      
+      const subName = document.getElementById('qr-store-subname');
+      if (subName) subName.textContent = bName + " • Encaissement 0% Frais";
+
+      const storeDisplay = document.getElementById('qr-display-store');
+      if (storeDisplay) storeDisplay.textContent = bName.toUpperCase();
+    });
+
+    function setQrMode(mode) {
+      currentMode = mode;
+      const tabFixed = document.getElementById('tab-fixed');
+      const tabDynamic = document.getElementById('tab-dynamic');
+      const dynamicBox = document.getElementById('dynamic-amount-box');
+      const amountDisplay = document.getElementById('qr-display-amount');
+      const storeDisplay = document.getElementById('qr-display-store');
+
+      if (mode === 'fixed') {
+        tabFixed.className = "tab-pill-active flex-1 py-2.5 rounded-xl transition-all cursor-pointer text-center";
+        tabDynamic.className = "flex-1 py-2.5 rounded-xl bg-transparent text-on-surface-variant hover:text-on-surface transition-all cursor-pointer text-center";
+        dynamicBox.classList.add('hidden');
+        amountDisplay.classList.add('hidden');
+        storeDisplay.classList.remove('hidden');
+      } else {
+        tabDynamic.className = "tab-pill-active flex-1 py-2.5 rounded-xl transition-all cursor-pointer text-center";
+        tabFixed.className = "flex-1 py-2.5 rounded-xl bg-transparent text-on-surface-variant hover:text-on-surface transition-all cursor-pointer text-center";
+        dynamicBox.classList.remove('hidden');
+        amountDisplay.classList.remove('hidden');
+        storeDisplay.classList.add('hidden');
+        updateDynamicQr();
+      }
+    }
+
+    function setQrAmount(amt) {
+      document.getElementById('qr-amount-input').value = amt;
+      updateDynamicQr();
+    }
+
+    function updateDynamicQr() {
+      const amt = parseInt(document.getElementById('qr-amount-input').value, 10) || 0;
+      document.getElementById('qr-display-amount').textContent = amt.toLocaleString('fr-FR') + " FCFA";
+      localStorage.setItem('switch_qr_amount', amt.toString());
+    }
+
+    function downloadQrKitPdf() {
+      const bName = localStorage.getItem('switch_merchant_business_name') || "Mon_Commerce";
+      alert("✅ Kit Chevalet de Caisse PDF Haute Définition prêt pour impression (Switch_Kit_QR_" + bName.replace(/[^a-zA-Z0-9]/g, '_') + ".pdf) !");
+    }
+
+    function shareQrWhatsApp() {
+      const bName = localStorage.getItem('switch_merchant_business_name') || "notre établissement";
+      let msg = "";
+      if (currentMode === 'dynamic') {
+        const amt = document.getElementById('qr-amount-input').value;
+        msg = encodeURIComponent("🏪 Bonjour ! Voici notre code QR Switch Pay pour régler votre commande de " + parseInt(amt).toLocaleString('fr-FR') + " FCFA chez " + bName + " !");
+      } else {
+        msg = encodeURIComponent("🏪 Scannez ce code QR Switch Pay pour régler directement vos achats chez " + bName + " sans aucun frais !");
+      }
+      window.open("https://wa.me/?text=" + msg, "_blank");
+    }
+
+    function toggleFullscreenQr() {
+      const card = document.getElementById('standee-card');
+      if (!document.fullscreenElement) {
+        card.requestFullscreen ? card.requestFullscreen() : alert("Passez en mode paysage pour poser le téléphone sur votre comptoir.");
+      } else {
+        document.exitFullscreen && document.exitFullscreen();
+      }
+    }
+  </script>
+
+</body>
+</html>

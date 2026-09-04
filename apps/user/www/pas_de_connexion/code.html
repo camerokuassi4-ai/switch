@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Oups, pas de connexion !</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+    body {
+      min-height: 100dvh;
+      height: 100dvh;
+      overflow: hidden;
+      touch-action: none;
+      overscroll-behavior: none;
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background h-screen h-[100dvh] overflow-hidden flex flex-col justify-center items-center px-container-margin font-body-lg">
+<!-- Main Content Canvas (Linear/Transactional context, navigation shell suppressed) -->
+<main class="w-full max-w-md flex flex-col items-center justify-center text-center space-y-stack-lg">
+<!-- Illustration -->
+<div class="relative w-48 h-48 flex items-center justify-center bg-surface-container-low rounded-full shadow-[0_10px_20px_rgba(0,0,0,0.04)]">
+<!-- Simulated minimal fluid/gradient background behind icon for premium feel -->
+<div class="absolute inset-0 rounded-full bg-gradient-to-br from-primary-fixed to-surface-container opacity-50 blur-md"></div>
+<span class="material-symbols-outlined text-[80px] text-primary relative z-10" data-icon="cloud_off" data-weight="fill" style="font-variation-settings: 'FILL' 1;">
+                cloud_off
+            </span>
+</div>
+<!-- Typography Context -->
+<div class="space-y-stack-sm">
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface">Oups, pas de connexion !</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xs mx-auto">
+                Veuillez vérifier votre connexion internet et réessayer.
+            </p>
+</div>
+<!-- Call to Action -->
+<button class="bg-primary text-on-primary font-headline-md text-headline-md py-4 px-8 rounded-full shadow-[0_10px_20px_rgba(0,0,0,0.04)] hover:bg-surface-tint hover:scale-95 transition-all duration-200 active:scale-90 flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+            Réessayer
+        </button>
+</main>
+<script src="../assets/switch.router.js"></script>
+</body></html>

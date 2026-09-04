@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Barème des Commissions & Simulateur - Espace Agent Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(94, 59, 220, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <button aria-label="Retour" onclick="goBack()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">arrow_back</span>
+    </button>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-on-surface tracking-tight">Barème & Simulateur de Gains</h1>
+      <p class="text-[11px] text-on-surface-variant font-medium">Grille de rémunération officielle BCEAO Bénin</p>
+    </div>
+
+    <!-- Agent ID Badge -->
+    <div class="w-10 h-10 rounded-full bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold text-xs">
+      AGT
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Simulateur de Revenus Agent Card -->
+    <section class="bg-gradient-to-br from-purple-900 via-indigo-900 to-primary rounded-3xl p-6 text-white shadow-soft flex flex-col gap-4 relative overflow-hidden">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold text-purple-200 uppercase tracking-wider">Simulateur Interactif</span>
+        <span class="text-[10px] font-black bg-emerald-500 text-white px-2 py-0.5 rounded-full">Revenu Prévisionnel</span>
+      </div>
+
+      <!-- Projection Display -->
+      <div>
+        <span class="text-[10px] text-purple-200 block">Revenu Net Mensuel Estimé</span>
+        <h2 id="monthly-estimate" class="text-3xl font-black font-mono text-emerald-300 mt-0.5">
+          207 000 <span class="text-lg font-sans font-bold text-emerald-200">FCFA / mois</span>
+        </h2>
+        <p class="text-xs text-purple-200 font-mono mt-1">
+          Soit environ <b id="daily-estimate" class="text-white font-bold">6 900 FCFA / jour</b> en moyenne
+        </p>
+      </div>
+
+      <!-- Sliders for Simulation -->
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 flex flex-col gap-3 text-xs">
+        
+        <!-- Slider 1 : Dépôts par jour -->
+        <div class="flex flex-col gap-1">
+          <div class="flex justify-between font-bold">
+            <span>Dépôts Cash-In / jour :</span>
+            <span id="label-depot-vol" class="font-mono text-amber-300">500 000 F</span>
+          </div>
+          <input type="range" id="slider-depot" min="50000" max="2000000" step="50000" value="500000" oninput="runSimulation()" class="w-full accent-emerald-400 cursor-pointer"/>
+        </div>
+
+        <!-- Slider 2 : Retraits par jour -->
+        <div class="flex flex-col gap-1">
+          <div class="flex justify-between font-bold">
+            <span>Retraits Cash-Out / jour :</span>
+            <span id="label-retrait-vol" class="font-mono text-amber-300">300 000 F</span>
+          </div>
+          <input type="range" id="slider-retrait" min="50000" max="2000000" step="50000" value="300000" oninput="runSimulation()" class="w-full accent-emerald-400 cursor-pointer"/>
+        </div>
+
+        <!-- Slider 3 : Factures payées / jour -->
+        <div class="flex flex-col gap-1">
+          <div class="flex justify-between font-bold">
+            <span>Factures SBEE / SONEB / jour :</span>
+            <span id="label-factures-vol" class="font-mono text-amber-300">10 factures</span>
+          </div>
+          <input type="range" id="slider-factures" min="0" max="50" step="1" value="10" oninput="runSimulation()" class="w-full accent-emerald-400 cursor-pointer"/>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2. Grille Officielle des Taux de Commission -->
+    <section class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3.5">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2.5">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-lg">grid_view</span>
+          <h3 class="text-xs font-black text-on-surface uppercase tracking-wider">Barème Officiel par Type d'Opération</h3>
+        </div>
+        <span class="text-[10px] font-bold text-gray-500">Grille 2026</span>
+      </div>
+
+      <div class="flex flex-col gap-2 text-xs">
+        
+        <!-- 1. Dépôts Switch -->
+        <div class="p-3 rounded-2xl bg-purple-50/60 border border-purple-200/60 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-primary text-xl">payments</span>
+            <div>
+              <b class="text-on-surface">Dépôt Cash-In Switch (RIB ou Tél)</b>
+              <p class="text-[10px] text-gray-500">Crédit direct compte client Switch</p>
+            </div>
+          </div>
+          <span class="text-xs font-black font-mono text-primary bg-white px-2.5 py-1 rounded-xl border border-purple-200">
+            0.70 %
+          </span>
+        </div>
+
+        <!-- 2. Dépôts Mobile Money -->
+        <div class="p-3 rounded-2xl bg-surface-container-low/60 border border-outline-variant/40 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-gray-700 text-xl">phone_android</span>
+            <div>
+              <b class="text-on-surface">Dépôt MTN MoMo, Moov, Celtiis</b>
+              <p class="text-[10px] text-gray-500">Passerelle interopérable Bénin</p>
+            </div>
+          </div>
+          <span class="text-xs font-black font-mono text-gray-800 bg-white px-2.5 py-1 rounded-xl border border-outline-variant/60">
+            0.50 %
+          </span>
+        </div>
+
+        <!-- 3. Retraits Cash-Out -->
+        <div class="p-3 rounded-2xl bg-emerald-50/60 border border-emerald-200/60 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-emerald-700 text-xl">storefront</span>
+            <div>
+              <b class="text-on-surface">Retrait Espèces (Codes & QR)</b>
+              <p class="text-[10px] text-emerald-800">Décaissement de billets au guichet</p>
+            </div>
+          </div>
+          <span class="text-xs font-black font-mono text-emerald-700 bg-white px-2.5 py-1 rounded-xl border border-emerald-200">
+            0.80 % à 1.00 %
+          </span>
+        </div>
+
+        <!-- 4. Factures SBEE / SONEB -->
+        <div class="p-3 rounded-2xl bg-blue-50/60 border border-blue-200/60 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-blue-700 text-xl">receipt</span>
+            <div>
+              <b class="text-on-surface">Paiement Factures SBEE & SONEB</b>
+              <p class="text-[10px] text-blue-800">Recharge électricité & eau potable</p>
+            </div>
+          </div>
+          <span class="text-xs font-black font-mono text-blue-800 bg-white px-2.5 py-1 rounded-xl border border-blue-200">
+            150 F / facture
+          </span>
+        </div>
+
+        <!-- 5. Enrôlement KYC Client ANIP -->
+        <div class="p-3 rounded-2xl bg-amber-50/60 border border-amber-200/60 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-amber-700 text-xl">how_to_reg</span>
+            <div>
+              <b class="text-on-surface">Enrôlement Nouveau Client Vérifié</b>
+              <p class="text-[10px] text-amber-800">Création de compte + vérification ANIP</p>
+            </div>
+          </div>
+          <span class="text-xs font-black font-mono text-amber-800 bg-white px-2.5 py-1 rounded-xl border border-amber-200">
+            +500 F / client
+          </span>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Logic -->
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../param_tres_et_profil_agent/code.html';
+      }
+    }
+
+    function runSimulation() {
+      const depot = parseInt(document.getElementById('slider-depot').value) || 0;
+      const retrait = parseInt(document.getElementById('slider-retrait').value) || 0;
+      const factures = parseInt(document.getElementById('slider-factures').value) || 0;
+
+      document.getElementById('label-depot-vol').textContent = `${depot.toLocaleString('fr-FR')} F`;
+      document.getElementById('label-retrait-vol').textContent = `${retrait.toLocaleString('fr-FR')} F`;
+      document.getElementById('label-factures-vol').textContent = `${factures} factures`;
+
+      // Formule de calcul des commissions journalières
+      const commDepot = depot * 0.007; // 0.7%
+      const commRetrait = retrait * 0.008; // 0.8%
+      const commFactures = factures * 150; // 150 F par facture
+
+      const totalDaily = Math.round(commDepot + commRetrait + commFactures);
+      const totalMonthly = totalDaily * 30;
+
+      document.getElementById('daily-estimate').textContent = `${totalDaily.toLocaleString('fr-FR')} FCFA / jour`;
+      document.getElementById('monthly-estimate').innerHTML = `${totalMonthly.toLocaleString('fr-FR')} <span class="text-lg font-sans font-bold text-emerald-200">FCFA / mois</span>`;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      runSimulation();
+    });
+  </script>
+
+  <!-- Bottom Navigation Bar Agent -->
+  <nav id="switch-nav" role="navigation" aria-label="Navigation Agent" style="position:fixed;bottom:0;left:0;right:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:space-around;padding:10px 8px;background:#ffffff;border-top:1px solid #ECE6F0;box-shadow:0 -2px 12px rgba(0,0,0,0.06);">
+    <a href="../tableau_de_bord_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">dashboard</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Accueil</span>
+    </a>
+    <!-- 2. Services -->
+    <a href="../services_factures_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">apps</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Services</span>
+    </a>
+    <!-- 3. Servir (Centre en relief) -->
+    <a href="../valider_une_op_ration_client/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%);color:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(94,59,220,0.3);position:relative;top:-6px;">
+        <span class="material-symbols-outlined" style="font-size:22px;">qr_code_scanner</span>
+      </div>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;margin-top:-4px;">Servir</span>
+    </a>
+    <!-- 4. Caisse -->
+    <a href="../cloture_de_caisse_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#79747E;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;">point_of_sale</span>
+      <span class="nav-label" style="font-size:10px;font-weight:500;">Caisse</span>
+    </a>
+    <!-- 5. Profil (Actif) -->
+    <a href="../param_tres_et_profil_agent/code.html" onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#5E3BDC;text-decoration:none;flex:1;">
+      <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1;">manage_accounts</span>
+      <span class="nav-label" style="font-size:10px;font-weight:700;color:#5E3BDC;">Profil</span>
+    </a>
+  </nav>
+
+</body>
+</html>

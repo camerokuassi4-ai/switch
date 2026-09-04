@@ -19,17 +19,119 @@ const apps = [
     package: 'bj.switchuser.beta',
     entryPoint: 'accueil_splash_mis_jour',
     dashboard: 'tableau_de_bord_mis_jour',
-    apkName: 'switch-beta-user-v2.1.0.apk',
-    alias: 'switch_user_beta.apk'
+    apkName: 'switch-beta-user-v2.2.1.apk',
+    alias: 'switch_user_beta.apk',
+    screens: [
+      'accueil_splash_mis_jour',
+      'inscription',
+      'connexion',
+      'v_rification_otp',
+      'cr_ation_code_pin',
+      'reinitialisation_code_pin',
+      'succes_reinitialisation_pin',
+      'modifier_le_profil',
+      'bienvenue_succes_onboarding',
+      'kyc_verification_identite',
+      'resultat_verification_kyc',
+      'succes_verification_niveau2',
+      'verification_niveau_superieur',
+      'tableau_de_bord_mis_jour',
+      'profil_utilisateur',
+      's_curit',
+      'modification_du_code_pin',
+      'centre_de_notifications',
+      'notifications_vides',
+      'historique_des_transactions',
+      'historique_vide',
+      'd_tail_de_transaction',
+      'recu_transaction_partage',
+      'support_aide',
+      'appareils_connectes_securite',
+      'd_p_t_de_fonds',
+      'retrait_de_fonds',
+      'code_depot_especes_agent',
+      'code_retrait_especes_agent',
+      'transfert_mobile_money',
+      'transfert_switch_switch',
+      'g_n_rer_qr_code_de_r_ception',
+      'scanner_qr_code',
+      'confirmation_paiement_qr',
+      'confirmation_de_l_op_ration_code',
+      'confirmation_de_succ_s',
+      'chec_de_transaction',
+      'carte_agents_guichets',
+      'localiser_un_agent_switch',
+      'd_tail_de_l_agent_switch',
+      'achats_en_ligne_cartes_virtuelles',
+      'creer_carte_virtuelle',
+      'budget_analyse_depenses',
+      'coffre_epargne_vault',
+      'mes_tontines',
+      'cr_er_une_tontine',
+      'd_tail_de_la_tontine',
+      'membres_de_la_tontine',
+      'mes_cagnottes',
+      'cr_er_une_cagnotte',
+      'd_tail_de_la_cagnotte',
+      'switch_kids_famille',
+      'switch_sante_assurance',
+      'micro_credit_express',
+      'investissements_bons_tresor',
+      'conversion_de_devises',
+      'marketplace_boutiques_switch',
+      'paiement_d_abonnements',
+      'd_tail_de_l_abonnement',
+      'paiement_sbee_electricite',
+      'recu_recharge_sbee',
+      'paiement_soneb_eau',
+      'paiement_scolarite_campus',
+      'recharge_credit_data',
+      'paiements_recurrents_autopay',
+      'parrainage_recompenses',
+      'partage_addition_split',
+      'mode_hors_ligne_ussd',
+      'simulateur_de_frais',
+      'moyens_de_paiement_li_s',
+      'limites_de_transaction',
+      'param_tres_g_n_raux',
+      'verrouillage_pin',
+      'choix_type_compte',
+      'pas_de_connexion',
+      'conditions_utilisation',
+      'politique_confidentialite'
+    ]
   },
   {
     id: 'merchant',
     name: 'Switch Beta — Marchand',
     package: 'bj.switchmerchant.beta',
-    entryPoint: 'inscription_marchand',
+    entryPoint: 'accueil_marchand',
     dashboard: 'tableau_de_bord_marchand',
-    apkName: 'switch-beta-merchant-v2.1.0.apk',
-    alias: 'switch_merchant_beta.apk'
+    apkName: 'switch-beta-merchant-v2.2.1.apk',
+    alias: 'switch_merchant_beta.apk',
+    screens: [
+      'accueil_marchand',
+      'inscription_marchand',
+      'v_rification_marchand',
+      'setup_point_de_vente_marchand',
+      'profil_de_l_entreprise',
+      'tableau_de_bord_marchand',
+      'caisse_marchand_pos',
+      'operations_caisse_marchand',
+      'd_tail_d_une_vente',
+      'historique_des_ventes',
+      'carnet_de_dettes_marchand',
+      'liens_de_paiement_marchand',
+      'catalogue_produits_services',
+      'quipe_marchand',
+      'retrait_marchand',
+      'support_marchand',
+      'centre_de_notifications_marchand',
+      'messagerie_marchand_clients',
+      'connexion',
+      'conditions_utilisation',
+      'politique_confidentialite'
+    ]
   },
   {
     id: 'agent',
@@ -37,17 +139,97 @@ const apps = [
     package: 'bj.switchagent.beta',
     entryPoint: 'connexion_agent',
     dashboard: 'tableau_de_bord_agent',
-    apkName: 'switch-beta-agent-v2.1.0.apk',
-    alias: 'switch_agent_beta.apk'
+    apkName: 'switch-beta-agent-v2.2.1.apk',
+    alias: 'switch_agent_beta.apk',
+    screens: [
+      'connexion_agent',
+      'inscription_agent_switch',
+      'agent_verification_caution',
+      'documents_contrat_agent',
+      'confirmation_biometrique_agent',
+      'tableau_de_bord_agent',
+      'tableau_de_bord_agent_simple',
+      'd_p_t_de_fonds_mis_jour_agent',
+      'retrait_de_fonds_mis_jour_agent',
+      'valider_une_op_ration_client',
+      'recu_operation_agent',
+      'services_factures_agent',
+      'demande_de_r_approvisionnement_float',
+      'succes_reapprovisionnement_float',
+      'transfert_float_inter_agent',
+      'historique_des_op_rations_agent',
+      'releve_operations_agent',
+      'bareme_commissions_agent',
+      'retrait_commissions_agent',
+      'gestion_caissiers_agent',
+      'cloture_de_caisse_agent',
+      'param_tres_et_profil_agent',
+      'modifier_profil_agent',
+      'securite_et_pin_agent',
+      'centre_de_notifications_agent',
+      'support_assistance_agent',
+      'conditions_utilisation',
+      'politique_confidentialite'
+    ]
   },
   {
     id: 'hybrid',
     name: 'Switch Beta — Hybride',
     package: 'bj.switchhybrid.beta',
-    entryPoint: 'tableau_de_bord_agent_mixte',
+    entryPoint: 'accueil_hybride',
     dashboard: 'tableau_de_bord_agent_mixte',
-    apkName: 'switch-beta-hybrid-v2.1.0.apk',
-    alias: 'switch_hybrid_beta.apk'
+    apkName: 'switch-beta-hybrid-v2.2.1.apk',
+    alias: 'switch_hybrid_beta.apk',
+    screens: [
+      'accueil_hybride',
+      'connexion_agent',
+      'tableau_de_bord_agent_mixte',
+      'cloture_de_caisse_hybride',
+      'services_factures_hybride',
+      'param_tres_et_profil_hybride',
+      'd_p_t_de_fonds_mis_jour_agent',
+      'retrait_de_fonds_mis_jour_agent',
+      'valider_une_op_ration_client',
+      'recu_operation_agent',
+      'demande_de_r_approvisionnement_float',
+      'succes_reapprovisionnement_float',
+      'transfert_float_inter_agent',
+      'historique_des_op_rations_agent',
+      'releve_operations_agent',
+      'bareme_commissions_agent',
+      'retrait_commissions_agent',
+      'gestion_caissiers_agent',
+      'securite_et_pin_agent',
+      'centre_de_notifications_agent',
+      'support_assistance_agent',
+      'inscription_agent_switch',
+      'agent_verification_caution',
+      'documents_contrat_agent',
+      'confirmation_biometrique_agent',
+      'caisse_marchand_pos',
+      'operations_caisse_marchand',
+      'tableau_de_bord_marchand',
+      'catalogue_produits_services',
+      'liens_de_paiement_marchand',
+      'carnet_de_dettes_marchand',
+      'd_tail_d_une_vente',
+      'historique_des_ventes',
+      'retrait_marchand',
+      'support_marchand',
+      'centre_de_notifications_marchand',
+      'messagerie_marchand_clients',
+      'v_rification_marchand',
+      'setup_point_de_vente_marchand',
+      'profil_de_l_entreprise',
+      'inscription_marchand',
+      'quipe_marchand',
+      'tableau_de_bord_agent',
+      'tableau_de_bord_agent_simple',
+      'modifier_profil_agent',
+      'param_tres_et_profil_agent',
+      'conditions_utilisation',
+      'politique_confidentialite'
+    ]
   }
 ];
 
@@ -162,13 +344,13 @@ async function buildAll() {
     fs.writeFileSync(path.join(wwwDir, 'assets', 'switch.env.js'), `/**\n * switch.env.js\n * Identité de l'application mobile (User, Merchant, Agent, Hybrid)\n */\nwindow.SWITCH_APP_PACKAGE = "${app.id}";\n`, 'utf8');
     fs.appendFileSync(path.join(wwwDir, 'assets', 'switch.config.js'), `\n/* Identité de l'application mobile */\nwindow.SWITCH_APP_PACKAGE = "${app.id}";\n`, 'utf8');
     
-    // Copy all screen folders containing code.html
-    for (const entry of fs.readdirSync(rootDir, { withFileTypes: true })) {
-      if (entry.isDirectory() && !STRICT_EXCLUDE_DIRS.includes(entry.name)) {
-        const codeFile = path.join(rootDir, entry.name, 'code.html');
-        if (fs.existsSync(codeFile)) {
-          copyDirRecursive(path.join(rootDir, entry.name), path.join(wwwDir, entry.name));
-        }
+    // Copy ONLY role-specific screen folders defined in app.screens
+    for (const screenName of app.screens) {
+      const screenPath = path.join(rootDir, screenName);
+      if (fs.existsSync(screenPath) && fs.statSync(screenPath).isDirectory()) {
+        copyDirRecursive(screenPath, path.join(wwwDir, screenName));
+      } else {
+        console.warn(`  ⚠️ Écran non trouvé ou ignoré : ${screenName}`);
       }
     }
     
@@ -311,11 +493,11 @@ async function buildAll() {
 
     if (app.id === 'user') {
       destinations.push(
-        path.join(distDownloadsDir, 'switch-beta-v2.1.0.apk'),
+        path.join(distDownloadsDir, 'switch-beta-v2.2.1.apk'),
         path.join(distDownloadsDir, 'switch-beta.apk'),
-        path.join(assetsDownloadsDir, 'switch-beta-v2.1.0.apk'),
+        path.join(assetsDownloadsDir, 'switch-beta-v2.2.1.apk'),
         path.join(assetsDownloadsDir, 'switch-beta.apk'),
-        path.join(wwwDownloadsDir, 'switch-beta-v2.1.0.apk'),
+        path.join(wwwDownloadsDir, 'switch-beta-v2.2.1.apk'),
         path.join(wwwDownloadsDir, 'switch-beta.apk')
       );
     }

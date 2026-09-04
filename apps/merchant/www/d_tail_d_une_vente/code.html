@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Reçu Électronique & Détail de Vente - Switch Marchand</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F8F9FD;
+      color: #1C1A24;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .receipt-hero-gradient {
+      background: linear-gradient(135deg, #064E3B 0%, #047857 50%, #059669 100%);
+      box-shadow: 0 16px 36px -10px rgba(5, 150, 105, 0.35);
+    }
+
+    .shadow-soft {
+      box-shadow: 0 4px 20px -2px rgba(5, 150, 105, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/90 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" onclick="window.history.back()" class="w-10 h-10 rounded-full bg-white border border-outline-variant/40 shadow-sm flex items-center justify-center text-on-surface hover:text-emerald-700 hover:bg-emerald-50 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-xl">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-base sm:text-lg font-black text-on-surface tracking-tight">Reçu de Caisse</h1>
+        <p class="text-[11px] text-on-surface-variant font-mono">Réf: #TRX-8821-BJ</p>
+      </div>
+    </div>
+
+    <!-- Print / Share -->
+    <button onclick="shareReceiptWhatsApp()" class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-xs flex items-center justify-center hover:bg-emerald-100 transition-all cursor-pointer active:scale-95" title="Partager au client">
+      <span class="material-symbols-outlined text-lg">share</span>
+    </button>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-xl mx-auto px-container-margin flex flex-col gap-4 pt-1 flex-grow">
+
+    <!-- 1. Hero Transaction Status Card -->
+    <div class="receipt-hero-gradient rounded-[32px] p-6 text-white shadow-soft flex flex-col items-center text-center relative overflow-hidden">
+      
+      <!-- Success Icon Badge -->
+      <div class="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-emerald-200 border border-white/30 mb-2 z-10">
+        <span class="material-symbols-outlined text-3xl font-bold">check_circle</span>
+      </div>
+
+      <span class="text-[10px] font-black uppercase tracking-wider text-emerald-200 block z-10">Paiement Encaissé avec Succès</span>
+      
+      <h2 class="text-3xl font-black font-mono text-white mt-1 z-10">
+        +18 500 <span class="text-xl font-bold font-sans">FCFA</span>
+      </h2>
+
+      <p class="text-xs text-emerald-100 mt-1 z-10">
+        25 Août 2026 à 14:32 • Débit Direct Compte Switch
+      </p>
+
+      <!-- Glow Orb -->
+      <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+    </div>
+
+    <!-- 2. Electronic Receipt Ticket Box -->
+    <div class="bg-white rounded-3xl p-5 border border-outline-variant/40 shadow-soft flex flex-col gap-3.5 relative">
+      
+      <!-- Ticket Header (Store & IFU) -->
+      <div class="text-center pb-3 border-b border-dashed border-gray-200">
+        <h3 id="receipt-store-title" class="text-sm font-black text-on-surface uppercase tracking-tight">BOUTIQUE & RESTAURANT LA PLAGE</h3>
+        <p class="text-[10px] text-gray-500 mt-0.5">Haie Vive, Cotonou • IFU: <span id="receipt-ifu" class="font-mono font-bold text-gray-700">3201910293847</span></p>
+      </div>
+
+      <!-- Items Breakdown -->
+      <div class="flex flex-col gap-2 text-xs">
+        <div class="flex justify-between items-center text-on-surface">
+          <span>2 x Menus Déjeuner Express</span>
+          <span class="font-mono font-bold">14 000 F</span>
+        </div>
+        <div class="flex justify-between items-center text-on-surface">
+          <span>1 x Bouteille Eau Minérale (1.5L)</span>
+          <span class="font-mono font-bold">1 500 F</span>
+        </div>
+        <div class="flex justify-between items-center text-on-surface">
+          <span>1 x Dessert Spécial Maison</span>
+          <span class="font-mono font-bold">3 000 F</span>
+        </div>
+
+        <div class="h-px bg-gray-100 my-1"></div>
+
+        <div class="flex justify-between items-center font-bold text-sm text-emerald-950">
+          <span>Total Net Réglé :</span>
+          <span class="font-mono text-emerald-800 text-base">18 500 FCFA</span>
+        </div>
+      </div>
+
+      <!-- Transaction Meta -->
+      <div class="p-3 bg-surface-container-low/50 rounded-2xl border border-outline-variant/40 flex flex-col gap-1.5 text-[11px] text-on-surface-variant">
+        <div class="flex justify-between">
+          <span>Client :</span>
+          <b class="text-on-surface">Dossou Christian (+229 97 ** ** 89)</b>
+        </div>
+        <div class="flex justify-between">
+          <span>Canal de paiement :</span>
+          <b class="text-amber-800">QR Code Caisse Principale</b>
+        </div>
+        <div class="flex justify-between">
+          <span>Caissier en service :</span>
+          <b class="text-on-surface">Koffi Mensah</b>
+        </div>
+        <div class="flex justify-between">
+          <span>Confirmation BCEAO :</span>
+          <b class="font-mono text-emerald-700">#OK-BCEAO-99120</b>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3. Action Buttons -->
+    <div class="grid grid-cols-2 gap-3">
+      <!-- Partager WhatsApp -->
+      <button onclick="shareReceiptWhatsApp()" class="py-3.5 px-4 rounded-2xl bg-[#25D366] text-white font-bold text-xs shadow-md hover:opacity-90 flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-lg">chat</span>
+        <span>Envoyer WhatsApp</span>
+      </button>
+
+      <!-- Imprimer / Télécharger PDF -->
+      <button onclick="printTicketPdf()" class="py-3.5 px-4 rounded-2xl bg-white border border-outline-variant/60 text-on-surface font-bold text-xs shadow-soft hover:bg-surface-container-low flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-lg text-emerald-700">print</span>
+        <span>Imprimer Ticket</span>
+      </button>
+    </div>
+
+    <!-- 4. Refund Section -->
+    <div class="bg-white rounded-3xl p-4 border border-rose-100 shadow-soft flex items-center justify-between">
+      <div>
+        <h4 class="text-xs font-bold text-rose-800">Erreur de saisie ou retour ?</h4>
+        <p class="text-[10px] text-on-surface-variant">Rembourser directement le client sur son compte</p>
+      </div>
+
+      <button onclick="openRefundModal()" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition-all cursor-pointer">
+        Rembourser
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Refund Confirmation Modal -->
+  <div id="refund-modal" class="fixed inset-0 bg-black/70 z-50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 flex flex-col gap-4 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-bold text-rose-800">Confirmer le Remboursement</h3>
+        <button onclick="closeRefundModal()" class="p-1.5 rounded-full hover:bg-gray-100 text-on-surface-variant cursor-pointer">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <p class="text-xs text-on-surface-variant">
+        Le montant de <b class="font-mono text-rose-700">18 500 FCFA</b> sera immédiatement recrédité sur le compte Switch du client <b>Dossou Christian</b>.
+      </p>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs font-bold text-on-surface-variant">Motif du remboursement</label>
+        <select class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-3 py-2 text-xs">
+          <option>Retour d'article défectueux</option>
+          <option>Erreur de montant de caisse</option>
+          <option>Annulation de commande</option>
+        </select>
+      </div>
+
+      <div class="flex gap-2.5 mt-2">
+        <button type="button" onclick="closeRefundModal()" class="flex-1 py-3 rounded-full border border-outline-variant font-semibold text-xs hover:bg-surface-container cursor-pointer">Annuler</button>
+        <button type="button" onclick="executeRefund()" class="flex-1 py-3 rounded-full bg-rose-600 text-white font-bold text-xs hover:bg-rose-700 active:scale-95 transition-all shadow-md cursor-pointer">Confirmer Remboursement</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/switch.router.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const bName = localStorage.getItem('switch_merchant_business_name') || "Boutique & Restaurant La Plage";
+      const appData = JSON.parse(localStorage.getItem('switch_merchant_application') || '{}');
+
+      const titleEl = document.getElementById('receipt-store-title');
+      if (titleEl) titleEl.textContent = bName.toUpperCase();
+
+      if (appData.ifu) {
+        const ifuEl = document.getElementById('receipt-ifu');
+        if (ifuEl) ifuEl.textContent = appData.ifu;
+      }
+    });
+
+    function shareReceiptWhatsApp() {
+      const bName = localStorage.getItem('switch_merchant_business_name') || "Boutique & Restaurant La Plage";
+      const text = encodeURIComponent("🧾 *Reçu de Paiement Switch Pay*\nÉtablissement: " + bName + "\nMontant: 18 500 FCFA\nRéf: #TRX-8821-BJ\nDate: 25 Août 2026 à 14:32\nMerci pour votre visite !");
+      window.open("https://wa.me/?text=" + text, "_blank");
+    }
+
+    function printTicketPdf() {
+      alert("✅ Ticket de caisse électronique #TRX-8821 prêt pour impression ou partage PDF !");
+    }
+
+    function openRefundModal() {
+      document.getElementById('refund-modal').classList.remove('hidden');
+    }
+
+    function closeRefundModal() {
+      document.getElementById('refund-modal').classList.add('hidden');
+    }
+
+    function executeRefund() {
+      closeRefundModal();
+      alert("✅ Remboursement de 18 500 FCFA effectué avec succès au client Dossou Christian !");
+      window.history.back();
+    }
+  </script>
+
+</body>
+</html>

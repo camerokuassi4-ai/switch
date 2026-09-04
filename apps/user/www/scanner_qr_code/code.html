@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Scanner & Payer QR - Switch Bénin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: max(884px, 100dvh);
+      background-color: #0F0E17;
+      color: #FFFFFF;
+    }
+
+    .corner {
+      width: 28px;
+      height: 28px;
+      border-color: #7B5CFA;
+      border-style: solid;
+      position: absolute;
+      transition: border-color 0.2s ease;
+    }
+    .corner-tl { top: -2px; left: -2px; border-width: 4px 0 0 4px; border-top-left-radius: 16px; }
+    .corner-tr { top: -2px; right: -2px; border-width: 4px 4px 0 0; border-top-right-radius: 16px; }
+    .corner-bl { bottom: -2px; left: -2px; border-width: 0 0 4px 4px; border-bottom-left-radius: 16px; }
+    .corner-br { bottom: -2px; right: -2px; border-width: 0 4px 4px 0; border-bottom-right-radius: 16px; }
+    
+    .scan-laser {
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(123, 92, 250, 0) 0%, #7B5CFA 50%, rgba(123, 92, 250, 0) 100%);
+      position: absolute;
+      top: 0;
+      box-shadow: 0 0 16px 3px rgba(123, 92, 250, 0.8);
+      animation: scanLaser 2.2s infinite ease-in-out;
+    }
+    
+    @keyframes scanLaser {
+      0% { top: 4%; opacity: 0; }
+      15% { opacity: 1; }
+      85% { opacity: 1; }
+      100% { top: 94%; opacity: 0; }
+    }
+
+    .glass-dark {
+      background: rgba(28, 26, 36, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+  </style>
+</head>
+<body class="h-screen w-screen overflow-hidden relative flex flex-col justify-between antialiased selection:bg-primary selection:text-white">
+
+  <!-- Live Camera Video Feed & Dark Backdrop -->
+  <div id="camera-bg" class="absolute inset-0 z-0 bg-[#0F0E17] transition-opacity duration-300 flex items-center justify-center overflow-hidden">
+    <!-- Real Video Stream from Device Camera -->
+    <video id="camera-video" autoplay playsinline muted class="w-full h-full object-cover hidden"></video>
+    
+    <!-- Fallback Dark Backdrop if Camera is inactive / denied -->
+    <div id="camera-fallback" class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#1F1A3A] via-[#12101F] to-[#0A0912]">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+    </div>
+
+    <!-- Soft Overlay Tint -->
+    <div class="absolute inset-0 bg-black/30 pointer-events-none"></div>
+  </div>
+
+  <!-- INSTANT DETECTION SUCCESS OVERLAY -->
+  <div id="scan-success-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-md z-50 flex flex-col items-center justify-center gap-5 transition-all duration-300 opacity-0 pointer-events-none scale-95">
+    <div class="w-24 h-24 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-[0_0_60px_rgba(16,185,129,0.9)] animate-pulse">
+      <span class="material-symbols-outlined text-5xl font-black">check_circle</span>
+    </div>
+    <div class="text-center px-6">
+      <h2 class="text-2xl font-black text-white">QR Code Détecté !</h2>
+      <p class="text-sm text-emerald-300 mt-1 font-bold" id="detected-merchant-name">Supermarché Erevan • Cotonou</p>
+      <span class="inline-block mt-3 text-xs bg-emerald-500/20 text-emerald-200 px-4 py-1.5 rounded-full border border-emerald-400/30 font-semibold">
+        Redirection vers le paiement...
+      </span>
+    </div>
+  </div>
+
+  <!-- Top Action Header -->
+  <header class="relative z-30 w-full max-w-xl mx-auto px-container-margin pt-6 flex items-center justify-between">
+    <button aria-label="Fermer" onclick="stopCameraAndBack()" class="w-11 h-11 rounded-full glass-dark flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">close</span>
+    </button>
+
+    <!-- 2-Mode Segmented Control (Scanner vs Mon QR) -->
+    <div class="flex items-center bg-black/60 backdrop-blur-md p-1 rounded-full border border-white/15">
+      <button type="button" onclick="setMode('scan')" id="tab-scan" class="px-4 py-1.5 rounded-full text-xs font-extrabold bg-primary text-white shadow-md transition-all cursor-pointer">
+        Scanner QR
+      </button>
+      <button type="button" onclick="setMode('myqr')" id="tab-myqr" class="px-4 py-1.5 rounded-full text-xs font-extrabold text-white/70 hover:text-white transition-all cursor-pointer">
+        Mon QR Code
+      </button>
+    </div>
+
+    <!-- Right Quick Actions: Switch Camera & Torch -->
+    <div class="flex items-center gap-2">
+      <!-- Switch Camera (Front/Back) -->
+      <button id="switch-cam-btn" onclick="flipCamera()" class="w-11 h-11 rounded-full glass-dark flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer" title="Changer de caméra">
+        <span class="material-symbols-outlined text-xl">flip_camera_ios</span>
+      </button>
+
+      <!-- Torch Toggle -->
+      <button id="torch-btn" onclick="toggleTorch()" class="w-11 h-11 rounded-full glass-dark flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer" title="Lampe torche">
+        <span class="material-symbols-outlined text-xl" id="torch-icon">flashlight_on</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MODE 1 : SCANNER CAMERA VIEW -->
+  <main id="view-scan" class="relative z-20 flex-1 flex flex-col items-center justify-center px-container-margin gap-5">
+    <!-- Camera Status Banner (if permissions are pending/denied) -->
+    <div id="camera-status-banner" class="hidden text-center max-w-xs bg-amber-500/20 border border-amber-400/40 text-amber-200 px-4 py-2 rounded-2xl text-xs backdrop-blur-md">
+      <span>Caméra non disponible. Cliquez ci-dessous pour réessayer :</span>
+      <button onclick="initCamera()" class="underline font-bold text-white ml-1 cursor-pointer">Activer la caméra</button>
+    </div>
+
+    <!-- Instructions -->
+    <div class="text-center max-w-xs">
+      <h1 class="text-xl sm:text-2xl font-black text-white drop-shadow-md">Scannez pour payer</h1>
+      <p class="text-xs text-white/70 mt-1">Placez le QR Code Switch ou Marchand au centre</p>
+    </div>
+
+    <!-- Scanner Reticle Frame -->
+    <div id="reticle-box" onclick="simulateScanSuccess()" class="relative w-64 h-64 sm:w-72 sm:h-72 rounded-3xl bg-white/5 border border-white/20 backdrop-blur-[1px] overflow-hidden cursor-pointer group shadow-2xl transition-all duration-300">
+      <!-- 4 Glowing Corners -->
+      <div class="corner corner-tl" id="c-tl"></div>
+      <div class="corner corner-tr" id="c-tr"></div>
+      <div class="corner corner-bl" id="c-bl"></div>
+      <div class="corner corner-br" id="c-br"></div>
+
+      <!-- Animated Laser Line -->
+      <div class="scan-laser" id="laser-line"></div>
+
+      <!-- Center Aim Cross -->
+      <div class="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
+        <span class="material-symbols-outlined text-4xl text-primary">add</span>
+      </div>
+
+      <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 text-white font-bold text-xs">
+        Appuyez pour tester le scan
+      </div>
+    </div>
+
+    <!-- Bottom Secondary Actions : Galerie & Saisie ID -->
+    <div class="flex items-center gap-3">
+      <!-- Import Image Button -->
+      <button onclick="simulateGalleryImport()" class="glass-dark px-4 py-2.5 rounded-full text-xs font-bold text-white flex items-center gap-2 hover:bg-white/20 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-base">image</span>
+        <span>Importer image</span>
+      </button>
+
+      <!-- Enter ID Manually Button -->
+      <button onclick="promptManualId()" class="glass-dark px-4 py-2.5 rounded-full text-xs font-bold text-white flex items-center gap-2 hover:bg-white/20 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-base">dialpad</span>
+        <span>Saisie manuelle ID</span>
+      </button>
+    </div>
+  </main>
+
+  <!-- MODE 2 : MON QR CODE PERSONNEL (RECEVOIR) -->
+  <main id="view-myqr" class="relative z-20 flex-1 flex flex-col items-center justify-center px-container-margin gap-5 hidden">
+    <!-- QR Card Container -->
+    <div class="w-full max-w-xs bg-white text-gray-900 rounded-[32px] p-6 shadow-2xl flex flex-col items-center text-center gap-4">
+      
+      <!-- User Info Header -->
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary/30 shrink-0">
+          <img alt="Adele Doe" class="w-full h-full object-cover" src="../assets/images/img_046.jpg"/>
+        </div>
+        <div class="text-left">
+          <h3 class="font-extrabold text-base text-gray-900 leading-tight">Adele Doe</h3>
+          <p class="text-xs text-primary font-mono font-bold">+229 97 12 34 56</p>
+        </div>
+      </div>
+
+      <!-- Large QR Code Visual -->
+      <div class="w-48 h-48 bg-gray-100 p-3 rounded-2xl border border-gray-200 flex items-center justify-center shadow-inner relative">
+        <span class="material-symbols-outlined text-9xl text-black">qr_code_2</span>
+        <div class="absolute w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-black text-xs shadow-md border-2 border-white">
+          S
+        </div>
+      </div>
+
+      <div class="space-y-1">
+        <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Scannez pour me transférer</span>
+        <p class="text-[11px] text-gray-400">Paiement instantané et sans frais sur Switch</p>
+      </div>
+
+      <!-- Share WhatsApp & Download Buttons -->
+      <div class="grid grid-cols-2 gap-2 w-full pt-1">
+        <button onclick="shareMyQrWhatsApp()" class="py-2.5 px-3 rounded-xl bg-[#25D366] text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm hover:opacity-90 cursor-pointer">
+          <span class="material-symbols-outlined text-sm">share</span>
+          <span>WhatsApp</span>
+        </button>
+        <button onclick="downloadMyQr()" class="py-2.5 px-3 rounded-xl bg-gray-100 text-gray-800 text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-gray-200 cursor-pointer">
+          <span class="material-symbols-outlined text-sm text-primary">download</span>
+          <span>Enregistrer</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Bar Trigger Button -->
+  <footer class="relative z-30 w-full max-w-xl mx-auto px-container-margin pb-6 text-center">
+    <button onclick="simulateScanSuccess()" class="w-full max-w-xs mx-auto py-3.5 rounded-full bg-primary text-white font-bold text-sm shadow-xl hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
+      <span class="material-symbols-outlined text-xl">qr_code_scanner</span>
+      <span>Simuler détection du QR</span>
+    </button>
+  </footer>
+
+  <script>
+    window.currentStream = window.currentStream || null;
+    window.currentFacingMode = window.currentFacingMode || 'environment';
+    window.torchOn = false;
+    window.currentMode = 'scan';
+    window.isScanning = false;
+
+    // Web Audio Positive Beep Synthesizer
+    function playScanBeep() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1400, ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.22);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.22);
+      } catch (e) {
+        console.warn("Audio Context unavailable:", e);
+      }
+    }
+
+    // Initialize Camera on load
+    window.initCamera = async function(facing = 'environment') {
+      window.currentFacingMode = facing;
+      const videoEl = document.getElementById('camera-video');
+      const fallbackEl = document.getElementById('camera-fallback');
+      const statusBanner = document.getElementById('camera-status-banner');
+
+      if (window.currentStream) {
+        window.currentStream.getTracks().forEach(t => t.stop());
+      }
+
+      try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error("getUserMedia non supporté");
+        }
+
+        const constraints = {
+          video: {
+            facingMode: { ideal: facing },
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          audio: false
+        };
+
+        window.currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+        if (videoEl) {
+          videoEl.srcObject = window.currentStream;
+          videoEl.classList.remove('hidden');
+          if (fallbackEl) fallbackEl.classList.add('hidden');
+          if (statusBanner) statusBanner.classList.add('hidden');
+        }
+      } catch (err) {
+        console.warn("Accès caméra impossible ou non accordé :", err);
+        if (videoEl) videoEl.classList.add('hidden');
+        if (fallbackEl) fallbackEl.classList.remove('hidden');
+        if (statusBanner) statusBanner.classList.remove('hidden');
+      }
+    };
+
+    window.flipCamera = function() {
+      const nextFacing = window.currentFacingMode === 'environment' ? 'user' : 'environment';
+      window.initCamera(nextFacing);
+    };
+
+    window.stopCameraAndBack = function() {
+      if (window.currentStream) {
+        window.currentStream.getTracks().forEach(t => t.stop());
+      }
+      window.history.back();
+    };
+
+    window.setMode = function(mode) {
+      window.currentMode = mode;
+      const tabScan = document.getElementById('tab-scan');
+      const tabMyQr = document.getElementById('tab-myqr');
+      const viewScan = document.getElementById('view-scan');
+      const viewMyQr = document.getElementById('view-myqr');
+      const cameraBg = document.getElementById('camera-bg');
+
+      if (mode === 'scan') {
+        if (tabScan) tabScan.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold bg-primary text-white shadow-md transition-all cursor-pointer';
+        if (tabMyQr) tabMyQr.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold text-white/70 hover:text-white transition-all cursor-pointer';
+        if (viewScan) viewScan.classList.remove('hidden');
+        if (viewMyQr) viewMyQr.classList.add('hidden');
+        if (cameraBg) cameraBg.style.opacity = '1';
+        window.initCamera(window.currentFacingMode);
+      } else {
+        if (tabScan) tabScan.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold text-white/70 hover:text-white transition-all cursor-pointer';
+        if (tabMyQr) tabMyQr.className = 'px-4 py-1.5 rounded-full text-xs font-extrabold bg-primary text-white shadow-md transition-all cursor-pointer';
+        if (viewScan) viewScan.classList.add('hidden');
+        if (viewMyQr) viewMyQr.classList.remove('hidden');
+        if (cameraBg) cameraBg.style.opacity = '0.3';
+        if (window.currentStream) {
+          window.currentStream.getTracks().forEach(t => t.stop());
+        }
+      }
+    };
+
+    window.toggleTorch = async function() {
+      window.torchOn = !window.torchOn;
+      const btn = document.getElementById('torch-btn');
+      const icon = document.getElementById('torch-icon');
+
+      if (window.currentStream) {
+        const track = window.currentStream.getVideoTracks()[0];
+        if (track && track.getCapabilities && track.getCapabilities().torch) {
+          try {
+            await track.applyConstraints({ advanced: [{ torch: window.torchOn }] });
+          } catch (e) {
+            console.warn("Torch non supportée :", e);
+          }
+        }
+      }
+
+      if (window.torchOn) {
+        if (btn) btn.className = 'w-11 h-11 rounded-full bg-amber-400 text-black flex items-center justify-center transition-all cursor-pointer shadow-lg';
+        if (icon) icon.textContent = 'flashlight_off';
+      } else {
+        if (btn) btn.className = 'w-11 h-11 rounded-full glass-dark flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer';
+        if (icon) icon.textContent = 'flashlight_on';
+      }
+    };
+
+    window.simulateGalleryImport = function() {
+      alert("Image sélectionnée depuis votre galerie !");
+      window.simulateScanSuccess();
+    };
+
+    window.promptManualId = function() {
+      const code = prompt("Saisissez l'Identifiant Marchand ou Numéro Switch :", "SW-MCH-8820");
+      if (code) {
+        window.simulateScanSuccess("Marchand Manuel (" + code + ")");
+      }
+    };
+
+    window.shareMyQrWhatsApp = function() {
+      const msg = encodeURIComponent("📲 Scannez mon QR Code Switch (+229 97 12 34 56) pour m'envoyer de l'argent instantanément et sans frais !");
+      window.open("https://wa.me/?text=" + msg, "_blank");
+    };
+
+    window.downloadMyQr = function() {
+      alert("Votre QR Code Switch personnel a été enregistré dans votre galerie photo !");
+    };
+
+    window.simulateScanSuccess = function(merchantName) {
+      if (window.isScanning) return;
+      window.isScanning = true;
+
+      // 1. Play Sound & Vibration
+      playScanBeep();
+      if (navigator.vibrate) navigator.vibrate([60, 40, 120]);
+
+      // 2. Turn Reticle Green
+      const reticle = document.getElementById('reticle-box');
+      if (reticle) {
+        reticle.style.borderColor = '#10B981';
+        reticle.style.boxShadow = '0 0 50px rgba(16, 185, 129, 0.8)';
+      }
+      ['c-tl', 'c-tr', 'c-bl', 'c-br'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.borderColor = '#10B981';
+      });
+
+      // 3. Show Success Overlay
+      if (merchantName) {
+        const mLabel = document.getElementById('detected-merchant-name');
+        if (mLabel) mLabel.textContent = merchantName;
+      }
+      const overlay = document.getElementById('scan-success-overlay');
+      if (overlay) {
+        overlay.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+        overlay.classList.add('opacity-100', 'scale-100');
+      }
+
+      // 4. Redirection directe vers la confirmation de paiement
+      if (window.currentStream) {
+        window.currentStream.getTracks().forEach(t => t.stop());
+      }
+      if (window.switchNavigate) {
+        window.switchNavigate('../confirmation_paiement_qr/code.html');
+      } else {
+        window.location.href = '../confirmation_paiement_qr/code.html';
+      }
+    };
+
+    // Auto-launch camera when screen is shown
+    window.initCamera('environment');
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>

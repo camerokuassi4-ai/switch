@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Sécurité PIN - Switch Bénin</title>
+<!-- Material Symbols -->
+
+<!-- Google Fonts: Hanken Grotesk -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+<script src="../assets/switch.api.js"></script>
+
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Subtle animation for PIN dots */
+        @keyframes pulseDot {
+            0% { transform: scale(1); opacity: 0.2; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pin-dot.active {
+            animation: pulseDot 0.2s ease-out forwards;
+            background-color: #5e3bdc;
+        }
+
+        /* Ambient background mesh gradient simulation */
+        .ambient-bg {
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(119, 88, 246, 0.08), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(94, 59, 220, 0.05), transparent 25%);
+            background-color: #fdf8ff;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="ambient-bg text-on-background min-h-screen flex flex-col items-center justify-between font-body-lg selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Suppressed TopAppBar & BottomNavBar as per Semantic Shell Mandate (Linear/Transactional Screen) -->
+<main class="w-full max-w-md mx-auto flex-1 flex flex-col px-container-margin pt-12 pb-8">
+<!-- Header / Avatar Section -->
+<header class="flex flex-col items-center justify-center flex-shrink-0 mt-8 mb-stack-lg relative z-10">
+<div class="relative w-24 h-24 mb-6">
+<!-- Blurred background element for depth -->
+<div class="absolute inset-0 bg-primary/20 rounded-full blur-xl scale-110"></div>
+<div id="user-avatar-box" class="relative w-full h-full rounded-full border-4 border-surface-container-lowest shadow-sm z-10 overflow-hidden bg-purple-100 flex items-center justify-center">
+  <img id="user-avatar-img" alt="Avatar" class="w-full h-full object-cover hidden" src=""/>
+  <span id="user-avatar-initials" class="text-3xl font-black text-primary">SW</span>
+</div>
+</div>
+<h1 id="user-greeting-title" class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-2 text-center">Bonjour</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant text-center max-w-[250px]">Saisissez votre code PIN pour déverrouiller</p>
+</header>
+<!-- PIN Dots Display -->
+<div class="flex justify-center items-center gap-stack-md mb-stack-lg flex-shrink-0">
+<!-- Simulated entered states -->
+<div class="w-4 h-4 rounded-full bg-primary pin-dot active"></div>
+<div class="w-4 h-4 rounded-full bg-primary pin-dot active" style="animation-delay: 0.1s"></div>
+<div class="w-4 h-4 rounded-full bg-outline-variant pin-dot transition-colors duration-300"></div>
+<div class="w-4 h-4 rounded-full bg-outline-variant pin-dot transition-colors duration-300"></div>
+</div>
+<!-- Custom Numeric Keypad -->
+<div class="mt-auto grid grid-cols-3 gap-y-6 gap-x-4 max-w-[280px] mx-auto w-full mb-8">
+<!-- Row 1 -->
+<button class="w-16 h-16 rounded-full mx-auto flex items-center justify-center font-display-lg-mobile text-display-lg-mobile text-on-surface hover:bg-surface-container-high transition-colors active:scale-90 touch-manipulation">1</button>
+<button class="w-16 h-16 rounded-full mx-auto flex items-center justify-center font-display-lg-mobile text-display-lg-mobile text-on-surface hover:bg-surface-container-high transition-colors active:scale-90 touch-manipulation">2</button>
+<button class="w-16 h-16 rounded-full mx-auto flex items-center justify-center font-display-lg-mobile text-display-lg-mobile text-on-surface hover:bg-surface-container-high transition-colors active:scale-90 touch-manipulation">3</button>
+<!-- Row 2 -->
+<button class="w-16 h-16 rounded-full mx-auto flex items-center justify-center font-display-lg-mobile text-display-lg-mobile text-on-surface hover:bg-surface-container-high transition-colors active:scale-90 touch-manipulation">4</button>
+<button class="w-16 h-16 rounded-full mx-auto flex items-center justify-center font-display-lg-mobile text-display-lg-mobile text-on-surface hover:bg-surface-container-high transition-colors active:scale-90 touch-manipulation">5</button>
+<button class="w-16 h-16 rounded-full mx-auto flex items-center justify-center font-display-lg-mobile text-display-lg-mobile text-on-surface hover:bg-surface-container-high transition-colors active:scale-90 touch-manipulation">6</button>
+<!-- Row 3 -->
+<button class="w-16 h-16 rounded-full mx-auto flex items-center justify-center font-display-lg-mobile text-display-lg-mobile text-on-surface hover:bg-surface-container-high transition-colors active:scale-90 touch-manipulation">7</button>
+<button class="w-16 h-16 rounded-full mx-auto flex items-center justify-center font-display-lg-mobile text-display-lg-mobile text-on-surface hover:bg-surface-container-high transition-colors active:scale-90 touch-manipulation">8</button>
+<button class="w-16 h-16 rounded-full mx-auto flex items-center justify-center font-display-lg-mobile text-display-lg-mobile text-on-surface hover:bg-surface-container-high transition-colors active:scale-90 touch-manipulation">9</button>
+<!-- Row 4 -->
+<button class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-90 touch-manipulation">
+<span class="material-symbols-outlined text-[28px]" data-icon="fingerprint">fingerprint</span>
+</button>
+<button class="w-16 h-16 rounded-full mx-auto flex items-center justify-center font-display-lg-mobile text-display-lg-mobile text-on-surface hover:bg-surface-container-high transition-colors active:scale-90 touch-manipulation">0</button>
+<button class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-90 touch-manipulation">
+<span class="material-symbols-outlined text-[28px]" data-icon="backspace">backspace</span>
+</button>
+</div>
+<!-- Footer Actions -->
+<div class="flex justify-center mt-4">
+<a href="../reinitialisation_code_pin/code.html" class="font-body-sm text-body-sm text-primary font-bold hover:text-on-primary-fixed-variant transition-colors bg-transparent border-none no-underline">
+    Code PIN oublié ?
+</a>
+</div>
+</main>
+<script>
+        // Simple script to handle visual feedback on keypad press (for demonstration)
+        document.addEventListener('DOMContentLoaded', () => {
+            const prof = window.SwitchAPI ? window.SwitchAPI.getProfile() : {
+              first_name: '',
+              full_name: localStorage.getItem('switch_user_fullname') || ''
+            };
+            const name = prof.first_name || (prof.full_name ? prof.full_name.split(' ')[0] : '');
+            const titleEl = document.getElementById('user-greeting-title');
+            if (titleEl) titleEl.textContent = name ? `Bonjour, ${name}` : 'Bonjour';
+            const avatarImg = document.getElementById('user-avatar-img');
+            const initialsEl = document.getElementById('user-avatar-initials');
+            if (prof.avatar_url && !prof.avatar_url.includes('img_056.jpg')) {
+              avatarImg.src = prof.avatar_url;
+              avatarImg.classList.remove('hidden');
+              if (initialsEl) initialsEl.classList.add('hidden');
+            } else if (name) {
+              if (initialsEl) initialsEl.textContent = name.slice(0, 2).toUpperCase();
+            }
+
+            const keypadButtons = document.querySelectorAll('.grid button');
+            const dots = document.querySelectorAll('.pin-dot');
+            let currentPinLength = 2; // Starting with 2 dots filled as per HTML state
+
+            keypadButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const icon = btn.querySelector('.material-symbols-outlined');
+                    
+                    if (icon && icon.textContent === 'backspace') {
+                        if (currentPinLength > 0) {
+                            currentPinLength--;
+                            dots[currentPinLength].classList.remove('active', 'bg-primary');
+                            dots[currentPinLength].classList.add('bg-outline-variant');
+                        }
+                    } else if (icon && icon.textContent === 'fingerprint') {
+                        // Biometric trigger logic would go here
+                        btn.classList.add('text-primary');
+                        setTimeout(() => btn.classList.remove('text-primary'), 300);
+                    } else {
+                        // Number pressed
+                        if (currentPinLength < 4) {
+                            dots[currentPinLength].classList.remove('bg-outline-variant');
+                            dots[currentPinLength].classList.add('active', 'bg-primary');
+                            currentPinLength++;
+                            
+                            // Navigate instantly when 4 digits entered
+                            if (currentPinLength === 4) {
+                                window.location.href = '../tableau_de_bord_mis_jour/code.html';
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+<script src="../assets/switch.forms.js"></script>
+<script src="../assets/switch.router.js"></script>
+</body></html>

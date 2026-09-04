@@ -65,10 +65,10 @@ def prepare_dist():
 
     # Also place APKs in direct download subfolders for direct route links
     sub_map = {
-        "user": "switch-beta-user-v2.1.0.apk",
-        "merchant": "switch-beta-merchant-v2.1.0.apk",
-        "agent": "switch-beta-agent-v2.1.0.apk",
-        "hybrid": "switch-beta-hybrid-v2.1.0.apk"
+        "user": "switch-beta-user-v2.2.1.apk",
+        "merchant": "switch-beta-merchant-v2.2.1.apk",
+        "agent": "switch-beta-agent-v2.2.1.apk",
+        "hybrid": "switch-beta-hybrid-v2.2.1.apk"
     }
     for sub, apk_name in sub_map.items():
         sub_dir = os.path.join(dst_download, sub)

@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Échec de transaction</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="../assets/switch.css">
+<script src="../assets/switch.config.js"></script>
+
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased">
+<!-- Top Navigation (Suppressed for Linear/Transactional screen as per Shared Components Logic) -->
+<main class="flex-grow flex flex-col items-center justify-center px-container-margin py-stack-lg w-full max-w-md mx-auto">
+<!-- Error Status Icon -->
+<div class="mb-stack-lg relative flex items-center justify-center">
+<div class="absolute inset-0 bg-error-container rounded-full opacity-30 scale-150 animate-pulse"></div>
+<div class="bg-error-container rounded-full p-6 relative z-10 flex items-center justify-center shadow-[0_10px_20px_rgba(186,26,26,0.1)]">
+<span class="material-symbols-outlined text-[48px] text-error" data-icon="error" data-weight="fill" style="font-variation-settings: 'FILL' 1;">error</span>
+</div>
+</div>
+<!-- Error Message -->
+<div class="text-center mb-stack-lg">
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-stack-sm">
+                Solde insuffisant
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-[280px] mx-auto">
+                La transaction n'a pas pu aboutir. Votre solde actuel ne permet pas de couvrir ce montant.
+            </p>
+</div>
+<!-- Transaction Details Card (Glassmorphism-lite) -->
+<div class="w-full bg-surface-container-lowest rounded-xl p-card-padding shadow-[0_10px_20px_rgba(0,0,0,0.04)] mb-stack-lg border border-surface-variant">
+<div class="flex justify-between items-center py-stack-sm border-b border-surface-variant">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Montant tenté</span>
+<span class="font-headline-md text-headline-md text-on-surface">25 000 FCFA</span>
+</div>
+<div class="flex justify-between items-center py-stack-sm">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Bénéficiaire</span>
+<span class="font-body-sm text-body-sm text-on-surface font-semibold">MTN MoMo (Cotonou)</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="w-full flex flex-col gap-stack-md mt-auto md:mt-0">
+<!-- Primary Action: Retry (Violet Outline) -->
+<button class="w-full py-4 rounded-full border-2 border-primary text-primary font-headline-md text-headline-md bg-transparent hover:bg-primary-fixed transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+                Réessayer
+            </button>
+<!-- Secondary Action: Return (Text) -->
+<button class="w-full py-4 rounded-full text-on-surface-variant font-headline-md text-headline-md hover:text-primary hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+                Retour à l'accueil
+            </button>
+</div>
+</main>
+<!-- Bottom Navigation (Suppressed for Linear/Transactional screen as per Shared Components Logic) -->
+<script src="../assets/switch.router.js"></script>
+</body></html>

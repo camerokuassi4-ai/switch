@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Confirmation Biométrique - Espace Agent Switch</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    
+    body {
+      font-family: 'Hanken Grotesk', sans-serif;
+      min-height: 100vh;
+      overflow-y: auto;
+      touch-action: pan-y;
+      overscroll-behavior: contain;
+      background-color: #0F0C20;
+      color: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Biometric Pulse Waves */
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.25); opacity: 0.2; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+
+    .pulse-ring-1 {
+      animation: pulseRing 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+
+    .pulse-ring-2 {
+      animation: pulseRing 2s cubic-bezier(0.215, 0.61, 0.355, 1) 0.6s infinite;
+    }
+
+    /* Scan Laser Bar */
+    @keyframes scanLaser {
+      0% { top: 0%; opacity: 0.8; }
+      50% { top: 90%; opacity: 1; }
+      100% { top: 0%; opacity: 0.8; }
+    }
+
+    .scan-laser {
+      animation: scanLaser 1.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-[#0F0C20] text-white min-h-screen pb-16 flex flex-col justify-between antialiased selection:bg-primary selection:text-white">
+
+  <!-- Top Header Navigation -->
+  <header class="w-full max-w-md mx-auto px-container-margin pt-6 pb-4 flex items-center justify-between z-30">
+    <div class="w-11 h-11 rounded-full bg-white/10 border border-white/15 backdrop-blur-md flex items-center justify-center text-white">
+      <span class="material-symbols-outlined text-xl">fingerprint</span>
+    </div>
+    
+    <div class="text-center">
+      <h1 class="text-base font-extrabold text-white tracking-tight">Vérification Biométrique</h1>
+      <p class="text-[11px] text-purple-300 font-medium">Validation sécurisée par empreinte digitale</p>
+    </div>
+
+    <!-- Agent Badge -->
+    <div class="w-11 h-11 rounded-full bg-primary/20 text-purple-300 border border-primary/40 flex items-center justify-center font-bold text-xs">
+      AGT
+    </div>
+  </header>
+
+  <!-- Main Biometric Canvas -->
+  <main class="w-full max-w-md mx-auto px-container-margin flex flex-col items-center justify-center gap-6 flex-grow text-center">
+
+    <!-- Operation Context Card -->
+    <div class="w-full bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-5 shadow-2xl flex flex-col gap-3">
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-purple-300 font-medium">Gérante Agréée :</span>
+        <b class="text-white font-bold">Adèle K. (AGT-4092)</b>
+      </div>
+
+      <div class="flex items-center justify-between text-xs pt-2 border-t border-white/10">
+        <span id="op-label" class="text-purple-300 font-medium">Opération en cours :</span>
+        <b id="op-title" class="text-amber-400 font-bold">Décaissement Client (Cash-Out)</b>
+      </div>
+
+      <div class="flex items-center justify-between text-xs pt-1">
+        <span class="text-purple-300 font-medium">Montant à autoriser :</span>
+        <b id="op-amount" class="text-xl font-mono font-black text-white">25 000 FCFA</b>
+      </div>
+    </div>
+
+    <!-- Biometric Interactive Sensor Area -->
+    <div class="relative my-4 flex items-center justify-center">
+      
+      <!-- Ambient Glowing Halo -->
+      <div class="absolute w-56 h-56 bg-primary/25 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Pulsing Outer Rings -->
+      <div id="pulse-1" class="absolute w-44 h-44 rounded-full border-2 border-primary/40 pulse-ring-1 pointer-events-none"></div>
+      <div id="pulse-2" class="absolute w-44 h-44 rounded-full border-2 border-purple-400/30 pulse-ring-2 pointer-events-none"></div>
+
+      <!-- Fingerprint Target Button -->
+      <div id="sensor-touch" onclick="triggerBiometricScan()" class="relative w-36 h-36 rounded-full bg-gradient-to-b from-[#2A2050] to-[#161230] border-2 border-primary/60 shadow-[0_0_40px_rgba(94,59,220,0.4)] flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all group select-none">
+        
+        <!-- Scanning Laser Bar (Hidden by default) -->
+        <div id="laser-bar" class="hidden absolute w-28 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_#22d3ee] scan-laser z-20"></div>
+
+        <!-- Fingerprint Icon -->
+        <span id="fingerprint-icon" class="material-symbols-outlined text-6xl text-purple-300 group-hover:text-white transition-colors duration-200" style="font-variation-settings: 'wght' 300;">
+          fingerprint
+        </span>
+
+        <!-- Success Check Icon (Hidden) -->
+        <div id="success-icon" class="hidden absolute inset-0 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg">
+          <span class="material-symbols-outlined text-6xl font-black">check</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Text & Prompt -->
+    <div class="flex flex-col items-center gap-1.5 max-w-xs">
+      <h2 id="sensor-status-title" class="text-base font-extrabold text-white">Touchez le capteur</h2>
+      <p id="sensor-status-sub" class="text-xs text-purple-300">
+        Posez votre doigt sur le capteur biométrique de votre terminal pour signer et valider l'opération
+      </p>
+    </div>
+
+    <!-- Alternative Action : Use PIN Code -->
+    <div class="w-full flex flex-col gap-2 pt-2">
+      <button type="button" onclick="goBackOrPin()" class="w-full py-4 rounded-full bg-white/10 hover:bg-white/15 border border-white/15 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-lg">pin</span>
+        <span>Saisir mon Code PIN à la place</span>
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Router Script -->
+  <script src="../assets/switch.router.js"></script>
+
+  <!-- Interactive Biometric Logic -->
+  <script>
+    let isScanning = false;
+    let targetUrl = "../tableau_de_bord_agent/code.html";
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Charger les détails de l'opération en cours depuis le localStorage
+      try {
+        const lastTrx = JSON.parse(localStorage.getItem('switch_last_transaction') || '{}');
+        if (lastTrx.title) {
+          document.getElementById('op-title').textContent = lastTrx.title;
+        }
+        if (lastTrx.amount) {
+          document.getElementById('op-amount').textContent = `${parseInt(lastTrx.amount).toLocaleString('fr-FR')} FCFA`;
+        }
+        if (lastTrx.returnUrl) {
+          targetUrl = lastTrx.returnUrl;
+        }
+      } catch (e) {
+        console.log("No pending trx payload found");
+      }
+    });
+
+    function triggerBiometricScan() {
+      if (isScanning) return;
+      isScanning = true;
+
+      const laser = document.getElementById('laser-bar');
+      const icon = document.getElementById('fingerprint-icon');
+      const title = document.getElementById('sensor-status-title');
+      const sub = document.getElementById('sensor-status-sub');
+      const touchBox = document.getElementById('sensor-touch');
+
+      // 1. Démarrer le scan
+      laser.classList.remove('hidden');
+      icon.className = "material-symbols-outlined text-6xl text-cyan-400 animate-pulse";
+      touchBox.className = "relative w-36 h-36 rounded-full bg-gradient-to-b from-[#2A2050] to-[#161230] border-2 border-cyan-400 shadow-[0_0_50px_rgba(34,211,238,0.6)] flex flex-col items-center justify-center transition-all select-none";
+      title.textContent = "Lecture de l'empreinte...";
+      title.className = "text-base font-extrabold text-cyan-400";
+      sub.textContent = "Ne retirez pas votre doigt du capteur sécurisé WebAuthn/POS";
+
+      // 2. Succès après 1.2s
+      setTimeout(() => {
+        laser.classList.add('hidden');
+        document.getElementById('success-icon').classList.remove('hidden');
+        
+        title.textContent = "✅ Empreinte Authentifiée !";
+        title.className = "text-base font-extrabold text-emerald-400";
+        sub.textContent = "Signature biométrique validée pour Adèle K. (Gérante Agréée)";
+
+        // 3. Redirection automatique vers le reçu ou tableau de bord
+        setTimeout(() => {
+          window.location.href = '../recu_operation_agent/code.html';
+        }, 800);
+      }, 1200);
+    }
+
+    function goBackOrPin() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../tableau_de_bord_agent/code.html';
+      }
+    }
+  </script>
+
+</body>
+</html>

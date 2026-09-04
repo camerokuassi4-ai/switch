@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>Liens de Paiement Marchand - Switch Pay Link</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="stylesheet" href="../assets/switch.css">
+  <script src="../assets/switch.config.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&display=swap');
+    body { font-family: 'Hanken Grotesk', sans-serif; min-height: max(884px, 100dvh); }
+    .soft-shadow { box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.05); }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32 flex flex-col antialiased">
+  <!-- TopAppBar -->
+  <header class="flex items-center justify-between px-container-margin py-stack-md w-full max-w-2xl mx-auto pt-6">
+    <div class="flex items-center gap-3">
+      <button aria-label="Retour" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high transition-colors flex items-center justify-center text-on-surface cursor-pointer">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="text-xl font-bold text-on-surface">Liens de Paiement</h1>
+        <p class="text-xs text-on-surface-variant">Encaissement à distance via WhatsApp & SMS</p>
+      </div>
+    </div>
+    <button onclick="openCreateLinkModal()" class="bg-primary text-on-primary text-sm font-semibold px-4 py-2 rounded-full flex items-center gap-1.5 shadow-sm hover:opacity-90 active:scale-95 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-[18px]">add_link</span>
+      <span>Créer un lien</span>
+    </button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="px-container-margin max-w-2xl mx-auto w-full pt-4 flex flex-col gap-6">
+    <!-- Stats Banner -->
+    <div class="grid grid-cols-2 gap-4">
+      <div class="bg-surface-container-lowest rounded-3xl p-5 soft-shadow border border-outline-variant">
+        <span class="text-xs text-on-surface-variant font-bold uppercase">Encaissé par liens</span>
+        <p class="text-2xl font-black font-mono text-primary mt-1">285 000 FCFA</p>
+        <p class="text-xs text-green-600 font-semibold mt-1">12 liens réglés</p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-3xl p-5 soft-shadow border border-outline-variant">
+        <span class="text-xs text-on-surface-variant font-bold uppercase">En attente de paiement</span>
+        <p class="text-2xl font-black font-mono text-amber-600 mt-1">45 000 FCFA</p>
+        <p class="text-xs text-amber-600 font-semibold mt-1">2 liens actifs</p>
+      </div>
+    </div>
+
+    <!-- Active Pay Links List -->
+    <section class="flex flex-col gap-4">
+      <h3 class="text-sm font-bold text-on-surface uppercase tracking-wider pl-1">Mes Liens de Paiement</h3>
+      <div id="pay-links-list" class="flex flex-col gap-4">
+
+      <!-- Link 1: Commande Robe Soie -->
+      <div class="bg-surface-container-lowest rounded-3xl p-5 soft-shadow border border-outline-variant flex flex-col gap-3">
+        <div class="flex justify-between items-start">
+          <div>
+            <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">En attente</span>
+            <h4 class="font-bold text-base text-on-surface mt-1.5">Commande Robe Soie & Accessoires</h4>
+            <p class="text-xs text-on-surface-variant">Client : Sarah K. (+229 97 00 11 22)</p>
+          </div>
+          <span class="text-xl font-black font-mono text-primary">35 000 FCFA</span>
+        </div>
+
+        <div class="p-3 bg-surface-container rounded-2xl flex items-center justify-between text-xs font-mono text-on-surface select-all">
+          <span class="truncate mr-2">https://pay.switch.bj/l/rk88291</span>
+          <button onclick="copyLink('https://pay.switch.bj/l/rk88291')" class="text-primary font-bold hover:underline">Copier</button>
+        </div>
+
+        <div class="flex gap-2 pt-2 border-t border-outline-variant/60">
+          <button onclick="shareWhatsapp('Commande Robe Soie', '35000', 'https://pay.switch.bj/l/rk88291')" class="flex-1 py-2.5 rounded-xl bg-green-600 text-white text-xs font-bold hover:bg-green-700 flex items-center justify-center gap-1.5 cursor-pointer">
+            <span class="material-symbols-outlined text-base">chat</span>
+            <span>Partager sur WhatsApp</span>
+          </button>
+          <button onclick="copyLink('https://pay.switch.bj/l/rk88291')" class="p-2.5 rounded-xl border border-outline-variant hover:bg-surface-container text-on-surface-variant">
+            <span class="material-symbols-outlined text-lg">content_copy</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Link 2: Commande 2 x Cafés Spéciaux (Payé) -->
+      <div class="bg-surface-container-lowest rounded-3xl p-5 soft-shadow border border-outline-variant flex flex-col gap-3 opacity-90">
+        <div class="flex justify-between items-start">
+          <div>
+            <span class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Payé par Compte Switch</span>
+            <h4 class="font-bold text-base text-on-surface mt-1.5">Pack 2 x Cafés Spéciaux Torréfiés</h4>
+            <p class="text-xs text-on-surface-variant">Payé le 24 Août à 18:30</p>
+          </div>
+          <span class="text-xl font-black font-mono text-on-surface">10 000 FCFA</span>
+        </div>
+
+        <div class="text-xs text-on-surface-variant flex justify-between items-center pt-2 border-t border-outline-variant/40">
+          <span>Réf: SWP-992018</span>
+          <span class="text-green-600 font-semibold">Crédité sur solde Marchand</span>
+        </div>
+      </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Create Link Modal -->
+  <div id="create-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 flex flex-col gap-4 shadow-2xl animate-in fade-in slide-in-from-bottom duration-200">
+      <div class="flex justify-between items-center">
+        <h3 class="text-base font-bold text-on-surface">Nouveau Lien de Paiement</h3>
+        <button onclick="closeCreateLinkModal()" class="p-1.5 rounded-full hover:bg-gray-100 text-on-surface-variant cursor-pointer">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="handleCreateLink(event)" class="flex flex-col gap-3.5">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-bold text-on-surface-variant">Motif / Description de la commande *</label>
+          <input type="text" id="link-title" required placeholder="Ex: Commande Tissu Wax #402" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-4 py-3 text-xs sm:text-sm font-semibold focus:outline-none focus:border-primary"/>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-bold text-on-surface-variant">Montant à payer (FCFA) *</label>
+          <div class="relative flex items-center">
+            <input type="number" id="link-amount" required min="100" placeholder="15000" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-4 pr-16 py-3 text-base font-bold font-mono focus:outline-none focus:border-primary"/>
+            <span class="absolute right-4 text-xs font-bold text-on-surface-variant font-mono">FCFA</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-bold text-on-surface-variant">Nom du client (Optionnel)</label>
+          <input type="text" id="link-client" placeholder="Ex: Sarah K. (+229 97 00 11 22)" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-primary"/>
+        </div>
+
+        <div class="p-3 bg-emerald-50 rounded-xl text-xs flex justify-between items-center text-emerald-900 border border-emerald-200">
+          <span>Débit direct Compte Switch du client</span>
+          <span class="font-bold text-emerald-700">0% Frais</span>
+        </div>
+
+        <div class="flex gap-2.5 mt-2">
+          <button type="button" onclick="closeCreateLinkModal()" class="flex-1 py-3 rounded-full border border-outline-variant font-semibold text-xs hover:bg-surface-container cursor-pointer">Annuler</button>
+          <button type="submit" class="flex-1 py-3 rounded-full bg-primary text-white font-bold text-xs hover:opacity-90 active:scale-95 transition-all shadow-md cursor-pointer">Générer le lien</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const DEFAULT_LINKS = [
+      { id: 'rk88291', title: 'Commande Robe Soie & Accessoires', client: 'Sarah K. (+229 97 00 11 22)', amount: 35000, status: 'pending', date: '25 Août à 14:10' },
+      { id: 'sp99201', title: 'Pack 2 x Cafés Spéciaux Torréfiés', client: 'Koffi A.', amount: 10000, status: 'paid', date: '24 Août à 18:30' }
+    ];
+
+    function getPayLinks() {
+      const stored = localStorage.getItem('switch_merchant_pay_links');
+      return stored ? JSON.parse(stored) : DEFAULT_LINKS;
+    }
+
+    function renderPayLinks() {
+      const links = getPayLinks();
+      const container = document.getElementById('pay-links-list');
+      if (!container) return;
+
+      container.innerHTML = links.map(link => {
+        const fullUrl = `https://pay.switch.bj/l/${link.id}`;
+        const isPaid = link.status === 'paid';
+        return `
+        <div class="bg-white rounded-3xl p-5 soft-shadow border border-outline-variant/50 flex flex-col gap-3 ${isPaid ? 'opacity-90' : ''}">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="${isPaid ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'} text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                ${isPaid ? 'Payé par Compte Switch' : 'En attente de paiement'}
+              </span>
+              <h4 class="font-bold text-sm sm:text-base text-on-surface mt-1.5">${link.title}</h4>
+              <p class="text-xs text-on-surface-variant">${link.client || link.date}</p>
+            </div>
+            <span class="text-lg sm:text-xl font-black font-mono text-emerald-700">${parseInt(link.amount).toLocaleString('fr-FR')} FCFA</span>
+          </div>
+
+          <div class="p-3 bg-surface-container-low rounded-2xl flex items-center justify-between text-xs font-mono text-on-surface select-all border border-outline-variant/30">
+            <span class="truncate mr-2">${fullUrl}</span>
+            <button onclick="copyLink('${fullUrl}')" class="text-primary font-bold hover:underline cursor-pointer">Copier</button>
+          </div>
+
+          <div class="flex gap-2 pt-2 border-t border-outline-variant/40">
+            <button onclick="shareWhatsapp('${link.title.replace(/'/g, "\\'")}', '${link.amount}', '${fullUrl}')" class="flex-1 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 flex items-center justify-center gap-1.5 cursor-pointer active:scale-98 transition-all">
+              <span class="material-symbols-outlined text-base">chat</span>
+              <span>Partager WhatsApp</span>
+            </button>
+            <button onclick="copyLink('${fullUrl}')" class="p-2.5 rounded-xl border border-outline-variant hover:bg-surface-container text-on-surface-variant cursor-pointer" title="Copier">
+              <span class="material-symbols-outlined text-base">content_copy</span>
+            </button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function openCreateLinkModal() {
+      document.getElementById('create-modal').classList.remove('hidden');
+    }
+
+    function closeCreateLinkModal() {
+      document.getElementById('create-modal').classList.add('hidden');
+    }
+
+    function copyLink(url) {
+      navigator.clipboard.writeText(url);
+      alert('Lien de paiement copié : ' + url);
+    }
+
+    function shareWhatsapp(title, amt, url) {
+      const msg = encodeURIComponent("🏪 Bonjour ! Voici votre lien de paiement sécurisé Switch Pay pour " + title + " (" + parseInt(amt).toLocaleString('fr-FR') + " FCFA) : " + url);
+      window.open("https://wa.me/?text=" + msg, "_blank");
+    }
+
+    function handleCreateLink(e) {
+      e.preventDefault();
+      const title = document.getElementById('link-title').value.trim();
+      const amt = parseInt(document.getElementById('link-amount').value, 10);
+      const client = document.getElementById('link-client').value.trim();
+
+      const newLink = {
+        id: 'lk' + Math.floor(10000 + Math.random() * 90000),
+        title: title,
+        client: client || 'Client Web',
+        amount: amt,
+        status: 'pending',
+        date: "Aujourd'hui à " + new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      const links = getPayLinks();
+      links.unshift(newLink);
+      localStorage.setItem('switch_merchant_pay_links', JSON.stringify(links));
+
+      closeCreateLinkModal();
+      renderPayLinks();
+      alert('Lien de paiement créé avec succès !');
+    }
+
+    document.addEventListener("DOMContentLoaded", renderPayLinks);
+  </script>
+
+  <script src="../assets/switch.router.js"></script>
+</body>
+</html>
