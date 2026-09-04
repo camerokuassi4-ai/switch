@@ -212,6 +212,40 @@ async function generateUltraHdScreens() {
           pos_id: 'POS-01'
         }));
         localStorage.setItem('switch_merchant_balance', '385000');
+        localStorage.setItem('switch_merchant_products', JSON.stringify([
+          {
+            id: 'p1',
+            name: 'Robe Bazin Riche Brodé Or',
+            price: 25000,
+            category: 'Mode & Vêtements',
+            in_stock: true,
+            image_url: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&auto=format&fit=crop&q=80'
+          },
+          {
+            id: 'p2',
+            name: 'Huile Végétale Pure 5L',
+            price: 6500,
+            category: 'Alimentation',
+            in_stock: true,
+            image_url: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500&auto=format&fit=crop&q=80'
+          },
+          {
+            id: 'p3',
+            name: 'Smartphone 4G 64Go Dual SIM',
+            price: 48000,
+            category: 'High-Tech',
+            in_stock: true,
+            image_url: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop&q=80'
+          },
+          {
+            id: 'p4',
+            name: 'Sacoche Cuir Homme Deluxe',
+            price: 14500,
+            category: 'Accessoires',
+            in_stock: true,
+            image_url: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&auto=format&fit=crop&q=80'
+          }
+        ]));
 
         // Profil Agent
         localStorage.setItem('switch_agent_profile', JSON.stringify({
@@ -230,15 +264,46 @@ async function generateUltraHdScreens() {
       await page.goto(pageUrl, { waitUntil: 'load', timeout: 15000 });
 
       // Attendre que les polices web et icônes soient 100% chargées
-      await page.evaluate(async () => {
+      await page.evaluate(async (screenId) => {
         await document.fonts.ready;
-        // Optimisation rendu des textes
-        document.documentElement.style.webkitFontSmoothing = 'antialiased';
-        document.documentElement.style.textRendering = 'optimizeLegibility';
-        // Masquer d'éventuels toasts temporaires qui masqueraient l'UI
+
+        // 1. Injection du Safe Area Inset pour que le haut de l'écran passe sous la Dynamic Island sans chevauchement
+        const style = document.createElement('style');
+        style.textContent = `
+          body {
+            padding-top: 48px !important;
+            padding-bottom: 36px !important;
+            box-sizing: border-box !important;
+          }
+          header, nav.fixed-top, .sticky.top-0 {
+            top: 48px !important;
+          }
+          * {
+            -webkit-font-smoothing: antialiased !important;
+            -moz-osx-font-smoothing: grayscale !important;
+            text-rendering: optimizeLegibility !important;
+          }
+        `;
+        document.head.appendChild(style);
+
+        // 2. Ajustement spécifique pour que les pages denses tiennent parfaitement sans être coupées en bas
+        if (screenId === 'merchant_qr') {
+          const main = document.querySelector('main');
+          if (main) {
+            main.style.transform = 'scale(0.92)';
+            main.style.transformOrigin = 'top center';
+          }
+        }
+
+        // 3. Ré-exécution du rendu des produits si présent sur la page
+        if (window.renderProducts) {
+          window.renderProducts();
+        }
+
+        // 4. Masquer d'éventuels toasts temporaires qui masqueraient l'UI
         const toasts = document.querySelectorAll('.toast, [role="alert"], #toast-container');
         toasts.forEach(t => t.remove());
-      });
+      }, item.id);
 
       await page.waitForTimeout(800);
 
