@@ -9,7 +9,10 @@ def prepare_dist():
     print("🚀 Préparation du dossier de production 'dist/' pour l'hébergement web...")
     
     if os.path.exists(dist_dir):
-        shutil.rmtree(dist_dir)
+        try:
+            shutil.rmtree(dist_dir)
+        except Exception:
+            pass
     os.makedirs(dist_dir, exist_ok=True)
 
     # 1. Copy index.html and download.html
@@ -26,7 +29,21 @@ def prepare_dist():
     src_assets = os.path.join(base_dir, "assets")
     dst_assets = os.path.join(dist_dir, "assets")
     if os.path.exists(src_assets):
-        shutil.copytree(src_assets, dst_assets)
+        if os.path.exists(dst_assets):
+            for root, dirs, files in os.walk(src_assets):
+                rel = os.path.relpath(root, src_assets)
+                dest_dir = os.path.join(dst_assets, rel)
+                os.makedirs(dest_dir, exist_ok=True)
+                for f in files:
+                    sf = os.path.join(root, f)
+                    df = os.path.join(dest_dir, f)
+                    if not os.path.exists(df) or os.path.getsize(sf) != os.path.getsize(df):
+                        try:
+                            shutil.copy2(sf, df)
+                        except Exception:
+                            pass
+        else:
+            shutil.copytree(src_assets, dst_assets)
 
     # 4. Ensure downloads directory exists with APK binaries
     dst_downloads = os.path.join(dst_assets, "downloads")
@@ -38,9 +55,13 @@ def prepare_dist():
         if fname.endswith(".apk"):
             src_f = os.path.join(src_downloads, fname)
             dst_f = os.path.join(dst_downloads, fname)
-            shutil.copy2(src_f, dst_f)
-            size_mb = os.path.getsize(dst_f) / (1024 * 1024)
-            print(f"  ✅ APK de production copié dans dist: {fname} ({size_mb:.2f} Mo)")
+            if not os.path.exists(dst_f) or os.path.getsize(src_f) != os.path.getsize(dst_f):
+                try:
+                    shutil.copy2(src_f, dst_f)
+                except Exception:
+                    pass
+            size_mb = os.path.getsize(dst_f) / (1024 * 1024) if os.path.exists(dst_f) else os.path.getsize(src_f) / (1024 * 1024)
+            print(f"  ✅ APK de production dans dist: {fname} ({size_mb:.2f} Mo)")
 
     # Also place APKs in direct download subfolders for direct route links
     sub_map = {
