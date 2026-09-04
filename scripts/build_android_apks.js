@@ -17,6 +17,7 @@ const apps = [
     id: 'user',
     name: 'Switch Beta — Utilisateur',
     package: 'bj.switchuser.beta',
+    entryPoint: 'accueil_splash_mis_jour',
     dashboard: 'tableau_de_bord_mis_jour',
     apkName: 'switch-beta-user-v2.1.0.apk',
     alias: 'switch_user_beta.apk'
@@ -25,6 +26,7 @@ const apps = [
     id: 'merchant',
     name: 'Switch Beta — Marchand',
     package: 'bj.switchmerchant.beta',
+    entryPoint: 'inscription_marchand',
     dashboard: 'tableau_de_bord_marchand',
     apkName: 'switch-beta-merchant-v2.1.0.apk',
     alias: 'switch_merchant_beta.apk'
@@ -33,6 +35,7 @@ const apps = [
     id: 'agent',
     name: 'Switch Beta — Agent',
     package: 'bj.switchagent.beta',
+    entryPoint: 'connexion_agent',
     dashboard: 'tableau_de_bord_agent',
     apkName: 'switch-beta-agent-v2.1.0.apk',
     alias: 'switch_agent_beta.apk'
@@ -41,6 +44,7 @@ const apps = [
     id: 'hybrid',
     name: 'Switch Beta — Hybride',
     package: 'bj.switchhybrid.beta',
+    entryPoint: 'tableau_de_bord_agent_mixte',
     dashboard: 'tableau_de_bord_agent_mixte',
     apkName: 'switch-beta-hybrid-v2.1.0.apk',
     alias: 'switch_hybrid_beta.apk'
@@ -90,16 +94,16 @@ async function buildAll() {
       }
     }
     
-    // Prepare www/index.html (redirect to dashboard or embed directly)
+    // Prepare www/index.html (redirect to entryPoint or embed directly)
     const indexHtmlContent = `<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
   <title>${app.name}</title>
-  <meta http-equiv="refresh" content="0; url=${app.dashboard}/code.html" />
+  <meta http-equiv="refresh" content="0; url=${app.entryPoint}/code.html" />
   <script>
-    window.location.replace("${app.dashboard}/code.html");
+    window.location.replace("${app.entryPoint}/code.html");
   </script>
 </head>
 <body style="background:#5E3BDC; color:#ffffff; font-family:sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; margin:0;">
