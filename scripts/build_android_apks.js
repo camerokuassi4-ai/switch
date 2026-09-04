@@ -116,7 +116,7 @@ async function buildAll() {
       execSync('npx cap sync android', { cwd: appDir, stdio: 'inherit' });
     }
 
-    // 3. Patch variables.gradle for compatibility with runner SDK 35
+    // 3. Patch variables.gradle and build.gradle for compatibility with runner SDK 35 and Kotlin duplicate classes
     const variablesGradle = path.join(androidDir, 'variables.gradle');
     if (fs.existsSync(variablesGradle)) {
       let content = fs.readFileSync(variablesGradle, 'utf8');
@@ -127,6 +127,42 @@ async function buildAll() {
       content = content.replace(/androidxAppCompatVersion\s*=\s*['"][^'"]+['"]/, "androidxAppCompatVersion = '1.7.0'");
       content = content.replace(/androidxFragmentVersion\s*=\s*['"][^'"]+['"]/, "androidxFragmentVersion = '1.8.5'");
       fs.writeFileSync(variablesGradle, content, 'utf8');
+    }
+
+    const rootBuildGradle = path.join(androidDir, 'build.gradle');
+    if (fs.existsSync(rootBuildGradle)) {
+      let content = fs.readFileSync(rootBuildGradle, 'utf8');
+      if (!content.includes('kotlin-stdlib:1.8.22')) {
+        content = content.replace(
+          'allprojects {',
+          `allprojects {
+    configurations.all {
+        resolutionStrategy {
+            force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+            force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22'
+            force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
+        }
+    }`
+        );
+        fs.writeFileSync(rootBuildGradle, content, 'utf8');
+      }
+    }
+
+    const appBuildGradle = path.join(androidDir, 'app', 'build.gradle');
+    if (fs.existsSync(appBuildGradle)) {
+      let content = fs.readFileSync(appBuildGradle, 'utf8');
+      if (!content.includes('kotlin-stdlib-jdk7:1.8.22')) {
+        content = content.replace('dependencies {', `dependencies {
+    constraints {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22") {
+            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22") {
+            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+        }
+    }`);
+        fs.writeFileSync(appBuildGradle, content, 'utf8');
+      }
     }
 
     // 4. Build APK with Gradle
