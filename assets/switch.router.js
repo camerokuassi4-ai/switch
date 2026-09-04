@@ -695,6 +695,7 @@
       normalizedUrl = new URL(targetUrl, window.location.href).href;
       const pageData = await getPageData(normalizedUrl);
       if (pageData.title) document.title = pageData.title;
+      document.body.removeAttribute("style");
       if (pageData.bodyClass) document.body.className = pageData.bodyClass;
 
       // 1. Mettre à jour les styles CSS dynamiques
