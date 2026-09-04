@@ -6,7 +6,7 @@
   
   <!-- Titre & SEO Meta Tags -->
   <title>Switch Beta 🇧🇯 — L'application de paiement mobile pour tous les Béninois</title>
-  <meta name="description" content="Switch Beta est l'application de paiement mobile la plus complète du Bénin. 4 profils dédiés : Utilisateur, Marchand, Agent et Hybride avec téléchargement direct de l'APK.">
+  <meta name="description" content="Switch Beta est l'application de paiement mobile la plus complète du Bénin. 4 profils dédiés : Utilisateur, Marchand, Agent et Hybride avec mockups smartphones interactifs.">
   <meta name="keywords" content="Switch, Bénin, paiement mobile, APK Android, P2P gratuit, SBEE, SONEB, Moov, MTN, Celtiis, Marchand, Agent, Tontine, Vault">
   <meta name="author" content="Switch Bénin S.A.S">
   <meta name="robots" content="index, follow">
@@ -154,20 +154,142 @@
       justify-content: center;
     }
 
-    /* Horizontal scroll container on small devices */
-    .mobile-horizontal-scroll {
+    /* ========================================================================= */
+    /* CADRE DE SMARTPHONE MODERNE (MOCKUP CSS RESPONSIVE)                       */
+    /* ========================================================================= */
+    .phone-mockup {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9 / 18.5;
+      background: #090615;
+      border-radius: 28px;
+      padding: 6px 6px 8px 6px;
+      box-shadow: 
+        0 0 0 1.5px rgba(255, 255, 255, 0.16),
+        0 0 0 4.5px #1C1530,
+        0 14px 28px rgba(0, 0, 0, 0.65),
+        inset 0 0 4px rgba(255, 255, 255, 0.08);
+      transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      flex-direction: column;
     }
-    .mobile-horizontal-scroll::-webkit-scrollbar {
-      display: none;
+
+    @media (min-width: 640px) {
+      .phone-mockup {
+        border-radius: 34px;
+        padding: 8px 8px 10px 8px;
+        box-shadow: 
+          0 0 0 2px rgba(255, 255, 255, 0.2),
+          0 0 0 6px #1E1736,
+          0 18px 36px rgba(0, 0, 0, 0.7),
+          inset 0 0 6px rgba(255, 255, 255, 0.1);
+      }
     }
-    .mobile-horizontal-scroll > * {
-      scroll-snap-align: start;
-      flex-shrink: 0;
+
+    /* Survol et halo de couleur par profil */
+    @media (hover: hover) {
+      .group:hover .phone-mockup {
+        transform: translateY(-4px) scale(1.02);
+      }
+      .group:hover .phone-mockup.user-phone {
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.8), 0 0 0 6px #064E3B, 0 20px 40px rgba(16, 185, 129, 0.35);
+      }
+      .group:hover .phone-mockup.merchant-phone {
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.8), 0 0 0 6px #1E3A8A, 0 20px 40px rgba(37, 99, 235, 0.35);
+      }
+      .group:hover .phone-mockup.agent-phone {
+        box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.8), 0 0 0 6px #78350F, 0 20px 40px rgba(217, 119, 6, 0.35);
+      }
+      .group:hover .phone-mockup.hybrid-phone {
+        box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.8), 0 0 0 6px #134E4A, 0 20px 40px rgba(13, 148, 136, 0.35);
+      }
+    }
+
+    /* Écran in-app intérieur */
+    .phone-screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 22px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.85);
+    }
+
+    @media (min-width: 640px) {
+      .phone-screen {
+        border-radius: 26px;
+      }
+    }
+
+    /* Dynamic Island en haut du téléphone */
+    .phone-dynamic-island {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 36%;
+      height: 12px;
+      background: #000000;
+      border-radius: 10px;
+      z-index: 25;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+      pointer-events: none;
+    }
+
+    .phone-speaker {
+      width: 14px;
+      height: 2px;
+      background: #262626;
+      border-radius: 2px;
+    }
+
+    .phone-camera-lens {
+      width: 4.5px;
+      height: 4.5px;
+      border-radius: 50%;
+      background: #0284C7;
+      box-shadow: inset 0 0 2px #000;
+    }
+
+    /* Barre indicateur Home en bas */
+    .phone-home-indicator {
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 36%;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 3px;
+      z-index: 25;
+      pointer-events: none;
+    }
+
+    /* Boutons latéraux physiques du téléphone */
+    .phone-mockup::before {
+      content: '';
+      position: absolute;
+      top: 50px;
+      left: -6px;
+      width: 2.5px;
+      height: 22px;
+      background: #3B2E5C;
+      border-radius: 2px 0 0 2px;
+    }
+    .phone-mockup::after {
+      content: '';
+      position: absolute;
+      top: 80px;
+      left: -6px;
+      width: 2.5px;
+      height: 22px;
+      background: #3B2E5C;
+      border-radius: 2px 0 0 2px;
     }
 
     /* Fixed Bottom Nav for Mobile */
@@ -201,7 +323,7 @@
           <span class="font-black text-lg sm:text-xl tracking-tight text-white flex items-center gap-1.5 sm:gap-2">
             Switch Beta <span class="text-[10px] sm:text-xs bg-amber-400/20 text-amber-300 border border-amber-400/30 px-1.5 sm:px-2 py-0.5 rounded-full uppercase font-black">Bénin 🇧🇯</span>
           </span>
-          <span class="text-[10px] sm:text-[11px] text-purple-300 font-medium">4 Profils • 0% de frais</span>
+          <span class="text-[10px] sm:text-[11px] text-purple-300 font-medium">4 Profils • Mockups Smartphones Réels</span>
         </div>
       </a>
 
@@ -256,7 +378,7 @@
     </h1>
 
     <p class="mt-4 sm:mt-6 text-sm sm:text-lg text-purple-200/90 max-w-2xl font-medium leading-relaxed">
-      Découvrez une expérience séparée par profil : particuliers, commerçants, agents guichetiers et boutiques mixtes. Chaque profil a son application dédiée et ses écrans optimisés.
+      Découvrez chaque interface dans son véritable cadre de smartphone. 4 applications séparées pour particuliers, commerçants, agents guichetiers et commerces mixtes.
     </p>
 
     <!-- BOUTONS ACTION HERO (Gros boutons tactiles) -->
@@ -271,7 +393,7 @@
       </a>
     </div>
 
-    <!-- STATS COMPACTES (Grille 2x2 propre sur smartphone) -->
+    <!-- STATS COMPACTES -->
     <div class="mt-8 sm:mt-12 w-full max-w-4xl glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-white/15 shadow-xl">
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center">
         <div class="p-3 rounded-xl bg-white/5 border border-white/10">
@@ -365,7 +487,7 @@
         </div>
       </div>
 
-      <!-- Corps : 5 Points Clés + 4 Écrans Clés -->
+      <!-- Corps : 5 Points Clés + 4 Écrans Clés en Cadres Smartphones -->
       <div class="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <!-- 5 Points Clés (Gauche / 5 cols) -->
@@ -419,65 +541,101 @@
           </div>
         </div>
 
-        <!-- 4 Écrans Clés (Droite / 7 cols) -->
+        <!-- 4 Écrans Clés dans leurs CADRES DE SMARTPHONES (Droite / 7 cols) -->
         <div class="lg:col-span-7">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-xs uppercase font-black text-gray-300 tracking-wider flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-base text-emerald-400">photo_library</span>
-              Aperçu des 4 Écrans Clés (Tapez pour agrandir)
+              <span class="material-symbols-outlined text-base text-emerald-400">smartphone</span>
+              Mockups Smartphones Réels (Tapez pour zoomer)
             </h3>
             <span class="text-[11px] text-purple-300 font-semibold hidden sm:inline">Affichage HD</span>
           </div>
 
-          <!-- Grille 2x2 propre et compacte sur smartphone -->
-          <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3">
+          <!-- Grille 2x2 propre de smartphones -->
+          <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4">
             
-            <!-- Écran 1 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-emerald-500/30 flex flex-col cursor-pointer group hover:border-emerald-400" onclick="openLightbox('assets/images/real_screens/user_dashboard.jpg', 'Tableau de bord Utilisateur', 'Vue synthétique avec solde courant (110,000 FCFA), coffre Vault (45,000 FCFA), et boutons d\'accès rapides.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/user_dashboard.jpg" alt="Tableau de bord Utilisateur" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 1 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/user_dashboard.jpg', 'Tableau de bord Utilisateur', 'Vue synthétique avec solde courant (110,000 FCFA), coffre Vault (45,000 FCFA), et boutons d\'accès rapides.')">
+              <div class="phone-mockup user-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/user_dashboard.jpg" alt="Tableau de bord Utilisateur" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">1. Accueil & Solde</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Solde principal & Vault</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">1. Accueil & Solde</h4>
+                <p class="text-[10px] text-gray-300 truncate">Solde & Vault 45k</p>
+              </div>
             </div>
 
-            <!-- Écran 2 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-emerald-500/30 flex flex-col cursor-pointer group hover:border-emerald-400" onclick="openLightbox('assets/images/real_screens/user_p2p.jpg', 'Transfert P2P à 0% Frais', 'Envoi d\'argent instantané et gratuit en renseignant le numéro du destinataire et le montant.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/user_p2p.jpg" alt="Transfert P2P" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 2 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/user_p2p.jpg', 'Transfert P2P à 0% Frais', 'Envoi d\'argent instantané et gratuit en renseignant le numéro du destinataire et le montant.')">
+              <div class="phone-mockup user-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/user_p2p.jpg" alt="Transfert P2P" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">2. Transfert P2P</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Envoi 0 FCFA de frais</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">2. Transfert P2P</h4>
+                <p class="text-[10px] text-gray-300 truncate">0 FCFA de frais</p>
+              </div>
             </div>
 
-            <!-- Écran 3 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-emerald-500/30 flex flex-col cursor-pointer group hover:border-emerald-400" onclick="openLightbox('assets/images/real_screens/user_sbee.jpg', 'Paiement Facture SBEE Électricité', 'Achat direct de recharges d\'électricité par numéro de compteur avec reçu et code STS instantané.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/user_sbee.jpg" alt="Paiement SBEE" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 3 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/user_sbee.jpg', 'Paiement Facture SBEE Électricité', 'Achat direct de recharges d\'électricité par numéro de compteur avec reçu et code STS instantané.')">
+              <div class="phone-mockup user-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/user_sbee.jpg" alt="Paiement SBEE" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">3. Facture SBEE</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Jeton STS instantané</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">3. Facture SBEE</h4>
+                <p class="text-[10px] text-gray-300 truncate">Code STS instantané</p>
+              </div>
             </div>
 
-            <!-- Écran 4 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-emerald-500/30 flex flex-col cursor-pointer group hover:border-emerald-400" onclick="openLightbox('assets/images/real_screens/user_recharge.jpg', 'Recharge Crédit GSM & Data', 'Recharge de forfaits d\'appel et internet tous opérateurs béninois en temps réel.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/user_recharge.jpg" alt="Recharge GSM" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 4 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/user_recharge.jpg', 'Recharge Crédit GSM & Data', 'Recharge de forfaits d\'appel et internet tous opérateurs béninois en temps réel.')">
+              <div class="phone-mockup user-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/user_recharge.jpg" alt="Recharge GSM" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">4. Recharge GSM</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">MTN, Moov & Celtiis</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">4. Recharge GSM</h4>
+                <p class="text-[10px] text-gray-300 truncate">MTN, Moov & Celtiis</p>
+              </div>
             </div>
 
           </div>
@@ -523,7 +681,7 @@
         </div>
       </div>
 
-      <!-- Corps : 5 Points Clés + 4 Écrans Clés -->
+      <!-- Corps : 5 Points Clés + 4 Écrans Clés en Cadres Smartphones -->
       <div class="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <!-- 5 Points Clés (Gauche / 5 cols) -->
@@ -577,64 +735,100 @@
           </div>
         </div>
 
-        <!-- 4 Écrans Clés (Droite / 7 cols) -->
+        <!-- 4 Écrans Clés en Cadres Smartphones (Droite / 7 cols) -->
         <div class="lg:col-span-7">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-xs uppercase font-black text-gray-300 tracking-wider flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-base text-blue-400">photo_library</span>
-              Aperçu des 4 Écrans Clés (Tapez pour agrandir)
+              <span class="material-symbols-outlined text-base text-blue-400">smartphone</span>
+              Mockups Smartphones Réels (Tapez pour zoomer)
             </h3>
             <span class="text-[11px] text-purple-300 font-semibold hidden sm:inline">Affichage HD</span>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3">
+          <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4">
             
-            <!-- Écran 1 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-blue-500/30 flex flex-col cursor-pointer group hover:border-blue-400" onclick="openLightbox('assets/images/real_screens/merchant_dashboard.jpg', 'Tableau de bord Marchand', 'Suivi du solde boutique (385,000 FCFA), chiffre d\'affaires du jour et raccourcis POS.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/merchant_dashboard.jpg" alt="Tableau de bord Marchand" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 1 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/merchant_dashboard.jpg', 'Tableau de bord Marchand', 'Suivi du solde boutique (385,000 FCFA), chiffre d\'affaires du jour et raccourcis POS.')">
+              <div class="phone-mockup merchant-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/merchant_dashboard.jpg" alt="Tableau de bord Marchand" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">1. Tableau de bord</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Recettes 385 000 F</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">1. Tableau de bord</h4>
+                <p class="text-[10px] text-gray-300 truncate">Recettes 385 000 F</p>
+              </div>
             </div>
 
-            <!-- Écran 2 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-blue-500/30 flex flex-col cursor-pointer group hover:border-blue-400" onclick="openLightbox('assets/images/real_screens/merchant_pos.jpg', 'Caisse Tactile POS', 'Encaissement rapide au comptoir, sélection d\'articles et validation sans friction.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/merchant_pos.jpg" alt="Caisse Tactile POS" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 2 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/merchant_pos.jpg', 'Caisse Tactile POS', 'Encaissement rapide au comptoir, sélection d\'articles et validation sans friction.')">
+              <div class="phone-mockup merchant-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/merchant_pos.jpg" alt="Caisse Tactile POS" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">2. Caisse POS</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Terminal tactile 0%</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">2. Caisse POS</h4>
+                <p class="text-[10px] text-gray-300 truncate">Terminal tactile 0%</p>
+              </div>
             </div>
 
-            <!-- Écran 3 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-blue-500/30 flex flex-col cursor-pointer group hover:border-blue-400" onclick="openLightbox('assets/images/real_screens/merchant_catalog.jpg', 'Catalogue Produits & Services', 'Gestion des articles du commerce avec visuels, prix unitaires et quantités disponibles.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/merchant_catalog.jpg" alt="Catalogue Produits" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 3 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/merchant_catalog.jpg', 'Catalogue Produits & Services', 'Gestion des articles du commerce avec visuels, prix unitaires et quantités disponibles.')">
+              <div class="phone-mockup merchant-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/merchant_catalog.jpg" alt="Catalogue Produits" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">3. Catalogue</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Articles & Tarifs</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">3. Catalogue</h4>
+                <p class="text-[10px] text-gray-300 truncate">Articles & Tarifs</p>
+              </div>
             </div>
 
-            <!-- Écran 4 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-blue-500/30 flex flex-col cursor-pointer group hover:border-blue-400" onclick="openLightbox('assets/images/real_screens/merchant_qr.jpg', 'Standee QR Code de Comptoir', 'Standee officiel prêt à poser sur votre comptoir pour laisser les clients scanner et payer.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/merchant_qr.jpg" alt="QR Code Marchand" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 4 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/merchant_qr.jpg', 'Standee QR Code de Comptoir', 'Standee officiel prêt à poser sur votre comptoir pour laisser les clients scanner et payer.')">
+              <div class="phone-mockup merchant-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/merchant_qr.jpg" alt="QR Code Marchand" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">4. QR Comptoir</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Standee dynamique</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">4. QR Comptoir</h4>
+                <p class="text-[10px] text-gray-300 truncate">Standee dynamique</p>
+              </div>
             </div>
 
           </div>
@@ -680,7 +874,7 @@
         </div>
       </div>
 
-      <!-- Corps : 5 Points Clés + 4 Écrans Clés -->
+      <!-- Corps : 5 Points Clés + 4 Écrans Clés en Cadres Smartphones -->
       <div class="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <!-- 5 Points Clés (Gauche / 5 cols) -->
@@ -701,8 +895,8 @@
             <li class="flex items-start gap-3 p-3 rounded-2xl bg-white/5 border border-white/10">
               <span class="material-symbols-outlined text-amber-400 text-xl shrink-0 mt-0.5">qr_code_scanner</span>
               <div>
-                <strong class="text-white block">Cash-Out par QR Code à usage unique 5 min</strong>
-                <span class="text-gray-300 text-xs">Scannez le code QR généré par le client après son PIN pour décaisser l'argent sans risque.</span>
+                <strong class="text-white block">Cash-Out par QR Code 5 min sans risque</strong>
+                <span class="text-gray-300 text-xs">Scannez le code QR généré par le client après son PIN pour décaisser l'argent sans faute.</span>
               </div>
             </li>
             <li class="flex items-start gap-3 p-3 rounded-2xl bg-white/5 border border-white/10">
@@ -734,64 +928,100 @@
           </div>
         </div>
 
-        <!-- 4 Écrans Clés (Droite / 7 cols) -->
+        <!-- 4 Écrans Clés en Cadres Smartphones (Droite / 7 cols) -->
         <div class="lg:col-span-7">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-xs uppercase font-black text-gray-300 tracking-wider flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-base text-amber-400">photo_library</span>
-              Aperçu des 4 Écrans Clés (Tapez pour agrandir)
+              <span class="material-symbols-outlined text-base text-amber-400">smartphone</span>
+              Mockups Smartphones Réels (Tapez pour zoomer)
             </h3>
             <span class="text-[11px] text-purple-300 font-semibold hidden sm:inline">Affichage HD</span>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3">
+          <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4">
             
-            <!-- Écran 1 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-amber-500/30 flex flex-col cursor-pointer group hover:border-amber-400" onclick="openLightbox('assets/images/real_screens/agent_dashboard.jpg', 'Tableau de bord Agent Guichetier', 'Solde Float (1,475,000 FCFA), commissions acquises (48,500 FCFA) et raccourcis Cash-In / Cash-Out.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/agent_dashboard.jpg" alt="Tableau de bord Agent" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 1 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/agent_dashboard.jpg', 'Tableau de bord Agent Guichetier', 'Solde Float (1,475,000 FCFA), commissions acquises (48,500 FCFA) et raccourcis Cash-In / Cash-Out.')">
+              <div class="phone-mockup agent-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/agent_dashboard.jpg" alt="Tableau de bord Agent" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">1. Tableau de bord</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Float 1 475 000 F</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">1. Tableau de bord</h4>
+                <p class="text-[10px] text-gray-300 truncate">Float 1 475 000 F</p>
+              </div>
             </div>
 
-            <!-- Écran 2 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-amber-500/30 flex flex-col cursor-pointer group hover:border-amber-400" onclick="openLightbox('assets/images/real_screens/agent_cashin.jpg', 'Opération Cash-In (Dépôt Client)', 'Saisie du numéro téléphone du client, montant à créditer et confirmation instantanée.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/agent_cashin.jpg" alt="Cash-In Dépôt" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 2 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/agent_cashin.jpg', 'Opération Cash-In (Dépôt Client)', 'Saisie du numéro téléphone du client, montant à créditer et confirmation instantanée.')">
+              <div class="phone-mockup agent-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/agent_cashin.jpg" alt="Cash-In Dépôt" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">2. Cash-In Dépôt</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Crédit client direct</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">2. Cash-In Dépôt</h4>
+                <p class="text-[10px] text-gray-300 truncate">Crédit client direct</p>
+              </div>
             </div>
 
-            <!-- Écran 3 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-amber-500/30 flex flex-col cursor-pointer group hover:border-amber-400" onclick="openLightbox('assets/images/real_screens/agent_cashout.jpg', 'Opération Cash-Out (Retrait QR)', 'Scan du QR code 5 minutes présenté par l\'utilisateur pour lui remettre ses espèces.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/agent_cashout.jpg" alt="Cash-Out Retrait" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 3 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/agent_cashout.jpg', 'Opération Cash-Out (Retrait QR)', 'Scan du QR code 5 minutes présenté par l\'utilisateur pour lui remettre ses espèces.')">
+              <div class="phone-mockup agent-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/agent_cashout.jpg" alt="Cash-Out Retrait" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">3. Retrait QR</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Validation sécurisée</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">3. Retrait QR</h4>
+                <p class="text-[10px] text-gray-300 truncate">Validation sécurisée</p>
+              </div>
             </div>
 
-            <!-- Écran 4 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-amber-500/30 flex flex-col cursor-pointer group hover:border-amber-400" onclick="openLightbox('assets/images/real_screens/agent_closure.jpg', 'Clôture de Caisse (Rapport Z)', 'Arrêt journalier certifié avec décompte des encaissements, décaissements et commissions.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/agent_closure.jpg" alt="Rapport Z Clôture" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 4 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/agent_closure.jpg', 'Clôture de Caisse (Rapport Z)', 'Arrêt journalier certifié avec décompte des encaissements, décaissements et commissions.')">
+              <div class="phone-mockup agent-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/agent_closure.jpg" alt="Rapport Z Clôture" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">4. Rapport Z</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Clôture certifiée</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">4. Rapport Z</h4>
+                <p class="text-[10px] text-gray-300 truncate">Clôture certifiée</p>
+              </div>
             </div>
 
           </div>
@@ -837,7 +1067,7 @@
         </div>
       </div>
 
-      <!-- Corps : 5 Points Clés + 4 Écrans Clés -->
+      <!-- Corps : 5 Points Clés + 4 Écrans Clés en Cadres Smartphones -->
       <div class="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <!-- 5 Points Clés (Gauche / 5 cols) -->
@@ -891,64 +1121,100 @@
           </div>
         </div>
 
-        <!-- 4 Écrans Clés (Droite / 7 cols) -->
+        <!-- 4 Écrans Clés en Cadres Smartphones (Droite / 7 cols) -->
         <div class="lg:col-span-7">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-xs uppercase font-black text-gray-300 tracking-wider flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-base text-teal-400">photo_library</span>
-              Aperçu des 4 Écrans Clés (Tapez pour agrandir)
+              <span class="material-symbols-outlined text-base text-teal-400">smartphone</span>
+              Mockups Smartphones Réels (Tapez pour zoomer)
             </h3>
             <span class="text-[11px] text-purple-300 font-semibold hidden sm:inline">Affichage HD</span>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3">
+          <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4">
             
-            <!-- Écran 1 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-teal-500/30 flex flex-col cursor-pointer group hover:border-teal-400" onclick="openLightbox('assets/images/real_screens/hybrid_dashboard.jpg', 'Commutateur Mode Hybride Dual', 'Bascule instantanée entre le Mode Boutique et le Mode Agent Guichetier avec double jauge de solde.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/hybrid_dashboard.jpg" alt="Commutateur Hybride" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 1 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/hybrid_dashboard.jpg', 'Commutateur Mode Hybride Dual', 'Bascule instantanée entre le Mode Boutique et le Mode Agent Guichetier avec double jauge de solde.')">
+              <div class="phone-mockup hybrid-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/hybrid_dashboard.jpg" alt="Commutateur Hybride" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">1. Commutateur Dual</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Bascule 1 tap</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">1. Commutateur Dual</h4>
+                <p class="text-[10px] text-gray-300 truncate">Bascule 1 tap</p>
+              </div>
             </div>
 
-            <!-- Écran 2 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-teal-500/30 flex flex-col cursor-pointer group hover:border-teal-400" onclick="openLightbox('assets/images/real_screens/hybrid_caisse.jpg', 'Caisse Boutique Hybride', 'Gestion de l\'activité magasin avec suivi des encaissements caisse (385,000 FCFA).')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/hybrid_caisse.jpg" alt="Caisse Boutique" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 2 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/hybrid_caisse.jpg', 'Caisse Boutique Hybride', 'Gestion de l\'activité magasin avec suivi des encaissements caisse (385,000 FCFA).')">
+              <div class="phone-mockup hybrid-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/hybrid_caisse.jpg" alt="Caisse Boutique" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">2. Caisse Boutique</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Recettes magasin</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">2. Caisse Boutique</h4>
+                <p class="text-[10px] text-gray-300 truncate">Recettes magasin</p>
+              </div>
             </div>
 
-            <!-- Écran 3 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-teal-500/30 flex flex-col cursor-pointer group hover:border-teal-400" onclick="openLightbox('assets/images/real_screens/hybrid_float.jpg', 'Float Agent Hybride', 'Contrôle distinct de la trésorerie float (1,475,000 FCFA) dédiée aux opérations guichetier.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/hybrid_float.jpg" alt="Float Agent Hybride" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 3 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/hybrid_float.jpg', 'Float Agent Hybride', 'Contrôle distinct de la trésorerie float (1,475,000 FCFA) dédiée aux opérations guichetier.')">
+              <div class="phone-mockup hybrid-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/hybrid_float.jpg" alt="Float Agent Hybride" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">3. Float Guichet</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Trésorerie agent</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">3. Float Guichet</h4>
+                <p class="text-[10px] text-gray-300 truncate">Trésorerie agent</p>
+              </div>
             </div>
 
-            <!-- Écran 4 -->
-            <div class="mockup-card glass-card rounded-2xl p-2.5 border border-teal-500/30 flex flex-col cursor-pointer group hover:border-teal-400" onclick="openLightbox('assets/images/real_screens/hybrid_closure.jpg', 'Rapport Z Clôture Hybride', 'Rapprochement comptable consolidant les ventes du commerce et les commissions du guichet.')">
-              <div class="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/40 mb-2 border border-white/10">
-                <img src="assets/images/real_screens/hybrid_closure.jpg" alt="Rapport Z Hybride" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
-                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-2xl">zoom_in</span>
+            <!-- Smartphone 4 -->
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/hybrid_closure.jpg', 'Rapport Z Clôture Hybride', 'Rapprochement comptable consolidant les ventes du commerce et les commissions du guichet.')">
+              <div class="phone-mockup hybrid-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
                 </div>
+                <div class="phone-screen">
+                  <img src="assets/images/real_screens/hybrid_closure.jpg" alt="Rapport Z Hybride" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                  </div>
+                </div>
+                <div class="phone-home-indicator"></div>
               </div>
-              <h4 class="font-black text-white text-xs truncate">4. Rapport Z Mixte</h4>
-              <p class="text-[10px] text-gray-300 line-clamp-2">Bilan consolidé</p>
+              <div class="mt-2 text-center w-full px-1">
+                <h4 class="font-black text-white text-xs truncate">4. Rapport Z Mixte</h4>
+                <p class="text-[10px] text-gray-300 truncate">Bilan consolidé</p>
+              </div>
             </div>
 
           </div>
@@ -1218,16 +1484,26 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- LIGHTBOX MODAL (ZOOM ET PREVIEW HD)                                       -->
+  <!-- LIGHTBOX MODAL (ZOOM ET PREVIEW DANS SMARTPHONE HD)                       -->
   <!-- ========================================================================= -->
   <div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 opacity-0 pointer-events-none transition-all duration-200">
-    <div class="relative max-w-md w-full flex flex-col items-center">
+    <div class="relative max-w-sm sm:max-w-md w-full flex flex-col items-center">
       <button onclick="closeLightbox()" class="absolute -top-12 right-0 text-white hover:text-purple-300 bg-white/15 hover:bg-white/25 p-2 rounded-full border border-white/20 transition-all flex items-center justify-center" aria-label="Fermer">
         <span class="material-symbols-outlined text-2xl">close</span>
       </button>
-      <div class="w-full max-h-[75vh] rounded-3xl overflow-hidden border border-white/20 shadow-2xl bg-black/70 flex items-center justify-center">
-        <img id="lightbox-img" src="" alt="Aperçu application" class="w-full h-full object-contain max-h-[75vh]">
+      
+      <!-- Cadre Téléphone Agrandie dans le Lightbox -->
+      <div class="phone-mockup w-full max-h-[78vh] shadow-2xl">
+        <div class="phone-dynamic-island">
+          <div class="phone-camera-lens"></div>
+          <div class="phone-speaker"></div>
+        </div>
+        <div class="phone-screen">
+          <img id="lightbox-img" src="" alt="Aperçu application" class="w-full h-full object-contain">
+        </div>
+        <div class="phone-home-indicator"></div>
       </div>
+
       <div class="mt-3 text-center px-2">
         <h3 id="lightbox-title" class="font-black text-base sm:text-lg text-white"></h3>
         <p id="lightbox-desc" class="text-xs text-purple-200 mt-1 max-w-sm"></p>

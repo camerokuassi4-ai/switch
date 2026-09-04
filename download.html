@@ -41,6 +41,56 @@
       align-items: center;
       justify-content: center;
     }
+
+    /* Cadre Smartphone CSS */
+    .mini-phone-mockup {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9 / 18.5;
+      background: #090615;
+      border-radius: 20px;
+      padding: 4px;
+      box-shadow: 
+        0 0 0 1.5px rgba(255, 255, 255, 0.16),
+        0 0 0 3.5px #1E1736,
+        0 10px 20px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+    }
+    .mini-phone-mockup:hover {
+      transform: translateY(-2px) scale(1.03);
+    }
+    .mini-phone-screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+    }
+    .mini-phone-notch {
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32%;
+      height: 7px;
+      background: #000;
+      border-radius: 6px;
+      z-index: 10;
+    }
+    .mini-phone-bar {
+      position: absolute;
+      bottom: 3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 34%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 2px;
+      z-index: 10;
+    }
   </style>
 </head>
 <body class="bg-[#0B061E] text-white min-h-screen flex flex-col justify-between antialiased pb-12 sm:pb-0">
@@ -100,7 +150,7 @@
           </div>
         </div>
 
-        <!-- Corps : Points clés + 4 mini-écrans -->
+        <!-- Corps : Points clés + 4 mini-écrans avec cadre smartphone -->
         <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           <div class="lg:col-span-6">
             <h4 class="text-xs uppercase font-black text-emerald-400 tracking-wider mb-2">Points Clés :</h4>
@@ -112,18 +162,26 @@
               <li class="flex items-center gap-2"><span class="material-symbols-outlined text-emerald-400 text-sm">check_circle</span> 2% de cashback sur les paiements marchands</li>
             </ul>
           </div>
-          <div class="lg:col-span-6 grid grid-cols-4 gap-2">
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/user_dashboard.jpg" alt="Dashboard" class="w-full h-full object-cover">
+          <div class="lg:col-span-6 grid grid-cols-4 gap-2.5">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/user_dashboard.jpg" alt="Dashboard" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/user_p2p.jpg" alt="P2P" class="w-full h-full object-cover">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/user_p2p.jpg" alt="P2P" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/user_sbee.jpg" alt="SBEE" class="w-full h-full object-cover">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/user_sbee.jpg" alt="SBEE" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/user_recharge.jpg" alt="GSM" class="w-full h-full object-cover">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/user_recharge.jpg" alt="GSM" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
           </div>
         </div>
@@ -164,18 +222,26 @@
               <li class="flex items-center gap-2"><span class="material-symbols-outlined text-blue-400 text-sm">check_circle</span> Retrait instantané des recettes vers compte perso</li>
             </ul>
           </div>
-          <div class="lg:col-span-6 grid grid-cols-4 gap-2">
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/merchant_dashboard.jpg" alt="Dashboard" class="w-full h-full object-cover">
+          <div class="lg:col-span-6 grid grid-cols-4 gap-2.5">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/merchant_dashboard.jpg" alt="Dashboard" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/merchant_pos.jpg" alt="POS" class="w-full h-full object-cover">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/merchant_pos.jpg" alt="POS" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/merchant_catalog.jpg" alt="Catalog" class="w-full h-full object-cover">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/merchant_catalog.jpg" alt="Catalog" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/merchant_qr.jpg" alt="QR" class="w-full h-full object-cover">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/merchant_qr.jpg" alt="QR" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
           </div>
         </div>
@@ -216,18 +282,26 @@
               <li class="flex items-center gap-2"><span class="material-symbols-outlined text-amber-400 text-sm">check_circle</span> Suivi et approvisionnement Float guichetier</li>
             </ul>
           </div>
-          <div class="lg:col-span-6 grid grid-cols-4 gap-2">
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/agent_dashboard.jpg" alt="Dashboard" class="w-full h-full object-cover">
+          <div class="lg:col-span-6 grid grid-cols-4 gap-2.5">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/agent_dashboard.jpg" alt="Dashboard" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/agent_cashin.jpg" alt="Cash-In" class="w-full h-full object-cover">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/agent_cashin.jpg" alt="Cash-In" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/agent_cashout.jpg" alt="Cash-Out" class="w-full h-full object-cover">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/agent_cashout.jpg" alt="Cash-Out" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/agent_closure.jpg" alt="Rapport Z" class="w-full h-full object-cover">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/agent_closure.jpg" alt="Rapport Z" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
           </div>
         </div>
@@ -268,18 +342,26 @@
               <li class="flex items-center gap-2"><span class="material-symbols-outlined text-teal-400 text-sm">check_circle</span> Rentabilité maximale pour pharmacies, supérettes et librairies</li>
             </ul>
           </div>
-          <div class="lg:col-span-6 grid grid-cols-4 gap-2">
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/hybrid_dashboard.jpg" alt="Dual mode" class="w-full h-full object-cover">
+          <div class="lg:col-span-6 grid grid-cols-4 gap-2.5">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/hybrid_dashboard.jpg" alt="Dual mode" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/hybrid_caisse.jpg" alt="Caisse" class="w-full h-full object-cover">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/hybrid_caisse.jpg" alt="Caisse" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/hybrid_float.jpg" alt="Float" class="w-full h-full object-cover">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/hybrid_float.jpg" alt="Float" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
-            <div class="rounded-xl overflow-hidden aspect-[9/16] bg-black/40 border border-white/10">
-              <img src="assets/images/real_screens/hybrid_closure.jpg" alt="Clôture" class="w-full h-full object-cover">
+            <div class="mini-phone-mockup">
+              <div class="mini-phone-notch"></div>
+              <div class="mini-phone-screen"><img src="assets/images/real_screens/hybrid_closure.jpg" alt="Clôture" class="w-full h-full object-cover"></div>
+              <div class="mini-phone-bar"></div>
             </div>
           </div>
         </div>

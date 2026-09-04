@@ -68,7 +68,7 @@ async function runMobileVerification() {
     sections.forEach(s => {
       const secEl = document.getElementById(s);
       if (secEl) {
-        const imgs = Array.from(secEl.querySelectorAll('.mockup-card img'));
+        const imgs = Array.from(secEl.querySelectorAll('.phone-screen img, .phone-mockup img, .mockup-card img'));
         report[s] = imgs.map(img => img.getAttribute('src'));
       }
     });
