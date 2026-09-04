@@ -1,6 +1,6 @@
 {
   "name": "bj.switchagent.beta",
-  "version": "2.1.0-agent",
+  "version": "2.2.1-agent",
   "description": "Terminal guichetier agréé pour opérations Cash-In, Cash-Out QR 5 min, commissions instantanées et rapport Z de clôture.",
   "main": "index.js",
   "scripts": {

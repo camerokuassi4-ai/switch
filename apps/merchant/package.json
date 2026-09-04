@@ -1,6 +1,6 @@
 {
   "name": "bj.switchmerchant.beta",
-  "version": "2.1.0-merchant",
+  "version": "2.2.1-merchant",
   "description": "Terminal d'encaissement commerçant, caisse POS tactile 0% de frais, Standee QR Code de comptoir et catalogue produits.",
   "main": "index.js",
   "scripts": {

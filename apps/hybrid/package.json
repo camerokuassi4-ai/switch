@@ -1,6 +1,6 @@
 {
   "name": "bj.switchhybrid.beta",
-  "version": "2.1.0-hybrid",
+  "version": "2.2.1-hybrid",
   "description": "Solution tout-en-un pour les points de vente mixtes combinant encaissements commerce POS et opérations guichetier.",
   "main": "index.js",
   "scripts": {
