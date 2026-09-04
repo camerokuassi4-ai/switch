@@ -1,0 +1,10 @@
+# Configuration de déploiement Netlify pour Switch Beta Bénin
+[build]
+  publish = "dist"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
