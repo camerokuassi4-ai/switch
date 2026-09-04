@@ -80,10 +80,15 @@ async function buildAll() {
     // Copy assets to www/assets (en excluant downloads/)
     copyDirRecursive(path.join(rootDir, 'assets'), path.join(wwwDir, 'assets'), ['downloads']);
     
-    // Copy dashboard files
-    const dashSrc = path.join(rootDir, app.dashboard);
-    const dashDest = path.join(wwwDir, app.dashboard);
-    copyDirRecursive(dashSrc, dashDest);
+    // Copy all 126 screen folders containing code.html
+    for (const entry of fs.readdirSync(rootDir, { withFileTypes: true })) {
+      if (entry.isDirectory() && !['apps', 'dist', 'node_modules', '.git', '.github', 'assets', 'www', 'scratch'].includes(entry.name)) {
+        const codeFile = path.join(rootDir, entry.name, 'code.html');
+        if (fs.existsSync(codeFile)) {
+          copyDirRecursive(path.join(rootDir, entry.name), path.join(wwwDir, entry.name));
+        }
+      }
+    }
     
     // Prepare www/index.html (redirect to dashboard or embed directly)
     const indexHtmlContent = `<!DOCTYPE html>

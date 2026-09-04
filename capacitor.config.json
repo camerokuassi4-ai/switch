@@ -4,8 +4,7 @@
   "webDir": "www",
   "bundledWebRuntime": false,
   "server": {
-    "url": "https://TO_BE_CONFIGURED_VERCEL_APP_URL",
-    "cleartext": false
+    "androidScheme": "https"
   },
   "android": {
     "allowMixedContent": false,
