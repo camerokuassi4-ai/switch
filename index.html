@@ -209,185 +209,73 @@
       }
     }
 
-    .phone-mockup {
+        /* ========================================================================= */
+    /* VRAI MOCKUP DE SMARTPHONE RÉALISTE (CADRE TITANE MÉTALLISÉ & ÉCRAN HD)     */
+    /* ========================================================================= */
+    .real-mockup-device {
       position: relative;
       width: 100%;
-      aspect-ratio: 9 / 19.4;
-      background: #090615;
-      border-radius: 28px;
-      padding: 6px 6px 8px 6px;
-      box-shadow: 
-        0 0 0 1.5px rgba(255, 255, 255, 0.16),
-        0 0 0 4.5px #1C1530,
-        0 14px 28px rgba(0, 0, 0, 0.65),
-        inset 0 0 4px rgba(255, 255, 255, 0.08);
-      transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      aspect-ratio: 1000 / 2050;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
-      flex-direction: column;
-    }
-
-    @media (min-width: 640px) {
-      /* Showcase Track : Swipe ergonomique sans débordement sur mobile, Grille 2x2 grand format sur Desktop */
-    .showcase-track {
-      display: flex;
-      overflow-x: auto;
-      gap: 1.25rem;
-      padding-top: 0.5rem;
-      padding-bottom: 1rem;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      width: 100%;
-      max-width: 100%;
-    }
-    .showcase-track::-webkit-scrollbar {
-      display: none;
-    }
-    .showcase-card {
-      width: 285px;
-      min-width: 285px;
-      max-width: 285px;
-      flex-shrink: 0;
-      scroll-snap-align: center;
-    }
-
-    @media (min-width: 640px) {
-      .showcase-track {
-        display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        overflow-x: visible !important;
-        gap: 1.5rem !important;
-      }
-      .showcase-card {
-        width: 100% !important;
-        min-width: 0 !important;
-        max-width: 330px !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-      }
-    }
-
-    .phone-mockup {
-        border-radius: 34px;
-        padding: 8px 8px 10px 8px;
-        box-shadow: 
-          0 0 0 2px rgba(255, 255, 255, 0.2),
-          0 0 0 6px #1E1736,
-          0 18px 36px rgba(0, 0, 0, 0.7),
-          inset 0 0 6px rgba(255, 255, 255, 0.1);
-      }
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.65));
     }
 
     /* Survol et halo de couleur par profil */
     @media (hover: hover) {
-      .group:hover .phone-mockup {
-        transform: translateY(-4px) scale(1.02);
+      .group:hover .real-mockup-device {
+        transform: translateY(-6px) scale(1.025);
       }
-      .group:hover .phone-mockup.user-phone {
-        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.8), 0 0 0 6px #064E3B, 0 20px 40px rgba(16, 185, 129, 0.35);
+      .group:hover .real-mockup-device.user-device {
+        filter: drop-shadow(0 20px 40px rgba(16, 185, 129, 0.45));
       }
-      .group:hover .phone-mockup.merchant-phone {
-        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.8), 0 0 0 6px #1E3A8A, 0 20px 40px rgba(37, 99, 235, 0.35);
+      .group:hover .real-mockup-device.merchant-device {
+        filter: drop-shadow(0 20px 40px rgba(59, 130, 246, 0.45));
       }
-      .group:hover .phone-mockup.agent-phone {
-        box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.8), 0 0 0 6px #78350F, 0 20px 40px rgba(217, 119, 6, 0.35);
+      .group:hover .real-mockup-device.agent-device {
+        filter: drop-shadow(0 20px 40px rgba(245, 158, 11, 0.45));
       }
-      .group:hover .phone-mockup.hybrid-phone {
-        box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.8), 0 0 0 6px #134E4A, 0 20px 40px rgba(13, 148, 136, 0.35);
+      .group:hover .real-mockup-device.hybrid-device {
+        filter: drop-shadow(0 20px 40px rgba(20, 184, 166, 0.45));
       }
     }
 
-    /* Écran in-app intérieur */
-    .phone-screen {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      border-radius: 22px;
+    /* Écran in-app intérieur (s'insère sous le bezel transparent) */
+    .real-mockup-screen {
+      position: absolute;
+      top: 3.31%;
+      left: 7.8%;
+      width: 84.4%;
+      height: 93.36%;
+      border-radius: 38px;
       overflow: hidden;
       background: #000;
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.85);
+      z-index: 1;
     }
-    .phone-screen img {
+
+    .real-mockup-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
       image-rendering: -webkit-optimize-contrast;
       image-rendering: crisp-edges;
     }
 
-    @media (min-width: 640px) {
-      .phone-screen {
-        border-radius: 26px;
-      }
-    }
-
-    /* Dynamic Island en haut du téléphone */
-    .phone-dynamic-island {
+    /* Cadre photoréaliste PNG transparent (titane, caméra optique, îlot tactile, boutons) */
+    .real-mockup-overlay {
       position: absolute;
-      top: 6px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 36%;
-      height: 12px;
-      background: #000000;
-      border-radius: 10px;
-      z-index: 25;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 4px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+      inset: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
+      z-index: 10;
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
-    .phone-speaker {
-      width: 14px;
-      height: 2px;
-      background: #262626;
-      border-radius: 2px;
-    }
-
-    .phone-camera-lens {
-      width: 4.5px;
-      height: 4.5px;
-      border-radius: 50%;
-      background: #0284C7;
-      box-shadow: inset 0 0 2px #000;
-    }
-
-    /* Barre indicateur Home en bas */
-    .phone-home-indicator {
-      position: absolute;
-      bottom: 4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 36%;
-      height: 3px;
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 3px;
-      z-index: 25;
-      pointer-events: none;
-    }
-
-    /* Boutons latéraux physiques du téléphone */
-    .phone-mockup::before {
-      content: '';
-      position: absolute;
-      top: 50px;
-      left: -6px;
-      width: 2.5px;
-      height: 22px;
-      background: #3B2E5C;
-      border-radius: 2px 0 0 2px;
-    }
-    .phone-mockup::after {
-      content: '';
-      position: absolute;
-      top: 80px;
-      left: -6px;
-      width: 2.5px;
-      height: 22px;
-      background: #3B2E5C;
-      border-radius: 2px 0 0 2px;
-    }
 
     /* Fixed Bottom Nav for Mobile */
     .mobile-bottom-nav {
@@ -653,19 +541,15 @@
             
             <!-- Smartphone 1 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/user_dashboard.png', 'Tableau de bord Utilisateur', 'Vue synthétique avec solde courant (110,000 FCFA), coffre Vault (45,000 FCFA), et boutons d\'accès rapides.')">
-              <div class="phone-mockup user-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/user_dashboard.png" alt="Tableau de bord Utilisateur" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device user-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/user_dashboard.png" alt="Tableau de bord Utilisateur" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">1. Accueil & Solde</h4>
@@ -675,19 +559,15 @@
 
             <!-- Smartphone 2 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/user_p2p.png', 'Transfert P2P à 0% Frais', 'Envoi d\'argent instantané et gratuit en renseignant le numéro du destinataire et le montant.')">
-              <div class="phone-mockup user-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/user_p2p.png" alt="Transfert P2P" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device user-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/user_p2p.png" alt="Transfert P2P" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">2. Transfert P2P</h4>
@@ -697,19 +577,15 @@
 
             <!-- Smartphone 3 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/user_sbee.png', 'Paiement Facture SBEE Électricité', 'Achat direct de recharges d\'électricité par numéro de compteur avec reçu et code STS instantané.')">
-              <div class="phone-mockup user-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/user_sbee.png" alt="Paiement SBEE" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device user-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/user_sbee.png" alt="Paiement SBEE" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">3. Facture SBEE</h4>
@@ -719,19 +595,15 @@
 
             <!-- Smartphone 4 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/user_recharge.png', 'Recharge Crédit GSM & Data', 'Recharge de forfaits d\'appel et internet tous opérateurs béninois en temps réel.')">
-              <div class="phone-mockup user-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/user_recharge.png" alt="Recharge GSM" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device user-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/user_recharge.png" alt="Recharge GSM" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">4. Recharge GSM</h4>
@@ -855,19 +727,15 @@
             
             <!-- Smartphone 1 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/merchant_dashboard.png', 'Tableau de bord Marchand', 'Suivi du solde boutique (385,000 FCFA), chiffre d\'affaires du jour et raccourcis POS.')">
-              <div class="phone-mockup merchant-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/merchant_dashboard.png" alt="Tableau de bord Marchand" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device merchant-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/merchant_dashboard.png" alt="Tableau de bord Marchand" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">1. Tableau de bord</h4>
@@ -877,19 +745,15 @@
 
             <!-- Smartphone 2 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/merchant_pos.png', 'Caisse Tactile POS', 'Encaissement rapide au comptoir, sélection d\'articles et validation sans friction.')">
-              <div class="phone-mockup merchant-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/merchant_pos.png" alt="Caisse Tactile POS" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device merchant-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/merchant_pos.png" alt="Caisse Tactile POS" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">2. Caisse POS</h4>
@@ -899,19 +763,15 @@
 
             <!-- Smartphone 3 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/merchant_catalog.png', 'Catalogue Produits & Services', 'Gestion des articles du commerce avec visuels, prix unitaires et quantités disponibles.')">
-              <div class="phone-mockup merchant-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/merchant_catalog.png" alt="Catalogue Produits" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device merchant-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/merchant_catalog.png" alt="Catalogue Produits" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">3. Catalogue Articles</h4>
@@ -921,19 +781,15 @@
 
             <!-- Smartphone 4 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/merchant_qr.png', 'Standee QR Code de Comptoir', 'Standee officiel prêt à poser sur votre comptoir pour laisser les clients scanner et payer.')">
-              <div class="phone-mockup merchant-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/merchant_qr.png" alt="QR Code Marchand" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device merchant-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/merchant_qr.png" alt="QR Code Marchand" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">4. Standee QR Code</h4>
@@ -1057,19 +913,15 @@
             
             <!-- Smartphone 1 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/agent_dashboard.png', 'Tableau de bord Agent Guichetier', 'Solde Float (1,475,000 FCFA), commissions acquises (48,500 FCFA) et raccourcis Cash-In / Cash-Out.')">
-              <div class="phone-mockup agent-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/agent_dashboard.png" alt="Tableau de bord Agent" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device agent-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/agent_dashboard.png" alt="Tableau de bord Agent" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">1. Tableau de bord</h4>
@@ -1079,19 +931,15 @@
 
             <!-- Smartphone 2 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/agent_cashin.png', 'Opération Cash-In (Dépôt Client)', 'Saisie du numéro téléphone du client, montant à créditer et confirmation instantanée.')">
-              <div class="phone-mockup agent-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/agent_cashin.png" alt="Cash-In Dépôt" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device agent-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/agent_cashin.png" alt="Cash-In Dépôt" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">2. Cash-In Dépôt</h4>
@@ -1101,19 +949,15 @@
 
             <!-- Smartphone 3 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/agent_cashout.png', 'Opération Cash-Out (Retrait QR)', 'Scan du QR code 5 minutes présenté par l\'utilisateur pour lui remettre ses espèces.')">
-              <div class="phone-mockup agent-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/agent_cashout.png" alt="Cash-Out Retrait" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device agent-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/agent_cashout.png" alt="Cash-Out Retrait" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">3. Retrait QR</h4>
@@ -1123,19 +967,15 @@
 
             <!-- Smartphone 4 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/agent_closure.png', 'Clôture de Caisse (Rapport Z)', 'Arrêt journalier certifié avec décompte des encaissements, décaissements et commissions.')">
-              <div class="phone-mockup agent-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/agent_closure.png" alt="Rapport Z Clôture" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device agent-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/agent_closure.png" alt="Rapport Z Clôture" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">4. Rapport Z</h4>
@@ -1259,19 +1099,15 @@
             
             <!-- Smartphone 1 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/hybrid_dashboard.png', 'Commutateur Mode Hybride Dual', 'Bascule instantanée entre le Mode Boutique et le Mode Agent Guichetier avec double jauge de solde.')">
-              <div class="phone-mockup hybrid-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/hybrid_dashboard.png" alt="Commutateur Hybride" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device hybrid-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/hybrid_dashboard.png" alt="Commutateur Hybride" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">1. Commutateur Dual</h4>
@@ -1281,19 +1117,15 @@
 
             <!-- Smartphone 2 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/hybrid_caisse.png', 'Caisse Boutique Hybride', 'Gestion de l\'activité magasin avec suivi des encaissements caisse (385,000 FCFA).')">
-              <div class="phone-mockup hybrid-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/hybrid_caisse.png" alt="Caisse Boutique" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device hybrid-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/hybrid_caisse.png" alt="Caisse Boutique" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">2. Caisse Boutique</h4>
@@ -1303,19 +1135,15 @@
 
             <!-- Smartphone 3 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/hybrid_float.png', 'Float Agent Hybride', 'Contrôle distinct de la trésorerie float (1,475,000 FCFA) dédiée aux opérations guichetier.')">
-              <div class="phone-mockup hybrid-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/hybrid_float.png" alt="Float Agent Hybride" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device hybrid-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/hybrid_float.png" alt="Float Agent Hybride" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">3. Float Guichet</h4>
@@ -1325,19 +1153,15 @@
 
             <!-- Smartphone 4 -->
             <div class="flex flex-col items-center group cursor-pointer showcase-card" onclick="openLightbox('assets/images/real_screens/hybrid_closure.png', 'Rapport Z Clôture Hybride', 'Rapprochement comptable consolidant les ventes du commerce et les commissions du guichet.')">
-              <div class="phone-mockup hybrid-phone">
-                <div class="phone-dynamic-island">
-                  <div class="phone-camera-lens"></div>
-                  <div class="phone-speaker"></div>
-                </div>
-                <div class="phone-screen">
-                  <img src="assets/images/real_screens/hybrid_closure.png" alt="Rapport Z Hybride" class="w-full h-full object-cover object-top" loading="lazy">
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
+              <div class="real-mockup-device hybrid-device">
+                <div class="real-mockup-screen">
+                  <img src="assets/images/real_screens/hybrid_closure.png" alt="Rapport Z Hybride" loading="lazy">
+                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 z-20">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
                   </div>
                 </div>
-                <div class="phone-home-indicator"></div>
+                <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
               </div>
               <div class="mt-2.5 text-center w-full px-1">
                 <h4 class="font-bold text-white text-xs sm:text-sm truncate">4. Rapport Z Mixte</h4>
@@ -1625,15 +1449,11 @@
       </button>
       
       <!-- Cadre Téléphone Agrandie dans le Lightbox -->
-      <div class="phone-mockup w-full max-w-[340px] sm:max-w-[380px] max-h-[82vh] shadow-2xl mx-auto">
-        <div class="phone-dynamic-island">
-          <div class="phone-camera-lens"></div>
-          <div class="phone-speaker"></div>
-        </div>
-        <div class="phone-screen">
+      <div class="real-mockup-device w-full max-w-[340px] sm:max-w-[380px] max-h-[82vh] mx-auto">
+        <div class="real-mockup-screen">
           <img id="lightbox-img" src="" alt="Aperçu application" class="w-full h-full object-contain">
         </div>
-        <div class="phone-home-indicator"></div>
+        <img src="assets/images/mockups/realistic_iphone_frame.png" class="real-mockup-overlay" alt="Mockup Smartphone Réaliste" draggable="false">
       </div>
 
       <div class="mt-3 text-center px-2">
