@@ -61,8 +61,8 @@ async function testRealisticMockups() {
   });
 
   const mobilePage = await mobileContext.newPage();
-  await mobilePage.goto(`http://127.0.0.1:${PORT}/index.html`, { waitUntil: 'networkidle' });
-  await mobilePage.waitForTimeout(1000);
+  await mobilePage.goto(`http://127.0.0.1:${PORT}/index.html`, { waitUntil: 'load', timeout: 15000 });
+  await mobilePage.waitForTimeout(2000);
 
   // Vérification du débordement horizontal
   const overflow = await mobilePage.evaluate(() => {
@@ -111,8 +111,8 @@ async function testRealisticMockups() {
   });
 
   const desktopPage = await desktopContext.newPage();
-  await desktopPage.goto(`http://127.0.0.1:${PORT}/index.html`, { waitUntil: 'networkidle' });
-  await desktopPage.waitForTimeout(1000);
+  await desktopPage.goto(`http://127.0.0.1:${PORT}/index.html`, { waitUntil: 'load', timeout: 15000 });
+  await desktopPage.waitForTimeout(2500);
 
   const desktopMetrics = await desktopPage.evaluate(() => {
     const mockups = document.querySelectorAll('.real-mockup-device');

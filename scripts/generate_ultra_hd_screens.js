@@ -190,9 +190,9 @@ async function generateUltraHdScreens() {
     try {
       const page = await context.newPage();
 
-      // Injection préalable de toutes les données réalistes (anti-redirection + soldes réels)
       await page.addInitScript(() => {
         // Profil Utilisateur
+        localStorage.setItem('switch_user_logged_in', 'true');
         localStorage.setItem('switch_profile_completed', 'true');
         localStorage.setItem('switch_user_profile', JSON.stringify({
           full_name: 'Camero Kuassis',
@@ -203,8 +203,14 @@ async function generateUltraHdScreens() {
         localStorage.setItem('switch_user_balance', '110000');
         localStorage.setItem('switch_vault_balance', '45000');
         localStorage.setItem('switch_kyc_level', '2');
+        localStorage.setItem('switch_account_number', '01000000004456');
+
+        // Neutraliser l'apparition intempestive de toasts ou modales de test
+        window.showDepositNotification = function() {};
+        window.showWithdrawalRequestModal = function() {};
 
         // Profil Marchand
+        localStorage.setItem('switch_merchant_session_active', 'true');
         localStorage.setItem('switch_merchant_profile', JSON.stringify({
           business_name: 'Boutique Élite Cotonou',
           merchant_id: 'MCH-98214',
@@ -248,24 +254,36 @@ async function generateUltraHdScreens() {
         ]));
 
         // Profil Agent
+        localStorage.setItem('switch_agent_session_active', 'true');
         localStorage.setItem('switch_agent_profile', JSON.stringify({
-          agency_name: 'Kiosque Switch Akpakpa',
-          agent_id: 'AGT-44021',
-          phone: '0196000034'
+          agent_code: 'AGT-4092',
+          kiosk_name: 'Kiosque Saint-Michel Cotonou',
+          operator_name: 'Gaston Koudjo'
         }));
-        localStorage.setItem('switch_agent_balance', '1475000');
-        localStorage.setItem('switch_agent_commissions', '48500');
+        localStorage.setItem('switch_agent_float', '1500000');
+        localStorage.setItem('switch_agent_cash', '620000');
+        localStorage.setItem('switch_agent_commissions', '87500');
 
         // Profil Hybride
         localStorage.setItem('switch_hybrid_mode', 'merchant');
       });
 
       const pageUrl = `http://127.0.0.1:${PORT}${item.url}`;
-      await page.goto(pageUrl, { waitUntil: 'load', timeout: 15000 });
+      try {
+        await page.goto(pageUrl, { waitUntil: 'networkidle', timeout: 15000 });
+      } catch (e) {
+        await page.waitForLoadState('load');
+      }
 
       // Attendre que les polices web et icônes soient 100% chargées
       await page.evaluate(async (screenId) => {
-        await document.fonts.ready;
+        // 0. Injection Material Symbols si non présent
+        if (!document.querySelector('link[href*="Material+Symbols"]')) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap';
+          document.head.appendChild(link);
+        }
 
         // 1. Injection du Safe Area Inset pour que le haut de l'écran passe sous la Dynamic Island sans chevauchement
         const style = document.createElement('style');
@@ -300,12 +318,20 @@ async function generateUltraHdScreens() {
           window.renderProducts();
         }
 
-        // 4. Masquer d'éventuels toasts temporaires qui masqueraient l'UI
-        const toasts = document.querySelectorAll('.toast, [role="alert"], #toast-container');
+        // 4. Masquer tous toasts ou alertes temporaires
+        const toasts = document.querySelectorAll('.toast, [role="alert"], #toast-container, #switch-deposit-toast, #switch-withdraw-request-modal');
         toasts.forEach(t => t.remove());
+
+        await document.fonts.ready;
       }, item.id);
 
-      await page.waitForTimeout(800);
+      await page.waitForTimeout(1200);
+
+      // Vérification ultime anti-toast avant capture
+      await page.evaluate(() => {
+        const toasts = document.querySelectorAll('.toast, [role="alert"], #toast-container, #switch-deposit-toast, #switch-withdraw-request-modal');
+        toasts.forEach(t => t.remove());
+      });
 
       // 1. Capture Lossless PNG Ultra-HD
       const pngName = `${item.id}.png`;
