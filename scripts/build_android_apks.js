@@ -122,6 +122,10 @@ async function buildAll() {
       let content = fs.readFileSync(variablesGradle, 'utf8');
       content = content.replace(/compileSdkVersion\s*=\s*\d+/, 'compileSdkVersion = 35');
       content = content.replace(/targetSdkVersion\s*=\s*\d+/, 'targetSdkVersion = 35');
+      content = content.replace(/androidxCoreVersion\s*=\s*['"][^'"]+['"]/, "androidxCoreVersion = '1.15.0'");
+      content = content.replace(/androidxActivityVersion\s*=\s*['"][^'"]+['"]/, "androidxActivityVersion = '1.9.3'");
+      content = content.replace(/androidxAppCompatVersion\s*=\s*['"][^'"]+['"]/, "androidxAppCompatVersion = '1.7.0'");
+      content = content.replace(/androidxFragmentVersion\s*=\s*['"][^'"]+['"]/, "androidxFragmentVersion = '1.8.5'");
       fs.writeFileSync(variablesGradle, content, 'utf8');
     }
 
