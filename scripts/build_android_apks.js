@@ -117,8 +117,8 @@ async function buildAll() {
     const variablesGradle = path.join(androidDir, 'variables.gradle');
     if (fs.existsSync(variablesGradle)) {
       let content = fs.readFileSync(variablesGradle, 'utf8');
-      content = content.replace(/compileSdkVersion\s*=\s*\d+/, 'compileSdkVersion = 34');
-      content = content.replace(/targetSdkVersion\s*=\s*\d+/, 'targetSdkVersion = 34');
+      content = content.replace(/compileSdkVersion\s*=\s*\d+/, 'compileSdkVersion = 36');
+      content = content.replace(/targetSdkVersion\s*=\s*\d+/, 'targetSdkVersion = 36');
       fs.writeFileSync(variablesGradle, content, 'utf8');
     }
 
