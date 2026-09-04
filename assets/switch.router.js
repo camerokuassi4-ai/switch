@@ -696,6 +696,8 @@
       const pageData = await getPageData(normalizedUrl);
       if (pageData.title) document.title = pageData.title;
       document.body.removeAttribute("style");
+      const isSplashPage = (pageData.bodyClass && pageData.bodyClass.includes("splash")) || normalizedUrl.includes("accueil_splash");
+      document.documentElement.style.backgroundColor = isSplashPage ? "#0B061E" : "#F8F9FD";
       if (pageData.bodyClass) document.body.className = pageData.bodyClass;
 
       // 1. Mettre à jour les styles CSS dynamiques
