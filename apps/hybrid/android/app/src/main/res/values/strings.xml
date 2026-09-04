@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Switch Beta — Marchand-Agent (Hybride)</string>
+    <string name="title_activity_main">Switch Beta — Marchand-Agent (Hybride)</string>
+    <string name="package_name">bj.switch.hybrid.beta</string>
+    <string name="custom_url_scheme">bj.switch.hybrid.beta</string>
+</resources>

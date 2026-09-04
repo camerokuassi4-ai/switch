@@ -2,7 +2,7 @@ import os
 import shutil
 import re
 
-base_dir = r"c:\Users\camer\OneDrive\Documents\Nouveau dossier\stitch_switch_fintech_app_benin"
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 dist_dir = os.path.join(base_dir, "dist")
 
 def prepare_dist():
@@ -28,18 +28,10 @@ def prepare_dist():
     if os.path.exists(src_assets):
         shutil.copytree(src_assets, dst_assets)
 
-    # 4. Ensure downloads directory exists with 4 full APK binaries (8.4 MB each)
+    # 4. Ensure downloads directory exists with APK binaries
     dst_downloads = os.path.join(dst_assets, "downloads")
     os.makedirs(dst_downloads, exist_ok=True)
     src_downloads = os.path.join(base_dir, "assets", "downloads")
-    
-    # Run build script if APKs are missing or < 1MB
-    sample_apk = os.path.join(src_downloads, "switch-beta-user-v2.1.0.apk")
-    if not os.path.exists(sample_apk) or os.path.getsize(sample_apk) < 1024 * 1024:
-        print("  ⚡ Construction des APKs complets (8.4 Mo)...")
-        build_script = os.path.join(base_dir, "scripts", "build_full_apk_packages.py")
-        if os.path.exists(build_script):
-            os.system(f'python "{build_script}"')
 
     # Copy all APK files to dist/assets/downloads/
     for fname in os.listdir(src_downloads):

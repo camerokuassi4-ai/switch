@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Switch Beta — Agent</string>
+    <string name="title_activity_main">Switch Beta — Agent</string>
+    <string name="package_name">bj.switch.agent.beta</string>
+    <string name="custom_url_scheme">bj.switch.agent.beta</string>
+</resources>

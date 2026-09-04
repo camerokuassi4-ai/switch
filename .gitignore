@@ -9,3 +9,5 @@ scratch/
 node_modules/
 backups/
 *.zip
+.gradle/
+**/build/

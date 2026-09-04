@@ -1,0 +1,115 @@
+name: Compilation Cloud des APKs Android — Switch Bénin
+
+on:
+  push:
+    branches:
+      - main
+      - release/beta-public-v2.1.0
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-apks:
+    name: 🔨 Compilation des 4 APKs Android Capacitor
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Cloner le dépôt GitHub
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ☕ Configurer Java 17 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 📱 Configurer le SDK Android
+        run: |
+          echo "Vérification du SDK Android..."
+          echo "ANDROID_HOME: $ANDROID_HOME"
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
+
+      - name: 🟢 Configurer Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 🐍 Configurer Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 📦 Installer les dépendances du projet
+        run: |
+          npm install --include=dev
+          for app in user merchant agent hybrid; do
+            if [ -d "apps/$app" ]; then
+              cd "apps/$app" && npm install --include=dev && cd ../..
+            fi
+          done
+
+      - name: 🔨 Compiler les 4 applications Android avec Gradle
+        run: |
+          node scripts/build_android_apks.js
+
+      - name: ⚙️ Préparer et valider le bundle dist/
+        run: |
+          python scripts/prepare_landing_page_dist.py
+
+      - name: 🔍 Vérifier la taille et la conformité des 4 APKs
+        run: |
+          echo "===================================================="
+          echo "📊 TAILLE DES APKS GÉNÉRÉS DANS dist/assets/downloads/"
+          echo "===================================================="
+          ls -lh dist/assets/downloads/*.apk
+          
+          # Vérification de sécurité : chaque APK doit faire au moins 10 Mo
+          for apk in dist/assets/downloads/switch-beta-*.apk; do
+            size=$(stat -c%s "$apk")
+            if [ "$size" -lt 10000000 ]; then
+              echo "❌ ERREUR CRITIQUE : $apk fait seulement $size octets (< 10 Mo) !"
+              exit 1
+            fi
+          done
+          echo "✅ TOUS LES APKS FONT BIEN PLUS DE 10 MO ET SONT VALIDES !"
+
+      - name: 📤 Sauvegarder les APKs comme artefacts de release GitHub Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: switch-beta-apks-v2.1.0
+          path: |
+            dist/assets/downloads/*.apk
+          retention-days: 30
+
+      - name: 💾 Commiter et Pusher les APKs sur GitHub (Déclenchement Netlify)
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add dist/assets/downloads/ assets/downloads/ www/assets/downloads/ dist/download/ www/download/
+          if git diff --staged --quiet; then
+            echo "Aucune modification à commiter."
+          else
+            git commit -m "build(apks): ajout des 4 vrais APKs Android natifs compiles Capacitor [skip ci]"
+            git push origin HEAD:${{ github.ref }}
+          fi
+
+      - name: 🚀 Déclencher le Build Hook Netlify (si configuré)
+        if: env.NETLIFY_BUILD_HOOK != ''
+        env:
+          NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          echo "Déclenchement du build hook Netlify..."
+          curl -X POST -d '{}' "$NETLIFY_BUILD_HOOK"
+          echo "✅ Signal Netlify envoyé avec succès !"
+
+      - name: 📋 Rapport final
+        run: |
+          echo "===================================================="
+          echo "🎉 WORKFLOW TERMINÉ AVEC SUCCÈS !"
+          echo "Les 4 APKs natifs Android sont compilés et disponibles."
+          echo "===================================================="
