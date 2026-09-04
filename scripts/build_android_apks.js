@@ -47,14 +47,17 @@ const apps = [
   }
 ];
 
-function copyDirRecursive(src, dest) {
+function copyDirRecursive(src, dest, excludeDirs = ['downloads']) {
   if (!fs.existsSync(src)) return;
   if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
   for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    if (excludeDirs.includes(entry.name)) {
+      continue; // Exclure downloads/ et gros binaires
+    }
     const srcPath = path.join(src, entry.name);
     const destPath = path.join(dest, entry.name);
     if (entry.isDirectory()) {
-      copyDirRecursive(srcPath, destPath);
+      copyDirRecursive(srcPath, destPath, excludeDirs);
     } else {
       fs.copyFileSync(srcPath, destPath);
     }
@@ -74,8 +77,8 @@ async function buildAll() {
     const wwwDir = path.join(appDir, 'www');
     if (!fs.existsSync(wwwDir)) fs.mkdirSync(wwwDir, { recursive: true });
     
-    // Copy assets to www/assets
-    copyDirRecursive(path.join(rootDir, 'assets'), path.join(wwwDir, 'assets'));
+    // Copy assets to www/assets (en excluant downloads/)
+    copyDirRecursive(path.join(rootDir, 'assets'), path.join(wwwDir, 'assets'), ['downloads']);
     
     // Copy dashboard files
     const dashSrc = path.join(rootDir, app.dashboard);
@@ -113,12 +116,12 @@ async function buildAll() {
       execSync('npx cap sync android', { cwd: appDir, stdio: 'inherit' });
     }
 
-    // 3. Patch variables.gradle for compatibility with runner SDK
+    // 3. Patch variables.gradle for compatibility with runner SDK 35
     const variablesGradle = path.join(androidDir, 'variables.gradle');
     if (fs.existsSync(variablesGradle)) {
       let content = fs.readFileSync(variablesGradle, 'utf8');
-      content = content.replace(/compileSdkVersion\s*=\s*\d+/, 'compileSdkVersion = 36');
-      content = content.replace(/targetSdkVersion\s*=\s*\d+/, 'targetSdkVersion = 36');
+      content = content.replace(/compileSdkVersion\s*=\s*\d+/, 'compileSdkVersion = 35');
+      content = content.replace(/targetSdkVersion\s*=\s*\d+/, 'targetSdkVersion = 35');
       fs.writeFileSync(variablesGradle, content, 'utf8');
     }
 
