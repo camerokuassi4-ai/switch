@@ -33,7 +33,62 @@
     return DASHBOARDS[space] || DASHBOARDS.user;
   }
 
-  // ── GARDE DE ROUTE CLIENT MULTI-RÔLE ────────────────────────────────────────
+  // ── GARDE DE ROUTE ET ISOLATION PAR APK ────────────────────────────────────
+
+  /**
+   * Identifie le package de l'application mobile courante (User, Merchant, Agent, Hybrid).
+   */
+  function getAppPackageId() {
+    if (window.SWITCH_APP_PACKAGE) return window.SWITCH_APP_PACKAGE;
+    const meta = document.querySelector('meta[name="switch-app-package"]');
+    if (meta && meta.content) return meta.content;
+
+    const path = window.location.pathname.toLowerCase();
+    if (path.includes('/apps/merchant/') || path.includes('/merchant/')) return 'merchant';
+    if (path.includes('/apps/agent/') || path.includes('/agent/')) return 'agent';
+    if (path.includes('/apps/hybrid/') || path.includes('/hybrid/')) return 'hybrid';
+    if (path.includes('/apps/user/') || path.includes('/user/')) return 'user';
+
+    return 'user';
+  }
+
+  /**
+   * GARDE D'APPLICATION PAR PACKAGE (ISOLATION DES 4 APKS)
+   * Empêche formellement qu'une route d'un autre APK soit affichée.
+   */
+  function checkAppPackageAccess(screenKey) {
+    const currentApp = getAppPackageId();
+    const config = SCREENS[screenKey];
+    if (!config) return { allowed: true };
+
+    const allowedApps = config.allowedApps || ["user"];
+    if (allowedApps.includes(currentApp)) {
+      return { allowed: true };
+    }
+
+    const appEntryPoints = {
+      user: ROOT + "accueil_splash_mis_jour/code.html",
+      merchant: ROOT + "inscription_marchand/code.html",
+      agent: ROOT + "connexion_agent/code.html",
+      hybrid: ROOT + "tableau_de_bord_agent_mixte/code.html"
+    };
+
+    const appNames = {
+      user: "Switch Utilisateur",
+      merchant: "Switch Marchand Pro",
+      agent: "Switch Agent Guichet",
+      hybrid: "Switch Hybride"
+    };
+
+    return {
+      allowed: false,
+      reason: "APP_PACKAGE_RESTRICTED",
+      title: "Page non disponible",
+      message: "Cette page n'est pas disponible dans l'application " + (appNames[currentApp] || "courante") + ". Veuillez utiliser l'application mobile dédiée.",
+      ctaPublicUrl: appEntryPoints[currentApp] || appEntryPoints.user,
+      ctaPublicLabel: "Retourner à l'accueil"
+    };
+  }
 
   /**
    * Identifie l'état de session locale pour la navigation UI.
@@ -51,17 +106,22 @@
   }
 
   /**
-   * RÈGLE ABSOLUE CAS B — GARDE DE ROUTE MULTI-RÔLE SANS PROMOTION CLIENT :
-   * - public : accessible sans session (Splash, Connexion, Inscription, Vitrines publiques).
-   * - user : accessible en session UI locale (pour parcours UI, sans garantie financière).
-   * - merchant, agent, hybrid : REFUS STRICT SYSTEMATIQUE (reason: "SERVER_ROLE_VERIFICATION_UNAVAILABLE").
-   *   AUCUN objet window.*, localStorage, sessionStorage, token local ou paramètre URL ne peut autoriser ces routes.
+   * GARDE DE ROUTE COMBINÉ :
+   * 1. App Guard (Package/APK) : Rejette les routes appartenant à d'autres APKs.
+   * 2. Garde CAS B : Refuse les dashboards et espaces pro sans vérification serveur réel.
    */
   function checkRouteAccess(screenKey) {
     if (!screenKey) return { allowed: true };
     const config = SCREENS[screenKey];
     if (!config) return { allowed: true };
 
+    // 1. GARDE D'APPLICATION PAR PACKAGE (Isolement des 4 APKs)
+    const appCheck = checkAppPackageAccess(screenKey);
+    if (!appCheck.allowed) {
+      return appCheck;
+    }
+
+    // 2. GARDE DE RÔLE SERVEUR CAS B
     const requiredSpace = config.space;
     if (requiredSpace === "public" || requiredSpace === "auth") {
       return { allowed: true };
@@ -69,7 +129,7 @@
 
     const auth = getVerifiedUserAuth();
 
-    // 1. Session UI locale obligatoire pour le périmètre client
+    // Session UI locale obligatoire pour le périmètre client
     if (!auth.isLocalUiSession) {
       return {
         allowed: false,
@@ -78,13 +138,12 @@
       };
     }
 
-    // 2. Écrans client grand public (User UI) : autorisé pour le parcours UI local
+    // Écrans client grand public (User UI) : autorisé pour le parcours UI local
     if (requiredSpace === "user") {
       return { allowed: true };
     }
 
-    // 3. CAS B : REFUS STRICT SYSTÉMATIQUE POUR TOUT ESPACE RESTREINT (Merchant, Agent, Hybrid)
-    // Désactivation absolue de toute autorisation fondée sur du JS client ou des variables window/storage.
+    // REFUS STRICT SYSTÉMATIQUE POUR TOUT ESPACE RESTREINT (Merchant, Agent, Hybrid)
     const isMerchant = (requiredSpace === "merchant");
     const isAgent = (requiredSpace === "agent");
 
@@ -148,71 +207,71 @@
 
   const SCREENS = {
     "accueil_splash_mis_jour": {
-      space: "public", back: null, nav: null,
+      allowedApps: ["user"], space: "public", back: null, nav: null,
       actions: {}
     },
     "choix_type_compte": {
-      space: "public", back: null, nav: null,
+      allowedApps: ["user"], space: "public", back: null, nav: null,
       actions: {}
     },
     "inscription_agent_switch": {
-      space: "public", back: null, nav: null,
+      allowedApps: ["agent", "hybrid"], space: "public", back: null, nav: null,
       actions: {}
     },
     "agent_verification_caution": {
-      space: "public", back: null, nav: null,
+      allowedApps: ["agent", "hybrid"], space: "public", back: null, nav: null,
       actions: {}
     },
     "documents_contrat_agent": {
-      space: "agent", back: null, nav: null,
+      allowedApps: ["agent", "hybrid"], space: "agent", back: null, nav: null,
       actions: {}
     },
     "confirmation_biometrique_agent": {
-      space: "agent", back: null, nav: null,
+      allowedApps: ["agent", "hybrid"], space: "agent", back: null, nav: null,
       actions: {}
     },
     "inscription_marchand": {
-      space: "public", back: null, nav: null,
+      allowedApps: ["merchant", "hybrid"], space: "public", back: null, nav: null,
       actions: {}
     },
     "v_rification_marchand": {
-      space: "public", back: null, nav: null,
+      allowedApps: ["merchant", "hybrid"], space: "public", back: null, nav: null,
       actions: {}
     },
     "setup_point_de_vente_marchand": {
-      space: "public", back: null, nav: null,
+      allowedApps: ["merchant", "hybrid"], space: "public", back: null, nav: null,
       actions: {}
     },
     "inscription": {
-      space: "public", back: null, nav: null,
+      allowedApps: ["user"], space: "public", back: null, nav: null,
       actions: {}
     },
     "connexion": {
-      space: "public", back: null, nav: null,
+      allowedApps: ["user"], space: "public", back: null, nav: null,
       actions: {}
     },
     "v_rification_otp": {
-      space: "public", back: null, nav: null,
+      allowedApps: ["user"], space: "public", back: null, nav: null,
       actions: {}
     },
     "cr_ation_code_pin": {
-      space: "public", back: null, nav: null,
+      allowedApps: ["user"], space: "public", back: null, nav: null,
       actions: {}
     },
     "kyc_verification_identite": {
-      space: "user", back: null, nav: null,
+      allowedApps: ["user"], space: "user", back: null, nav: null,
       actions: {}
     },
     "verification_niveau_superieur": {
-      space: "user", back: null, nav: null,
+      allowedApps: ["user"], space: "user", back: null, nav: null,
       actions: {}
     },
     "verrouillage_pin": {
-      space: "public", back: null, nav: null,
+      allowedApps: ["user"], space: "public", back: null, nav: null,
       actions: {}
     },
     "pas_de_connexion": {
-      space: "public", back: null, nav: null,
+      allowedApps: ["user", "merchant", "agent", "hybrid"], space: "public", back: null, nav: null,
       actions: { "Réessayer": "javascript:history.back()" }
     },
 

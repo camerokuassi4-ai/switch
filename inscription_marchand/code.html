@@ -430,8 +430,8 @@
     function previousStep() {
       if (currentStep > 1) { currentStep--; updateUI(); }
       else {
-        if (window.switchNavigate) window.switchNavigate('../choix_type_compte/code.html');
-        else window.location.href = '../choix_type_compte/code.html';
+        currentStep = 1;
+        updateUI();
       }
     }
 

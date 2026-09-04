@@ -46,17 +46,16 @@ html {
   text-size-adjust: 100%;
   scroll-behavior: smooth;
   min-height: 100%;
-  background-color: #F8F9FD;
+  background-color: #F8F9FD !important;
   margin: 0;
   padding: 0;
 }
 
 body {
   font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
-  background-color: #fdf8ff !important;
+  background-color: #F8F9FD !important;
   color: #1c1a24 !important;
   min-height: 100vh !important;
-  min-height: 100dvh !important;
   height: auto !important; /* Permet un défilement naturel infini sans coupure */
   margin: 0 auto !important;
   padding: 0;
@@ -72,15 +71,19 @@ body {
   position: relative;
   overflow-x: hidden !important;
   overflow-y: visible !important;
-  overscroll-behavior-y: none;
+  overscroll-behavior-y: contain;
   display: flex !important;
   flex-direction: column !important;
 }
 
 /* Stabilisation des formulaires mobiles lors du déploiement du clavier */
 body:has(form) {
-  min-height: 100dvh !important;
   overscroll-behavior-y: contain;
+}
+
+/* Lors de la saisie au clavier, libérer l'espace bas en masquant le padding de navigation */
+body:has(input:focus), body:has(textarea:focus), body.keyboard-open {
+  padding-bottom: calc(24px + var(--sab)) !important;
 }
 
 /* Sur les pages sans barre de navigation basse (Auth, Splash, Onboarding, PIN, etc.), pas de vide inutile */

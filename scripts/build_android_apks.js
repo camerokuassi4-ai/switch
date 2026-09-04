@@ -159,6 +159,8 @@ async function buildAll() {
     
     // Copy assets to www/assets
     copyDirRecursive(path.join(rootDir, 'assets'), path.join(wwwDir, 'assets'));
+    fs.writeFileSync(path.join(wwwDir, 'assets', 'switch.env.js'), `/**\n * switch.env.js\n * Identité de l'application mobile (User, Merchant, Agent, Hybrid)\n */\nwindow.SWITCH_APP_PACKAGE = "${app.id}";\n`, 'utf8');
+    fs.appendFileSync(path.join(wwwDir, 'assets', 'switch.config.js'), `\n/* Identité de l'application mobile */\nwindow.SWITCH_APP_PACKAGE = "${app.id}";\n`, 'utf8');
     
     // Copy all screen folders containing code.html
     for (const entry of fs.readdirSync(rootDir, { withFileTypes: true })) {
