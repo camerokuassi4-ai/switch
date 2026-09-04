@@ -51,42 +51,118 @@ const apps = [
   }
 ];
 
-function copyDirRecursive(src, dest, excludeDirs = ['downloads']) {
+const STRICT_EXCLUDE_DIRS = [
+  '.git', '.github', 'node_modules', 'apps', 'dist', 'scratch', 'backups', 'download', 'downloads', 'www'
+];
+
+const STRICT_EXCLUDE_EXTS = [
+  '.apk', '.zip', '.tar', '.gz', '.log', '.env', '.pem', '.key', '.p12', '.pkcs12', '.yml', '.gitignore', '.npmrc'
+];
+
+const STRICT_EXCLUDE_FILES = [
+  '.env', '.env.local', '.env.production', '.env.example', '.gitignore', '.npmrc', '.apk', '.ds_store'
+];
+
+function isForbiddenFile(filename) {
+  const lower = filename.toLowerCase();
+  const ext = path.extname(lower);
+  if (STRICT_EXCLUDE_FILES.includes(lower)) return true;
+  if (lower.startsWith('.env')) return true;
+  if (ext && STRICT_EXCLUDE_EXTS.includes(ext)) return true;
+  if (STRICT_EXCLUDE_EXTS.some(e => lower.endsWith(e))) return true;
+  return false;
+}
+
+function copyDirRecursive(src, dest, extraExcludes = []) {
   if (!fs.existsSync(src)) return;
   if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
+  const excludes = [...STRICT_EXCLUDE_DIRS, ...extraExcludes];
+
   for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
-    if (excludeDirs.includes(entry.name)) {
-      continue; // Exclure downloads/ et gros binaires
+    if (excludes.includes(entry.name)) {
+      continue;
     }
+    if (!entry.isDirectory() && isForbiddenFile(entry.name)) {
+      continue;
+    }
+
     const srcPath = path.join(src, entry.name);
     const destPath = path.join(dest, entry.name);
     if (entry.isDirectory()) {
-      copyDirRecursive(srcPath, destPath, excludeDirs);
+      copyDirRecursive(srcPath, destPath, extraExcludes);
     } else {
       fs.copyFileSync(srcPath, destPath);
     }
   }
 }
 
+function scanDirStats(dirPath) {
+  let fileCount = 0;
+  let totalBytes = 0;
+  const filesList = [];
+  const forbiddenFound = [];
+
+  function walk(current) {
+    if (!fs.existsSync(current)) return;
+    for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+      const fullPath = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        if (STRICT_EXCLUDE_DIRS.includes(entry.name)) {
+          forbiddenFound.push({ path: fullPath, type: 'directory' });
+        }
+        walk(fullPath);
+      } else {
+        const stat = fs.statSync(fullPath);
+        fileCount++;
+        totalBytes += stat.size;
+        const ext = path.extname(entry.name).toLowerCase();
+        if (isForbiddenFile(entry.name)) {
+          forbiddenFound.push({ path: fullPath, type: 'file' });
+        }
+        filesList.push({
+          path: path.relative(dirPath, fullPath).replace(/\\/g, '/'),
+          size: stat.size,
+          ext: ext
+        });
+      }
+    }
+  }
+
+  walk(dirPath);
+  filesList.sort((a, b) => b.size - a.size);
+
+  return {
+    fileCount,
+    totalBytes,
+    totalMB: (totalBytes / (1024 * 1024)).toFixed(2),
+    top10: filesList.slice(0, 10),
+    forbiddenFound
+  };
+}
+
 async function buildAll() {
+  const syncOnly = process.argv.includes('--sync-only') || process.argv.includes('--no-gradle');
   console.log('====================================================');
-  console.log('🚀 COMPILATION ANDROID CAPACITOR — SWITCH BÉNIN BETA');
+  console.log(`🚀 PACKAGING ANDROID CAPACITOR — SWITCH BÉNIN BETA ${syncOnly ? '(MODE SYNC SEUL)' : ''}`);
   console.log('====================================================\n');
 
   for (const app of apps) {
     const appDir = path.join(appsDir, app.id);
     console.log(`\n📦 Préparation de l'application : ${app.name} (${app.package})...`);
     
-    // 1. Prepare www
+    // 1. Prepare & Clean www
     const wwwDir = path.join(appDir, 'www');
-    if (!fs.existsSync(wwwDir)) fs.mkdirSync(wwwDir, { recursive: true });
+    if (fs.existsSync(wwwDir)) {
+      fs.rmSync(wwwDir, { recursive: true, force: true });
+    }
+    fs.mkdirSync(wwwDir, { recursive: true });
     
-    // Copy assets to www/assets (en excluant downloads/)
-    copyDirRecursive(path.join(rootDir, 'assets'), path.join(wwwDir, 'assets'), ['downloads']);
+    // Copy assets to www/assets
+    copyDirRecursive(path.join(rootDir, 'assets'), path.join(wwwDir, 'assets'));
     
-    // Copy all 126 screen folders containing code.html
+    // Copy all screen folders containing code.html
     for (const entry of fs.readdirSync(rootDir, { withFileTypes: true })) {
-      if (entry.isDirectory() && !['apps', 'dist', 'node_modules', '.git', '.github', 'assets', 'www', 'scratch'].includes(entry.name)) {
+      if (entry.isDirectory() && !STRICT_EXCLUDE_DIRS.includes(entry.name)) {
         const codeFile = path.join(rootDir, entry.name, 'code.html');
         if (fs.existsSync(codeFile)) {
           copyDirRecursive(path.join(rootDir, entry.name), path.join(wwwDir, entry.name));
@@ -94,7 +170,7 @@ async function buildAll() {
       }
     }
     
-    // Prepare www/index.html (redirect to entryPoint or embed directly)
+    // Prepare www/index.html (redirect to entryPoint)
     const indexHtmlContent = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -115,14 +191,38 @@ async function buildAll() {
 </html>`;
     fs.writeFileSync(path.join(wwwDir, 'index.html'), indexHtmlContent, 'utf8');
 
-    // 2. Add or sync android
+    // 2. Add or sync android assets
     const androidDir = path.join(appDir, 'android');
+    const publicAssetsDir = path.join(androidDir, 'app', 'src', 'main', 'assets', 'public');
+    if (fs.existsSync(publicAssetsDir)) {
+      fs.rmSync(publicAssetsDir, { recursive: true, force: true });
+    }
+
     if (!fs.existsSync(androidDir)) {
       console.log(`  ➕ Ajout de la plateforme Android via Capacitor...`);
       execSync('npx cap add android', { cwd: appDir, stdio: 'inherit' });
     } else {
       console.log(`  🔄 Synchronisation des assets Capacitor...`);
-      execSync('npx cap sync android', { cwd: appDir, stdio: 'inherit' });
+      execSync('npx cap copy android', { cwd: appDir, stdio: 'inherit' });
+    }
+
+    // 3. Blocking Audit Scan
+    const wwwStats = scanDirStats(wwwDir);
+    const publicStats = scanDirStats(publicAssetsDir);
+
+    console.log(`  📊 Audit Bundle ${app.id.toUpperCase()} :`);
+    console.log(`     - Files in www/: ${wwwStats.fileCount} (${wwwStats.totalMB} MB)`);
+    console.log(`     - Files in assets/public/: ${publicStats.fileCount} (${publicStats.totalMB} MB)`);
+    console.log(`     - Fichiers ou répertoires interdits détectés : ${wwwStats.forbiddenFound.length}`);
+
+    if (wwwStats.forbiddenFound.length > 0 || publicStats.forbiddenFound.length > 0) {
+      console.error(`  ❌ ERREUR BLOQUANTE : Artefacts interdits détectés dans le bundle !`, wwwStats.forbiddenFound);
+      throw new Error(`BUNDLE NON CONFORME : Fichiers interdits présents pour ${app.id}`);
+    }
+
+    if (syncOnly) {
+      console.log(`  ✅ Synchronisation et audit validés avec succès pour ${app.name}.`);
+      continue;
     }
 
     // 3. Patch variables.gradle and build.gradle for compatibility with runner SDK 35 and Kotlin duplicate classes

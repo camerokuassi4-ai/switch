@@ -72,8 +72,15 @@ body {
   position: relative;
   overflow-x: hidden !important;
   overflow-y: visible !important;
+  overscroll-behavior-y: none;
   display: flex !important;
   flex-direction: column !important;
+}
+
+/* Stabilisation des formulaires mobiles lors du déploiement du clavier */
+body:has(form) {
+  min-height: 100dvh !important;
+  overscroll-behavior-y: contain;
 }
 
 /* Sur les pages sans barre de navigation basse (Auth, Splash, Onboarding, PIN, etc.), pas de vide inutile */

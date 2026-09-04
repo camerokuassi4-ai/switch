@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="fr"><head>
 <meta charset="utf-8"/>
@@ -10,11 +10,15 @@
 
 <style>
     body {
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
+      height: 100dvh;
+      overflow: hidden;
+      touch-action: none;
+      overscroll-behavior: none;
     }
   </style>
   </head>
-<body class="bg-background text-on-background min-h-screen flex flex-col justify-center items-center px-container-margin font-body-lg">
+<body class="bg-background text-on-background h-screen h-[100dvh] overflow-hidden flex flex-col justify-center items-center px-container-margin font-body-lg">
 <!-- Main Content Canvas (Linear/Transactional context, navigation shell suppressed) -->
 <main class="w-full max-w-md flex flex-col items-center justify-center text-center space-y-stack-lg">
 <!-- Illustration -->

@@ -37,26 +37,18 @@
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
     body {
       font-family: 'Hanken Grotesk', sans-serif;
-      min-height: 100vh !important;
       min-height: 100dvh !important;
+      height: 100dvh !important;
+      overflow-y: auto !important;
+      touch-action: pan-y !important;
+      overscroll-behavior: none !important;
       background-color: #F8F9FD !important;
       color: #1C1A24 !important;
       -webkit-font-smoothing: antialiased;
-      padding-bottom: 24px !important;
-    }
-
-    .otp-input, .pin-input {
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .otp-input:focus, .pin-input:focus {
-      border-color: #5E3BDC;
-      box-shadow: 0 0 0 3px rgba(94, 59, 220, 0.25);
-      background-color: #FFFFFF;
-      outline: none;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between antialiased">
+<body class="h-screen h-[100dvh] flex flex-col justify-between antialiased">
 
   <!-- Top App Bar -->
   <header class="w-full max-w-lg mx-auto px-container-margin pt-6 pb-2 flex items-center justify-between z-30">

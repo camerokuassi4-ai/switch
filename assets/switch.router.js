@@ -33,21 +33,134 @@
     return DASHBOARDS[space] || DASHBOARDS.user;
   }
 
+  // ── GARDE DE ROUTE CLIENT MULTI-RÔLE ────────────────────────────────────────
+
+  /**
+   * Identifie l'état de session locale pour la navigation UI.
+   * Ne sert JAMAIS d'habilitation pour les routes restreintes.
+   */
+  function getVerifiedUserAuth() {
+    const isLocalUiSession = localStorage.getItem("switch_user_logged_in") === "true" ||
+                            sessionStorage.getItem("switch_user_logged_in") === "true" ||
+                            !!localStorage.getItem("switch_auth_token") ||
+                            !!sessionStorage.getItem("switch_auth_token");
+
+    return {
+      isLocalUiSession: isLocalUiSession
+    };
+  }
+
+  /**
+   * RÈGLE ABSOLUE CAS B — GARDE DE ROUTE MULTI-RÔLE SANS PROMOTION CLIENT :
+   * - public : accessible sans session (Splash, Connexion, Inscription, Vitrines publiques).
+   * - user : accessible en session UI locale (pour parcours UI, sans garantie financière).
+   * - merchant, agent, hybrid : REFUS STRICT SYSTEMATIQUE (reason: "SERVER_ROLE_VERIFICATION_UNAVAILABLE").
+   *   AUCUN objet window.*, localStorage, sessionStorage, token local ou paramètre URL ne peut autoriser ces routes.
+   */
+  function checkRouteAccess(screenKey) {
+    if (!screenKey) return { allowed: true };
+    const config = SCREENS[screenKey];
+    if (!config) return { allowed: true };
+
+    const requiredSpace = config.space;
+    if (requiredSpace === "public" || requiredSpace === "auth") {
+      return { allowed: true };
+    }
+
+    const auth = getVerifiedUserAuth();
+
+    // 1. Session UI locale obligatoire pour le périmètre client
+    if (!auth.isLocalUiSession) {
+      return {
+        allowed: false,
+        reason: "NOT_LOGGED_IN",
+        requiredSpace: requiredSpace
+      };
+    }
+
+    // 2. Écrans client grand public (User UI) : autorisé pour le parcours UI local
+    if (requiredSpace === "user") {
+      return { allowed: true };
+    }
+
+    // 3. CAS B : REFUS STRICT SYSTÉMATIQUE POUR TOUT ESPACE RESTREINT (Merchant, Agent, Hybrid)
+    // Désactivation absolue de toute autorisation fondée sur du JS client ou des variables window/storage.
+    const isMerchant = (requiredSpace === "merchant");
+    const isAgent = (requiredSpace === "agent");
+
+    return {
+      allowed: false,
+      reason: "SERVER_ROLE_VERIFICATION_UNAVAILABLE",
+      requiredSpace: requiredSpace,
+      title: isMerchant ? "Espace Marchand Réservé" : (isAgent ? "Espace Guichet Agent Réservé" : "Espace Hybride Réservé"),
+      message: "L'accès aux fonctionnalités de cet espace (" + (isMerchant ? "caisse POS, gestion des ventes" : "guichet, float, commissions") + ") exige un contrôle de rôle délivré directement par le serveur backend. Aucune variable JavaScript locale ne peut accorder cet accès.",
+      ctaPublicUrl: isMerchant ? (ROOT + "accueil_marchand/code.html") : (ROOT + "inscription_agent_switch/code.html"),
+      ctaPublicLabel: isMerchant ? "Découvrir l'Espace Marchand" : "Devenir Agent Switch"
+    };
+  }
+
+  /**
+   * Rendu de la vue neutre d'accès restreint sans charger de données sensibles.
+   */
+  function renderAccessDeniedScreen(accessCheck) {
+    document.title = (accessCheck.title || "Accès Restreint") + " — Switch Bénin";
+    document.body.removeAttribute("style");
+    document.documentElement.style.backgroundColor = "#F8F9FD";
+    document.body.className = "bg-[#F8F9FD] min-h-screen text-slate-800 flex flex-col font-sans";
+
+    const userDashboard = getActiveDashboard();
+
+    document.body.innerHTML = `
+<div style="min-height:100vh; display:flex; flex-direction:column; justify-content:space-between; padding:32px 20px; box-sizing:border-box; max-width:480px; margin:0 auto; background:#F8F9FD; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <div style="text-align:center; margin-top:20px;">
+    <div style="width:76px; height:76px; border-radius:50%; background:#EEF2FF; color:#5E3BDC; display:inline-flex; align-items:center; justify-content:center; margin-bottom:20px; border:1px solid #E0E7FF; box-shadow:0 8px 24px rgba(94,59,220,0.12);">
+      <span class="material-symbols-outlined" style="font-size:38px;">shield_lock</span>
+    </div>
+    <div>
+      <span style="display:inline-block; background:#FEF3C7; color:#92400E; font-size:11px; font-weight:800; padding:4px 12px; border-radius:20px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:14px;">Accès Restreint</span>
+    </div>
+    <h1 style="font-size:22px; font-weight:800; color:#0F172A; margin:0 0 10px 0; line-height:1.3;">${accessCheck.title}</h1>
+    <p style="font-size:14px; color:#64748B; margin:0 0 24px 0; line-height:1.5; padding:0 8px;">${accessCheck.message}</p>
+  </div>
+
+  <div style="background:#FFFFFF; border-radius:20px; padding:20px; border:1px solid #E2E8F0; box-shadow:0 4px 16px rgba(0,0,0,0.03); margin-bottom:32px;">
+    <div style="display:flex; align-items:flex-start; gap:12px;">
+      <span class="material-symbols-outlined" style="color:#5E3BDC; font-size:22px; margin-top:2px;">info</span>
+      <div style="font-size:13px; color:#334155; line-height:1.5;">
+        <strong>Information Sécurité</strong><br/>
+        L'accès aux fonctionnalités de cet espace nécessite un compte validé par le serveur Switch. Aucune opération financière ou donnée de caisse ne peut être affichée.
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:12px; margin-top:auto; padding-bottom:16px;">
+    <button onclick="window.switchNavigate('${accessCheck.ctaPublicUrl}')" style="width:100%; height:52px; background:linear-gradient(135deg,#7B5CFA 0%,#5E3BDC 100%); color:#FFFFFF; border:none; border-radius:16px; font-size:15px; font-weight:800; cursor:pointer; box-shadow:0 8px 20px rgba(94,59,220,0.25); display:flex; align-items:center; justify-content:center; gap:8px;">
+      <span>${accessCheck.ctaPublicLabel}</span>
+      <span class="material-symbols-outlined" style="font-size:18px;">arrow_forward</span>
+    </button>
+    <button onclick="window.switchNavigate('${userDashboard}')" style="width:100%; height:52px; background:#FFFFFF; color:#475569; border:1px solid #CBD5E1; border-radius:16px; font-size:15px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+      <span class="material-symbols-outlined" style="font-size:18px;">arrow_back</span>
+      <span>Retour à mon espace</span>
+    </button>
+  </div>
+</div>`;
+  }
+
   const SCREENS = {
     "accueil_splash_mis_jour": {
-      space: "auth", back: null, nav: null,
+      space: "public", back: null, nav: null,
       actions: {}
     },
     "choix_type_compte": {
-      space: "auth", back: null, nav: null,
+      space: "public", back: null, nav: null,
       actions: {}
     },
     "inscription_agent_switch": {
-      space: "agent", back: null, nav: null,
+      space: "public", back: null, nav: null,
       actions: {}
     },
     "agent_verification_caution": {
-      space: "agent", back: null, nav: null,
+      space: "public", back: null, nav: null,
       actions: {}
     },
     "documents_contrat_agent": {
@@ -59,47 +172,47 @@
       actions: {}
     },
     "inscription_marchand": {
-      space: "merchant", back: null, nav: null,
+      space: "public", back: null, nav: null,
       actions: {}
     },
     "v_rification_marchand": {
-      space: "merchant", back: null, nav: null,
+      space: "public", back: null, nav: null,
       actions: {}
     },
     "setup_point_de_vente_marchand": {
-      space: "merchant", back: null, nav: null,
+      space: "public", back: null, nav: null,
       actions: {}
     },
     "inscription": {
-      space: "auth", back: null, nav: null,
+      space: "public", back: null, nav: null,
       actions: {}
     },
     "connexion": {
-      space: "auth", back: null, nav: null,
+      space: "public", back: null, nav: null,
       actions: {}
     },
     "v_rification_otp": {
-      space: "auth", back: null, nav: null,
+      space: "public", back: null, nav: null,
       actions: {}
     },
     "cr_ation_code_pin": {
-      space: "auth", back: null, nav: null,
+      space: "public", back: null, nav: null,
       actions: {}
     },
     "kyc_verification_identite": {
-      space: "auth", back: null, nav: null,
+      space: "user", back: null, nav: null,
       actions: {}
     },
     "verification_niveau_superieur": {
-      space: "auth", back: null, nav: null,
+      space: "user", back: null, nav: null,
       actions: {}
     },
     "verrouillage_pin": {
-      space: "auth", back: null, nav: null,
+      space: "public", back: null, nav: null,
       actions: {}
     },
     "pas_de_connexion": {
-      space: "auth", back: null, nav: null,
+      space: "public", back: null, nav: null,
       actions: { "Réessayer": "javascript:history.back()" }
     },
 
@@ -368,24 +481,24 @@
       actions: { "Accéder": ROOT + "tableau_de_bord_mis_jour/code.html", "Tableau de bord": ROOT + "tableau_de_bord_mis_jour/code.html", "Dépôt": ROOT + "d_p_t_de_fonds/code.html" }
     },
     "setup_point_de_vente_marchand": {
-      space: "merchant", back: ROOT + "v_rification_marchand/code.html", nav: null,
+      space: "public", back: ROOT + "v_rification_marchand/code.html", nav: null,
       actions: { "Ouvrir": ROOT + "tableau_de_bord_marchand/code.html", "Tableau de bord": ROOT + "tableau_de_bord_marchand/code.html" }
     },
     "agent_verification_caution": {
-      space: "agent", back: ROOT + "inscription_agent_switch/code.html", nav: null,
+      space: "public", back: ROOT + "inscription_agent_switch/code.html", nav: null,
       actions: { "Activer": ROOT + "tableau_de_bord_agent/code.html", "Valider": ROOT + "tableau_de_bord_agent/code.html" }
     },
 
     "accueil_marchand": {
-      space: "merchant", back: ROOT + "profil_utilisateur/code.html", nav: null,
+      space: "public", back: ROOT + "profil_utilisateur/code.html", nav: null,
       actions: { "Créer un compte": ROOT + "inscription_marchand/code.html", "Commencer": ROOT + "inscription_marchand/code.html", "Se connecter": ROOT + "tableau_de_bord_marchand/code.html" }
     },
     "inscription_marchand": {
-      space: "merchant", back: ROOT + "accueil_marchand/code.html", nav: null,
+      space: "public", back: ROOT + "accueil_marchand/code.html", nav: null,
       actions: { "Continuer": ROOT + "v_rification_marchand/code.html", "Créer": ROOT + "v_rification_marchand/code.html", "Soumettre": ROOT + "v_rification_marchand/code.html" }
     },
     "v_rification_marchand": {
-      space: "merchant", back: ROOT + "inscription_marchand/code.html", nav: null,
+      space: "public", back: ROOT + "inscription_marchand/code.html", nav: null,
       actions: { "Vérifier": ROOT + "setup_point_de_vente_marchand/code.html", "Confirmer": ROOT + "setup_point_de_vente_marchand/code.html", "Continuer": ROOT + "setup_point_de_vente_marchand/code.html", "Soumettre": ROOT + "setup_point_de_vente_marchand/code.html" }
     },
     "tableau_de_bord_marchand": {
@@ -446,11 +559,11 @@
     "carnet_de_dettes_marchand": { space: "merchant", back: ROOT + "tableau_de_bord_marchand/code.html", nav: "m-debt", actions: {} },
 
     "inscription_agent_switch": {
-      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
+      space: "public", back: ROOT + "tableau_de_bord_agent/code.html", nav: null,
       actions: { "Soumettre": ROOT + "agent_verification_caution/code.html", "Continuer": ROOT + "agent_verification_caution/code.html", "S'inscrire": ROOT + "agent_verification_caution/code.html", "Terminer": ROOT + "agent_verification_caution/code.html" }
     },
     "connexion_agent": {
-      space: "agent", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {}
+      space: "public", back: ROOT + "tableau_de_bord_agent/code.html", nav: null, actions: {}
     },
     "tableau_de_bord_agent": {
       space: "agent", back: null, nav: "a-home",
@@ -693,6 +806,30 @@
     let normalizedUrl = targetUrl;
     try {
       normalizedUrl = new URL(targetUrl, window.location.href).href;
+
+      // Contrôle de garde de route client
+      let targetScreenKey = null;
+      try {
+        const urlObj = new URL(normalizedUrl);
+        const parts = urlObj.pathname.split('/').filter(p => p && p !== 'code.html' && p !== 'index.html' && p !== 'code');
+        if (parts.length > 0) {
+          targetScreenKey = parts[parts.length - 1];
+        }
+      } catch(e) {}
+
+      const accessCheck = checkRouteAccess(targetScreenKey);
+      if (!accessCheck.allowed) {
+        if (pushState && window.location.href !== normalizedUrl) {
+          window.history.pushState({ url: normalizedUrl }, "", normalizedUrl);
+        }
+        if (accessCheck.reason === "NOT_LOGGED_IN") {
+          window.location.href = ROOT + "connexion/code.html";
+          return;
+        }
+        renderAccessDeniedScreen(accessCheck);
+        return;
+      }
+
       const pageData = await getPageData(normalizedUrl);
       if (pageData.title) document.title = pageData.title;
       document.body.removeAttribute("style");
@@ -730,6 +867,7 @@
 
       // 5. Initialiser les écouteurs, la barre de navigation correspondante et le scroll
       init();
+      setupKeyboardNavHiding();
       if (window.SwitchSecurity) {
         window.SwitchSecurity.init();
       }
@@ -746,6 +884,32 @@
       console.warn("[Switch Router] Navigation directe fallback:", err);
       window.location.href = normalizedUrl;
     }
+  }
+
+  function setupKeyboardNavHiding() {
+    if (window.__SWITCH_NAV_HIDING_BOUND__) return;
+    window.__SWITCH_NAV_HIDING_BOUND__ = true;
+
+    document.addEventListener("focusin", function (e) {
+      const target = e.target;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA") && !["button", "submit", "checkbox", "radio", "file"].includes(target.type)) {
+        const nav = document.getElementById("switch-nav");
+        if (nav) nav.style.setProperty("display", "none", "important");
+      }
+    }, true);
+
+    document.addEventListener("focusout", function (e) {
+      const target = e.target;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) {
+        setTimeout(function () {
+          const active = document.activeElement;
+          if (!active || (active.tagName !== "INPUT" && active.tagName !== "TEXTAREA")) {
+            const nav = document.getElementById("switch-nav");
+            if (nav) nav.style.removeProperty("display");
+          }
+        }, 120);
+      }
+    }, true);
   }
 
   function applyGlobalKycState() {
@@ -1003,6 +1167,18 @@
     }
 
     const screenKey = getCurrentScreen();
+
+    // Application immédiate du Garde de Route Client
+    const accessCheck = checkRouteAccess(screenKey);
+    if (!accessCheck.allowed) {
+      if (accessCheck.reason === "NOT_LOGGED_IN") {
+        window.location.href = ROOT + "connexion/code.html";
+        return;
+      }
+      renderAccessDeniedScreen(accessCheck);
+      return;
+    }
+
     const config = SCREENS[screenKey];
 
     const isSignupScreen = (window.location.pathname || "").toLowerCase().includes("inscri") || 
@@ -1255,6 +1431,8 @@
   window.switchNavigate = switchNavigate;
   window.switchHandleBack = handleBack;
   window.switchRouterInit = init;
+  window.checkRouteAccess = checkRouteAccess;
+  window.getVerifiedUserAuth = getVerifiedUserAuth;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);

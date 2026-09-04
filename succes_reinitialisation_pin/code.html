@@ -12,14 +12,18 @@
     @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap');
     body {
       font-family: 'Hanken Grotesk', sans-serif;
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
+      height: 100dvh;
+      overflow: hidden;
+      touch-action: none;
+      overscroll-behavior: none;
       background-color: #F8F9FD;
       color: #1C1A24;
       -webkit-font-smoothing: antialiased;
     }
   </style>
 </head>
-<body class="min-h-screen pb-16 flex flex-col justify-between antialiased selection:bg-primary-fixed">
+<body class="h-screen h-[100dvh] overflow-hidden flex flex-col justify-between antialiased selection:bg-primary-fixed">
 
   <!-- Top Spacing -->
   <header class="w-full max-w-lg mx-auto px-container-margin pt-8 pb-2 flex items-center justify-between z-30">

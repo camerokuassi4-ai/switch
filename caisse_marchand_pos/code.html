@@ -14,7 +14,11 @@
     
     body {
       font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-      min-height: max(884px, 100dvh);
+      min-height: 100dvh;
+      height: 100dvh;
+      overflow-y: auto;
+      touch-action: pan-y;
+      overscroll-behavior: none;
       background-color: #F8F9FD;
       color: #1C1A24;
       -webkit-font-smoothing: antialiased;
@@ -29,7 +33,7 @@
     }
   </style>
 </head>
-<body class="bg-[#F8F9FD] text-on-surface min-h-screen pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<body class="bg-[#F8F9FD] text-on-surface min-h-screen overscroll-none pb-32 flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
 
   <!-- Top Header Navigation -->
   <header class="w-full max-w-xl mx-auto px-container-margin pt-5 pb-3 flex items-center justify-between z-30 sticky top-0 bg-[#F8F9FD]/95 backdrop-blur-md">
