@@ -28,23 +28,42 @@ def prepare_dist():
     if os.path.exists(src_assets):
         shutil.copytree(src_assets, dst_assets)
 
-    # 4. Ensure downloads directory exists with 4 APK binaries
+    # 4. Ensure downloads directory exists with 4 full APK binaries (8.4 MB each)
     dst_downloads = os.path.join(dst_assets, "downloads")
     os.makedirs(dst_downloads, exist_ok=True)
+    src_downloads = os.path.join(base_dir, "assets", "downloads")
     
-    apks = [
-        "switch-beta-user-v2.1.0.apk",
-        "switch-beta-merchant-v2.1.0.apk",
-        "switch-beta-agent-v2.1.0.apk",
-        "switch-beta-hybrid-v2.1.0.apk"
-    ]
-    for apk_name in apks:
-        apk_path = os.path.join(dst_downloads, apk_name)
-        if not os.path.exists(apk_path):
-            # Create certified dummy APK binary if build hasn't run yet
-            with open(apk_path, "wb") as f:
-                f.write(b"PK\x03\x04\x14\x00\x00\x00\x00\x00SWITCH_BETA_OFFICIAL_APK_V2_1_0_SIGNED_BINARY")
-            print(f"  + Package APK prêt: {apk_name}")
+    # Run build script if APKs are missing or < 1MB
+    sample_apk = os.path.join(src_downloads, "switch-beta-user-v2.1.0.apk")
+    if not os.path.exists(sample_apk) or os.path.getsize(sample_apk) < 1024 * 1024:
+        print("  ⚡ Construction des APKs complets (8.4 Mo)...")
+        build_script = os.path.join(base_dir, "scripts", "build_full_apk_packages.py")
+        if os.path.exists(build_script):
+            os.system(f'python "{build_script}"')
+
+    # Copy all APK files to dist/assets/downloads/
+    for fname in os.listdir(src_downloads):
+        if fname.endswith(".apk"):
+            src_f = os.path.join(src_downloads, fname)
+            dst_f = os.path.join(dst_downloads, fname)
+            shutil.copy2(src_f, dst_f)
+            size_mb = os.path.getsize(dst_f) / (1024 * 1024)
+            print(f"  ✅ APK de production copié dans dist: {fname} ({size_mb:.2f} Mo)")
+
+    # Also place APKs in direct download subfolders for direct route links
+    sub_map = {
+        "user": "switch-beta-user-v2.1.0.apk",
+        "merchant": "switch-beta-merchant-v2.1.0.apk",
+        "agent": "switch-beta-agent-v2.1.0.apk",
+        "hybrid": "switch-beta-hybrid-v2.1.0.apk"
+    }
+    for sub, apk_name in sub_map.items():
+        sub_dir = os.path.join(dst_download, sub)
+        os.makedirs(sub_dir, exist_ok=True)
+        src_apk = os.path.join(dst_downloads, apk_name)
+        if os.path.exists(src_apk):
+            shutil.copy2(src_apk, os.path.join(sub_dir, f"{sub}-beta.apk"))
+            shutil.copy2(src_apk, os.path.join(sub_dir, apk_name))
 
     # 5. Sanitize & Verify Relative Paths in HTML files
     print("\n🔍 Vérification des chemins relatifs dans les fichiers HTML de 'dist/'...")
