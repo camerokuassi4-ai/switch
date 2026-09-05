@@ -1,82 +1,361 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <title>Switch Bénin — Téléchargement APKs v2.2.1</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>Switch Bénin v2.2.1 🇧🇯 — Portail Officiel de Téléchargement APKs</title>
+  <meta name="description" content="Portail officiel de sélection et de téléchargement des 4 applications Android Switch Bénin v2.2.1 : Utilisateur, Marchand Pro, Agent Guichet et Point Hybride.">
+  
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
     body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 20px;
-      background: #f5f5f5;
+      font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0B061E;
+      color: #FFFFFF;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      -webkit-font-smoothing: antialiased;
     }
-    h1 {
-      color: #333;
-      text-align: center;
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .apk-list {
-      list-style: none;
-      padding: 0;
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
     }
-    .apk-list li {
-      margin: 15px 0;
+    .glow-purple {
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(94, 59, 220, 0.35) 0%, rgba(11, 6, 30, 0) 70%);
+      top: -100px;
+      left: -100px;
+      filter: blur(80px);
+      pointer-events: none;
     }
-    .apk-list a {
-      display: block;
-      padding: 15px;
-      background: #007bff;
-      color: white;
-      text-align: center;
-      text-decoration: none;
-      border-radius: 8px;
-      font-size: 18px;
-      font-weight: bold;
+    .glow-emerald {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(5, 150, 105, 0.3) 0%, rgba(11, 6, 30, 0) 70%);
+      bottom: 50px;
+      right: -80px;
+      filter: blur(85px);
+      pointer-events: none;
     }
-    .apk-list a:hover {
-      background: #0056b3;
-    }
-    .note {
-      margin-top: 30px;
-      padding: 15px;
-      background: #fff3cd;
-      border-left: 4px solid #ffc107;
-      font-size: 14px;
+    .profile-tab-active {
+      background: linear-gradient(135deg, #5E3BDC 0%, #4323B0 100%);
+      color: #FFFFFF;
+      box-shadow: 0 8px 24px rgba(94, 59, 220, 0.4);
     }
   </style>
 </head>
-<body>
-  <h1>📱 Switch Bénin v2.2.1</h1>
-  <p style="text-align: center; color: #666;">Téléchargez les 4 applications bêta :</p>
+<body class="relative overflow-x-hidden selection:bg-[#5E3BDC] selection:text-white">
 
-  <ul class="apk-list">
-    <li>
-      <a href="https://github.com/camerokuassi4-ai/switch/releases/download/v2.2.1/switch-beta-user-v2.2.1.apk" download>
-        👤 Switch Utilisateur v2.2.1
-      </a>
-    </li>
-    <li>
-      <a href="https://github.com/camerokuassi4-ai/switch/releases/download/v2.2.1/switch-beta-merchant-v2.2.1.apk" download>
-        🏪 Switch Marchand Pro v2.2.1
-      </a>
-    </li>
-    <li>
-      <a href="https://github.com/camerokuassi4-ai/switch/releases/download/v2.2.1/switch-beta-agent-v2.2.1.apk" download>
-        🏦 Switch Agent Guichet v2.2.1
-      </a>
-    </li>
-    <li>
-      <a href="https://github.com/camerokuassi4-ai/switch/releases/download/v2.2.1/switch-beta-hybrid-v2.2.1.apk" download>
-        🔄 Switch Hybride v2.2.1
-      </a>
-    </li>
-  </ul>
+  <!-- Ambient Glow Lights -->
+  <div class="glow-purple"></div>
+  <div class="glow-emerald"></div>
 
-  <div class="note">
-    <strong>⚠️ Note :</strong> Ces APKs sont en version bêta. Installez-les uniquement sur des appareils de test.
-    <br><br>
-    <strong>📋 Version :</strong> v2.2.1 | <strong>📦 Taille :</strong> User (41.56 MB), Merchant (34.65 MB), Agent (33.57 MB), Hybrid (35.93 MB)
-  </div>
+  <!-- HEADER NAVBAR -->
+  <header class="w-full max-w-6xl mx-auto px-4 pt-6 pb-4 flex items-center justify-between z-20 border-b border-white/10">
+    <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#5E3BDC] via-[#7B5CFA] to-[#059669] text-white flex items-center justify-center font-black text-2xl shadow-xl border border-white/20">
+        <span>S</span>
+      </div>
+      <div class="flex flex-col">
+        <h1 class="font-black text-lg sm:text-xl tracking-tight leading-none text-white">Switch Bénin 🇧🇯</h1>
+        <span class="text-[11px] font-bold text-emerald-400 mt-1">Portail Interactif de Téléchargement v2.2.1</span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[11px] font-black uppercase">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        Certifié UEMOA / BCEAO
+      </span>
+    </div>
+  </header>
+
+  <!-- MAIN PORTAL CONTENT -->
+  <main class="flex-1 w-full max-w-6xl mx-auto px-4 py-8 sm:py-12 z-10 flex flex-col gap-10">
+
+    <!-- HERO PRESENTATION -->
+    <div class="text-center max-w-3xl mx-auto space-y-4">
+      <div class="inline-flex items-center gap-2 bg-purple-500/20 text-purple-300 border border-purple-400/30 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
+        <span class="material-symbols-outlined text-sm">install_mobile</span>
+        Choisir & Télécharger votre Application
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-black text-white leading-tight tracking-tight">
+        Une application sur-mesure pour <span class="bg-gradient-to-r from-[#7B5CFA] via-[#059669] to-[#D97706] bg-clip-text text-transparent">chaque rôle</span> au Bénin
+      </h2>
+      <p class="text-sm sm:text-base text-gray-300 font-medium max-w-xl mx-auto leading-relaxed">
+        Sélectionnez votre profil d'utilisation pour lancer le téléchargement direct du binaire Android certifié v2.2.1.
+      </p>
+    </div>
+
+    <!-- PROFILE CARDS GRID (4 INTERACTIVE CARDS) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+
+      <!-- CARD 1: SWITCH UTILISATEUR -->
+      <div class="glass-card rounded-[32px] p-6 sm:p-8 flex flex-col justify-between border-t-4 border-t-emerald-500 relative overflow-hidden group">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-black text-2xl border border-emerald-500/30 shadow-lg">
+              <span class="material-symbols-outlined text-3xl">person</span>
+            </div>
+            <span class="text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full">
+              v2.2.1 • 41.56 MB
+            </span>
+          </div>
+
+          <div>
+            <h3 class="text-2xl font-black text-white group-hover:text-emerald-400 transition-colors">1. Switch Utilisateur</h3>
+            <p class="text-xs sm:text-sm text-gray-300 font-medium mt-1">Pour particuliers, étudiants, familles et dépenses du quotidien.</p>
+          </div>
+
+          <div class="bg-white/5 rounded-2xl p-4 border border-white/10 space-y-2 text-xs">
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-emerald-400 text-base">check_circle</span>
+              <span>Transferts P2P à <b>0 FCFA de frais</b></span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-emerald-400 text-base">check_circle</span>
+              <span>Paiement de factures <b>SBEE Électricité & SONEB Eau</b></span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-emerald-400 text-base">check_circle</span>
+              <span>Recharge Crédit GSM & Data (MTN, Moov, Celtiis)</span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-emerald-400 text-base">check_circle</span>
+              <span>Tontines communautaires & Épargne Vault à 6%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 mt-4 border-t border-white/10">
+          <a href="https://github.com/camerokuassi4-ai/switch/releases/download/v2.2.1/switch-beta-user-v2.2.1.apk" download class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-extrabold py-3.5 px-6 rounded-2xl text-sm shadow-lg hover:shadow-emerald-500/25 transition-all flex items-center justify-center gap-2.5 no-underline">
+            <span class="material-symbols-outlined text-xl">download</span>
+            <span>Télécharger APK Utilisateur</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- CARD 2: SWITCH MARCHAND PRO -->
+      <div class="glass-card rounded-[32px] p-6 sm:p-8 flex flex-col justify-between border-t-4 border-t-blue-500 relative overflow-hidden group">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="w-14 h-14 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-black text-2xl border border-blue-500/30 shadow-lg">
+              <span class="material-symbols-outlined text-3xl">storefront</span>
+            </div>
+            <span class="text-xs font-mono font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30 px-3 py-1 rounded-full">
+              v2.2.1 • 34.65 MB
+            </span>
+          </div>
+
+          <div>
+            <h3 class="text-2xl font-black text-white group-hover:text-blue-400 transition-colors">2. Switch Marchand Pro</h3>
+            <p class="text-xs sm:text-sm text-gray-300 font-medium mt-1">Pour commerçants, boutiques, restaurants, prestataires et artisans.</p>
+          </div>
+
+          <div class="bg-white/5 rounded-2xl p-4 border border-white/10 space-y-2 text-xs">
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-blue-400 text-base">check_circle</span>
+              <span>Caisse tactile POS <b>0% de frais d'encaissement</b></span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-blue-400 text-base">check_circle</span>
+              <span>Standee <b>QR Code de comptoir</b> imprimable</span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-blue-400 text-base">check_circle</span>
+              <span>Catalogue produits & suivi des stocks en direct</span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-blue-400 text-base">check_circle</span>
+              <span>Messagerie clients & Liens de paiement à distance</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 mt-4 border-t border-white/10">
+          <a href="https://github.com/camerokuassi4-ai/switch/releases/download/v2.2.1/switch-beta-merchant-v2.2.1.apk" download class="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-extrabold py-3.5 px-6 rounded-2xl text-sm shadow-lg hover:shadow-blue-500/25 transition-all flex items-center justify-center gap-2.5 no-underline">
+            <span class="material-symbols-outlined text-xl">download</span>
+            <span>Télécharger APK Marchand</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- CARD 3: SWITCH AGENT GUICHET -->
+      <div class="glass-card rounded-[32px] p-6 sm:p-8 flex flex-col justify-between border-t-4 border-t-amber-500 relative overflow-hidden group">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="w-14 h-14 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-black text-2xl border border-amber-500/30 shadow-lg">
+              <span class="material-symbols-outlined text-3xl">account_balance</span>
+            </div>
+            <span class="text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full">
+              v2.2.1 • 33.57 MB
+            </span>
+          </div>
+
+          <div>
+            <h3 class="text-2xl font-black text-white group-hover:text-amber-400 transition-colors">3. Switch Agent Guichet</h3>
+            <p class="text-xs sm:text-sm text-gray-300 font-medium mt-1">Pour guichetiers et kiosques financiers agréés au Bénin.</p>
+          </div>
+
+          <div class="bg-white/5 rounded-2xl p-4 border border-white/10 space-y-2 text-xs">
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-amber-400 text-base">check_circle</span>
+              <span><b>Dépôt d'espèces (Cash-In)</b> instantané</span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-amber-400 text-base">check_circle</span>
+              <span><b>Retrait d'espèces (Cash-Out) par QR</b> sécurisé</span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-amber-400 text-base">check_circle</span>
+              <span>Suivi du Float & Commissions créditées en direct</span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-amber-400 text-base">check_circle</span>
+              <span>Module de <b>Clôture de Caisse & Rapport Z</b></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 mt-4 border-t border-white/10">
+          <a href="https://github.com/camerokuassi4-ai/switch/releases/download/v2.2.1/switch-beta-agent-v2.2.1.apk" download class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-extrabold py-3.5 px-6 rounded-2xl text-sm shadow-lg hover:shadow-amber-500/25 transition-all flex items-center justify-center gap-2.5 no-underline">
+            <span class="material-symbols-outlined text-xl">download</span>
+            <span>Télécharger APK Agent</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- CARD 4: SWITCH HYBRIDE -->
+      <div class="glass-card rounded-[32px] p-6 sm:p-8 flex flex-col justify-between border-t-4 border-t-purple-500 relative overflow-hidden group">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="w-14 h-14 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-black text-2xl border border-purple-500/30 shadow-lg">
+              <span class="material-symbols-outlined text-3xl">hub</span>
+            </div>
+            <span class="text-xs font-mono font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30 px-3 py-1 rounded-full">
+              v2.2.1 • 35.93 MB
+            </span>
+          </div>
+
+          <div>
+            <h3 class="text-2xl font-black text-white group-hover:text-purple-400 transition-colors">4. Switch Hybride 2-en-1</h3>
+            <p class="text-xs sm:text-sm text-gray-300 font-medium mt-1">Pour établissements combinant commerce POS et guichet d'espèces.</p>
+          </div>
+
+          <div class="bg-white/5 rounded-2xl p-4 border border-white/10 space-y-2 text-xs">
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-purple-400 text-base">check_circle</span>
+              <span>Solution 2-en-1 : <b>Caisse POS & Guichet Cash</b></span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-purple-400 text-base">check_circle</span>
+              <span>Authentification double rôle avec jeton JWT double signature</span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-purple-400 text-base">check_circle</span>
+              <span>Clôture combinée Fin de Journée & Rapport Z unifié</span>
+            </div>
+            <div class="flex items-center gap-2 text-gray-200">
+              <span class="material-symbols-outlined text-purple-400 text-base">check_circle</span>
+              <span>Point d'entrée spécialisé <code>accueil_hybride</code></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 mt-4 border-t border-white/10">
+          <a href="https://github.com/camerokuassi4-ai/switch/releases/download/v2.2.1/switch-beta-hybrid-v2.2.1.apk" download class="w-full bg-gradient-to-r from-purple-600 via-purple-500 to-emerald-500 hover:opacity-95 text-white font-extrabold py-3.5 px-6 rounded-2xl text-sm shadow-lg hover:shadow-purple-500/25 transition-all flex items-center justify-center gap-2.5 no-underline">
+            <span class="material-symbols-outlined text-xl">download</span>
+            <span>Télécharger APK Hybride</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- GUIDE D'INSTALLATION DE RECONNAISSANCE -->
+    <div class="glass-card rounded-[32px] p-6 sm:p-8 border border-white/15 space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">
+          <span class="material-symbols-outlined text-2xl">verified_user</span>
+        </div>
+        <div>
+          <h3 class="text-base sm:text-lg font-black text-white">Guide d'installation simple pour Android</h3>
+          <p class="text-xs text-purple-200">4 étapes faciles pour démarrer l'utilisation de Switch Beta Bénin</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-gray-300">
+        <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
+          <span class="font-extrabold text-emerald-400 text-sm block mb-1">Étape 1</span>
+          Cliquez sur le bouton de téléchargement de l'APK correspondant à votre rôle ci-dessus.
+        </div>
+        <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
+          <span class="font-extrabold text-blue-400 text-sm block mb-1">Étape 2</span>
+          Ouvrez le fichier <code>.apk</code> téléchargé depuis vos notifications ou votre gestionnaire de fichiers.
+        </div>
+        <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
+          <span class="font-extrabold text-amber-400 text-sm block mb-1">Étape 3</span>
+          Si demandé, autorisez l'installation depuis des sources inconnues dans vos paramètres Android.
+        </div>
+        <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
+          <span class="font-extrabold text-purple-400 text-sm block mb-1">Étape 4</span>
+          Lancez l'application Switch et connectez-vous avec votre numéro béninois !
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-300">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-emerald-400 text-base">support_agent</span>
+          <span>Assistance technique & Support WhatsApp 24/7 Bénin :</span>
+        </div>
+        <a href="https://wa.me/2290190751786" target="_blank" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 font-bold px-4 py-2 rounded-xl border border-emerald-400/30 no-underline flex items-center gap-1.5 transition-colors">
+          <span class="material-symbols-outlined text-base">chat</span>
+          <span>+229 01 90 75 17 86</span>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="w-full border-t border-white/10 bg-[#070414] py-8 px-4 text-center text-xs text-gray-400">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p>© 2026 Switch Bénin S.A.S — Applications certifiées v2.2.1 • Conforme réglementation UEMOA / BCEAO.</p>
+      <div class="flex items-center gap-4 text-purple-300 font-medium">
+        <a href="../conditions_utilisation/code.html" class="hover:text-white transition-colors no-underline">Conditions</a>
+        <span>•</span>
+        <a href="../politique_confidentialite/code.html" class="hover:text-white transition-colors no-underline">Confidentialité</a>
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>
