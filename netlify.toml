@@ -1,40 +1,13 @@
-# Configuration de déploiement automatique Netlify pour Switch Beta Bénin
-# Ce fichier est automatiquement détecté par Netlify lors de la connexion à GitHub.
-
 [build]
+  command = "python scripts/prepare_landing_page_dist.py"
   publish = "dist"
-  command = "python scripts/prepare_landing_page_dist.py || true"
-
-[build.environment]
-  PYTHON_VERSION = "3.10"
-
-# En-têtes de sécurité, compression et cache HTTP
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "SAMEORIGIN"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Access-Control-Allow-Origin = "*"
-
-# Mise en cache longue durée pour les assets graphiques et captures HD
-[[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-# Raccourcis et redirections propres
-[[redirects]]
-  from = "/telecharger"
-  to = "/download.html"
-  status = 200
-
-[[redirects]]
-  from = "/apk"
-  to = "/download.html"
-  status = 200
 
 [[redirects]]
   from = "/download"
-  to = "/download.html"
+  to = "/download/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/download/"
+  to = "/download/index.html"
   status = 200

@@ -1,4 +1,6 @@
 {
+  "buildCommand": "python scripts/prepare_landing_page_dist.py",
+  "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [

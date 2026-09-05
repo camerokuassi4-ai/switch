@@ -1,4 +1,10 @@
 {
+  "name": "switch-benin-landing",
+  "version": "2.2.1",
+  "scripts": {
+    "build": "python scripts/prepare_landing_page_dist.py",
+    "vercel-build": "python scripts/prepare_landing_page_dist.py"
+  },
   "devDependencies": {
     "@capacitor/android": "^8.5.0",
     "@capacitor/cli": "^8.5.0",
