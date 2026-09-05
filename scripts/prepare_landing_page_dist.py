@@ -52,9 +52,9 @@ def prepare_dist():
     os.makedirs(dst_downloads, exist_ok=True)
     src_downloads = os.path.join(base_dir, "assets", "downloads")
 
-    # Copy all APK files to dist/assets/downloads/
+    # Copy all active v2.2.1 APK files to dist/assets/downloads/
     for fname in os.listdir(src_downloads):
-        if fname.endswith(".apk"):
+        if fname.endswith(".apk") and "v2.1.0" not in fname:
             src_f = os.path.join(src_downloads, fname)
             dst_f = os.path.join(dst_downloads, fname)
             if not os.path.exists(dst_f) or os.path.getsize(src_f) != os.path.getsize(dst_f):
@@ -63,7 +63,7 @@ def prepare_dist():
                 except Exception:
                     pass
             size_mb = os.path.getsize(dst_f) / (1024 * 1024) if os.path.exists(dst_f) else os.path.getsize(src_f) / (1024 * 1024)
-            print(f"  ✅ APK de production dans dist: {fname} ({size_mb:.2f} Mo)")
+            print(f"  ✅ APK de production v2.2.1 dans dist: {fname} ({size_mb:.2f} Mo)")
 
     # Also place APKs in direct download subfolders for direct route links
     sub_map = {
