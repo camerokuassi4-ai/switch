@@ -107,4 +107,14 @@ def prepare_dist():
         print(f"\n🎉 TOUS LES FICHIERS DE 'dist/' SONT 100% RELATIFS ET PRÊTS POUR NETLIFY / VERCEL / GITHUB PAGES !")
         print(f"Emplacement complet du dossier à déployer : {dist_dir}")
 
+    # 6. Also mirror to www/ directory for compatibility with Vercel UI setting pointing to www
+    www_dir = os.path.join(base_dir, "www")
+    if os.path.exists(www_dir):
+        try:
+            shutil.rmtree(www_dir)
+        except Exception:
+            pass
+    shutil.copytree(dist_dir, www_dir)
+    print(f"  ✅ Miroir créé dans 'www/' pour Vercel (emplacement www synchronisé).")
+
 prepare_dist()

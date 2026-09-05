@@ -1,0 +1,11 @@
+{
+  "buildCommand": "python scripts/prepare_landing_page_dist.py",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/download", "destination": "/download/index.html" },
+    { "source": "/download/", "destination": "/download/index.html" },
+    { "source": "/:path*/code", "destination": "/:path*/code.html" }
+  ]
+}

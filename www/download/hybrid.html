@@ -52,7 +52,7 @@
         <span class="bg-white/20 text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase">
           Version 2.1.0-hybrid
         </span>
-        <span class="text-xs text-purple-200 font-mono">Taille : 8.4 Mo</span>
+        <span class="text-xs text-purple-200 font-mono">Taille : 35.7 Mo</span>
       </div>
       
       <div>
@@ -64,6 +64,29 @@
         <span class="material-symbols-outlined text-xl">download</span>
         <span>Télécharger l'APK Officiel (HYBRID)</span>
       </a>
+    </div>
+
+    <!-- Real App Screenshot Card -->
+    <div class="bg-white rounded-3xl p-5 border border-gray-200 shadow-sm flex flex-col gap-3">
+      <h3 class="font-black text-sm text-[#1C1A24] uppercase tracking-wider flex items-center gap-2">
+        <span class="material-symbols-outlined text-[#5E3BDC] text-base">published_with_changes</span>
+        <span>Vrai Écran In-App : Tableau de bord Hybride</span>
+      </h3>
+      <div class="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 border border-gray-200 group cursor-pointer" onclick="document.getElementById('zoom-modal').classList.remove('hidden')">
+        <img src="../assets/images/real_screens/hybrid_dashboard.jpg" alt="Vrai écran application hybride" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold gap-1">
+          <span class="material-symbols-outlined text-lg">zoom_in</span> Cliquez pour agrandir en HD
+        </div>
+      </div>
+      <p class="text-[11px] text-gray-500 font-medium">Capture d'écran officielle : commutateur dual-mode Mode Boutique ↔ Mode Agent Guichet, Caisse (385 000 FCFA) et Float Agent (1 475 000 FCFA).</p>
+    </div>
+
+    <!-- Modal Zoom HD -->
+    <div id="zoom-modal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4" onclick="this.classList.add('hidden')">
+      <div class="relative max-w-sm w-full bg-black rounded-3xl overflow-hidden border border-white/20 p-2">
+        <img src="../assets/images/real_screens/hybrid_dashboard.jpg" alt="Vrai écran grand format" class="w-full h-auto rounded-2xl">
+        <div class="p-3 text-center text-white text-xs font-semibold">Switch Beta — Marchand-Agent Hybride (Écran Réel)</div>
+      </div>
     </div>
 
     <!-- Installation Steps Card -->

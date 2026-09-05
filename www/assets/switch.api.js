@@ -10,8 +10,8 @@
   'use strict';
 
   const cfg = window.SWITCH_CONFIG || {
-    SUPABASE_URL: "https://votre-projet.supabase.co",
-    SUPABASE_ANON_KEY: "",
+    SUPABASE_URL: "https://dfzyyawclnxcgykktrbr.supabase.co",
+    SUPABASE_ANON_KEY: "sb_publishable_w1Bk1r74psAg-e03Xn4Wog_RhepjXG5",
     OFFLINE_FALLBACK: false,
     DEMO_ONSCREEN_OTP: true
   };
