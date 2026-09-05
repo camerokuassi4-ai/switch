@@ -520,14 +520,14 @@ const agentMockupBlock = `          <div class="grid grid-cols-2 sm:grid-cols-2 
             </div>
 
             <!-- Smartphone 4 -->
-            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/agent_closure.jpg', 'Clôture de Caisse (Rapport Z)', 'Arrêt journalier certifié avec décompte des encaissements, décaissements et commissions.')">
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openLightbox('assets/images/real_screens/agent_dashboard.png', 'Tableau de Bord Agent', 'Gestion globale des opérations de dépôt, retrait et suivi du float.')">
               <div class="phone-mockup agent-phone">
                 <div class="phone-dynamic-island">
                   <div class="phone-camera-lens"></div>
                   <div class="phone-speaker"></div>
                 </div>
                 <div class="phone-screen">
-                  <img src="assets/images/real_screens/agent_closure.jpg" alt="Rapport Z Clôture" class="w-full h-full object-cover">
+                  <img src="assets/images/real_screens/agent_dashboard.png" alt="Tableau de Bord Agent" class="w-full h-full object-cover">
                   <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span class="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
                   </div>
@@ -612,8 +612,14 @@ const newAgentMockupBlock = `          <!-- Showcase HD 1080p : 2x2 grand format
             </div>
 
             <!-- Smartphone 4 -->
+            <div class="flex flex-col items-center group cursor-pointer w-[285px] xs:w-[315px] sm:w-auto shrink-0 sm:shrink snap-center" onclick="openLightbox('assets/images/real_screens/agent_dashboard.png', 'Tableau de Bord Agent', 'Gestion globale des opérations de dépôt, retrait et suivi du float.')">
+              <div class="phone-mockup agent-phone">
+                <div class="phone-dynamic-island">
+                  <div class="phone-camera-lens"></div>
+                  <div class="phone-speaker"></div>
+                </div>
                 <div class="phone-screen">
-                  <img src="assets/images/real_screens/agent_closure.png" alt="Rapport Z Clôture" class="w-full h-full object-cover object-top" loading="lazy">
+                  <img src="assets/images/real_screens/agent_dashboard.png" alt="Tableau de Bord Agent" class="w-full h-full object-cover object-top" loading="lazy">
                   <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5">
                     <span class="material-symbols-outlined text-white text-3xl drop-shadow-md">zoom_in</span>
                     <span class="text-[11px] font-bold text-white bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-sm">Agrandir HD</span>
