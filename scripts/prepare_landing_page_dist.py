@@ -37,6 +37,8 @@ def prepare_dist():
                 dest_dir = os.path.join(dst_assets, rel)
                 os.makedirs(dest_dir, exist_ok=True)
                 for f in files:
+                    if f.startswith("_"):
+                        continue
                     sf = os.path.join(root, f)
                     df = os.path.join(dest_dir, f)
                     if not os.path.exists(df) or os.path.getsize(sf) != os.path.getsize(df):
@@ -45,7 +47,7 @@ def prepare_dist():
                         except Exception:
                             pass
         else:
-            shutil.copytree(src_assets, dst_assets)
+            shutil.copytree(src_assets, dst_assets, ignore=shutil.ignore_patterns("_*"))
 
     # 4. Ensure downloads directory exists with APK binaries
     dst_downloads = os.path.join(dst_assets, "downloads")
