@@ -15,9 +15,11 @@ def prepare_dist():
             pass
     os.makedirs(dist_dir, exist_ok=True)
 
-    # 1. Copy index.html and download.html
+    # 1. Copy index.html, download.html and vercel.json
     shutil.copy2(os.path.join(base_dir, "index.html"), os.path.join(dist_dir, "index.html"))
     shutil.copy2(os.path.join(base_dir, "download.html"), os.path.join(dist_dir, "download.html"))
+    if os.path.exists(os.path.join(base_dir, "vercel.json")):
+        shutil.copy2(os.path.join(base_dir, "vercel.json"), os.path.join(dist_dir, "vercel.json"))
 
     # 2. Copy download folder
     src_download = os.path.join(base_dir, "download")
